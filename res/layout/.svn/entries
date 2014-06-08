@@ -1,0 +1,210 @@
+10
+
+dir
+0
+https://project.fit.cvut.cz/svn/Unknown/multiGame/res/layout
+https://project.fit.cvut.cz/svn/Unknown
+add
+
+
+
+
+
+
+
+svn:special svn:externals svn:needs-lock
+
+
+
+
+
+
+
+
+
+
+
+e56a178c-5eb0-4144-ae67-344cc431161e
+
+about.xml
+file
+
+
+
+add
+
+achievement_listitem.xml
+file
+
+
+
+add
+
+com_facebook_friendpickerfragment.xml
+file
+
+
+
+add
+
+com_facebook_login_activity_layout.xml
+file
+
+
+
+add
+
+com_facebook_picker_activity_circle_row.xml
+file
+
+
+
+add
+
+com_facebook_picker_image.xml
+file
+
+
+
+add
+
+com_facebook_picker_list_row.xml
+file
+
+
+
+add
+
+com_facebook_picker_list_section_header.xml
+file
+
+
+
+add
+
+com_facebook_picker_search_box.xml
+file
+
+
+
+add
+
+com_facebook_picker_title_bar.xml
+file
+
+
+
+add
+
+com_facebook_picker_title_bar_stub.xml
+file
+
+
+
+add
+
+com_facebook_placepickerfragment.xml
+file
+
+
+
+add
+
+com_facebook_placepickerfragment_list_row.xml
+file
+
+
+
+add
+
+com_facebook_search_bar_layout.xml
+file
+
+
+
+add
+
+com_facebook_usersettingsfragment.xml
+file
+
+
+
+add
+
+customization_center.xml
+file
+
+
+
+add
+
+game.xml
+file
+
+
+
+add
+
+hof_listitem.xml
+file
+
+
+
+add
+
+list_layout.xml
+file
+
+
+
+add
+
+list_layout_adfree.xml
+file
+
+
+
+add
+
+main_menu.xml
+file
+
+
+
+add
+
+mgc_listitem.xml
+file
+
+
+
+add
+
+minihra_detail.xml
+file
+
+
+
+add
+
+musicloops_listitem.xml
+file
+
+
+
+add
+
+skin_listitem.xml
+file
+
+
+
+add
+
+splash_screen.xml
+file
+
+
+
+add
+

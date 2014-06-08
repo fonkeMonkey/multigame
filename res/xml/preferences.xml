@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+    <!--android:summary=""-->
+    <CheckBoxPreference
+        android:key="music_on" 
+        android:title="@string/pref_music"
+        android:defaultValue="true" />
+    <CheckBoxPreference
+        android:key="sound_on" 
+        android:title="@string/pref_sound"
+        android:defaultValue="true" />
+        <!--android:id="@+id/preference_game_mode"-->
+    <CheckBoxPreference
+        android:key="autocalibration" 
+        android:title="@string/autocalibration"
+        android:summary="@string/autocalibration_subtitle"
+        android:defaultValue="true" />
+    
+    <ListPreference
+        android:key="game_mode"
+        android:title="@string/pref_game_mode"
+        android:dialogTitle="Game mode"
+        
+        android:entries="@array/gameModeOptions"
+        android:entryValues="@array/gameModeOptions"
+/>
+
+    <!--android:defaultValue="Tutorial"--> 
+    <sk.palistudios.multigame.preferences.AboutDialog 
+        android:title="@string/pref_about"
+/>
+    
+<!--    <sk.palistudios.multigame.preferences.UpgradeToPremiumDialog 
+        android:title="Upgrade to Premium"
+    />-->
+    
+    <sk.palistudios.multigame.preferences.RateDialog 
+        android:title="@string/pref_rate"
+        />
+    
+    <sk.palistudios.multigame.preferences.MoreGamesDialog 
+        android:id = "@+id/GetMoreGamesListItem"
+        android:key ="MoreGamesPreference"
+        android:title="Get more games.."
+        />
+
+    <!--android:dialogIcon="@drawable/logo_summer"-->
+    <!--android:dialogTitle="About.."--> 
+    <!--android:dialogLayout="@layout/about"-->
+    <!--android:dialogMessage="@raw/legal"-->
+    <!--<intent android:action="android.intent.action.MAIN"-->
+    <!--android:data="http://www.example.com"-->
+</PreferenceScreen>
