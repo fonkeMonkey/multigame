@@ -7,7 +7,7 @@ import android.media.AudioManager;
 import android.os.Bundle;
 import android.view.View;
 //import com.appflood.AppFlood;
-import sk.palistudios.multigame.mainMenu.GlobalSettings;
+import sk.palistudios.multigame.mainMenu.DebugSettings;
 import sk.palistudios.multigame.tools.SoundEffectsCenter;
 
 /**
@@ -33,7 +33,7 @@ public class MoreGamesCenterActivity extends ActivityGroup {
         protected void onCreate(Bundle savedInstanceState) {
             super.onCreate(savedInstanceState);
             setVolumeControlStream(AudioManager.STREAM_MUSIC);
-            if (GlobalSettings.adsActivated) {
+            if (DebugSettings.adsActivated) {
 //              AppFlood.showList(this, AppFlood.LIST_GAME);
             }
         }

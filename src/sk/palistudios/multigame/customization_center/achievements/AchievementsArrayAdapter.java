@@ -27,8 +27,7 @@ public class AchievementsArrayAdapter extends ArrayAdapter<AchievementItem> impl
         super(context, R.layout.achievement_listitem, items);
         this.context = context;
         myItems = items;
-        colorChosen = currentSkin.getColor4();
-
+        colorChosen = currentSkin.getBarSeparatorColor();
     }
 
     @Override

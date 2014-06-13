@@ -37,7 +37,7 @@ import sk.palistudios.multigame.customization_center.skins.SkinsCenterListActivi
 import sk.palistudios.multigame.game.view.AFragment;
 import sk.palistudios.multigame.game.view.AFragmentView;
 import sk.palistudios.multigame.hall_of_fame.HofDatabaseCenter;
-import sk.palistudios.multigame.mainMenu.GlobalSettings;
+import sk.palistudios.multigame.mainMenu.DebugSettings;
 import sk.palistudios.multigame.tools.SoundEffectsCenter;
 import sk.palistudios.multigame.tools.Toaster;
 
@@ -70,10 +70,11 @@ public class GameActivity extends FragmentActivity implements SensorEventListene
     private float DEFAULT_AXIS_Y = 0f;
     public static boolean sTutorialRestart = false;
     private LinearLayout gameBar;
-    private View gameScoreSeparator;
+    private View gameScoreSeparatorDown;
     private Runnable mRunnableTime;
     private Handler mTimeHandler;
-    
+    private View gameScoreSeparator;
+
     @Override
     public void onCreate(Bundle icicle) {
         super.onCreate(icicle);
@@ -131,13 +132,15 @@ public class GameActivity extends FragmentActivity implements SensorEventListene
     
     private void initGraphics() {
         gameBar = (LinearLayout) findViewById(R.id.game_bar);
-        gameBar.setBackgroundColor(SkinsCenterListActivity.getCurrentSkin(this).getColor3());
+        gameBar.setBackgroundColor(SkinsCenterListActivity.getCurrentSkin(this).getBarBgColor());
         scoreView = (TextView) findViewById(R.id.game_score);
-        scoreView.setTextColor(SkinsCenterListActivity.getCurrentSkin(this).getColor2());
+        scoreView.setTextColor(SkinsCenterListActivity.getCurrentSkin(this).getBarLabelColor());
         difficultyView = (TextView) findViewById(R.id.game_level);
-        difficultyView.setTextColor(SkinsCenterListActivity.getCurrentSkin(this).getColor2());
+        difficultyView.setTextColor(SkinsCenterListActivity.getCurrentSkin(this).getBarLabelColor());
         gameScoreSeparator = (View) findViewById(R.id.game_score_separator);
-        gameScoreSeparator.setBackgroundColor(SkinsCenterListActivity.getCurrentSkin(this).getColor2());
+        gameScoreSeparator.setBackgroundColor(SkinsCenterListActivity.getCurrentSkin(this).getBarSeparatorColor());
+        gameScoreSeparatorDown = (View) findViewById(R.id.game_score_separator_down);
+        gameScoreSeparatorDown.setBackgroundColor(SkinsCenterListActivity.getCurrentSkin(this).getBarSeparatorColorDown());
         
         mFragments = new AFragment[4];
         mFragments[0] = (Fragment1) getSupportFragmentManager().findFragmentById(R.id.fragment1);
@@ -230,7 +233,7 @@ public class GameActivity extends FragmentActivity implements SensorEventListene
                         GameTimeMaster.onSecondPassed();
 
                         //increase level
-                        if (secondsPassed % (GlobalSettings.SECONDS_PER_LEVEL) == 0) {
+                        if (secondsPassed % (DebugSettings.SECONDS_PER_LEVEL) == 0) {
                             level++;
                             GameTimeMaster.onLevelIncreased(GameActivity.this);
                         }
@@ -365,7 +368,7 @@ public class GameActivity extends FragmentActivity implements SensorEventListene
             mHandlerTutorial = new Handler();
         }
         
-        mHandlerTutorial.postDelayed(mRunnableTutorial, GlobalSettings.SECONDS_PER_LEVEL_TUTORIAL
+        mHandlerTutorial.postDelayed(mRunnableTutorial, DebugSettings.SECONDS_PER_LEVEL_TUTORIAL
                 * 1000);
     }
     
@@ -403,7 +406,7 @@ public class GameActivity extends FragmentActivity implements SensorEventListene
     }
     
     private void refreshDisplayGame() {
-        score += level;
+        score += level * DebugSettings.SCORE_COEFICIENT;
 //        frames++;
 
         if (mTutorialMode) {
@@ -582,7 +585,7 @@ public class GameActivity extends FragmentActivity implements SensorEventListene
     public void onBackPressed() {
         super.onBackPressed();
 
-//        if(GlobalSettings.tutorialCompleted){
+//        if(DebugSettings.tutorialCompleted){
 //            mTutorialMode = false;
 //        }else{
 //            mTutorialMode = GameSharedPref.isTutorialModeActivated();

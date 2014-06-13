@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <dimen name="main_menutext_size">18sp</dimen>
-   <dimen name="slogan_size">18dp</dimen>
-   <dimen name="Multigame_label_size">26sp</dimen>
+    <dimen name="main_menutext_size_bigger">20sp</dimen>
+    <dimen name="slogan_size">18dp</dimen>
+    <dimen name="Multigame_label_size">26sp</dimen>
 </resources>

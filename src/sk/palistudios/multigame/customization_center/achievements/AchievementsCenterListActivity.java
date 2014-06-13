@@ -1,12 +1,10 @@
 package sk.palistudios.multigame.customization_center.achievements;
 
 import android.app.Activity;
-import android.app.ListActivity;
 import android.content.Context;
 import android.media.AudioManager;
 import android.os.Bundle;
 import android.view.Gravity;
-import android.view.View;
 import android.widget.TextView;
 import com.google.analytics.tracking.android.EasyTracker;
 import java.util.ArrayList;
@@ -15,7 +13,7 @@ import sk.palistudios.multigame.R;
 import sk.palistudios.multigame.customization_center.CustomizationCenterActivity;
 import sk.palistudios.multigame.customization_center.skins.SkinsCenterListActivity;
 import sk.palistudios.multigame.game.persistence.GameSharedPref;
-import sk.palistudios.multigame.mainMenu.GlobalSettings;
+import sk.palistudios.multigame.mainMenu.DebugSettings;
 import sk.palistudios.multigame.tools.SoundEffectsCenter;
 
 /**
@@ -32,7 +30,7 @@ public class AchievementsCenterListActivity extends BaseListActivity {
         super.onCreate(icicle);
         setVolumeControlStream(AudioManager.STREAM_MUSIC);
 
-        if (!GameSharedPref.isAchievementFulfilled("pro") && GlobalSettings.adsActivated) {
+        if (!GameSharedPref.isAchievementFulfilled("pro") && DebugSettings.adsActivated) {
             setContentView(R.layout.list_layout);
         } else {
             setContentView(R.layout.list_layout_adfree);
@@ -110,13 +108,9 @@ public class AchievementsCenterListActivity extends BaseListActivity {
                     "SHARE", -1, "blue_sky", (String) context.getResources().getString(R.string.cc_skins_blue_sky_name),
                     GameSharedPref.isAchievementFulfilled("competitive"), (String) context.getResources().getString(R.string.cc_skins_skin_name)));
 
-//            if(GlobalSettings.adsActivated){
-//                 achievements.add(new AchievementItem("pro", (String) context.getResources().getString(R.string.cc_achievements_pro_name), (String) context.getResources().getString(R.string.cc_achievements_pro_description),
-//                    "LEVEL", 15, "", "",
-//                    GameSharedPref.isAchievementFulfilled("pro"), (String) context.getResources().getString(R.string.cc_ad_name)));
-//
-//
-//                }
+            achievements.add(new AchievementItem("champion", (String) context.getResources().getString(R.string.cc_achievements_champion_name), (String) context.getResources().getString(R.string.cc_achievements_champion_description),
+                    "SCORE", 10001, "summer", (String) context.getResources().getString(R.string.cc_skins_summer_name),
+                    GameSharedPref.isAchievementFulfilled("champion"), (String) context.getResources().getString(R.string.cc_skins_skin_name)));
         }
     }
 

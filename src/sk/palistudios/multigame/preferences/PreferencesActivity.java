@@ -13,17 +13,13 @@ import android.preference.Preference.OnPreferenceClickListener;
 import android.preference.PreferenceActivity;
 import android.preference.PreferenceManager;
 import android.view.Gravity;
-import android.view.WindowManager;
 import android.widget.TextView;
 //import com.appflood.AppFlood;
 import com.google.analytics.tracking.android.EasyTracker;
-import com.google.analytics.tracking.android.Log;
-import java.util.List;
 import sk.palistudios.multigame.R;
 import sk.palistudios.multigame.customization_center.skins.SkinsCenterListActivity;
 import sk.palistudios.multigame.game.persistence.GameSharedPref;
-import sk.palistudios.multigame.mainMenu.GlobalSettings;
-import sk.palistudios.multigame.mainMenu.MainMenuActivity;
+import sk.palistudios.multigame.mainMenu.DebugSettings;
 import sk.palistudios.multigame.tools.Toaster;
 
 /**
@@ -51,7 +47,7 @@ public class PreferencesActivity extends PreferenceActivity {
         overridePendingTransition(R.anim.fadein, R.anim.fadeout);
         setVolumeControlStream(AudioManager.STREAM_MUSIC);
 //        getWindow().setFlags(WindoswManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
-//        if (!GameSharedPref.isAchievementFulfilled("pro") && GlobalSettings.adsActivated) {
+//        if (!GameSharedPref.isAchievementFulfilled("pro") && DebugSettings.adsActivated) {
             setContentView(R.layout.list_layout);
 //        } else {
 //            setContentView(R.layout.list_layout_adfree);
@@ -64,7 +60,7 @@ public class PreferencesActivity extends PreferenceActivity {
 
         singleton = this;
 
-        boolean isTutorialCompleted = GameSharedPref.isTutorialCompleted() || GlobalSettings.tutorialCompleted;
+        boolean isTutorialCompleted = GameSharedPref.isTutorialCompleted() || DebugSettings.tutorialCompleted;
 
         if (isTutorialCompleted) {
             addPreferencesFromResource(R.xml.preferences);
@@ -87,7 +83,7 @@ public class PreferencesActivity extends PreferenceActivity {
         getListView().addHeaderView(header);
 
         Preference myPref = (Preference) findPreference("MoreGamesPreference");
-        if (!GameSharedPref.isAchievementFulfilled("pro") && GlobalSettings.adsActivated) {
+        if (!GameSharedPref.isAchievementFulfilled("pro") && DebugSettings.adsActivated) {
             myPref.setOnPreferenceClickListener(new OnPreferenceClickListener() {
                 public boolean onPreferenceClick(Preference preference) {
 //                    AppFlood.showPanel(act, AppFlood.PANEL_TOP);
@@ -110,7 +106,7 @@ public class PreferencesActivity extends PreferenceActivity {
 //        boolean sound_on = GameSharedPref.isSoundOn();
         String game_mode = GameSharedPref.getGameMode();
 
-        boolean isTutorialCompleted = GameSharedPref.isTutorialCompleted() || GlobalSettings.tutorialCompleted;
+        boolean isTutorialCompleted = GameSharedPref.isTutorialCompleted() || DebugSettings.tutorialCompleted;
 
 
         if (isTutorialCompleted) {

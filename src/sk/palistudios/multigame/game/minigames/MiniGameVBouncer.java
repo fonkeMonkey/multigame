@@ -3,15 +3,12 @@ package sk.palistudios.multigame.game.minigames;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
-import android.graphics.Color;
 import android.graphics.Paint;
 import sk.palistudios.multigame.R;
-import sk.palistudios.multigame.customization_center.skins.SkinsCenterListActivity;
 import sk.palistudios.multigame.game.GameActivity;
 import sk.palistudios.multigame.game.persistence.PaintSerializable;
 import sk.palistudios.multigame.game.persistence.PointSerializable;
-import sk.palistudios.multigame.mainMenu.ApplicationInitializer;
-import sk.palistudios.multigame.mainMenu.GlobalSettings;
+import sk.palistudios.multigame.mainMenu.DebugSettings;
 import sk.palistudios.multigame.tools.RandomGenerator;
 
 /**
@@ -179,8 +176,8 @@ public class MiniGameVBouncer extends AMiniGame implements IMiniGameVertical {
 
     @Override
     public void onDifficultyIncreased() {
-        difficultyStepX = (Math.abs(velocityX) / 100) * GlobalSettings.globalDifficultyCoeficient;
-        difficultyStepY = (Math.abs(velocityY) / 100) * GlobalSettings.globalDifficultyCoeficient;
+        difficultyStepX = (Math.abs(velocityX) / 100) * DebugSettings.globalDifficultyCoeficient;
+        difficultyStepY = (Math.abs(velocityY) / 100) * DebugSettings.globalDifficultyCoeficient;
 
         if (Math.abs(velocityX) < maxDifficulty - difficultyStepX) {
             if (velocityX > 0) {

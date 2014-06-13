@@ -5,18 +5,15 @@ import sk.palistudios.multigame.tools.RandomGenerator;
 import sk.palistudios.multigame.tools.ITimeObserver;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
-import android.graphics.Color;
 import android.graphics.Paint;
-import android.util.Log;
+
 import java.util.ArrayList;
 import sk.palistudios.multigame.game.GameActivity;
 import sk.palistudios.multigame.game.persistence.PaintSerializable;
 import java.io.Serializable;
 import sk.palistudios.multigame.R;
-import sk.palistudios.multigame.customization_center.skins.SkinsCenterListActivity;
 import sk.palistudios.multigame.game.GameTimeMaster;
-import sk.palistudios.multigame.mainMenu.ApplicationInitializer;
-import sk.palistudios.multigame.mainMenu.GlobalSettings;
+import sk.palistudios.multigame.mainMenu.DebugSettings;
 
 /**
  *
@@ -127,7 +124,7 @@ public class MiniGameTGatherer extends AMiniGame implements IMiniGameTouch, ITim
 
     @Override
     public void onDifficultyIncreased() {
-        difficultyStep = (framesToGenerateCircle / 100) * GlobalSettings.globalDifficultyCoeficient;
+        difficultyStep = (framesToGenerateCircle / 100) * DebugSettings.globalDifficultyCoeficient;
 
         if (difficultyStep < 1) {
             difficultyStep = 1;

@@ -10,7 +10,7 @@ import sk.palistudios.multigame.game.persistence.PaintSerializable;
 import sk.palistudios.multigame.tools.RandomGenerator;
 import java.io.Serializable;
 import sk.palistudios.multigame.R;
-import sk.palistudios.multigame.mainMenu.GlobalSettings;
+import sk.palistudios.multigame.mainMenu.DebugSettings;
 
 /**
  *
@@ -189,7 +189,7 @@ public class MiniGameVBird extends AMiniGame implements IMiniGameVertical {
 
     @Override
     public void onDifficultyIncreased() {
-        difficultyStep = (framesWithoutObstacle / 100) * GlobalSettings.globalDifficultyCoeficient;
+        difficultyStep = (framesWithoutObstacle / 100) * DebugSettings.globalDifficultyCoeficient;
 
         if (difficultyStep < 1) {
             difficultyStep = 1;

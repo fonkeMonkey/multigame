@@ -5,7 +5,7 @@
     android:orientation="vertical"
     android:weightSum="9"
     xmlns:android="http://schemas.android.com/apk/res/android">
-    
+
     <LinearLayout
         android:id="@+id/widget38"
         android:layout_width="fill_parent"
@@ -13,13 +13,15 @@
         android:layout_weight="5"
         android:orientation="vertical"
         android:gravity="center"
-    >
+        >
+
         <ImageView
             android:id="@+id/logo"
             android:contentDescription="Logo"
             android:layout_width="100dp"
             android:layout_height="100dp"
-            android:src="@drawable/logo_summer"/>
+            android:src="@drawable/logo"/>
+
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -28,29 +30,30 @@
             android:textSize="@dimen/Multigame_label_size"
             android:textColor="#435455"
             />
-        
+
     </LinearLayout>
- 
+
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="4"
         android:weightSum="4"
         android:orientation="vertical"
-    >
+        >
 
         <Button
             android:id="@+id/mainMenu_button_start"
             android:layout_width="match_parent"
             android:layout_height="0dp"
-            android:text="@string/button_game" 
+            android:text="@string/button_game"
             android:textColor="#FFFFFF"
             android:onClick="startGame"
-            android:layout_weight="1" 
-            android:textSize="@dimen/main_menutext_size"
-/>
-            <!--android:background="@drawable/button_background_ul"-->
-                
+            android:layout_weight="1"
+            android:textSize="@dimen/main_menutext_size_bigger"
+            android:textStyle="bold"
+            />
+        <!--android:background="@drawable/button_background_ul"-->
+
         <Button
             android:id="@+id/mainMenu_button_MGC"
             android:layout_width="match_parent"
@@ -59,10 +62,11 @@
             android:textSize="@dimen/main_menutext_size"
             android:textColor="#FFFFFF"
             android:onClick="showMGC"
-            android:layout_weight="1" 
-/>
-            <!--android:background="@drawable/button_background_ur"-->
-            
+            android:layout_weight="1"
+            android:textStyle="bold"
+            />
+        <!--android:background="@drawable/button_background_ur"-->
+
         <Button
             android:id="@+id/mainMenu_button_preferences"
             android:layout_width="match_parent"
@@ -71,10 +75,11 @@
             android:text="@string/button_preferences"
             android:textColor="#FFFFFF"
             android:onClick="showPreferences"
-            android:layout_weight="1" 
-/>
-            <!--android:background="@drawable/button_background_ll"-->
-            
+            android:layout_weight="1"
+            android:textStyle="bold"
+            />
+        <!--android:background="@drawable/button_background_ll"-->
+
         <Button
             android:id="@+id/mainMenu_button_HOF"
             android:layout_width="match_parent"
@@ -83,9 +88,10 @@
             android:text="@string/button_hall_of_fame"
             android:textColor="#FFFFFF"
             android:onClick="showHallOfFame"
-            android:layout_weight="1" 
-/>
-            <!--android:background="@drawable/button_background_lr"-->
+            android:layout_weight="1"
+            android:textStyle="bold"
+            />
+        <!--android:background="@drawable/button_background_lr"-->
 
     </LinearLayout>
 </LinearLayout>

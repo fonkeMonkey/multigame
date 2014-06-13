@@ -4,49 +4,58 @@
               android:layout_width="fill_parent"
               android:layout_height="fill_parent"
               android:id="@+id/game"
->
-    
+    >
+
     <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
                   android:orientation="horizontal"
                   android:layout_width="fill_parent"
                   android:layout_height="25dp"
-                  android:id="@+id/game_bar"
+                  android:id="@+id/game_bar">
 
-    >
         <TextView
             android:id="@+id/game_level"
             android:layout_height="fill_parent"
             android:textSize="15sp"
-            android:textStyle="bold" 
+            android:textStyle="bold"
             android:gravity="center"
             android:layout_marginLeft="5dp"
             android:layout_gravity="center_vertical"
             android:layout_width="match_parent"
-            android:layout_weight="1"
-/>
+            android:layout_weight="1"/>
+
+        <View
+            android:id="@+id/game_score_separator"
+            android:layout_width="2px"
+            android:layout_height="match_parent"
+            android:background="@color/kuba_top_bar_separator"
+            android:layout_marginTop="5dp"
+            android:layout_marginBottom="5dp"
+            ></View>
+
         <TextView
             android:id="@+id/game_score"
             android:layout_height="fill_parent"
             android:textSize="15sp"
-            android:textStyle="bold" 
+            android:textStyle="bold"
             android:gravity="center"
             android:layout_marginRight="5dp"
             android:layout_gravity="center_vertical"
             android:layout_width="match_parent"
-            android:layout_weight="1"
-/>
+            android:layout_weight="1"/>
+
     </LinearLayout>
-    
-    <View  android:layout_width="fill_parent"
-           android:layout_height="1dp"
-           android:id="@+id/game_score_separator"
-           android:background="@android:color/black" />
+
+    <View
+        android:layout_width="fill_parent"
+        android:layout_height="1dp"
+        android:id="@+id/game_score_separator_down"
+        android:background="@android:color/black"/>
 
     <TableLayout xmlns:android="http://schemas.android.com/apk/res/android"
                  android:id="@+id/tableLayout1"
                  android:layout_width="fill_parent"
                  android:layout_height="fill_parent"
-    >
+        >
 
         <TableRow
             android:id="@+id/tableRow1"
@@ -54,58 +63,62 @@
             android:layout_height="fill_parent"
             android:layout_weight="1"
             android:paddingBottom="1dp"
-        >
-            <!--android:padding="1dp"--> 
-        
- 
-            <fragment android:name="sk.palistudios.multigame.game.view.Fragment1"
-                      android:id="@+id/fragment1"
-                      android:layout_weight="1"
-                      android:layout_width="fill_parent"
-                      android:layout_height="fill_parent"
-                      class="sk.palistudios.multigame.game.view.Fragment1" />
-        
-<!--            <View  android:layout_width="1dp"
-                   android:layout_height="wrap_content"
-                   android:background="@android:color/white" 
-                   />-->
+            >
+            <!--android:padding="1dp"-->
 
-            <fragment android:name="sk.palistudios.multigame.game.view.Fragment2"
-                      android:id="@+id/fragment2"
-                      android:layout_weight="1"
-                      android:layout_width="fill_parent"
-                      android:layout_height="fill_parent" 
-                      class="sk.palistudios.multigame.game.view.Fragment2"/>
+
+            <fragment
+                android:name="sk.palistudios.multigame.game.view.Fragment1"
+                android:id="@+id/fragment1"
+                android:layout_weight="1"
+                android:layout_width="fill_parent"
+                android:layout_height="fill_parent"
+                class="sk.palistudios.multigame.game.view.Fragment1"/>
+
+            <!--            <View  android:layout_width="1dp"
+                               android:layout_height="wrap_content"
+                               android:background="@android:color/white"
+                               />-->
+
+            <fragment
+                android:name="sk.palistudios.multigame.game.view.Fragment2"
+                android:id="@+id/fragment2"
+                android:layout_weight="1"
+                android:layout_width="fill_parent"
+                android:layout_height="fill_parent"
+                class="sk.palistudios.multigame.game.view.Fragment2"/>
         </TableRow>
- 
+
         <TableRow
             android:id="@+id/tableRow2"
             android:layout_width="fill_parent"
             android:layout_height="fill_parent"
-            
-            android:layout_weight="1"    >
-<!--            android:paddingTop="0dp"
-            android:paddingLeft="1dp" 
-            android:paddingRight="1dp" 
-            android:paddingBottom="1dp" -->
- 
-            <fragment android:name="sk.palistudios.multigame.game.view.Fragment3"
-                      android:id="@+id/fragment3"
-                      android:layout_weight="1"
-                      android:layout_width="fill_parent"
-                      android:layout_height="fill_parent" 
-                      class="sk.palistudios.multigame.game.view.Fragment3"/>
-    
-<!--            <View  android:layout_width="1dp"
-                   android:layout_height="wrap_content"
-                   android:background="@android:color/white" />-->
 
-            <fragment android:name="sk.palistudios.multigame.game.view.Fragment4"
-                      android:id="@+id/fragment4"
-                      android:layout_weight="1"
-                      android:layout_width="fill_parent"
-                      android:layout_height="fill_parent"
-                      class="sk.palistudios.multigame.game.view.Fragment4" />
+            android:layout_weight="1">
+            <!--            android:paddingTop="0dp"
+                        android:paddingLeft="1dp"
+                        android:paddingRight="1dp"
+                        android:paddingBottom="1dp" -->
+
+            <fragment
+                android:name="sk.palistudios.multigame.game.view.Fragment3"
+                android:id="@+id/fragment3"
+                android:layout_weight="1"
+                android:layout_width="fill_parent"
+                android:layout_height="fill_parent"
+                class="sk.palistudios.multigame.game.view.Fragment3"/>
+
+            <!--            <View  android:layout_width="1dp"
+                               android:layout_height="wrap_content"
+                               android:background="@android:color/white" />-->
+
+            <fragment
+                android:name="sk.palistudios.multigame.game.view.Fragment4"
+                android:id="@+id/fragment4"
+                android:layout_weight="1"
+                android:layout_width="fill_parent"
+                android:layout_height="fill_parent"
+                class="sk.palistudios.multigame.game.view.Fragment4"/>
         </TableRow>
 
     </TableLayout>

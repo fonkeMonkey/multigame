@@ -1,5 +1,6 @@
 package sk.palistudios.multigame.customization_center;
 
+import sk.palistudios.multigame.mainMenu.DebugSettings;
 import sk.palistudios.multigame.tools.SoundEffectsCenter;
 import android.app.Activity;
 import android.app.TabActivity;
@@ -21,8 +22,6 @@ import sk.palistudios.multigame.customization_center.moreGames.MoreGamesCenterAc
 import sk.palistudios.multigame.customization_center.skins.SkinsCenterListActivity;
 import sk.palistudios.multigame.customization_center.music.MusicCenterListActivity;
 import sk.palistudios.multigame.customization_center.skins.SkinItem;
-import sk.palistudios.multigame.mainMenu.ApplicationInitializer;
-import sk.palistudios.multigame.mainMenu.GlobalSettings;
 
 public class CustomizationCenterActivity extends TabActivity {
     // TabSpec Names
@@ -74,7 +73,7 @@ public class CustomizationCenterActivity extends TabActivity {
         Intent achievementsIntent = new Intent(this, AchievementsCenterListActivity.class);
         achievementsTab.setContent(achievementsIntent);
 
-        if (GlobalSettings.adsActivated) {
+        if (DebugSettings.adsActivated) {
             MORE_GAMES_SPEC = (String) getResources().getString(R.string.cc_more_games_tab_name);
             TabSpec moreGamesTab = tabHost.newTabSpec(MORE_GAMES_SPEC);
             //        SoundsTab.setIndicator(SOUNDS_SPEC, getResources().getDrawable(R.drawable.icon_profile));
@@ -108,7 +107,7 @@ public class CustomizationCenterActivity extends TabActivity {
 
         }
 
-        if (GlobalSettings.adsActivated) {
+        if (DebugSettings.adsActivated) {
             getTabWidget().getChildAt(4).setOnClickListener(new OnClickListener() {
                 @Override
                 public void onClick(View v) {

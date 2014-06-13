@@ -7,20 +7,16 @@ import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.os.SystemClock;
-import android.service.textservice.SpellCheckerService.Session;
 import android.text.Html;
 import android.widget.EditText;
-import com.google.analytics.tracking.android.Log;
 import sk.palistudios.multigame.R;
 import sk.palistudios.multigame.hall_of_fame.HallOfFameActivity;
 import sk.palistudios.multigame.hall_of_fame.HofDatabaseCenter;
 import sk.palistudios.multigame.hall_of_fame.HofItem;
-import sk.palistudios.multigame.mainMenu.GlobalSettings;
+import sk.palistudios.multigame.mainMenu.DebugSettings;
 import sk.palistudios.multigame.mainMenu.MainMenuActivity;
 import sk.palistudios.multigame.tools.InternetChecker;
 import sk.palistudios.multigame.tools.SoundEffectsCenter;
-import sk.palistudios.multigame.tools.Toaster;
 
 public class GameUIWindows {
 
@@ -166,7 +162,7 @@ public class GameUIWindows {
 
     public static void showLoserDialogWindow(final GameActivity game) {
 //        final Activity mainMenu = MainMenu.getInstance();
-        if (GlobalSettings.alwaysWinner) {
+        if (DebugSettings.alwaysWinner) {
             showWinnerDialogWindow(game);
             return;
         }

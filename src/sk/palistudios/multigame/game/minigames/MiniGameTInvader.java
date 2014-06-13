@@ -8,13 +8,11 @@ import android.graphics.Paint;
 import sk.palistudios.multigame.game.GameActivity;
 import sk.palistudios.multigame.game.persistence.PaintSerializable;
 import sk.palistudios.multigame.game.persistence.PointSerializable;
+import sk.palistudios.multigame.mainMenu.DebugSettings;
 import sk.palistudios.multigame.tools.RandomGenerator;
 import java.io.Serializable;
 import java.util.ArrayList;
 import sk.palistudios.multigame.R;
-import sk.palistudios.multigame.customization_center.skins.SkinsCenterListActivity;
-import sk.palistudios.multigame.mainMenu.ApplicationInitializer;
-import sk.palistudios.multigame.mainMenu.GlobalSettings;
 
 /**
  *
@@ -224,7 +222,7 @@ public class MiniGameTInvader extends AMiniGame implements IMiniGameTouch {
 
     @Override
     public void onDifficultyIncreased() {
-        difficultyStep = (framesToCreateEnemy / 100) * GlobalSettings.globalDifficultyCoeficient;
+        difficultyStep = (framesToCreateEnemy / 100) * DebugSettings.globalDifficultyCoeficient;
 
         if (difficultyStep < 1) {
             difficultyStep = 1;

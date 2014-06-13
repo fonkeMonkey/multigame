@@ -2,10 +2,11 @@
 <resources>
     
     <!--    Game colors     -->
-    <color name="game1">#FAFAFA</color>
-    <color name="game2">#F5F5F5</color>
-    <color name="game3">#EAEAEA</color>
-    <color name="game4">#EFEFEF</color>
+    <color name="game_background_1">#FAFAFA</color>
+    <color name="game_background_2">#F5F5F5</color>
+    <color name="game_background_3">#EAEAEA</color>
+    <color name="game_background_4">#EFEFEF</color>
+
     <color name="gameMain">#D7817B</color>
     <color name="gameAlt">#263247</color>
     <color name="gameAlt2">#B4BBC8</color>
@@ -13,10 +14,18 @@
     
     <color name="kubaHeader">#468D8E</color>
     <color name="kubaChosen">#7FC0C1</color>
-    <color name="kubaMenu1">#D7817B</color>
-    <color name="kubaMenu2">#468D8E</color>
-    <color name="kubaMenu3">#7FC0C1</color>
-    <color name="kubaMenu4">#A2D9DA</color>
+
+    <color name="kuba_top_bar_bg">#7FC0C1</color>
+    <color name="kuba_top_bar_label">#468D8E</color>
+    <color name="kuba_top_bar_number">#FFFFFF</color>
+    <color name="kuba_top_bar_separator">#A2D9DA</color>
+    <color name="kuba_top_bar_separator_down">#67ACAD</color>
+
+
+    <color name="kubaMenu1">#D98179</color>
+    <color name="kubaMenu2">#7DC0C2</color>
+    <color name="kubaMenu3">#6CB1B3</color>
+    <color name="kubaMenu4">#5DA0A2</color>
         
     <color name="summerMenu1">#F1A100</color>
     <color name="summerMenu2">#FFB454</color>

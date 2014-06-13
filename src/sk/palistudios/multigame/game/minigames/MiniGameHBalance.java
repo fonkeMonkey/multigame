@@ -9,7 +9,7 @@ import sk.palistudios.multigame.R;
 import sk.palistudios.multigame.game.GameActivity;
 import sk.palistudios.multigame.game.persistence.PaintSerializable;
 import sk.palistudios.multigame.game.persistence.PointSerializable;
-import sk.palistudios.multigame.mainMenu.GlobalSettings;
+import sk.palistudios.multigame.mainMenu.DebugSettings;
 import sk.palistudios.multigame.tools.RandomGenerator;
 
 /**
@@ -170,7 +170,7 @@ public class MiniGameHBalance extends AMiniGame implements IMiniGameHorizontal {
     public void onDifficultyIncreased() {
         barWidth = pointBarRightEdge.mPoint.x - pointBarLeftEdge.mPoint.x;
 
-        difficultyStep = ((pointBarRightEdge.mPoint.x - pointBarLeftEdge.mPoint.x) / 100) * (GlobalSettings.globalDifficultyCoeficient / 2);//because I trim from both sides
+        difficultyStep = ((pointBarRightEdge.mPoint.x - pointBarLeftEdge.mPoint.x) / 100) * (DebugSettings.globalDifficultyCoeficient / 2);//because I trim from both sides
 
         if (difficultyStep < 1) {
             difficultyStep = 1;

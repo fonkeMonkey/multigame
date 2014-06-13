@@ -1,16 +1,11 @@
 package sk.palistudios.multigame.hall_of_fame;
 
 import sk.palistudios.multigame.tools.SoundEffectsCenter;
-import android.app.ListActivity;
 import android.app.ProgressDialog;
-import android.content.SharedPreferences;
 import android.media.AudioManager;
 import android.os.Bundle;
-import android.os.Handler;
 import android.view.Gravity;
-import android.view.ViewGroup.LayoutParams;
 import android.widget.ArrayAdapter;
-import android.widget.LinearLayout;
 import android.widget.TextView;
 import com.google.analytics.tracking.android.EasyTracker;
 import java.util.ArrayList;
@@ -18,7 +13,6 @@ import sk.palistudios.multigame.BaseListActivity;
 import sk.palistudios.multigame.R;
 import sk.palistudios.multigame.customization_center.skins.SkinsCenterListActivity;
 import sk.palistudios.multigame.game.persistence.GameSharedPref;
-import sk.palistudios.multigame.mainMenu.GlobalSettings;
 
 /**
  *
@@ -41,7 +35,7 @@ public class HallOfFameActivity extends BaseListActivity {
 
         setVolumeControlStream(AudioManager.STREAM_MUSIC);
 
-//        if(!GameSharedPref.isAchievementFulfilled("pro") && GlobalSettings.adsActivated){
+//        if(!GameSharedPref.isAchievementFulfilled("pro") && DebugSettings.adsActivated){
         setContentView(R.layout.list_layout);
 //        }else{
 //            setContentView(R.layout.list_layout_adfree);

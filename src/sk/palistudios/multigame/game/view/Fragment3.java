@@ -3,14 +3,10 @@ package sk.palistudios.multigame.game.view;
 import sk.palistudios.multigame.game.minigames.AMiniGame;
 import android.app.Activity;
 import android.os.Bundle;
-import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
-import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import sk.palistudios.multigame.R;
-import sk.palistudios.multigame.customization_center.skins.SkinsCenterListActivity;
-import sk.palistudios.multigame.game.GameActivity;
 import sk.palistudios.multigame.game.GameMinigamesManager;
 
 /**
@@ -36,7 +32,7 @@ public class Fragment3 extends AFragment {
 //
         AMiniGame minigame = GameMinigamesManager.getMinigamesObjects()[2];
 //
-        mView = new FragmentViewTouch(activity, getResources().getColor(R.color.game3), minigame, position);
+        mView = new FragmentViewTouch(activity, getResources().getColor(R.color.game_background_3), minigame, position);
 //
         return mView;
 //

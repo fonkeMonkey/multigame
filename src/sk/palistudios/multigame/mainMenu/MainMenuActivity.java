@@ -1,28 +1,25 @@
 package sk.palistudios.multigame.mainMenu;
 
 // @author Pali
-import android.app.Activity;
-import android.content.Context;
+
 import android.content.Intent;
+import android.graphics.PorterDuff.Mode;
 import android.media.AudioManager;
 import android.os.Bundle;
-import android.os.Debug;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
-//import com.appflood.AppFlood;
 import com.facebook.Session;
 import com.google.analytics.tracking.android.EasyTracker;
 import sk.palistudios.multigame.BaseActivity;
 import sk.palistudios.multigame.R;
 import sk.palistudios.multigame.customization_center.skins.SkinItem;
 import sk.palistudios.multigame.customization_center.skins.SkinsCenterListActivity;
+import sk.palistudios.multigame.game.GameActivity;
+import sk.palistudios.multigame.game.GameUIWindows;
 import sk.palistudios.multigame.game.persistence.GameSharedPref;
 import sk.palistudios.multigame.tools.SoundEffectsCenter;
-import sk.palistudios.multigame.game.*;
 import sk.palistudios.multigame.tools.Toaster;
-import android.graphics.PorterDuff.Mode;
 
 public class MainMenuActivity extends BaseActivity {
 
@@ -33,8 +30,6 @@ public class MainMenuActivity extends BaseActivity {
     private Button buttonCc;
     private Button buttonHof;
     private Button buttonPreferences;
-//    private Button buttonAbout;
-//    private Button buttonPreferences;
     private ImageView logo;
     private static MainMenuActivity sMainMenuInstance;
     public static boolean isThereADialogToShow = false;
@@ -42,23 +37,17 @@ public class MainMenuActivity extends BaseActivity {
     public static MainMenuActivity getInstance() {
         return sMainMenuInstance;
     }
+
     private static boolean mFacebookShared = false;
-//    public static boolean volumeSet = false;
 
     @Override
     public void onCreate(Bundle icicle) {
         super.onCreate(icicle);
-//        Debug.startMethodTracing("mg_1st");
         overridePendingTransition(R.anim.fadein, R.anim.fadeout);
         setContentView(R.layout.main_menu);
-//        if (!volumeSet) {
         setVolumeControlStream(AudioManager.STREAM_MUSIC);
-//            SoundEffectsCenter.setVolumeBasedOnRingVolume(this);
-//            volumeSet = true;
-//        }
 
         sMainMenuInstance = this;
-
 
         GameSharedPref.initSharedPref(this);
         ApplicationInitializer.initApplication(this);
@@ -70,16 +59,11 @@ public class MainMenuActivity extends BaseActivity {
         buttonHof = (Button) findViewById(R.id.mainMenu_button_HOF);
         buttonPreferences = (Button) findViewById(R.id.mainMenu_button_preferences);
 
-//        GameFacebookShare.shareScoreToFacebook(this);
-
     }
 
     @Override
     protected void onRestart() {
         super.onRestart();
-//        if (!volumeSet) {
-//            SoundEffectsCenter.setVolumeBasedOnRingVolume(this);
-//        }
     }
 
     @Override
@@ -97,36 +81,34 @@ public class MainMenuActivity extends BaseActivity {
 //            color4 = getResources().getColor(R.color.kubaMenu4);
         logo.setImageResource(SkinsCenterListActivity.getCurrentSkin(this).getLogoID());
 //        logo.setImageResource(R.drawable.logo);
-//        buttonStart.setBackgroundColor(currentSkin.getColor1());
-//        buttonCc.setBackgroundColor(currentSkin.getColor2());
-//        buttonPreferences.setBackgroundColor(currentSkin.getColor3());
-//        buttonHof.setBackgroundColor(currentSkin.getColor4());
+//        buttonStart.setBackgroundColor(currentSkin.getBarBgColor());
+//        buttonCc.setBackgroundColor(currentSkin.getBarLabelColor());
+//        buttonPreferences.setBackgroundColor(currentSkin.getBarTextColor());
+//        buttonHof.setBackgroundColor(currentSkin.getBarSeparatorColor());
 
 //        buttonStart.setBackground(getResources().getDrawable(R.drawable.button_background_ul));
 //        buttonCc.setBackground(getResources().getDrawable(R.drawable.button_background_ur));
 //        buttonPreferences.setBackground(getResources().getDrawable(R.drawable.button_background_ll));
 //        buttonHof.setBackground(getResources().getDrawable(R.drawable.button_background_lr));
-//        buttonAbout.setBackgroundColor(currentSkin.getColor4());
+//        buttonAbout.setBackgroundColor(currentSkin.getBarSeparatorColor());
 
         /* TODO zasa hacky lebo sa mi to nechce redezignova*/
         if (GameSharedPref.isSkinChosen("kuba")) {
-            buttonStart.getBackground().setColorFilter(currentSkin.getColor1(), Mode.SRC);
-            buttonCc.getBackground().setColorFilter(currentSkin.getColor2(), Mode.SRC);
-            buttonPreferences.getBackground().setColorFilter(currentSkin.getColor3(), Mode.SRC);
-            buttonHof.getBackground().setColorFilter(currentSkin.getColor4(), Mode.SRC);
+            buttonStart.getBackground().setColorFilter(getResources().getColor(R.color.kubaMenu1), Mode.SRC);
+            buttonCc.getBackground().setColorFilter(getResources().getColor(R.color.kubaMenu2), Mode.SRC);
+            buttonPreferences.getBackground().setColorFilter(getResources().getColor(R.color.kubaMenu3), Mode.SRC);
+            buttonHof.getBackground().setColorFilter(getResources().getColor(R.color.kubaMenu4), Mode.SRC);
 
-        } else if (GameSharedPref.isSkinChosen("summer"))
-        {
-            buttonStart.getBackground().setColorFilter(currentSkin.getColor1(), Mode.SRC);
-            buttonCc.getBackground().setColorFilter(currentSkin.getColor4(), Mode.SRC);
-            buttonPreferences.getBackground().setColorFilter(currentSkin.getColor2(), Mode.SRC);
-            buttonHof.getBackground().setColorFilter(currentSkin.getColor3(), Mode.SRC);
-        }
-        else{
-            buttonStart.getBackground().setColorFilter(currentSkin.getColor1(), Mode.SRC);
-            buttonCc.getBackground().setColorFilter(currentSkin.getColor2(), Mode.SRC);
-            buttonPreferences.getBackground().setColorFilter(currentSkin.getColor4(), Mode.SRC);
-            buttonHof.getBackground().setColorFilter(currentSkin.getColor3(), Mode.SRC);
+        } else if (GameSharedPref.isSkinChosen("summer")) {
+            buttonStart.getBackground().setColorFilter(currentSkin.getBarBgColor(), Mode.SRC);
+            buttonCc.getBackground().setColorFilter(currentSkin.getBarSeparatorColor(), Mode.SRC);
+            buttonPreferences.getBackground().setColorFilter(currentSkin.getBarLabelColor(), Mode.SRC);
+            buttonHof.getBackground().setColorFilter(currentSkin.getBarTextColor(), Mode.SRC);
+        } else {
+            buttonStart.getBackground().setColorFilter(currentSkin.getBarBgColor(), Mode.SRC);
+            buttonCc.getBackground().setColorFilter(currentSkin.getBarLabelColor(), Mode.SRC);
+            buttonPreferences.getBackground().setColorFilter(currentSkin.getBarSeparatorColor(), Mode.SRC);
+            buttonHof.getBackground().setColorFilter(currentSkin.getBarTextColor(), Mode.SRC);
         }
 
         if (mShowHighScoreStatus) {
@@ -147,7 +129,6 @@ public class MainMenuActivity extends BaseActivity {
         mFacebookShared = false;
 
         GameActivity.sTutorialRestart = false;
-//        Debug.stopMethodTracing();
     }
 
     @Override
@@ -159,11 +140,7 @@ public class MainMenuActivity extends BaseActivity {
 
     public void startGame(View view) {
         SoundEffectsCenter.playForwardSound(MainMenuActivity.this);
-//        Bundle bundle = new Bundle();
         Intent intent = new Intent(this, sk.palistudios.multigame.game.GameActivity.class);
-
-//        bundle.putParcelable("MainMenu", this);
-//        intent.putExtras(bundle);
         startActivity(intent);
     }
 
@@ -179,26 +156,16 @@ public class MainMenuActivity extends BaseActivity {
         startActivity(intent);
     }
 
-//    public void quitGame(View view) {
-//        this.finish();
-//    }
     public void showPreferences(View view) {
         SoundEffectsCenter.playForwardSound(MainMenuActivity.this);
         Intent intent = new Intent(this, sk.palistudios.multigame.preferences.PreferencesActivity.class);
         startActivity(intent);
     }
 
-//    public void switchNoviceMode(View view) {
-//        GameSharedPref.switchNoviceMode();
-//        setStartGameButtonName();
-//    }
-//    public void openAC() {
-//    }
+
     @Override
     public void onBackPressed() {
         super.onBackPressed();
-//        onExit();
-//        this.finish();
     }
 
     private void setStartGameButtonName() {
@@ -221,10 +188,7 @@ public class MainMenuActivity extends BaseActivity {
 
     }
 
-//    private void onExit() {
-////        PremiumUpgrader.finish();
-//        GameSharedPref.setAdShownAlready(false);
-//    }
+
     @Override
     public void onStart() {
         super.onStart();
@@ -243,15 +207,6 @@ public class MainMenuActivity extends BaseActivity {
 
         SoundEffectsCenter.releaseMediaPlayer();
         sMainMenuInstance = null;
-////        if (GlobalSettings.adsActivated) {
-//////            AppFlood.destroy();
-////        }
-//        Log.e("destroying main menu", "destroying main menu");
-////        Session session = Session.getActiveSession();
-////        if (session != null) {
-////            session.closeAndClearTokenInformation();
-//        }
-//    }
     }
 
     @Override

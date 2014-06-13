@@ -3,19 +3,15 @@ package sk.palistudios.multigame.game.minigames;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
-import android.graphics.Color;
 import android.graphics.Paint;
-import android.view.SurfaceView;
-import sk.palistudios.multigame.game.view.FragmentViewTouch;
+
 import java.util.ArrayList;
 import sk.palistudios.multigame.game.GameActivity;
 import sk.palistudios.multigame.game.persistence.PaintSerializable;
 import sk.palistudios.multigame.tools.RandomGenerator;
 import java.io.Serializable;
 import sk.palistudios.multigame.R;
-import sk.palistudios.multigame.customization_center.skins.SkinsCenterListActivity;
-import sk.palistudios.multigame.mainMenu.ApplicationInitializer;
-import sk.palistudios.multigame.mainMenu.GlobalSettings;
+import sk.palistudios.multigame.mainMenu.DebugSettings;
 
 /**
  *
@@ -142,7 +138,7 @@ public class MiniGameTCatcher extends AMiniGame implements IMiniGameTouch {
 
     @Override
     public void onDifficultyIncreased() {
-        difficultyStep = (framesToGenerateNewBall / 100) * GlobalSettings.globalDifficultyCoeficient;
+        difficultyStep = (framesToGenerateNewBall / 100) * DebugSettings.globalDifficultyCoeficient;
 
         if (difficultyStep < 1) {
             difficultyStep = 1;

@@ -1,12 +1,10 @@
 package sk.palistudios.multigame.customization_center.mgc;
 
-import android.app.ListActivity;
 import android.media.AudioManager;
 import android.os.Bundle;
 import android.view.Gravity;
 import android.view.View;
 import android.widget.AdapterView;
-import android.widget.ListView;
 import android.widget.TextView;
 import com.google.analytics.tracking.android.EasyTracker;
 import java.util.ArrayList;
@@ -15,7 +13,6 @@ import sk.palistudios.multigame.R;
 import sk.palistudios.multigame.customization_center.CustomizationCenterActivity;
 import sk.palistudios.multigame.customization_center.skins.SkinsCenterListActivity;
 import sk.palistudios.multigame.game.persistence.GameSharedPref;
-import sk.palistudios.multigame.mainMenu.GlobalSettings;
 import sk.palistudios.multigame.tools.SoundEffectsCenter;
 import sk.palistudios.multigame.tools.Toaster;
 
@@ -43,7 +40,7 @@ public class MinigamesCenterListActivity extends BaseListActivity {
 //        fillAdapter();
         initAdapter();
 
-//        if(!GameSharedPref.isAchievementFulfilled("pro") && GlobalSettings.adsActivated){
+//        if(!GameSharedPref.isAchievementFulfilled("pro") && DebugSettings.adsActivated){
         setContentView(R.layout.list_layout);
 //        }else{
 //            setContentView(R.layout.list_layout_adfree);

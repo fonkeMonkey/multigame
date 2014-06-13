@@ -2,14 +2,14 @@
 <LinearLayout
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
-    android:orientation="vertical"
+    android:orientation="horizontal"
     android:weightSum="9"
     xmlns:android="http://schemas.android.com/apk/res/android">
     
     <LinearLayout
         android:id="@+id/widget38"
-        android:layout_width="fill_parent"
-        android:layout_height="0dp"
+        android:layout_width="0dp"
+        android:layout_height="fill_parent"
         android:layout_weight="5"
         android:orientation="vertical"
         android:gravity="center"
@@ -19,7 +19,7 @@
             android:contentDescription="Logo"
             android:layout_width="100dp"
             android:layout_height="100dp"
-            android:src="@drawable/logo_summer"/>
+            android:src="@drawable/logo"/>
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -32,8 +32,8 @@
     </LinearLayout>
  
     <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
         android:layout_weight="4"
         android:weightSum="4"
         android:orientation="vertical"
@@ -47,7 +47,8 @@
             android:textColor="#FFFFFF"
             android:onClick="startGame"
             android:layout_weight="1" 
-            android:textSize="@dimen/main_menutext_size"
+            android:textSize="@dimen/main_menutext_size_bigger"
+            android:textStyle="bold"
 />
             <!--android:background="@drawable/button_background_ul"-->
                 
@@ -59,7 +60,8 @@
             android:textSize="@dimen/main_menutext_size"
             android:textColor="#FFFFFF"
             android:onClick="showMGC"
-            android:layout_weight="1" 
+            android:layout_weight="1"
+            android:textStyle="bold"
 />
             <!--android:background="@drawable/button_background_ur"-->
             
@@ -71,7 +73,8 @@
             android:text="@string/button_preferences"
             android:textColor="#FFFFFF"
             android:onClick="showPreferences"
-            android:layout_weight="1" 
+            android:layout_weight="1"
+            android:textStyle="bold"
 />
             <!--android:background="@drawable/button_background_ll"-->
             
@@ -83,7 +86,8 @@
             android:text="@string/button_hall_of_fame"
             android:textColor="#FFFFFF"
             android:onClick="showHallOfFame"
-            android:layout_weight="1" 
+            android:layout_weight="1"
+            android:textStyle="bold"
 />
             <!--android:background="@drawable/button_background_lr"-->
 

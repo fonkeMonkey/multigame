@@ -1,6 +1,5 @@
 package sk.palistudios.multigame.customization_center.music;
 
-import android.app.ListActivity;
 import android.media.AudioManager;
 import android.os.Bundle;
 import android.view.Gravity;
@@ -14,7 +13,7 @@ import sk.palistudios.multigame.BaseListActivity;
 import sk.palistudios.multigame.customization_center.CustomizationCenterActivity;
 import sk.palistudios.multigame.customization_center.skins.SkinsCenterListActivity;
 import sk.palistudios.multigame.game.persistence.GameSharedPref;
-import sk.palistudios.multigame.mainMenu.GlobalSettings;
+import sk.palistudios.multigame.mainMenu.DebugSettings;
 import sk.palistudios.multigame.tools.SoundEffectsCenter;
 import sk.palistudios.multigame.tools.Toaster;
 
@@ -31,7 +30,7 @@ public class MusicCenterListActivity extends BaseListActivity {
         super.onCreate(icicle);
         setVolumeControlStream(AudioManager.STREAM_MUSIC);
 
-        if (!GameSharedPref.isAchievementFulfilled("pro") && GlobalSettings.adsActivated) {
+        if (!GameSharedPref.isAchievementFulfilled("pro") && DebugSettings.adsActivated) {
             setContentView(R.layout.list_layout);
         } else {
             setContentView(R.layout.list_layout_adfree);

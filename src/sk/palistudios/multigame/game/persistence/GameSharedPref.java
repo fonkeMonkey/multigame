@@ -1,13 +1,13 @@
 package sk.palistudios.multigame.game.persistence;
 
 // @author Pali
+
 import android.app.Activity;
 import android.content.SharedPreferences;
-import sk.palistudios.multigame.game.GameActivity;
-import sk.palistudios.multigame.tools.Toaster;
 
 public class GameSharedPref {
 
+    private static final String KUBA_SKIN_SET_ALREADY = "kuba_skin_set_already";
     private static SharedPreferences sharedPref;
     private static SharedPreferences.Editor editor;
     private static boolean runAlready = false;
@@ -23,7 +23,7 @@ public class GameSharedPref {
 
     }
 
-//    private static void debug() {
+    //    private static void debug() {
 //        setGameSaved(false);
 //        runAlready = true;
 //        editor.putBoolean("isMinigame1Active", true);
@@ -64,7 +64,7 @@ public class GameSharedPref {
         return result;
     }
 
-//    public static boolean setGameMode(String gameMode) {
+    //    public static boolean setGameMode(String gameMode) {
 //        boolean isNoviceModeActive = sharedPref.getBoolean("noviceModeActive", true);
 //
 //        if (isNoviceModeActive) {
@@ -175,7 +175,7 @@ public class GameSharedPref {
         editor.putBoolean("VBird_locked", false);
         editor.putBoolean("TGatherer_locked", false);
         editor.putBoolean("TCatcher_locked", false);
-        editor.putBoolean("summer_locked", false);
+//        editor.putBoolean("summer_locked", false);
         editor.putBoolean("kuba_locked", false);
         editor.putBoolean("dst_blam_locked", false);
 
@@ -184,6 +184,11 @@ public class GameSharedPref {
 
     public static boolean isItemLocked(String computerName) {
         return sharedPref.getBoolean(computerName + "_locked", true);
+    }
+
+    public static void lockItem(String itemName) {
+        editor.putBoolean(itemName + "_locked", true);
+        editor.commit();
     }
 
     public static void unlockItem(String itemName) {
@@ -312,6 +317,7 @@ public class GameSharedPref {
         editor.putBoolean("db_initialized", b);
         editor.commit();
     }
+
     public boolean isGameSaved;
 
     public static boolean isMinigamesInitialized() {
@@ -348,7 +354,6 @@ public class GameSharedPref {
             minigameKey.setLength(0);
 
 
-
             minigameKey.append("AllMinigames").append(rank).append("Type");
             editor.putString(minigameKey.toString(), String.valueOf(minigame.charAt(0)));
             minigameKey.setLength(0);
@@ -360,7 +365,7 @@ public class GameSharedPref {
         editor.commit();
     }
 
-//    public static void initializeMusicInfo(String[] allMusicLoopsPCNames, String[] allMusicLoopsHumanNames) {
+    //    public static void initializeMusicInfo(String[] allMusicLoopsPCNames, String[] allMusicLoopsHumanNames) {
 //        editor.putInt("AllMusicLoopsCount", allMusicLoopsPCNames.length);
 //        StringBuilder minigameKey = new StringBuilder();
 //        int rank = 1;
@@ -410,7 +415,7 @@ public class GameSharedPref {
         return allMinigamesTypes;
     }
 
-//    public static String[] getAllMusicLoopsPCNames() {
+    //    public static String[] getAllMusicLoopsPCNames() {
 //        int numberOfMusicFiles = sharedPref.getInt("AllMusicLoopsCount", -1);
 //        String[] allMusicNames = new String[numberOfMusicFiles];
 //
@@ -446,6 +451,15 @@ public class GameSharedPref {
 
     public static void StatsGamesPlayedIncrease() {
         editor.putInt("st_games_played", getStatsGamesPlayed() + 1);
+        editor.commit();
+    }
+
+    public static boolean getKubaSkinSetAlready() {
+        return sharedPref.getBoolean(KUBA_SKIN_SET_ALREADY, false);
+    }
+
+    public static void setKubaSkinSetAlready() {
+        editor.putBoolean(KUBA_SKIN_SET_ALREADY, true);
         editor.commit();
     }
 }
