@@ -8,11 +8,29 @@
         <item name="android:typeface">monospace</item>
     </style>
 
-    <style name="Multigame_style" parent="@android:style/Theme.Light.NoTitleBar.Fullscreen">
+    <style name="Multigame" parent="@android:style/Theme.Light.NoTitleBar.Fullscreen">
+        <item name="sdlDialogStyle">@style/DialogStyleLight.Custom</item>
     </style>
 
-    <style name="Multigame_style_no_sound" parent="@android:style/Theme.Light.NoTitleBar.Fullscreen">
+    <style name="Multigame_style" parent="Multigame">
+    </style>
+
+    <style name="Multigame_style_no_sound" parent="Multigame">
         <item name="android:soundEffectsEnabled">false</item>
+
+    </style>
+
+    <style name="DialogStyleLight.Custom">
+        <!-- anything can be left out: -->
+        <item name="titleTextColor">@color/dialog_title_text</item>
+        <item name="titleSeparatorColor">@color/dialog_title_separator</item>
+        <item name="messageTextColor">@color/dialog_message_text</item>
+        <item name="buttonTextColor">@color/dialog_button_text</item>
+        <item name="buttonSeparatorColor">@color/dialog_button_separator</item>
+        <item name="buttonBackgroundColorNormal">@color/dialog_button_normal</item>
+        <item name="buttonBackgroundColorPressed">@color/dialog_button_pressed</item>
+        <item name="buttonBackgroundColorFocused">@color/dialog_button_focused</item>
+        <item name="dialogBackground">@color/dialog_background</item>
     </style>
 
     <style name="Theme.Splash" parent="android:Theme.Holo.Light">

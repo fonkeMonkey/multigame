@@ -19,7 +19,7 @@
     />
 
     <uses-sdk
-        android:targetSdkVersion="15"
+        android:targetSdkVersion="19"
         android:minSdkVersion="7"/>
 
     <application

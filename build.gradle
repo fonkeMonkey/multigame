@@ -1,3 +1,5 @@
+apply plugin: 'android'
+
 buildscript {
     repositories {
         mavenCentral()
@@ -8,12 +10,19 @@ buildscript {
     }
 }
 
-apply plugin: 'android'
+
+
+repositories {
+    mavenCentral()
+}
 
 
 dependencies {
-   compile files('libs/android-support-v4.jar')
-   compile files('libs/libGoogleAnalyticsServices.jar')
+    compile 'com.android.support:support-v4:13.0.0+'
+    compile 'eu.inmite.android.lib:android-styled-dialogs:1.1.2@aar'
+//	compile files('libs/android-support-v4.jar')
+//	compile files('libs/android-styled-dialogs-1.1.2-javadoc.jar')
+    compile files('libs/libGoogleAnalyticsServices.jar')
 }
 
 android {
