@@ -93,7 +93,7 @@ public class RequestAsyncTask extends AsyncTask<Void, Void, List<Response>> {
      * desired responses.
      *
      * @param connection the HTTP connection to use to execute the requests
-     * @param requests the requests to execute
+     * @param requests   the requests to execute
      */
     public RequestAsyncTask(HttpURLConnection connection, Request... requests) {
         this(connection, new RequestBatch(requests));
@@ -107,7 +107,7 @@ public class RequestAsyncTask extends AsyncTask<Void, Void, List<Response>> {
      * desired responses.
      *
      * @param connection the HTTP connection to use to execute the requests
-     * @param requests the requests to execute
+     * @param requests   the requests to execute
      */
     public RequestAsyncTask(HttpURLConnection connection, Collection<Request> requests) {
         this(connection, new RequestBatch(requests));
@@ -121,7 +121,7 @@ public class RequestAsyncTask extends AsyncTask<Void, Void, List<Response>> {
      * desired responses.
      *
      * @param connection the HTTP connection to use to execute the requests
-     * @param requests the requests to execute
+     * @param requests   the requests to execute
      */
     public RequestAsyncTask(HttpURLConnection connection, RequestBatch requests) {
         this.requests = requests;

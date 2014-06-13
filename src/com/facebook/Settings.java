@@ -25,16 +25,19 @@ import android.os.Handler;
 import android.os.Looper;
 import android.util.Log;
 import com.facebook.internal.Utility;
-import com.facebook.model.GraphObject;
 import com.facebook.internal.Validate;
+import com.facebook.model.GraphObject;
 import org.json.JSONException;
 import org.json.JSONObject;
+import sk.palistudios.multigame.BuildConfig;
 
 import java.lang.reflect.Field;
-import java.util.*;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.HashSet;
+import java.util.Set;
 import java.util.concurrent.*;
 import java.util.concurrent.atomic.AtomicInteger;
-import sk.palistudios.multigame.BuildConfig;
 
 /**
  * Allows some customization of sdk behavior.
@@ -44,9 +47,6 @@ public final class Settings {
     private static final String TAG = Settings.class.getCanonicalName();
     private static final HashSet<LoggingBehavior> loggingBehaviors =
             new HashSet<LoggingBehavior>(Arrays.asList(LoggingBehavior.DEVELOPER_ERRORS));
-    private static volatile Executor executor;
-    private static volatile boolean shouldAutoPublishInstall;
-    private static volatile String appVersion;
     private static final String FACEBOOK_COM = "facebook.com";
     private static volatile String facebookDomain = FACEBOOK_COM;
     private static final int DEFAULT_CORE_POOL_SIZE = 5;
@@ -70,11 +70,14 @@ public final class Settings {
             return new Thread(runnable, "FacebookSdk #" + counter.incrementAndGet());
         }
     };
+    private static volatile Executor executor;
+    private static volatile boolean shouldAutoPublishInstall;
+    private static volatile String appVersion;
 
     /**
      * Certain logging behaviors are available for debugging beyond those that
      * should be enabled in production.
-     *
+     * <p/>
      * Returns the types of extended logging that are currently enabled.
      *
      * @return a set containing enabled logging behaviors
@@ -88,7 +91,7 @@ public final class Settings {
     /**
      * Certain logging behaviors are available for debugging beyond those that
      * should be enabled in production.
-     *
+     * <p/>
      * Enables a particular extended logging in the sdk.
      *
      * @param behavior The LoggingBehavior to enable
@@ -102,7 +105,7 @@ public final class Settings {
     /**
      * Certain logging behaviors are available for debugging beyond those that
      * should be enabled in production.
-     *
+     * <p/>
      * Disables a particular extended logging behavior in the sdk.
      *
      * @param behavior The LoggingBehavior to disable
@@ -116,7 +119,7 @@ public final class Settings {
     /**
      * Certain logging behaviors are available for debugging beyond those that
      * should be enabled in production.
-     *
+     * <p/>
      * Disables all extended logging behaviors.
      */
     public static final void clearLoggingBehaviors() {
@@ -128,7 +131,7 @@ public final class Settings {
     /**
      * Certain logging behaviors are available for debugging beyond those that
      * should be enabled in production.
-     *
+     * <p/>
      * Checks if a particular extended logging behavior is enabled.
      *
      * @param behavior The LoggingBehavior to check
@@ -142,7 +145,7 @@ public final class Settings {
 
     /**
      * Returns the Executor used by the SDK for non-AsyncTask background work.
-     *
+     * <p/>
      * By default this uses AsyncTask Executor via reflection if the API level
      * is high enough. Otherwise this creates a new Executor with defaults
      * similar to those used in AsyncTask.
@@ -232,11 +235,11 @@ public final class Settings {
      * handles tracking repeat calls to prevent multiple installs being
      * published to the graph.
      *
-     * @param context the current Context
+     * @param context       the current Context
      * @param applicationId the fb application being published.
-     *
-     * This method is deprecated. See
-     * {@link AppEventsLogger#activateApp(Context, String)} for more info.
+     *                      <p/>
+     *                      This method is deprecated. See
+     *                      {@link AppEventsLogger#activateApp(Context, String)} for more info.
      */
     @Deprecated
     public static void publishInstallAsync(final Context context, final String applicationId) {
@@ -248,17 +251,17 @@ public final class Settings {
      * handles tracking repeat calls to prevent multiple installs being
      * published to the graph.
      *
-     * @param context the current Context
+     * @param context       the current Context
      * @param applicationId the fb application being published.
-     * @param callback a callback to invoke with a Response object, carrying the
-     * server response, or an error.
-     *
-     * This method is deprecated. See
-     * {@link AppEventsLogger#activateApp(Context, String)} for more info.
+     * @param callback      a callback to invoke with a Response object, carrying the
+     *                      server response, or an error.
+     *                      <p/>
+     *                      This method is deprecated. See
+     *                      {@link AppEventsLogger#activateApp(Context, String)} for more info.
      */
     @Deprecated
     public static void publishInstallAsync(final Context context, final String applicationId,
-            final Request.Callback callback) {
+                                           final Request.Callback callback) {
         // grab the application context ahead of time, since we will return to the caller immediately.
         final Context applicationContext = context.getApplicationContext();
         Settings.getExecutor().execute(new Runnable() {
@@ -280,26 +283,11 @@ public final class Settings {
     }
 
     /**
-     * Sets whether opening a Session should automatically publish install
-     * attribution to the Facebook graph.
-     *
-     * @param shouldAutoPublishInstall true to automatically publish, false to
-     * not
-     *
-     * This method is deprecated. See
-     * {@link AppEventsLogger#activateApp(Context, String)} for more info.
-     */
-    @Deprecated
-    public static void setShouldAutoPublishInstall(boolean shouldAutoPublishInstall) {
-        Settings.shouldAutoPublishInstall = shouldAutoPublishInstall;
-    }
-
-    /**
      * Gets whether opening a Session should automatically publish install
      * attribution to the Facebook graph.
      *
      * @return true to automatically publish, false to not
-     *
+     * <p/>
      * This method is deprecated. See
      * {@link AppEventsLogger#activateApp(Context, String)} for more info.
      */
@@ -309,15 +297,30 @@ public final class Settings {
     }
 
     /**
+     * Sets whether opening a Session should automatically publish install
+     * attribution to the Facebook graph.
+     *
+     * @param shouldAutoPublishInstall true to automatically publish, false to
+     *                                 not
+     *                                 <p/>
+     *                                 This method is deprecated. See
+     *                                 {@link AppEventsLogger#activateApp(Context, String)} for more info.
+     */
+    @Deprecated
+    public static void setShouldAutoPublishInstall(boolean shouldAutoPublishInstall) {
+        Settings.shouldAutoPublishInstall = shouldAutoPublishInstall;
+    }
+
+    /**
      * Manually publish install attribution to the Facebook graph. Internally
      * handles tracking repeat calls to prevent multiple installs being
      * published to the graph.
      *
-     * @param context the current Context
+     * @param context       the current Context
      * @param applicationId the fb application being published.
      * @return returns false on error. Applications should retry until true is
      * returned. Safe to call again after true is returned.
-     *
+     * <p/>
      * This method is deprecated. See
      * {@link AppEventsLogger#activateApp(Context, String)} for more info.
      */
@@ -332,11 +335,11 @@ public final class Settings {
      * handles caching repeat calls to prevent multiple installs being published
      * to the graph.
      *
-     * @param context the current Context
+     * @param context       the current Context
      * @param applicationId the fb application being published.
      * @return returns a Response object, carrying the server response, or an
      * error.
-     *
+     * <p/>
      * This method is deprecated. See
      * {@link AppEventsLogger#activateApp(Context, String)} for more info.
      */
@@ -456,8 +459,8 @@ public final class Settings {
      * version, and App Insights allows breakdown of events by app version.
      *
      * @param appVersion The version identifier of the Android app that events
-     * are being logged through. Enables analysis and breakdown of logged events
-     * by app version.
+     *                   are being logged through. Enables analysis and breakdown of logged events
+     *                   by app version.
      */
     public static void setAppVersion(String appVersion) {
         Settings.appVersion = appVersion;

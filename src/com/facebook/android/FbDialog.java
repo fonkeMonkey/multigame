@@ -17,7 +17,9 @@ package com.facebook.android;
 
 import android.content.Context;
 import android.os.Bundle;
-import com.facebook.*;
+import com.facebook.FacebookDialogException;
+import com.facebook.FacebookException;
+import com.facebook.FacebookOperationCanceledException;
 import com.facebook.android.Facebook.DialogListener;
 import com.facebook.widget.WebDialog;
 
@@ -44,7 +46,7 @@ public class FbDialog extends WebDialog {
     }
 
     public FbDialog(Context context, String action, Bundle parameters, DialogListener listener,
-            int theme) {
+                    int theme) {
         super(context, action, parameters, theme, null);
         setDialogListener(listener);
     }

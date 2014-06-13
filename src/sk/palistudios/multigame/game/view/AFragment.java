@@ -1,12 +1,12 @@
 package sk.palistudios.multigame.game.view;
 
 // @author Pali
+
 import android.hardware.Sensor;
 import android.support.v4.app.Fragment;
 import sk.palistudios.multigame.game.minigames.AMiniGame;
 
 /**
- *
  * @author Pali
  */
 public abstract class AFragment extends Fragment {

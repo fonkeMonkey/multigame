@@ -1,6 +1,7 @@
 package sk.palistudios.multigame.tools;
 
 // @author Pali
+
 import java.util.Random;
 
 public class RandomGenerator {

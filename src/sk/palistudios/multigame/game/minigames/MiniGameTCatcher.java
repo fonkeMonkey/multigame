@@ -4,17 +4,16 @@ import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.Paint;
-
-import java.util.ArrayList;
+import sk.palistudios.multigame.R;
 import sk.palistudios.multigame.game.GameActivity;
 import sk.palistudios.multigame.game.persistence.PaintSerializable;
-import sk.palistudios.multigame.tools.RandomGenerator;
-import java.io.Serializable;
-import sk.palistudios.multigame.R;
 import sk.palistudios.multigame.mainMenu.DebugSettings;
+import sk.palistudios.multigame.tools.RandomGenerator;
+
+import java.io.Serializable;
+import java.util.ArrayList;
 
 /**
- *
  * @author Pali
  */
 public class MiniGameTCatcher extends AMiniGame implements IMiniGameTouch {
@@ -22,6 +21,19 @@ public class MiniGameTCatcher extends AMiniGame implements IMiniGameTouch {
     int numberOfColumns = 7;
     int[] mCatchingBalls = new int[numberOfColumns];
     ArrayList<FallingBall> mFallingBalls = new ArrayList<FallingBall>();
+    PaintSerializable mPaintFallingBalls = null;
+    PaintSerializable mPaintCatchingBallInactive = null;
+    PaintSerializable mPaintCatchingBallActive = null;
+    float fallingStep;
+    private int activeBall = 4;
+    private int mBallSize;
+    private int catchingBallsHeight;
+    private int columnWidth;
+    private int fallingHeight;
+    private int maxDifficulty;
+    private int difficultyStep;
+    private int framesToGenerateNewBall = 160;
+    private int framesToGo = 30;
 
     public MiniGameTCatcher(String fileName, Integer position, GameActivity game) {
         super(fileName, position, game);
@@ -33,17 +45,6 @@ public class MiniGameTCatcher extends AMiniGame implements IMiniGameTouch {
         moveObjects();
 
     }
-    PaintSerializable mPaintFallingBalls = null;
-    PaintSerializable mPaintCatchingBallInactive = null;
-    PaintSerializable mPaintCatchingBallActive = null;
-    private int activeBall = 4;
-    private int mBallSize;
-    private int catchingBallsHeight;
-    private int columnWidth;
-    float fallingStep;
-    private int fallingHeight;
-    private int maxDifficulty;
-    private int difficultyStep;
 
     public void initMinigame(Bitmap mBitmap, boolean wasGameSaved) {
 
@@ -68,8 +69,6 @@ public class MiniGameTCatcher extends AMiniGame implements IMiniGameTouch {
         countCatchingBallsPosition();
         isMinigameInitialized = true;
     }
-    private int framesToGenerateNewBall = 160;
-    private int framesToGo = 30;
 
     private void generateFallingBalls() {
         if (framesToGo == 0) {
@@ -161,6 +160,16 @@ public class MiniGameTCatcher extends AMiniGame implements IMiniGameTouch {
 
     }
 
+    @Override
+    public void setForTutorial() {
+        framesToGenerateNewBall = (int) (framesToGenerateNewBall * 1.4);
+    }
+
+    @Override
+    public void setForClassicGame() {
+        framesToGenerateNewBall = (int) (framesToGenerateNewBall * 1.2);
+    }
+
     private class FallingBall implements Serializable {
 
         int xAxis;
@@ -196,15 +205,5 @@ public class MiniGameTCatcher extends AMiniGame implements IMiniGameTouch {
             return false;
 
         }
-    }
-
-    @Override
-    public void setForTutorial() {
-        framesToGenerateNewBall = (int) (framesToGenerateNewBall * 1.4);
-    }
-
-    @Override
-    public void setForClassicGame() {
-        framesToGenerateNewBall = (int) (framesToGenerateNewBall * 1.2);
     }
 }

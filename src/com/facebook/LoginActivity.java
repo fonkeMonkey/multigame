@@ -40,13 +40,19 @@ public class LoginActivity extends Activity {
     private static final String TAG = LoginActivity.class.getName();
     private static final String NULL_CALLING_PKG_ERROR_MSG =
             "Cannot call LoginActivity with a null calling package. "
-            + "This can occur if the launchMode of the caller is singleInstance.";
+                    + "This can occur if the launchMode of the caller is singleInstance.";
     private static final String SAVED_CALLING_PKG_KEY = "callingPackage";
     private static final String SAVED_AUTH_CLIENT = "authorizationClient";
     private static final String EXTRA_REQUEST = "request";
     private String callingPackage;
     private AuthorizationClient authorizationClient;
     private AuthorizationClient.AuthorizationRequest request;
+
+    static Bundle populateIntentExtras(AuthorizationClient.AuthorizationRequest request) {
+        Bundle extras = new Bundle();
+        extras.putSerializable(EXTRA_REQUEST, request);
+        return extras;
+    }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -133,11 +139,5 @@ public class LoginActivity extends Activity {
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         authorizationClient.onActivityResult(requestCode, resultCode, data);
-    }
-
-    static Bundle populateIntentExtras(AuthorizationClient.AuthorizationRequest request) {
-        Bundle extras = new Bundle();
-        extras.putSerializable(EXTRA_REQUEST, request);
-        return extras;
     }
 }

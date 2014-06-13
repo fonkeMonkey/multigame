@@ -5,17 +5,13 @@
 package sk.palistudios.multigame;
 
 import android.app.Activity;
-import android.content.Context;
-import android.media.AudioManager;
-import android.os.Bundle;
 import sk.palistudios.multigame.tools.SoundEffectsCenter;
 
 /**
- *
  * @author virdzek
  */
 public abstract class BaseActivity extends Activity {
-    
+
 
     @Override
     protected void onResume() {
@@ -29,5 +25,5 @@ public abstract class BaseActivity extends Activity {
         SoundEffectsCenter.muteSystemSounds(this, false);
     }
 
-    
+
 }

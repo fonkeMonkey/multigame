@@ -28,8 +28,8 @@ import android.widget.FrameLayout;
 import android.widget.ImageView;
 import com.facebook.FacebookException;
 import com.facebook.LoggingBehavior;
-import sk.palistudios.multigame.R;
 import com.facebook.internal.*;
+import sk.palistudios.multigame.R;
 
 import java.net.URISyntaxException;
 
@@ -39,20 +39,6 @@ import java.net.URISyntaxException;
  */
 public class ProfilePictureView extends FrameLayout {
 
-    /**
-     * Callback interface that will be called when a network or other error is
-     * encountered while retrieving profile pictures.
-     */
-    public interface OnErrorListener {
-
-        /**
-         * Called when a network or other error is encountered.
-         *
-         * @param error a FacebookException representing the error that was
-         * encountered.
-         */
-        void onError(FacebookException error);
-    }
     /**
      * Tag used when logging calls are made by ProfilePictureView
      */
@@ -65,6 +51,7 @@ public class ProfilePictureView extends FrameLayout {
      * attribute that can be set on ProfilePictureView.
      */
     public static final int CUSTOM = -1;
+    private int presetSizeType = CUSTOM;
     /**
      * Indicates that the profile image should fit in a SMALL X SMALL space,
      * regardless of whether the cropped or un-cropped version is chosen. Used
@@ -88,6 +75,7 @@ public class ProfilePictureView extends FrameLayout {
     public static final int LARGE = -4;
     private static final int MIN_SIZE = 1;
     private static final boolean IS_CROPPED_DEFAULT_VALUE = true;
+    private boolean isCropped = IS_CROPPED_DEFAULT_VALUE;
     private static final String SUPER_STATE_KEY = "ProfilePictureView_superState";
     private static final String PROFILE_ID_KEY = "ProfilePictureView_profileId";
     private static final String PRESET_SIZE_KEY = "ProfilePictureView_presetSize";
@@ -99,14 +87,11 @@ public class ProfilePictureView extends FrameLayout {
     private String profileId;
     private int queryHeight = ImageRequest.UNSPECIFIED_DIMENSION;
     private int queryWidth = ImageRequest.UNSPECIFIED_DIMENSION;
-    private boolean isCropped = IS_CROPPED_DEFAULT_VALUE;
     private Bitmap imageContents;
     private ImageView image;
-    private int presetSizeType = CUSTOM;
     private ImageRequest lastRequest;
     private OnErrorListener onErrorListener;
     private Bitmap customizedDefaultProfilePicture = null;
-
     /**
      * Constructor
      *
@@ -121,8 +106,8 @@ public class ProfilePictureView extends FrameLayout {
      * Constructor
      *
      * @param context Context for this View
-     * @param attrs AttributeSet for this View. The attribute 'preset_size' is
-     * processed here
+     * @param attrs   AttributeSet for this View. The attribute 'preset_size' is
+     *                processed here
      */
     public ProfilePictureView(Context context, AttributeSet attrs) {
         super(context, attrs);
@@ -133,9 +118,9 @@ public class ProfilePictureView extends FrameLayout {
     /**
      * Constructor
      *
-     * @param context Context for this View
-     * @param attrs AttributeSet for this View. The attribute 'preset_size' is
-     * processed here
+     * @param context  Context for this View
+     * @param attrs    AttributeSet for this View. The attribute 'preset_size' is
+     *                 processed here
      * @param defStyle Default style for this View
      */
     public ProfilePictureView(Context context, AttributeSet attrs, int defStyle) {
@@ -188,7 +173,7 @@ public class ProfilePictureView extends FrameLayout {
      * Sets the profile photo to be the cropped version, or the original version
      *
      * @param showCroppedVersion True to select the cropped version False to
-     * select the standard version
+     *                           select the standard version
      */
     public final void setCropped(boolean showCroppedVersion) {
         isCropped = showCroppedVersion;
@@ -209,7 +194,7 @@ public class ProfilePictureView extends FrameLayout {
      * Sets the profile Id for this profile photo
      *
      * @param profileId The profileId NULL/Empty String will show the blank
-     * profile photo
+     *                  profile photo
      */
     public final void setProfileId(String profileId) {
         boolean force = false;
@@ -249,7 +234,7 @@ public class ProfilePictureView extends FrameLayout {
      * available.
      *
      * @param inputBitmap The bitmap to render until the actual profile is
-     * loaded.
+     *                    loaded.
      */
     public final void setDefaultProfilePicture(Bitmap inputBitmap) {
         customizedDefaultProfilePicture = inputBitmap;
@@ -436,12 +421,12 @@ public class ProfilePictureView extends FrameLayout {
             ImageRequest request = requestBuilder.setAllowCachedRedirects(allowCachedResponse)
                     .setCallerTag(this)
                     .setCallback(
-                    new ImageRequest.Callback() {
-                        @Override
-                        public void onCompleted(ImageResponse response) {
-                            processResponse(response);
-                        }
-                    })
+                            new ImageRequest.Callback() {
+                                @Override
+                                public void onCompleted(ImageResponse response) {
+                                    processResponse(response);
+                                }
+                            })
                     .build();
 
             // Make sure to cancel the old request before sending the new one to prevent
@@ -538,5 +523,20 @@ public class ProfilePictureView extends FrameLayout {
         }
 
         return getResources().getDimensionPixelSize(dimensionId);
+    }
+
+    /**
+     * Callback interface that will be called when a network or other error is
+     * encountered while retrieving profile pictures.
+     */
+    public interface OnErrorListener {
+
+        /**
+         * Called when a network or other error is encountered.
+         *
+         * @param error a FacebookException representing the error that was
+         *              encountered.
+         */
+        void onError(FacebookException error);
     }
 }

@@ -1,18 +1,15 @@
 package sk.palistudios.multigame.preferences;
 
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
 import android.content.Context;
 import android.content.pm.PackageManager.NameNotFoundException;
 import android.preference.DialogPreference;
 import android.util.AttributeSet;
 import android.view.View;
 import android.widget.TextView;
+import sk.palistudios.multigame.R;
+
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import sk.palistudios.multigame.R;
 
 public class AboutDialog extends DialogPreference {
 

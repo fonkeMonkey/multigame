@@ -1,6 +1,7 @@
 package sk.palistudios.multigame.hall_of_fame;
 
 // @author Pali
+
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
@@ -8,22 +9,23 @@ import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.util.Log;
+import sk.palistudios.multigame.game.GameActivity;
+
 import java.util.ArrayList;
 import java.util.Collections;
-import sk.palistudios.multigame.game.GameActivity;
 
 public class HofDatabaseCenter extends SQLiteOpenHelper {
 
-    private static HofDatabaseCenter hofDb = null;
-    private SQLiteDatabase database;
     private static final int DATABASE_VERSION = 3;
     private static final String TABLE_NAME = "HallOfFame";
-    private static final String DATABASE_NAME = "HallOfFame";
     private static final String DICTIONARY_TABLE_CREATE =
             "CREATE TABLE " + TABLE_NAME
-            + "(ID INTEGER primary key autoincrement, "
-            + "NAME TEXT NOT NULL, "
-            + "SCORE INTEGER NOT NULL " + ");";
+                    + "(ID INTEGER primary key autoincrement, "
+                    + "NAME TEXT NOT NULL, "
+                    + "SCORE INTEGER NOT NULL " + ");";
+    private static final String DATABASE_NAME = "HallOfFame";
+    private static HofDatabaseCenter hofDb = null;
+    private SQLiteDatabase database;
 
     public HofDatabaseCenter(Context context) {
         super(context, "HallOfFame", null, DATABASE_VERSION);
@@ -37,11 +39,8 @@ public class HofDatabaseCenter extends SQLiteOpenHelper {
 //        if(database.g)
 //    }
 
-    class Row extends Object {
-
-        public long ID;
-        public String name;
-        public int score;
+    public static HofDatabaseCenter getHofDb() {
+        return hofDb;
     }
 
     @Override
@@ -88,7 +87,7 @@ public class HofDatabaseCenter extends SQLiteOpenHelper {
 
             Cursor c =
                     database.query(TABLE_NAME, new String[]{
-                        "ID", "name", "score"}, null, null, null, null, "score");
+                            "ID", "name", "score"}, null, null, null, null, "score");
 
             int numRows = c.getCount();
             c.moveToFirst();
@@ -227,7 +226,10 @@ public class HofDatabaseCenter extends SQLiteOpenHelper {
         return newList;
     }
 
-    public static HofDatabaseCenter getHofDb() {
-        return hofDb;
+    class Row extends Object {
+
+        public long ID;
+        public String name;
+        public int score;
     }
 }

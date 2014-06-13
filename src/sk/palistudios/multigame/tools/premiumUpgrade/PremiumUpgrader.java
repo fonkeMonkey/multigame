@@ -1,93 +1,19 @@
 package sk.palistudios.multigame.tools.premiumUpgrade;
 
 // @author Pali
+
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.view.View;
-import sk.palistudios.multigame.tools.*;
+import sk.palistudios.multigame.tools.Toaster;
 
 public class PremiumUpgrader {
 
     static final String SKU_PREMIUM = "premium";
+    static final int RC_REQUEST = 10001;
     static IabHelper mHelper;
     static boolean mIsPremium = false;
-    static final int RC_REQUEST = 10001;
-    private static Activity mAct = null;
-
-    public static void upgrade(final Activity act) {
-        String string3 = "GD3OkFInTRfMUHBvZOgNAX/dEqX5Zb3iLSkPqXSkeVXDtzOaDEw9SiwYWOtFay/ZZbcfhna3YucSF1v79TW6TvV22AhbkeM/2fUTlwf1zB9KX23/42tg++/PJuBxEBWNbiuCog";
-        String string1 = "MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAzO8s+2c6t6D2k/Od";
-        String string2 = "L3LxwfYGrKN+OcOq1pYUnqaQHQesYuxRxC+AvIF32g3s5Oxl51TGQc93CqH3yJjB";
-        String string4 = "csKFHQqhMXDt4H/5ibuXpyz0CntrUHwHcaC2JsCqJrK8o5PoOb08wM4yeoBxI8LLrF9zS03OCtAVy8n6Nw+hI0syCbGJlbbCYcEU0wk8466oPhRca4vyyK95pWk2+mwwIDAQAB";
-
-        String base64EncodedPublicKey = string1 + string2 + string3 + string4;
-
-        mAct = act;
-
-        mHelper = new IabHelper(act, base64EncodedPublicKey);
-        mHelper.enableDebugLogging(true);//2DO M change na false pri publishovaní
-
-        mHelper.startSetup(new IabHelper.OnIabSetupFinishedListener() {
-            public void onIabSetupFinished(IabResult result) {
-//                Log.d(TAG, "Setup finished.");
-
-                if (!result.isSuccess()) {
-                    // Oh noes, there was a problem.
-//                    complain("Problem setting up in-app billing: " + result);
-                    return;
-                }
-
-                // Hooray, IAB is fully set up. Now, let's get an inventory of stuff we own.
-//                Log.d(TAG, "Setup successful. Querying inventory.");
-                mHelper.queryInventoryAsync(mGotInventoryListener);
-            }
-        });
-
-
-    }
-    private static IabHelper.QueryInventoryFinishedListener mGotInventoryListener = new IabHelper.QueryInventoryFinishedListener() {
-        public void onQueryInventoryFinished(IabResult result, Inventory inventory) {
-//            Log.d(TAG, "Query inventory finished.");
-            if (result.isFailure()) {
-                Toaster.toastLong("Failed to query inventory: " + result, mAct);
-                return;
-            }
-
-//            Log.d(TAG, "Query inventory was successful.");
-
-            /*
-             * Check for items we own. Notice that for each purchase, we check
-             * the developer payload to see if it's correct! See
-             * verifyDeveloperPayload().
-             */
-
-            // Do we have the premium upgrade?
-            Purchase premiumPurchase = inventory.getPurchase(SKU_PREMIUM);
-            mIsPremium = (premiumPurchase != null);
-//                        && verifyDeveloperPayload(premiumPurchase));
-//            Log.d(TAG, "User is " + (mIsPremium ? "PREMIUM" : "NOT PREMIUM"));
-
-
-            updateUi();
-            setWaitScreen(false);
-//            Log.d(TAG, "Initial inventory query finished; enabling main UI.");
-        }
-    };
-
-    // User clicked the "Upgrade to Premium" button.
-    public static void onUpgradeAppButtonClicked(View arg0) {
-//        Log.d(TAG, "Upgrade button clicked; launching purchase flow for upgrade.");
-        setWaitScreen(true);
-
-        /* TODO: for security, generate your payload here for verification. See the comments on 
-         *        verifyDeveloperPayload() for more info. Since this is a SAMPLE, we just use 
-         *        an empty string, but on a production app you should carefully generate this. */
-        String payload = "";
-
-        mHelper.launchPurchaseFlow(mAct, SKU_PREMIUM, RC_REQUEST,
-                mPurchaseFinishedListener, payload);
-    }
-//    @Override
+    //    @Override
 //    protected static void onActivityResult(int requestCode, int resultCode, Intent data) {
 ////        Log.d(TAG, "onActivityResult(" + requestCode + "," + resultCode + "," + data);
 //
@@ -129,6 +55,81 @@ public class PremiumUpgrader {
 
         }
     };
+    private static Activity mAct = null;
+    private static IabHelper.QueryInventoryFinishedListener mGotInventoryListener = new IabHelper.QueryInventoryFinishedListener() {
+        public void onQueryInventoryFinished(IabResult result, Inventory inventory) {
+//            Log.d(TAG, "Query inventory finished.");
+            if (result.isFailure()) {
+                Toaster.toastLong("Failed to query inventory: " + result, mAct);
+                return;
+            }
+
+//            Log.d(TAG, "Query inventory was successful.");
+
+            /*
+             * Check for items we own. Notice that for each purchase, we check
+             * the developer payload to see if it's correct! See
+             * verifyDeveloperPayload().
+             */
+
+            // Do we have the premium upgrade?
+            Purchase premiumPurchase = inventory.getPurchase(SKU_PREMIUM);
+            mIsPremium = (premiumPurchase != null);
+//                        && verifyDeveloperPayload(premiumPurchase));
+//            Log.d(TAG, "User is " + (mIsPremium ? "PREMIUM" : "NOT PREMIUM"));
+
+
+            updateUi();
+            setWaitScreen(false);
+//            Log.d(TAG, "Initial inventory query finished; enabling main UI.");
+        }
+    };
+
+    public static void upgrade(final Activity act) {
+        String string3 = "GD3OkFInTRfMUHBvZOgNAX/dEqX5Zb3iLSkPqXSkeVXDtzOaDEw9SiwYWOtFay/ZZbcfhna3YucSF1v79TW6TvV22AhbkeM/2fUTlwf1zB9KX23/42tg++/PJuBxEBWNbiuCog";
+        String string1 = "MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAzO8s+2c6t6D2k/Od";
+        String string2 = "L3LxwfYGrKN+OcOq1pYUnqaQHQesYuxRxC+AvIF32g3s5Oxl51TGQc93CqH3yJjB";
+        String string4 = "csKFHQqhMXDt4H/5ibuXpyz0CntrUHwHcaC2JsCqJrK8o5PoOb08wM4yeoBxI8LLrF9zS03OCtAVy8n6Nw+hI0syCbGJlbbCYcEU0wk8466oPhRca4vyyK95pWk2+mwwIDAQAB";
+
+        String base64EncodedPublicKey = string1 + string2 + string3 + string4;
+
+        mAct = act;
+
+        mHelper = new IabHelper(act, base64EncodedPublicKey);
+        mHelper.enableDebugLogging(true);//2DO M change na false pri publishovaní
+
+        mHelper.startSetup(new IabHelper.OnIabSetupFinishedListener() {
+            public void onIabSetupFinished(IabResult result) {
+//                Log.d(TAG, "Setup finished.");
+
+                if (!result.isSuccess()) {
+                    // Oh noes, there was a problem.
+//                    complain("Problem setting up in-app billing: " + result);
+                    return;
+                }
+
+                // Hooray, IAB is fully set up. Now, let's get an inventory of stuff we own.
+//                Log.d(TAG, "Setup successful. Querying inventory.");
+                mHelper.queryInventoryAsync(mGotInventoryListener);
+            }
+        });
+
+
+    }
+
+    // User clicked the "Upgrade to Premium" button.
+    public static void onUpgradeAppButtonClicked(View arg0) {
+//        Log.d(TAG, "Upgrade button clicked; launching purchase flow for upgrade.");
+        setWaitScreen(true);
+
+        /* TODO: for security, generate your payload here for verification. See the comments on
+         *        verifyDeveloperPayload() for more info. Since this is a SAMPLE, we just use
+         *        an empty string, but on a production app you should carefully generate this. */
+        String payload = "";
+
+        mHelper.launchPurchaseFlow(mAct, SKU_PREMIUM, RC_REQUEST,
+                mPurchaseFinishedListener, payload);
+    }
 //    // Called when consumption is complete
 //    static IabHelper.OnConsumeFinishedListener mConsumeFinishedListener = new IabHelper.OnConsumeFinishedListener() {
 //        public void onConsumeFinished(Purchase purchase, IabResult result) {

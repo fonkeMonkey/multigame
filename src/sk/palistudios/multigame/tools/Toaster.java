@@ -1,9 +1,11 @@
 package sk.palistudios.multigame.tools;
 
 // @author Pali
+
 import android.app.Activity;
 import android.content.Context;
 import android.widget.Toast;
+
 import java.util.ArrayList;
 
 public class Toaster {
@@ -32,7 +34,7 @@ public class Toaster {
 //        mToasts.add(toast);
     }
 
-//    public static void cancelAllToasts(){
+    //    public static void cancelAllToasts(){
 //        for (Toast toast : mToasts) {
 //            toast.cancel();
 //        }

@@ -23,11 +23,17 @@ import android.os.Bundle;
 import android.os.Parcel;
 import android.os.Parcelable;
 import android.support.v4.app.Fragment;
-import com.facebook.*;
+import com.facebook.FacebookException;
+import com.facebook.FacebookGraphObjectException;
+import com.facebook.NativeAppCallAttachmentStore;
+import com.facebook.NativeAppCallContentProvider;
 import com.facebook.internal.NativeProtocol;
 import com.facebook.internal.Utility;
 import com.facebook.internal.Validate;
-import com.facebook.model.*;
+import com.facebook.model.GraphObject;
+import com.facebook.model.GraphObjectList;
+import com.facebook.model.OpenGraphAction;
+import com.facebook.model.OpenGraphObject;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -49,38 +55,173 @@ public class FacebookDialog {
     private static final String EXTRA_DIALOG_COMPLETION_ID_KEY = "com.facebook.platform.extra.POST_ID";
     private static final int MIN_NATIVE_SHARE_PROTOCOL_VERSION = NativeProtocol.PROTOCOL_VERSION_20130618;
     private static NativeAppCallAttachmentStore attachmentStore;
+    private Activity activity;
+    private Fragment fragment;
+    private PendingCall appCall;
+    private OnPresentCallback onPresentCallback;
 
-    /**
-     * Defines a callback interface that will be called when the user completes
-     * interacting with a Facebook dialog, or if an error occurs.
-     */
-    public interface Callback {
-
-        /**
-         * Called when the user completes interacting with a Facebook dialog.
-         *
-         * @param pendingCall a PendingCall containing the call ID and original
-         * Intent used to launch the dialog
-         * @param data a Bundle containing the results of the dialog, whose
-         * contents will vary depending on the type of dialog being displayed.
-         */
-        void onComplete(PendingCall pendingCall, Bundle data);
-
-        /**
-         * Called if an error occurred while presenting a Facebook dialog.
-         *
-         * @param pendingCall a PendingCall containing the call ID and original
-         * Intent used to launch the dialog
-         * @param error the error that occurred
-         * @param data the full set of extras associated with the activity
-         * result
-         */
-        void onError(PendingCall pendingCall, Exception error, Bundle data);
+    private FacebookDialog(Activity activity, Fragment fragment, PendingCall appCall, OnPresentCallback onPresentCallback) {
+        this.activity = activity;
+        this.fragment = fragment;
+        this.appCall = appCall;
+        this.onPresentCallback = onPresentCallback;
     }
 
-    private interface DialogFeature {
+    /**
+     * Determines whether the native dialog completed normally (without error or
+     * exception).
+     *
+     * @param result the bundle passed back to onActivityResult
+     * @return true if the native dialog completed normally
+     */
+    public static boolean getNativeDialogDidComplete(Bundle result) {
+        return result.getBoolean(EXTRA_DIALOG_COMPLETE_KEY, false);
+    }
 
-        int getMinVersion();
+    /**
+     * Returns the gesture with which the user completed the native dialog. This
+     * is only returned if the user has previously authorized the calling app
+     * with basic permissions.
+     *
+     * @param result the bundle passed back to onActivityResult
+     * @return "post" or "cancel" as the completion gesture
+     */
+    public static String getNativeDialogCompletionGesture(Bundle result) {
+        return result.getString(EXTRA_DIALOG_COMPLETION_GESTURE_KEY);
+    }
+
+    /**
+     * Returns the id of the published post. This is only returned if the user
+     * has previously given the app publish permissions.
+     *
+     * @param result the bundle passed back to onActivityResult
+     * @return the id of the published post
+     */
+    public static String getNativeDialogPostId(Bundle result) {
+        return result.getString(EXTRA_DIALOG_COMPLETION_ID_KEY);
+    }
+
+    /**
+     * Parses the results of a dialog activity and calls the appropriate method
+     * on the provided Callback.
+     *
+     * @param context     the Context that is handling the activity result
+     * @param appCall     an PendingCall containing the call ID and original Intent
+     *                    used to launch the dialog
+     * @param requestCode the request code for the activity result
+     * @param data        the result Intent
+     * @param callback    a callback to call after parsing the results
+     * @return true if the activity result was handled, false if not
+     */
+    public static boolean handleActivityResult(Context context, PendingCall appCall, int requestCode, Intent data,
+                                               Callback callback) {
+        if (requestCode != appCall.getRequestCode()) {
+            return false;
+        }
+
+        if (attachmentStore != null) {
+            attachmentStore.cleanupAttachmentsForCall(context, appCall.getCallId());
+        }
+
+        if (callback != null) {
+            if (NativeProtocol.isErrorResult(data)) {
+                Exception error = NativeProtocol.getErrorFromResult(data);
+                callback.onError(appCall, error, data.getExtras());
+            } else {
+                callback.onComplete(appCall, data.getExtras());
+            }
+        }
+
+        return true;
+    }
+
+    /**
+     * Determines whether the version of the Facebook application installed on
+     * the user's device is recent enough to support specific features of the
+     * native Share dialog, which in turn may be used to determine which UI,
+     * etc., to present to the user.
+     *
+     * @param context  the calling Context
+     * @param features zero or more features to check for;
+     *                 {@link ShareDialogFeature#SHARE_DIALOG} is implicitly checked if not
+     *                 explicitly specified
+     * @return true if all of the specified features are supported by the
+     * currently installed version of the Facebook application; false if any of
+     * the features are not supported
+     */
+    public static boolean canPresentShareDialog(Context context, ShareDialogFeature... features) {
+        return handleCanPresent(context, EnumSet.of(ShareDialogFeature.SHARE_DIALOG, features));
+    }
+
+    /**
+     * Determines whether the version of the Facebook application installed on
+     * the user's device is recent enough to support specific features of the
+     * native Open Graph action dialog, which in turn may be used to determine
+     * which UI, etc., to present to the user.
+     *
+     * @param context  the calling Context
+     * @param features zero or more features to check for;
+     *                 {@link OpenGraphActionDialogFeature#OG_ACTION_DIALOG} is implicitly
+     *                 checked if not explicitly specified
+     * @return true if all of the specified features are supported by the
+     * currently installed version of the Facebook application; false if any of
+     * the features are not supported
+     */
+    public static boolean canPresentOpenGraphActionDialog(Context context, OpenGraphActionDialogFeature... features) {
+        return handleCanPresent(context, EnumSet.of(OpenGraphActionDialogFeature.OG_ACTION_DIALOG, features));
+    }
+
+    private static boolean handleCanPresent(Context context, Iterable<? extends DialogFeature> features) {
+        return getProtocolVersionForNativeDialog(context, getMinVersionForFeatures(features))
+                != NativeProtocol.NO_PROTOCOL_AVAILABLE;
+    }
+
+    private static int getProtocolVersionForNativeDialog(Context context, Integer requiredVersion) {
+        return NativeProtocol.getLatestAvailableProtocolVersion(context, requiredVersion);
+    }
+
+    private static NativeAppCallAttachmentStore getAttachmentStore() {
+        if (attachmentStore == null) {
+            attachmentStore = new NativeAppCallAttachmentStore();
+        }
+        return attachmentStore;
+    }
+
+    private static int getMinVersionForFeatures(Iterable<? extends DialogFeature> features) {
+        int minVersion = Integer.MIN_VALUE;
+        for (DialogFeature feature : features) {
+            // Minimum version to support all features is the maximum of each feature's minimum version.
+            minVersion = Math.max(minVersion, feature.getMinVersion());
+        }
+        return minVersion;
+    }
+
+    /**
+     * Launches an activity in the Facebook application to present the desired
+     * dialog. This method returns a PendingCall that contains a unique ID
+     * associated with this call to the Facebook application. In general, a
+     * calling Activity should use UiLifecycleHelper to handle incoming activity
+     * results, in order to ensure proper processing of the results from this
+     * dialog.
+     *
+     * @return a PendingCall containing the unique call ID corresponding to this
+     * call to the Facebook application
+     */
+    public PendingCall present() {
+        if (onPresentCallback != null) {
+            try {
+                onPresentCallback.onPresent(activity);
+            } catch (Exception e) {
+                throw new FacebookException(e);
+            }
+        }
+
+        if (fragment != null) {
+            fragment.startActivityForResult(appCall.getRequestIntent(), appCall.getRequestCode());
+        } else {
+            activity.startActivityForResult(appCall.getRequestIntent(), appCall.getRequestCode());
+        }
+        return appCall;
     }
 
     /**
@@ -143,178 +284,42 @@ public class FacebookDialog {
         }
     }
 
+    /**
+     * Defines a callback interface that will be called when the user completes
+     * interacting with a Facebook dialog, or if an error occurs.
+     */
+    public interface Callback {
+
+        /**
+         * Called when the user completes interacting with a Facebook dialog.
+         *
+         * @param pendingCall a PendingCall containing the call ID and original
+         *                    Intent used to launch the dialog
+         * @param data        a Bundle containing the results of the dialog, whose
+         *                    contents will vary depending on the type of dialog being displayed.
+         */
+        void onComplete(PendingCall pendingCall, Bundle data);
+
+        /**
+         * Called if an error occurred while presenting a Facebook dialog.
+         *
+         * @param pendingCall a PendingCall containing the call ID and original
+         *                    Intent used to launch the dialog
+         * @param error       the error that occurred
+         * @param data        the full set of extras associated with the activity
+         *                    result
+         */
+        void onError(PendingCall pendingCall, Exception error, Bundle data);
+    }
+
+    private interface DialogFeature {
+
+        int getMinVersion();
+    }
+
     interface OnPresentCallback {
 
         void onPresent(Context context) throws Exception;
-    }
-
-    /**
-     * Determines whether the native dialog completed normally (without error or
-     * exception).
-     *
-     * @param result the bundle passed back to onActivityResult
-     * @return true if the native dialog completed normally
-     */
-    public static boolean getNativeDialogDidComplete(Bundle result) {
-        return result.getBoolean(EXTRA_DIALOG_COMPLETE_KEY, false);
-    }
-
-    /**
-     * Returns the gesture with which the user completed the native dialog. This
-     * is only returned if the user has previously authorized the calling app
-     * with basic permissions.
-     *
-     * @param result the bundle passed back to onActivityResult
-     * @return "post" or "cancel" as the completion gesture
-     */
-    public static String getNativeDialogCompletionGesture(Bundle result) {
-        return result.getString(EXTRA_DIALOG_COMPLETION_GESTURE_KEY);
-    }
-
-    /**
-     * Returns the id of the published post. This is only returned if the user
-     * has previously given the app publish permissions.
-     *
-     * @param result the bundle passed back to onActivityResult
-     * @return the id of the published post
-     */
-    public static String getNativeDialogPostId(Bundle result) {
-        return result.getString(EXTRA_DIALOG_COMPLETION_ID_KEY);
-    }
-    private Activity activity;
-    private Fragment fragment;
-    private PendingCall appCall;
-    private OnPresentCallback onPresentCallback;
-
-    private FacebookDialog(Activity activity, Fragment fragment, PendingCall appCall, OnPresentCallback onPresentCallback) {
-        this.activity = activity;
-        this.fragment = fragment;
-        this.appCall = appCall;
-        this.onPresentCallback = onPresentCallback;
-    }
-
-    /**
-     * Launches an activity in the Facebook application to present the desired
-     * dialog. This method returns a PendingCall that contains a unique ID
-     * associated with this call to the Facebook application. In general, a
-     * calling Activity should use UiLifecycleHelper to handle incoming activity
-     * results, in order to ensure proper processing of the results from this
-     * dialog.
-     *
-     * @return a PendingCall containing the unique call ID corresponding to this
-     * call to the Facebook application
-     */
-    public PendingCall present() {
-        if (onPresentCallback != null) {
-            try {
-                onPresentCallback.onPresent(activity);
-            } catch (Exception e) {
-                throw new FacebookException(e);
-            }
-        }
-
-        if (fragment != null) {
-            fragment.startActivityForResult(appCall.getRequestIntent(), appCall.getRequestCode());
-        } else {
-            activity.startActivityForResult(appCall.getRequestIntent(), appCall.getRequestCode());
-        }
-        return appCall;
-    }
-
-    /**
-     * Parses the results of a dialog activity and calls the appropriate method
-     * on the provided Callback.
-     *
-     * @param context the Context that is handling the activity result
-     * @param appCall an PendingCall containing the call ID and original Intent
-     * used to launch the dialog
-     * @param requestCode the request code for the activity result
-     * @param data the result Intent
-     * @param callback a callback to call after parsing the results
-     *
-     * @return true if the activity result was handled, false if not
-     */
-    public static boolean handleActivityResult(Context context, PendingCall appCall, int requestCode, Intent data,
-            Callback callback) {
-        if (requestCode != appCall.getRequestCode()) {
-            return false;
-        }
-
-        if (attachmentStore != null) {
-            attachmentStore.cleanupAttachmentsForCall(context, appCall.getCallId());
-        }
-
-        if (callback != null) {
-            if (NativeProtocol.isErrorResult(data)) {
-                Exception error = NativeProtocol.getErrorFromResult(data);
-                callback.onError(appCall, error, data.getExtras());
-            } else {
-                callback.onComplete(appCall, data.getExtras());
-            }
-        }
-
-        return true;
-    }
-
-    /**
-     * Determines whether the version of the Facebook application installed on
-     * the user's device is recent enough to support specific features of the
-     * native Share dialog, which in turn may be used to determine which UI,
-     * etc., to present to the user.
-     *
-     * @param context the calling Context
-     * @param features zero or more features to check for;
-     * {@link ShareDialogFeature#SHARE_DIALOG} is implicitly checked if not
-     * explicitly specified
-     * @return true if all of the specified features are supported by the
-     * currently installed version of the Facebook application; false if any of
-     * the features are not supported
-     */
-    public static boolean canPresentShareDialog(Context context, ShareDialogFeature... features) {
-        return handleCanPresent(context, EnumSet.of(ShareDialogFeature.SHARE_DIALOG, features));
-    }
-
-    /**
-     * Determines whether the version of the Facebook application installed on
-     * the user's device is recent enough to support specific features of the
-     * native Open Graph action dialog, which in turn may be used to determine
-     * which UI, etc., to present to the user.
-     *
-     * @param context the calling Context
-     * @param features zero or more features to check for;
-     * {@link OpenGraphActionDialogFeature#OG_ACTION_DIALOG} is implicitly
-     * checked if not explicitly specified
-     * @return true if all of the specified features are supported by the
-     * currently installed version of the Facebook application; false if any of
-     * the features are not supported
-     */
-    public static boolean canPresentOpenGraphActionDialog(Context context, OpenGraphActionDialogFeature... features) {
-        return handleCanPresent(context, EnumSet.of(OpenGraphActionDialogFeature.OG_ACTION_DIALOG, features));
-    }
-
-    private static boolean handleCanPresent(Context context, Iterable<? extends DialogFeature> features) {
-        return getProtocolVersionForNativeDialog(context, getMinVersionForFeatures(features))
-                != NativeProtocol.NO_PROTOCOL_AVAILABLE;
-    }
-
-    private static int getProtocolVersionForNativeDialog(Context context, Integer requiredVersion) {
-        return NativeProtocol.getLatestAvailableProtocolVersion(context, requiredVersion);
-    }
-
-    private static NativeAppCallAttachmentStore getAttachmentStore() {
-        if (attachmentStore == null) {
-            attachmentStore = new NativeAppCallAttachmentStore();
-        }
-        return attachmentStore;
-    }
-
-    private static int getMinVersionForFeatures(Iterable<? extends DialogFeature> features) {
-        int minVersion = Integer.MIN_VALUE;
-        for (DialogFeature feature : features) {
-            // Minimum version to support all features is the maximum of each feature's minimum version.
-            minVersion = Math.max(minVersion, feature.getMinVersion());
-        }
-        return minVersion;
     }
 
     private abstract static class Builder<CONCRETE extends Builder<?>> {
@@ -457,7 +462,7 @@ public class FacebookDialog {
          * Constructor.
          *
          * @param activity the Activity which is presenting the native Share
-         * dialog; must not be null
+         *                 dialog; must not be null
          */
         public ShareDialogBuilder(Activity activity) {
             super(activity);
@@ -533,7 +538,7 @@ public class FacebookDialog {
          * Sets the tagged friends for the item to be shared.
          *
          * @param friends a list of Facebook IDs of the friends to be tagged in
-         * the shared item
+         *                the shared item
          * @return this instance of the builder
          */
         public ShareDialogBuilder setFriends(List<String> friends) {
@@ -557,7 +562,7 @@ public class FacebookDialog {
          * should be considered fatal and cause the dialog to return an error
          *
          * @param dataErrorsFatal true if data errors should be fatal; false if
-         * not
+         *                        not
          * @return this instance of the builder
          */
         public ShareDialogBuilder setDataErrorsFatal(boolean dataErrorsFatal) {
@@ -618,24 +623,24 @@ public class FacebookDialog {
         /**
          * Constructor.
          *
-         * @param activity the Activity which is presenting the native Open
-         * Graph action publish dialog; must not be null
-         * @param action the Open Graph action to be published, which must
-         * contain a reference to at least one Open Graph object with the
-         * property name specified by setPreviewPropertyName; the action must
-         * have had its type specified via the
-         * {@link OpenGraphAction#setType(String)} method
-         * @param actionType the type of the Open Graph action to be published,
-         * which should be the namespace-qualified name of the action type
-         * (e.g., "myappnamespace:myactiontype"); this will override the type of
-         * the action passed in.
+         * @param activity            the Activity which is presenting the native Open
+         *                            Graph action publish dialog; must not be null
+         * @param action              the Open Graph action to be published, which must
+         *                            contain a reference to at least one Open Graph object with the
+         *                            property name specified by setPreviewPropertyName; the action must
+         *                            have had its type specified via the
+         *                            {@link OpenGraphAction#setType(String)} method
+         * @param actionType          the type of the Open Graph action to be published,
+         *                            which should be the namespace-qualified name of the action type
+         *                            (e.g., "myappnamespace:myactiontype"); this will override the type of
+         *                            the action passed in.
          * @param previewPropertyName the name of a property on the Open Graph
-         * action that contains the Open Graph object which will be displayed as
-         * a preview to the user
+         *                            action that contains the Open Graph object which will be displayed as
+         *                            a preview to the user
          */
         @Deprecated
         public OpenGraphActionDialogBuilder(Activity activity, OpenGraphAction action, String actionType,
-                String previewPropertyName) {
+                                            String previewPropertyName) {
             super(activity);
 
             Validate.notNull(action, "action");
@@ -644,7 +649,7 @@ public class FacebookDialog {
             if (action.getProperty(previewPropertyName) == null) {
                 throw new IllegalArgumentException(
                         "A property named \"" + previewPropertyName + "\" was not found on the action.  The name of "
-                        + "the preview property must match the name of an action property.");
+                                + "the preview property must match the name of an action property.");
             }
             String typeOnAction = action.getType();
             if (!Utility.isNullOrEmpty(typeOnAction) && !typeOnAction.equals(actionType)) {
@@ -660,16 +665,16 @@ public class FacebookDialog {
         /**
          * Constructor.
          *
-         * @param activity the Activity which is presenting the native Open
-         * Graph action publish dialog; must not be null
-         * @param action the Open Graph action to be published, which must
-         * contain a reference to at least one Open Graph object with the
-         * property name specified by setPreviewPropertyName; the action must
-         * have had its type specified via the
-         * {@link OpenGraphAction#setType(String)} method
+         * @param activity            the Activity which is presenting the native Open
+         *                            Graph action publish dialog; must not be null
+         * @param action              the Open Graph action to be published, which must
+         *                            contain a reference to at least one Open Graph object with the
+         *                            property name specified by setPreviewPropertyName; the action must
+         *                            have had its type specified via the
+         *                            {@link OpenGraphAction#setType(String)} method
          * @param previewPropertyName the name of a property on the Open Graph
-         * action that contains the Open Graph object which will be displayed as
-         * a preview to the user
+         *                            action that contains the Open Graph object which will be displayed as
+         *                            a preview to the user
          */
         public OpenGraphActionDialogBuilder(Activity activity, OpenGraphAction action, String previewPropertyName) {
             super(activity);
@@ -680,7 +685,7 @@ public class FacebookDialog {
             if (action.getProperty(previewPropertyName) == null) {
                 throw new IllegalArgumentException(
                         "A property named \"" + previewPropertyName + "\" was not found on the action.  The name of "
-                        + "the preview property must match the name of an action property.");
+                                + "the preview property must match the name of an action property.");
             }
 
             this.action = action;
@@ -693,7 +698,7 @@ public class FacebookDialog {
          * should be considered fatal and cause the dialog to return an error
          *
          * @param dataErrorsFatal true if data errors should be fatal; false if
-         * not
+         *                        not
          * @return this instance of the builder
          */
         public OpenGraphActionDialogBuilder setDataErrorsFatal(boolean dataErrorsFatal) {
@@ -710,13 +715,13 @@ public class FacebookDialog {
          * this method will not clear the image attachments already set, but the
          * new action will have no reference to the existing attachments. The
          * images will not be marked as being user-generated.</p>
-         *
+         * <p/>
          * <p>In order for the images to be provided to the Facebook application
          * as part of the app call, the NativeAppCallContentProvider must be
          * specified correctly in the application's AndroidManifest.xml.</p>
          *
          * @param bitmaps a list of Bitmaps to be uploaded and attached to the
-         * Open Graph action
+         *                Open Graph action
          * @return this instance of the builder
          */
         public OpenGraphActionDialogBuilder setImageAttachmentsForAction(List<Bitmap> bitmaps) {
@@ -734,19 +739,19 @@ public class FacebookDialog {
          * images may be marked as being user-generated -- refer to <a
          * href="https://developers.facebook.com/docs/opengraph/howtos/adding-photos-to-stories/">this
          * article</a> for more information.</p>
-         *
+         * <p/>
          * <p>In order for the images to be provided to the Facebook application
          * as part of the app call, the NativeAppCallContentProvider must be
          * specified correctly in the application's AndroidManifest.xml.</p>
          *
-         * @param bitmaps a list of Bitmaps to be uploaded and attached to the
-         * Open Graph action
+         * @param bitmaps         a list of Bitmaps to be uploaded and attached to the
+         *                        Open Graph action
          * @param isUserGenerated if true, specifies that the user_generated
-         * flag should be set for these images
+         *                        flag should be set for these images
          * @return this instance of the builder
          */
         public OpenGraphActionDialogBuilder setImageAttachmentsForAction(List<Bitmap> bitmaps,
-                boolean isUserGenerated) {
+                                                                         boolean isUserGenerated) {
             Validate.containsNoNulls(bitmaps, "bitmaps");
             if (action == null) {
                 throw new FacebookException("Can not set attachments prior to setting action.");
@@ -767,13 +772,13 @@ public class FacebookDialog {
          * these attachments. Note that calling setAction again after calling
          * this method will not clear the image attachments already set, but the
          * new action will have no reference to the existing attachments.</p>
-         *
+         * <p/>
          * <p>In order for the images to be provided to the Facebook application
          * as part of the app call, the NativeAppCallContentProvider must be
          * specified correctly in the application's AndroidManifest.xml.</p>
          *
          * @param bitmapFiles a list of Files containing bitmaps to be uploaded
-         * and attached to the Open Graph action
+         *                    and attached to the Open Graph action
          * @return this instance of the builder
          */
         public OpenGraphActionDialogBuilder setImageAttachmentFilesForAction(List<File> bitmapFiles) {
@@ -791,19 +796,19 @@ public class FacebookDialog {
          * these attachments. Note that calling setAction again after calling
          * this method will not clear the image attachments already set, but the
          * new action will have no reference to the existing attachments.</p>
-         *
+         * <p/>
          * <p>In order for the images to be provided to the Facebook application
          * as part of the app call, the NativeAppCallContentProvider must be
          * specified correctly in the application's AndroidManifest.xml.</p>
          *
-         * @param bitmapFiles a list of Files containing bitmaps to be uploaded
-         * and attached to the Open Graph action
+         * @param bitmapFiles     a list of Files containing bitmaps to be uploaded
+         *                        and attached to the Open Graph action
          * @param isUserGenerated if true, specifies that the user_generated
-         * flag should be set for these images
+         *                        flag should be set for these images
          * @return this instance of the builder
          */
         public OpenGraphActionDialogBuilder setImageAttachmentFilesForAction(List<File> bitmapFiles,
-                boolean isUserGenerated) {
+                                                                             boolean isUserGenerated) {
             Validate.containsNoNulls(bitmapFiles, "bitmapFiles");
             if (action == null) {
                 throw new FacebookException("Can not set attachments prior to setting action.");
@@ -848,18 +853,18 @@ public class FacebookDialog {
          * method, or modifying the value of the specified property, will not
          * clear the image attachments already set, but the new action (or
          * objects) will have no reference to the existing attachments.</p>
-         *
+         * <p/>
          * <p>In order for the images to be provided to the Facebook application
          * as part of the app call, the NativeAppCallContentProvider must be
          * specified correctly in the application's AndroidManifest.xml.</p>
          *
          * @param objectProperty the name of a property on the action that
-         * corresponds to an Open Graph object; the object must be marked as a
-         * new object to be created (i.e.,
-         * {@link com.facebook.model.OpenGraphObject#getCreateObject()} must
-         * return true) or an exception will be thrown
-         * @param bitmapFiles a list of Files containing bitmaps to be uploaded
-         * and attached to the Open Graph object
+         *                       corresponds to an Open Graph object; the object must be marked as a
+         *                       new object to be created (i.e.,
+         *                       {@link com.facebook.model.OpenGraphObject#getCreateObject()} must
+         *                       return true) or an exception will be thrown
+         * @param bitmapFiles    a list of Files containing bitmaps to be uploaded
+         *                       and attached to the Open Graph object
          * @return this instance of the builder
          */
         public OpenGraphActionDialogBuilder setImageAttachmentsForObject(String objectProperty, List<Bitmap> bitmaps) {
@@ -880,26 +885,26 @@ public class FacebookDialog {
          * value of the specified property, will not clear the image attachments
          * already set, but the new action (or objects) will have no reference
          * to the existing attachments.</p>
-         *
+         * <p/>
          * <p>In order for the images to be provided to the Facebook application
          * as part of the app call, the NativeAppCallContentProvider must be
          * specified correctly in the application's AndroidManifest.xml.</p>
          *
-         * @param objectProperty the name of a property on the action that
-         * corresponds to an Open Graph object; the object must be marked as a
-         * new object to be created (i.e.,
-         * {@link com.facebook.model.OpenGraphObject#getCreateObject()} must
-         * return true) or an exception will be thrown
-         * @param objectProperty the name of a property on the action that
-         * corresponds to an Open Graph object
-         * @param bitmapFiles a list of Files containing bitmaps to be uploaded
-         * and attached to the Open Graph object
+         * @param objectProperty  the name of a property on the action that
+         *                        corresponds to an Open Graph object; the object must be marked as a
+         *                        new object to be created (i.e.,
+         *                        {@link com.facebook.model.OpenGraphObject#getCreateObject()} must
+         *                        return true) or an exception will be thrown
+         * @param objectProperty  the name of a property on the action that
+         *                        corresponds to an Open Graph object
+         * @param bitmapFiles     a list of Files containing bitmaps to be uploaded
+         *                        and attached to the Open Graph object
          * @param isUserGenerated if true, specifies that the user_generated
-         * flag should be set for these images
+         *                        flag should be set for these images
          * @return this instance of the builder
          */
         public OpenGraphActionDialogBuilder setImageAttachmentsForObject(String objectProperty, List<Bitmap> bitmaps,
-                boolean isUserGenerated) {
+                                                                         boolean isUserGenerated) {
             Validate.notNull(objectProperty, "objectProperty");
             Validate.containsNoNulls(bitmaps, "bitmaps");
             if (action == null) {
@@ -924,22 +929,22 @@ public class FacebookDialog {
          * method, or modifying the value of the specified property, will not
          * clear the image attachments already set, but the new action (or
          * objects) will have no reference to the existing attachments.</p>
-         *
+         * <p/>
          * <p>In order for the images to be provided to the Facebook application
          * as part of the app call, the NativeAppCallContentProvider must be
          * specified correctly in the application's AndroidManifest.xml.</p>
          *
          * @param objectProperty the name of a property on the action that
-         * corresponds to an Open Graph object; the object must be marked as a
-         * new object to be created (i.e.,
-         * {@link com.facebook.model.OpenGraphObject#getCreateObject()} must
-         * return true) or an exception will be thrown
-         * @param bitmaps a list of Bitmaps to be uploaded and attached to the
-         * Open Graph object
+         *                       corresponds to an Open Graph object; the object must be marked as a
+         *                       new object to be created (i.e.,
+         *                       {@link com.facebook.model.OpenGraphObject#getCreateObject()} must
+         *                       return true) or an exception will be thrown
+         * @param bitmaps        a list of Bitmaps to be uploaded and attached to the
+         *                       Open Graph object
          * @return this instance of the builder
          */
         public OpenGraphActionDialogBuilder setImageAttachmentFilesForObject(String objectProperty,
-                List<File> bitmapFiles) {
+                                                                             List<File> bitmapFiles) {
             return setImageAttachmentFilesForObject(objectProperty, bitmapFiles, false);
         }
 
@@ -957,24 +962,24 @@ public class FacebookDialog {
          * value of the specified property, will not clear the image attachments
          * already set, but the new action (or objects) will have no reference
          * to the existing attachments.</p>
-         *
+         * <p/>
          * <p>In order for the images to be provided to the Facebook application
          * as part of the app call, the NativeAppCallContentProvider must be
          * specified correctly in the application's AndroidManifest.xml.</p>
          *
-         * @param objectProperty the name of a property on the action that
-         * corresponds to an Open Graph object; the object must be marked as a
-         * new object to be created (i.e.,
-         * {@link com.facebook.model.OpenGraphObject#getCreateObject()} must
-         * return true) or an exception will be thrown
-         * @param bitmaps a list of Bitmaps to be uploaded and attached to the
-         * Open Graph object
+         * @param objectProperty  the name of a property on the action that
+         *                        corresponds to an Open Graph object; the object must be marked as a
+         *                        new object to be created (i.e.,
+         *                        {@link com.facebook.model.OpenGraphObject#getCreateObject()} must
+         *                        return true) or an exception will be thrown
+         * @param bitmaps         a list of Bitmaps to be uploaded and attached to the
+         *                        Open Graph object
          * @param isUserGenerated if true, specifies that the user_generated
-         * flag should be set for these images
+         *                        flag should be set for these images
          * @return this instance of the builder
          */
         public OpenGraphActionDialogBuilder setImageAttachmentFilesForObject(String objectProperty,
-                List<File> bitmapFiles, boolean isUserGenerated) {
+                                                                             List<File> bitmapFiles, boolean isUserGenerated) {
             Validate.notNull(objectProperty, "objectProperty");
             Validate.containsNoNulls(bitmapFiles, "bitmapFiles");
             if (action == null) {
@@ -1173,6 +1178,15 @@ public class FacebookDialog {
      */
     public static class PendingCall implements Parcelable {
 
+        public static final Creator<PendingCall> CREATOR = new Creator<PendingCall>() {
+            public PendingCall createFromParcel(Parcel in) {
+                return new PendingCall(in);
+            }
+
+            public PendingCall[] newArray(int size) {
+                return new PendingCall[size];
+            }
+        };
         private UUID callId;
         private Intent requestIntent;
         private int requestCode;
@@ -1193,11 +1207,6 @@ public class FacebookDialog {
             requestCode = in.readInt();
         }
 
-        private void setRequestIntent(Intent requestIntent) {
-            this.requestIntent = requestIntent;
-            this.requestIntent.putExtra(NativeProtocol.EXTRA_PROTOCOL_CALL_ID, callId.toString());
-        }
-
         /**
          * Returns the Intent that was used to initiate this call to the
          * Facebook application.
@@ -1206,6 +1215,11 @@ public class FacebookDialog {
          */
         public Intent getRequestIntent() {
             return requestIntent;
+        }
+
+        private void setRequestIntent(Intent requestIntent) {
+            this.requestIntent = requestIntent;
+            this.requestIntent.putExtra(NativeProtocol.EXTRA_PROTOCOL_CALL_ID, callId.toString());
         }
 
         /**
@@ -1217,10 +1231,6 @@ public class FacebookDialog {
             return callId;
         }
 
-        private void setRequestCode(int requestCode) {
-            this.requestCode = requestCode;
-        }
-
         /**
          * Gets the request code for this call.
          *
@@ -1229,6 +1239,10 @@ public class FacebookDialog {
          */
         public int getRequestCode() {
             return requestCode;
+        }
+
+        private void setRequestCode(int requestCode) {
+            this.requestCode = requestCode;
         }
 
         @Override
@@ -1242,14 +1256,5 @@ public class FacebookDialog {
             parcel.writeParcelable(requestIntent, 0);
             parcel.writeInt(requestCode);
         }
-        public static final Creator<PendingCall> CREATOR = new Creator<PendingCall>() {
-            public PendingCall createFromParcel(Parcel in) {
-                return new PendingCall(in);
-            }
-
-            public PendingCall[] newArray(int size) {
-                return new PendingCall[size];
-            }
-        };
     }
 }

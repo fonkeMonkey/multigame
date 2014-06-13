@@ -5,34 +5,44 @@ import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
+import sk.palistudios.multigame.R;
 import sk.palistudios.multigame.game.GameActivity;
 import sk.palistudios.multigame.game.persistence.PaintSerializable;
 import sk.palistudios.multigame.game.persistence.PointSerializable;
 import sk.palistudios.multigame.mainMenu.DebugSettings;
 import sk.palistudios.multigame.tools.RandomGenerator;
+
 import java.io.Serializable;
 import java.util.ArrayList;
-import sk.palistudios.multigame.R;
 
 /**
- *
  * @author Pali
  */
 public class MiniGameTInvader extends AMiniGame implements IMiniGameTouch {
 
+    final static RandomGenerator mRandomGenerator = RandomGenerator.getInstance();
+    PointSerializable mPointMiddleOfScreen = null;
+    PointSerializable mPointSmallerCircle = null;
+    PaintSerializable mPaintMiddleCircle = null;
+    PaintSerializable mPaintSmallCircle = null;
+    PaintSerializable mPaintLaser = null;
+    PaintSerializable mPaintEnemy = null;
     private ArrayList<Enemy> enemies = new ArrayList<Enemy>();
     private int maximumDifficulty;
     private int difficultyStep;
     private int minimumStepsToInvade;
     private int stepsToInvadestep;
-
+    //difficulty
+    private int framesToCreateEnemy = 160;
+    private int framesToGo = 60;
+    private int mCenterCircleSize;
+    private int mSmallCircleSize;
+    private int rectLeft, rectRight, rectTop, rectDown;
+    private int stepsToInvade;
     public MiniGameTInvader(String fileName, Integer position, GameActivity game) {
         super(fileName, position, game);
         type = Typ.Touch;
     }
-    //difficulty
-    private int framesToCreateEnemy = 160;
-    private int framesToGo = 60;
 
     public void updateMinigame() {
         //mCanvas = canvas;
@@ -46,16 +56,6 @@ public class MiniGameTInvader extends AMiniGame implements IMiniGameTouch {
         moveObjects();
 //        drawMinigame(canvas);
     }
-    PointSerializable mPointMiddleOfScreen = null;
-    PointSerializable mPointSmallerCircle = null;
-    PaintSerializable mPaintMiddleCircle = null;
-    PaintSerializable mPaintSmallCircle = null;
-    PaintSerializable mPaintLaser = null;
-    PaintSerializable mPaintEnemy = null;
-    private int mCenterCircleSize;
-    private int mSmallCircleSize;
-    private int rectLeft, rectRight, rectTop, rectDown;
-    private int stepsToInvade;
 
     public void initMinigame(Bitmap mBitmap, boolean wasGameSaved) {
 
@@ -116,7 +116,6 @@ public class MiniGameTInvader extends AMiniGame implements IMiniGameTouch {
         }
 
     }
-    final static RandomGenerator mRandomGenerator = RandomGenerator.getInstance();
 
     private void createEnemy() {
 
@@ -247,6 +246,15 @@ public class MiniGameTInvader extends AMiniGame implements IMiniGameTouch {
         return "Invader";
     }
 
+    @Override
+    public void setForTutorial() {
+        //do nothing
+    }
+
+    @Override
+    public void setForClassicGame() {
+    }
+
     private class Enemy implements Serializable {
 
         float x;
@@ -277,14 +285,5 @@ public class MiniGameTInvader extends AMiniGame implements IMiniGameTouch {
         private float countStep(int initial, int destination) {
             return -((initial - destination) / (float) stepsToGo);
         }
-    }
-
-    @Override
-    public void setForTutorial() {
-        //do nothing
-    }
-
-    @Override
-    public void setForClassicGame() {
     }
 }

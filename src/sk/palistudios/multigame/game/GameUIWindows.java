@@ -1,7 +1,7 @@
 package sk.palistudios.multigame.game;
 
 // @author Pali
-import sk.palistudios.multigame.game.persistence.GameSharedPref;
+
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Context;
@@ -10,6 +10,7 @@ import android.content.Intent;
 import android.text.Html;
 import android.widget.EditText;
 import sk.palistudios.multigame.R;
+import sk.palistudios.multigame.game.persistence.GameSharedPref;
 import sk.palistudios.multigame.hall_of_fame.HallOfFameActivity;
 import sk.palistudios.multigame.hall_of_fame.HofDatabaseCenter;
 import sk.palistudios.multigame.hall_of_fame.HofItem;
@@ -20,8 +21,8 @@ import sk.palistudios.multigame.tools.SoundEffectsCenter;
 
 public class GameUIWindows {
 
-    public static boolean sLostGame = true;
     public final static int ASK_USER_TO_CONNECT = 1;
+    public static boolean sLostGame = true;
 
     public static void showTutorialWindow(final GameActivity game) {
 

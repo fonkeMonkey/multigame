@@ -1,10 +1,10 @@
 package sk.palistudios.multigame.tools;
 
 // @author Pali
+
 import android.content.Context;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
-import sk.palistudios.multigame.mainMenu.ApplicationInitializer;
 
 public class InternetChecker {
 

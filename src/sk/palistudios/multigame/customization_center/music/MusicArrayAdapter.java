@@ -1,6 +1,7 @@
 package sk.palistudios.multigame.customization_center.music;
 
 // @author Pali
+
 import android.content.Context;
 import android.graphics.Color;
 import android.view.LayoutInflater;
@@ -9,17 +10,17 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.TextView;
 import sk.palistudios.multigame.R;
-import java.util.ArrayList;
 import sk.palistudios.multigame.customization_center.IAdapter;
 import sk.palistudios.multigame.customization_center.skins.SkinItem;
-import sk.palistudios.multigame.customization_center.skins.SkinsCenterListActivity;
+
+import java.util.ArrayList;
 
 public class MusicArrayAdapter extends ArrayAdapter<MusicItem> implements IAdapter {
 
+    TextView rowView = null;
     private ArrayList<MusicItem> myItems = new ArrayList<MusicItem>();
     private Context context;
     private int colorChosen;
-    TextView rowView = null;
 
     public MusicArrayAdapter(Context context, ArrayList<MusicItem> objects, SkinItem skin) {
         super(context, R.layout.musicloops_listitem, objects);

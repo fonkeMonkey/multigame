@@ -1,7 +1,5 @@
 package sk.palistudios.multigame.customization_center;
 
-import sk.palistudios.multigame.mainMenu.DebugSettings;
-import sk.palistudios.multigame.tools.SoundEffectsCenter;
 import android.app.Activity;
 import android.app.TabActivity;
 import android.content.Intent;
@@ -12,27 +10,67 @@ import android.view.View.OnClickListener;
 import android.widget.TabHost;
 import android.widget.TabHost.TabSpec;
 import android.widget.TextView;
-//import com.appflood.AppFlood;
 import com.google.analytics.tracking.android.EasyTracker;
-import java.util.ArrayList;
 import sk.palistudios.multigame.R;
 import sk.palistudios.multigame.customization_center.achievements.AchievementsCenterListActivity;
 import sk.palistudios.multigame.customization_center.mgc.MinigamesCenterListActivity;
 import sk.palistudios.multigame.customization_center.moreGames.MoreGamesCenterActivity;
-import sk.palistudios.multigame.customization_center.skins.SkinsCenterListActivity;
 import sk.palistudios.multigame.customization_center.music.MusicCenterListActivity;
 import sk.palistudios.multigame.customization_center.skins.SkinItem;
+import sk.palistudios.multigame.customization_center.skins.SkinsCenterListActivity;
+import sk.palistudios.multigame.mainMenu.DebugSettings;
+import sk.palistudios.multigame.tools.SoundEffectsCenter;
+
+import java.util.ArrayList;
+
+//import com.appflood.AppFlood;
 
 public class CustomizationCenterActivity extends TabActivity {
     // TabSpec Names
 
+    private static ArrayList<TextView> headers = new ArrayList<TextView>();
+    private static ArrayList<IAdapter> adapters = new ArrayList<IAdapter>();
     private String MINIGAMES_SPEC;
     private String SKINS_SPEC;
     private String MUSIC_SPEC;
     private String ACHIEVEMENTS_SPEC;
     private String MORE_GAMES_SPEC;
-    private static ArrayList<TextView> headers = new ArrayList<TextView>();
-    private static ArrayList<IAdapter> adapters = new ArrayList<IAdapter>();
+
+    public static void changeSkinForAllTabs(SkinItem currentSkin) {
+        //zmen header
+        for (TextView header : headers) {
+            header.setBackgroundColor(currentSkin.getColorHeader());
+        }
+
+        for (IAdapter adapter : adapters) {
+            adapter.setColorChosen(currentSkin.getColorChosen());
+            adapter.notifyDataSetChanged();
+        }
+
+    }
+
+    //    public static void setMusicArrayAdapter(MusicArrayAdapter musicArrayAdapter) {
+//        CustomizationCenter.musicArrayAdapter = musicArrayAdapter;
+//    }
+//
+//    public static void setSkinArrayAdapter(SkinsArrayAdapter skinArrayAdapter) {
+//        CustomizationCenter.skinArrayAdapter = skinArrayAdapter;
+//    }
+//
+//    public static void setMgcArrayAdapter(MgcArrayAdapter mgcArrayAdapter) {
+//        CustomizationCenter.mgcArrayAdapter = mgcArrayAdapter;
+//    }
+//
+//    public static void setAchievementsArrayAdapter(AchievementsArrayAdapter achievementsArrayAdapter) {
+//        CustomizationCenter.achievementsArrayAdapter = achievementsArrayAdapter;
+//    }
+    public static void addAdapter(IAdapter adapter) {
+        adapters.add(adapter);
+    }
+
+    public static void addHeader(TextView header) {
+        headers.add(header);
+    }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -127,49 +165,11 @@ public class CustomizationCenterActivity extends TabActivity {
         super.onResume();
         SoundEffectsCenter.muteSystemSounds(this, true);
     }
-    
-    
 
     @Override
     protected void onPause() {
         super.onPause();
         overridePendingTransition(R.anim.fadein, R.anim.fadeout);
-    }
-    
-    public static void changeSkinForAllTabs(SkinItem currentSkin) {
-        //zmen header
-        for (TextView header : headers) {
-            header.setBackgroundColor(currentSkin.getColorHeader());
-        }
-
-        for (IAdapter adapter : adapters) {
-            adapter.setColorChosen(currentSkin.getColorChosen());
-            adapter.notifyDataSetChanged();
-        }
-
-    }
-
-//    public static void setMusicArrayAdapter(MusicArrayAdapter musicArrayAdapter) {
-//        CustomizationCenter.musicArrayAdapter = musicArrayAdapter;
-//    }
-//
-//    public static void setSkinArrayAdapter(SkinsArrayAdapter skinArrayAdapter) {
-//        CustomizationCenter.skinArrayAdapter = skinArrayAdapter;
-//    }
-//
-//    public static void setMgcArrayAdapter(MgcArrayAdapter mgcArrayAdapter) {
-//        CustomizationCenter.mgcArrayAdapter = mgcArrayAdapter;
-//    }
-//
-//    public static void setAchievementsArrayAdapter(AchievementsArrayAdapter achievementsArrayAdapter) {
-//        CustomizationCenter.achievementsArrayAdapter = achievementsArrayAdapter;
-//    }
-    public static void addAdapter(IAdapter adapter) {
-        adapters.add(adapter);
-    }
-
-    public static void addHeader(TextView header) {
-        headers.add(header);
     }
 
     @Override

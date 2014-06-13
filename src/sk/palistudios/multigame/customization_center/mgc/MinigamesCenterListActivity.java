@@ -7,7 +7,6 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.TextView;
 import com.google.analytics.tracking.android.EasyTracker;
-import java.util.ArrayList;
 import sk.palistudios.multigame.BaseListActivity;
 import sk.palistudios.multigame.R;
 import sk.palistudios.multigame.customization_center.CustomizationCenterActivity;
@@ -16,17 +15,18 @@ import sk.palistudios.multigame.game.persistence.GameSharedPref;
 import sk.palistudios.multigame.tools.SoundEffectsCenter;
 import sk.palistudios.multigame.tools.Toaster;
 
+import java.util.ArrayList;
+
 /**
- *
  * @author Pali
  */
 public class MinigamesCenterListActivity extends BaseListActivity {
 
-    private static String[] tmpChosenMinigames = new String[4];
-    private MgcArrayAdapter minigamesAdapter;
     public static char SYMBOL_MINIGAME_HORIZONTAL = '⇆';
     public static char SYMBOL_MINIGAME_TOUCH = '✋';
     public static char SYMBOL_MINIGAME_VERTICAL = '⇅';
+    private static String[] tmpChosenMinigames = new String[4];
+    private MgcArrayAdapter minigamesAdapter;
 
     @Override
     public void onCreate(Bundle icicle) {
@@ -147,7 +147,7 @@ public class MinigamesCenterListActivity extends BaseListActivity {
 
     }
 
-//    private void resolveActiveMinigamesNames() {
+    //    private void resolveActiveMinigamesNames() {
 //        tmpChosenMinigames = GameSharedPref.getChosenMinigamesNames();
 //    }
     @Override
@@ -166,7 +166,6 @@ public class MinigamesCenterListActivity extends BaseListActivity {
         items.add(new MgcItem(SYMBOL_MINIGAME_TOUCH, "TInvader", "Invader", GameSharedPref.isMinigameChosen("TInvader"), (String) getResources().getString(R.string.cc_achievements_addicts_description) + (String) getResources().getString(R.string.cc_achievements_requirement_ending)));
         items.add(new MgcItem(SYMBOL_MINIGAME_VERTICAL, "VBird", "Bird", GameSharedPref.isMinigameChosen("VBird")));
         items.add(new MgcItem(SYMBOL_MINIGAME_VERTICAL, "VBouncer", "Bouncer", GameSharedPref.isMinigameChosen("VBouncer"), (String) getResources().getString(R.string.cc_achievements_good_start_description) + (String) getResources().getString(R.string.cc_achievements_requirement_ending)));
-
 
 
 //        for (String musicLoopPCName : GameSharedPref.getAllMusicLoopsPCNames()) {

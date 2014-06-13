@@ -1,6 +1,5 @@
 package sk.palistudios.multigame.game.view;
 
-import sk.palistudios.multigame.game.minigames.AMiniGame;
 import android.app.Activity;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -8,16 +7,16 @@ import android.view.View;
 import android.view.ViewGroup;
 import sk.palistudios.multigame.R;
 import sk.palistudios.multigame.game.GameMinigamesManager;
+import sk.palistudios.multigame.game.minigames.AMiniGame;
 
 /**
- *
  * @author Pali
  */
 public class Fragment1 extends AFragment {
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
-            Bundle savedInstanceState) {
+                             Bundle savedInstanceState) {
 
 
         if (savedInstanceState != null) {
@@ -30,7 +29,6 @@ public class Fragment1 extends AFragment {
 //                SkinsCenterListActivity.getCurrentSkin(activity).getBarBgColor()
                 , minigame);
         return mView;
-
 
 
     }

@@ -1,26 +1,28 @@
 package sk.palistudios.multigame.game.view;
 
 // @author Pali
-import sk.palistudios.multigame.game.minigames.AMiniGame;
+
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.Color;
-import android.graphics.Paint;
 import android.graphics.Rect;
 import android.os.Handler;
 import android.view.SurfaceView;
 import android.view.View;
+import sk.palistudios.multigame.game.minigames.AMiniGame;
 import sk.palistudios.multigame.game.persistence.GameSharedPref;
 
 public abstract class AFragmentView extends SurfaceView {
 
-//    Paint _paint;
+    //    Paint _paint;
     Handler mHandler = null;
     AMiniGame mMiniGame = null;
+    int _height;
+    int _width;
+    Bitmap mBitmap;
     private boolean isMinigameInitialized = false;
     private boolean wasGameSaved = false;
-
     public AFragmentView(Context context, int color, AMiniGame minigame) {
         super(context);
         setBackgroundColor(color);
@@ -28,9 +30,6 @@ public abstract class AFragmentView extends SurfaceView {
         mMiniGame = minigame;
 
     }
-    int _height;
-    int _width;
-    Bitmap mBitmap;
 
     @Override
     protected void onLayout(boolean changed, int l, int t, int r, int b) {

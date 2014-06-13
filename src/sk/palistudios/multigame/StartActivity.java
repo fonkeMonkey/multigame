@@ -4,15 +4,12 @@
  */
 package sk.palistudios.multigame;
 
-import android.app.Activity;
 import android.content.Intent;
 import android.media.AudioManager;
 import android.os.Bundle;
-import sk.palistudios.multigame.BaseActivity;
 import sk.palistudios.multigame.tools.SoundEffectsCenter;
 
 /**
- *
  * @author virdzek
  */
 public class StartActivity extends BaseActivity {

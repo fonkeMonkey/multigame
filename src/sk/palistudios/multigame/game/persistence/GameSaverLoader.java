@@ -1,18 +1,15 @@
 package sk.palistudios.multigame.game.persistence;
 
 // @author Pali
+
 import android.content.Context;
-import java.io.FileInputStream;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.ObjectInputStream;
-import java.io.ObjectOutputStream;
-import java.io.OptionalDataException;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import sk.palistudios.multigame.game.GameActivity;
 import sk.palistudios.multigame.game.GameMinigamesManager;
 import sk.palistudios.multigame.game.minigames.AMiniGame;
+
+import java.io.*;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 public class GameSaverLoader {
 

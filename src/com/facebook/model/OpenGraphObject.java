@@ -10,7 +10,7 @@ import java.util.List;
  * Provides a strongly-typed representation of an Open Graph Object. For more
  * documentation of OG Objects, see:
  * https://developers.facebook.com/docs/opengraph/using-object-api/
- *
+ * <p/>
  * Note that this interface is intended to be used with GraphObject.Factory or
  * OpenGraphObject.Factory and not implemented directly.
  */
@@ -241,7 +241,7 @@ public interface OpenGraphObject extends GraphObject {
      * or not.
      *
      * @param isScraped true if the Open Graph object was created by scraping
-     * the Web, false if not
+     *                  the Web, false if not
      */
     void setIsScraped(boolean isScraped);
 
@@ -300,7 +300,7 @@ public interface OpenGraphObject extends GraphObject {
      * '/me/objects/object_type' endpoint.
      *
      * @param createObject true if the native Share dialog should create the
-     * object as part of publishing an action, false if not
+     *                     object as part of publishing an action, false if not
      */
     @PropertyName(NativeProtocol.OPEN_GRAPH_CREATE_OBJECT_KEY)
     void setCreateObject(boolean createObject);
@@ -316,7 +316,7 @@ public interface OpenGraphObject extends GraphObject {
          * 'create_object' and 'data' property, ready to be populated.
          *
          * @param type the Open Graph object type for the object, or null if it
-         * will be specified later
+         *             will be specified later
          * @return an OpenGraphObject
          */
         public static OpenGraphObject createForPost(String type) {
@@ -329,8 +329,8 @@ public interface OpenGraphObject extends GraphObject {
          * 'create_object' and 'data' property, ready to be populated.
          *
          * @param graphObjectClass the OpenGraphObject-derived type to return
-         * @param type the Open Graph object type for the object, or null if it
-         * will be specified later
+         * @param type             the Open Graph object type for the object, or null if it
+         *                         will be specified later
          * @return an OpenGraphObject
          */
         public static <T extends OpenGraphObject> T createForPost(Class<T> graphObjectClass, String type) {
@@ -343,18 +343,18 @@ public interface OpenGraphObject extends GraphObject {
          * 'create_object' and 'data' property, ready to be populated.
          *
          * @param graphObjectClass the OpenGraphObject-derived type to return
-         * @param type the Open Graph object type for the object, or null if it
-         * will be specified later
-         * @param title the title of the object, or null if it will be specified
-         * later
-         * @param imageUrl the URL of an image associated with the object, or
-         * null
-         * @param url the URL associated with the object, or null
-         * @param description the description of the object, or null
+         * @param type             the Open Graph object type for the object, or null if it
+         *                         will be specified later
+         * @param title            the title of the object, or null if it will be specified
+         *                         later
+         * @param imageUrl         the URL of an image associated with the object, or
+         *                         null
+         * @param url              the URL associated with the object, or null
+         * @param description      the description of the object, or null
          * @return an OpenGraphObject
          */
         public static <T extends OpenGraphObject> T createForPost(Class<T> graphObjectClass, String type, String title,
-                String imageUrl, String url, String description) {
+                                                                  String imageUrl, String url, String description) {
             T object = GraphObject.Factory.create(graphObjectClass);
 
             if (type != null) {

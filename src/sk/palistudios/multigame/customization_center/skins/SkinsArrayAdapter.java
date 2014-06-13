@@ -1,6 +1,7 @@
 package sk.palistudios.multigame.customization_center.skins;
 
 // @author Pali
+
 import android.content.Context;
 import android.graphics.Color;
 import android.view.LayoutInflater;
@@ -9,8 +10,9 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.TextView;
 import sk.palistudios.multigame.R;
-import java.util.ArrayList;
 import sk.palistudios.multigame.customization_center.IAdapter;
+
+import java.util.ArrayList;
 
 public class SkinsArrayAdapter extends ArrayAdapter<SkinItem> implements IAdapter {
 

@@ -23,22 +23,34 @@ import sk.palistudios.multigame.tools.Toaster;
 
 public class MainMenuActivity extends BaseActivity {
 
+    public static boolean isThereADialogToShow = false;
     private static boolean mShowHighScoreStatus;
     private static int mShowHighScoreScore;
     private static MainMenuActivity mainMenuFacebook;
+    private static MainMenuActivity sMainMenuInstance;
+    private static boolean mFacebookShared = false;
     private Button buttonStart;
     private Button buttonCc;
     private Button buttonHof;
     private Button buttonPreferences;
     private ImageView logo;
-    private static MainMenuActivity sMainMenuInstance;
-    public static boolean isThereADialogToShow = false;
 
     public static MainMenuActivity getInstance() {
         return sMainMenuInstance;
     }
 
-    private static boolean mFacebookShared = false;
+    public static void setOfferHighScore(int score) {
+        mShowHighScoreStatus = true;
+        mShowHighScoreScore = score;
+    }
+
+    public static void setMainMenuFacebook(MainMenuActivity mainMenu) {
+        mainMenuFacebook = mainMenu;
+    }
+
+    public static void setWallPostAchievementDone() {
+        mFacebookShared = true;
+    }
 
     @Override
     public void onCreate(Bundle icicle) {
@@ -162,7 +174,6 @@ public class MainMenuActivity extends BaseActivity {
         startActivity(intent);
     }
 
-
     @Override
     public void onBackPressed() {
         super.onBackPressed();
@@ -187,7 +198,6 @@ public class MainMenuActivity extends BaseActivity {
         buttonStart.setText(getString(R.string.button_game));
 
     }
-
 
     @Override
     public void onStart() {
@@ -215,18 +225,5 @@ public class MainMenuActivity extends BaseActivity {
         super.onActivityResult(requestCode, resultCode, data);
         Session.getActiveSession()
                 .onActivityResult(getInstance(), requestCode, resultCode, data);
-    }
-
-    public static void setOfferHighScore(int score) {
-        mShowHighScoreStatus = true;
-        mShowHighScoreScore = score;
-    }
-
-    public static void setMainMenuFacebook(MainMenuActivity mainMenu) {
-        mainMenuFacebook = mainMenu;
-    }
-
-    public static void setWallPostAchievementDone() {
-        mFacebookShared = true;
     }
 }

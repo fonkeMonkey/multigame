@@ -1,25 +1,25 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
     android:orientation="vertical"
-    android:weightSum="9"
-    xmlns:android="http://schemas.android.com/apk/res/android">
+    android:weightSum="9">
 
     <LinearLayout
         android:id="@+id/widget38"
         android:layout_width="fill_parent"
         android:layout_height="0dp"
         android:layout_weight="5"
-        android:orientation="vertical"
         android:gravity="center"
+        android:orientation="vertical"
         >
 
         <ImageView
             android:id="@+id/logo"
-            android:contentDescription="Logo"
             android:layout_width="100dp"
             android:layout_height="100dp"
+            android:contentDescription="Logo"
             android:src="@drawable/logo"/>
 
         <TextView
@@ -27,8 +27,8 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="10dp"
             android:text="MultiGame"
-            android:textSize="@dimen/Multigame_label_size"
             android:textColor="#435455"
+            android:textSize="@dimen/Multigame_label_size"
             />
 
     </LinearLayout>
@@ -37,18 +37,18 @@
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="4"
-        android:weightSum="4"
         android:orientation="vertical"
+        android:weightSum="4"
         >
 
         <Button
             android:id="@+id/mainMenu_button_start"
             android:layout_width="match_parent"
             android:layout_height="0dp"
+            android:layout_weight="1"
+            android:onClick="startGame"
             android:text="@string/button_game"
             android:textColor="#FFFFFF"
-            android:onClick="startGame"
-            android:layout_weight="1"
             android:textSize="@dimen/main_menutext_size_bigger"
             android:textStyle="bold"
             />
@@ -58,11 +58,11 @@
             android:id="@+id/mainMenu_button_MGC"
             android:layout_width="match_parent"
             android:layout_height="0dp"
-            android:text="@string/button_customization_center"
-            android:textSize="@dimen/main_menutext_size"
-            android:textColor="#FFFFFF"
-            android:onClick="showMGC"
             android:layout_weight="1"
+            android:onClick="showMGC"
+            android:text="@string/button_customization_center"
+            android:textColor="#FFFFFF"
+            android:textSize="@dimen/main_menutext_size"
             android:textStyle="bold"
             />
         <!--android:background="@drawable/button_background_ur"-->
@@ -71,11 +71,11 @@
             android:id="@+id/mainMenu_button_preferences"
             android:layout_width="match_parent"
             android:layout_height="0dp"
-            android:textSize="@dimen/main_menutext_size"
+            android:layout_weight="1"
+            android:onClick="showPreferences"
             android:text="@string/button_preferences"
             android:textColor="#FFFFFF"
-            android:onClick="showPreferences"
-            android:layout_weight="1"
+            android:textSize="@dimen/main_menutext_size"
             android:textStyle="bold"
             />
         <!--android:background="@drawable/button_background_ll"-->
@@ -84,11 +84,11 @@
             android:id="@+id/mainMenu_button_HOF"
             android:layout_width="match_parent"
             android:layout_height="0dp"
-            android:textSize="@dimen/main_menutext_size"
+            android:layout_weight="1"
+            android:onClick="showHallOfFame"
             android:text="@string/button_hall_of_fame"
             android:textColor="#FFFFFF"
-            android:onClick="showHallOfFame"
-            android:layout_weight="1"
+            android:textSize="@dimen/main_menutext_size"
             android:textStyle="bold"
             />
         <!--android:background="@drawable/button_background_lr"-->

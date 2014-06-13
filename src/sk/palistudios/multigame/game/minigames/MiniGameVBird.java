@@ -4,24 +4,40 @@ import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.Paint;
-import java.util.ArrayList;
+import sk.palistudios.multigame.R;
 import sk.palistudios.multigame.game.GameActivity;
 import sk.palistudios.multigame.game.persistence.PaintSerializable;
-import sk.palistudios.multigame.tools.RandomGenerator;
-import java.io.Serializable;
-import sk.palistudios.multigame.R;
 import sk.palistudios.multigame.mainMenu.DebugSettings;
+import sk.palistudios.multigame.tools.RandomGenerator;
+
+import java.io.Serializable;
+import java.util.ArrayList;
 
 /**
- *
  * @author Pali
  */
 public class MiniGameVBird extends AMiniGame implements IMiniGameVertical {
 
-    private ArrayList<Obstacle> mObstacles = new ArrayList<Obstacle>();
     private final static RandomGenerator mRG = RandomGenerator.getInstance();
-    private float movementThreshold;
+    PaintSerializable mPaintBird = null;
+    PaintSerializable mPaintObstacle = null;
 //    private int mBlur;
+    float movementSensitivity;
+    private ArrayList<Obstacle> mObstacles = new ArrayList<Obstacle>();
+    private float movementThreshold;
+    private int birdLeft;
+    private int birdRight;
+    private int mBirdTop;
+    private int mBirdBottom;
+    private int mBirdSize;
+    private int mObstacleWidth;
+    private int mObstacleHeight;
+    private int framesWithoutObstacle;
+    private float movementStep;
+    private int difficultyStep;
+    private int maxDifficulty;
+    private float actualMovement = 0;
+    private int framesToGo;
 
     public MiniGameVBird(String fileName, Integer position, GameActivity game) {
         super(fileName, position, game);
@@ -34,20 +50,6 @@ public class MiniGameVBird extends AMiniGame implements IMiniGameVertical {
         moveBird();
 
     }
-    private int birdLeft;
-    private int birdRight;
-    private int mBirdTop;
-    private int mBirdBottom;
-    PaintSerializable mPaintBird = null;
-    PaintSerializable mPaintObstacle = null;
-    private int mBirdSize;
-    private int mObstacleWidth;
-    private int mObstacleHeight;
-    private int framesWithoutObstacle;
-    float movementSensitivity;
-    private float movementStep;
-    private int difficultyStep;
-    private int maxDifficulty;
 
     public void initMinigame(Bitmap mBitmap, boolean wasGameSaved) {
 
@@ -88,7 +90,6 @@ public class MiniGameVBird extends AMiniGame implements IMiniGameVertical {
 
 
     }
-    private float actualMovement = 0;
 
     public void onUserInteracted(float movement) {
         if (mWidth == 0 || mHeight == 0) {
@@ -127,7 +128,6 @@ public class MiniGameVBird extends AMiniGame implements IMiniGameVertical {
 
 
     }
-    private int framesToGo;
 
     private void generateObstacles() {
 
@@ -209,6 +209,27 @@ public class MiniGameVBird extends AMiniGame implements IMiniGameVertical {
         return "Bird";
     }
 
+    private boolean isCollision(float top, float bottom, int birdTop, int birdBottom) {
+
+        if (birdTop < bottom && birdTop > top) {
+            return true;
+        }
+        if (birdBottom < bottom && birdBottom > top) {
+            return true;
+        }
+        return false;
+    }
+
+    @Override
+    public void setForTutorial() {
+        framesWithoutObstacle = (int) (framesWithoutObstacle * 1.2);
+    }
+
+    @Override
+    public void setForClassicGame() {
+        framesWithoutObstacle = (int) (framesWithoutObstacle * 1.1);
+    }
+
     private class Obstacle implements Serializable {
 
         float left;
@@ -242,26 +263,5 @@ public class MiniGameVBird extends AMiniGame implements IMiniGameVertical {
             right -= movementStep;
 
         }
-    }
-
-    private boolean isCollision(float top, float bottom, int birdTop, int birdBottom) {
-
-        if (birdTop < bottom && birdTop > top) {
-            return true;
-        }
-        if (birdBottom < bottom && birdBottom > top) {
-            return true;
-        }
-        return false;
-    }
-
-    @Override
-    public void setForTutorial() {
-        framesWithoutObstacle = (int) (framesWithoutObstacle * 1.2);
-    }
-
-    @Override
-    public void setForClassicGame() {
-        framesWithoutObstacle = (int) (framesWithoutObstacle * 1.1);
     }
 }

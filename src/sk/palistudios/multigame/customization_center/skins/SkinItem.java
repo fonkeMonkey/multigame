@@ -1,6 +1,7 @@
 package sk.palistudios.multigame.customization_center.skins;
 
 // @author Pali
+
 import sk.palistudios.multigame.customization_center.AbstractItem;
 import sk.palistudios.multigame.game.persistence.GameSharedPref;
 
@@ -50,6 +51,7 @@ public class SkinItem extends AbstractItem {
     public int getBarSeparatorColor() {
         return color4;
     }
+
     public int getBarSeparatorColorDown() {
         return color5;
     }

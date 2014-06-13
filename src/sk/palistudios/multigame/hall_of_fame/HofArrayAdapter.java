@@ -1,6 +1,7 @@
 package sk.palistudios.multigame.hall_of_fame;
 
 // @author Pali
+
 import android.content.Context;
 import android.graphics.Typeface;
 import android.view.LayoutInflater;
@@ -9,11 +10,12 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.TextView;
 import sk.palistudios.multigame.R;
-import java.util.ArrayList;
-import java.util.Arrays;
 import sk.palistudios.multigame.customization_center.skins.SkinItem;
 import sk.palistudios.multigame.customization_center.skins.SkinsCenterListActivity;
 import sk.palistudios.multigame.tools.GraphicUnitsConvertor;
+
+import java.util.ArrayList;
+import java.util.Arrays;
 
 public class HofArrayAdapter extends ArrayAdapter<HofItem> {
 

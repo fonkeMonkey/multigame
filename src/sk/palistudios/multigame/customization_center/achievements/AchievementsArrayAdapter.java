@@ -1,6 +1,7 @@
 package sk.palistudios.multigame.customization_center.achievements;
 
 // @author Pali
+
 import android.app.Activity;
 import android.content.Context;
 import android.graphics.Color;
@@ -10,18 +11,19 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.TextView;
 import sk.palistudios.multigame.R;
-import java.util.ArrayList;
 import sk.palistudios.multigame.customization_center.IAdapter;
 import sk.palistudios.multigame.customization_center.skins.SkinItem;
 
+import java.util.ArrayList;
+
 public class AchievementsArrayAdapter extends ArrayAdapter<AchievementItem> implements IAdapter {
 
-    private ArrayList<AchievementItem> myItems = new ArrayList<AchievementItem>();
-    private Context context;
-    private int colorChosen;
     TextView rowViewName = null;
     TextView rowViewDescription = null;
     TextView rowViewReward = null;
+    private ArrayList<AchievementItem> myItems = new ArrayList<AchievementItem>();
+    private Context context;
+    private int colorChosen;
 
     public AchievementsArrayAdapter(Context context, ArrayList<AchievementItem> items, SkinItem currentSkin) {
         super(context, R.layout.achievement_listitem, items);

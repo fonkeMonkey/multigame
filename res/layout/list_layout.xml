@@ -1,26 +1,29 @@
 <?xml version="1.0" encoding="utf-8"?>
 
 <!--xmlns:ads="http://schemas.android.com/apk/lib/com.google.ads"-->
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-              android:id="@+id/layout_home"
+<LinearLayout android:id="@+id/layout_home"
+              xmlns:android="http://schemas.android.com/apk/res/android"
               android:layout_width="fill_parent"
               android:layout_height="fill_parent">
 
     <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                  android:layout_width="fill_parent"
+                  android:layout_height="fill_parent"
                   android:orientation="vertical"
-                  android:layout_width="fill_parent"
-                  android:layout_height="fill_parent"
-    >
-<!--                  android:layout_marginLeft="3dp"
-                  android:layout_marginRight="3dp"-->
-        <ListView android:id="@id/android:list"
-                  android:layout_width="fill_parent"
-                  android:layout_height="fill_parent"
-/>
-        <TextView android:id="@+id/android:empty"
-                  android:layout_width="fill_parent"
-                  android:layout_height="wrap_content"
-                  android:text=" "/>
+        >
+        <!--                  android:layout_marginLeft="3dp"
+                          android:layout_marginRight="3dp"-->
+        <ListView
+            android:id="@id/android:list"
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            />
+
+        <TextView
+            android:id="@+id/android:empty"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:text=" "/>
 
     </LinearLayout>
 </LinearLayout>

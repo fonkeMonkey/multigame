@@ -1,29 +1,25 @@
 package sk.palistudios.multigame.preferences;
 
-import sk.palistudios.multigame.tools.SoundEffectsCenter;
 import android.app.Activity;
 import android.content.SharedPreferences;
 import android.media.AudioManager;
 import android.os.Bundle;
-import android.preference.CheckBoxPreference;
-import android.preference.ListPreference;
-import android.preference.Preference;
+import android.preference.*;
 import android.preference.Preference.OnPreferenceChangeListener;
 import android.preference.Preference.OnPreferenceClickListener;
-import android.preference.PreferenceActivity;
-import android.preference.PreferenceManager;
 import android.view.Gravity;
 import android.widget.TextView;
-//import com.appflood.AppFlood;
 import com.google.analytics.tracking.android.EasyTracker;
 import sk.palistudios.multigame.R;
 import sk.palistudios.multigame.customization_center.skins.SkinsCenterListActivity;
 import sk.palistudios.multigame.game.persistence.GameSharedPref;
 import sk.palistudios.multigame.mainMenu.DebugSettings;
+import sk.palistudios.multigame.tools.SoundEffectsCenter;
 import sk.palistudios.multigame.tools.Toaster;
 
+//import com.appflood.AppFlood;
+
 /**
- *
  * @author Pali
  */
 public class PreferencesActivity extends PreferenceActivity {
@@ -48,7 +44,7 @@ public class PreferencesActivity extends PreferenceActivity {
         setVolumeControlStream(AudioManager.STREAM_MUSIC);
 //        getWindow().setFlags(WindoswManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
 //        if (!GameSharedPref.isAchievementFulfilled("pro") && DebugSettings.adsActivated) {
-            setContentView(R.layout.list_layout);
+        setContentView(R.layout.list_layout);
 //        } else {
 //            setContentView(R.layout.list_layout_adfree);
 //        }

@@ -1,11 +1,12 @@
 package sk.palistudios.multigame.customization_center.music;
 
 // @author Pali
+
 import sk.palistudios.multigame.customization_center.AbstractItem;
 
 public class MusicItem extends AbstractItem {
 
-//    protected String computerName;
+    //    protected String computerName;
 //    protected String humanName;
 //    protected boolean chosen;
     public MusicItem(String computerName, String humanName, boolean chosen) {

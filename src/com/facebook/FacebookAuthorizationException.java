@@ -44,7 +44,7 @@ public class FacebookAuthorizationException extends FacebookException {
      * Constructs a FacebookAuthorizationException with a message and inner
      * error.
      *
-     * @param message A String to be returned from getMessage.
+     * @param message   A String to be returned from getMessage.
      * @param throwable A Throwable to be returned from getCause.
      */
     public FacebookAuthorizationException(String message, Throwable throwable) {

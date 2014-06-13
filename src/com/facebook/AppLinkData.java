@@ -55,13 +55,16 @@ public class AppLinkData {
     private String version;
     private JSONObject arguments;
 
+    private AppLinkData() {
+    }
+
     /**
      * Asynchronously fetches app link information that might have been stored
      * for use after installation of the app
      *
-     * @param context The context
+     * @param context           The context
      * @param completionHandler CompletionHandler to be notified with the
-     * AppLinkData object or null if none is available. Must not be null.
+     *                          AppLinkData object or null if none is available. Must not be null.
      */
     public static void fetchDeferredAppLinkData(Context context, CompletionHandler completionHandler) {
         fetchDeferredAppLinkData(context, null, completionHandler);
@@ -71,11 +74,11 @@ public class AppLinkData {
      * Asynchronously fetches app link information that might have been stored
      * for use after installation of the app
      *
-     * @param context The context
-     * @param applicationId Facebook application Id. If null, it is taken from
-     * the manifest
+     * @param context           The context
+     * @param applicationId     Facebook application Id. If null, it is taken from
+     *                          the manifest
      * @param completionHandler CompletionHandler to be notified with the
-     * AppLinkData object or null if none is available. Must not be null.
+     *                          AppLinkData object or null if none is available. Must not be null.
      */
     public static void fetchDeferredAppLinkData(
             Context context,
@@ -199,9 +202,6 @@ public class AppLinkData {
         return null;
     }
 
-    private AppLinkData() {
-    }
-
     /**
      * TargetUri for this App Link
      *
@@ -241,7 +241,7 @@ public class AppLinkData {
          * If no app link data was found, this method is called with null
          *
          * @param appLinkData The app link data that was fetched. Null if none
-         * was found.
+         *                    was found.
          */
         void onDeferredAppLinkDataFetched(AppLinkData appLinkData);
     }

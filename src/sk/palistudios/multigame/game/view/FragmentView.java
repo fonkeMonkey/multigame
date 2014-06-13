@@ -1,10 +1,9 @@
 package sk.palistudios.multigame.game.view;
 
-import sk.palistudios.multigame.game.minigames.AMiniGame;
 import android.content.Context;
+import sk.palistudios.multigame.game.minigames.AMiniGame;
 
 /**
- *
  * @author Pali
  */
 public class FragmentView extends AFragmentView {

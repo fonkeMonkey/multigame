@@ -1,18 +1,19 @@
 package sk.palistudios.multigame.game;
 
 // @author Pali
-import android.content.SharedPreferences;
+
+import android.util.Log;
+import sk.palistudios.multigame.game.minigames.AMiniGame;
 import sk.palistudios.multigame.game.persistence.GameSaverLoader;
 import sk.palistudios.multigame.game.persistence.GameSharedPref;
-import android.util.Log;
+
 import java.lang.reflect.Constructor;
-import sk.palistudios.multigame.game.minigames.AMiniGame;
 
 public class GameMinigamesManager {
 
-    private static AMiniGame[] chosenMinigamesObjects = new AMiniGame[4];
-//    private static String[] chosenMinigamesNames = new String[4];
+    //    private static String[] chosenMinigamesNames = new String[4];
     public static boolean[] currentlyActiveMinigames = new boolean[4];
+    private static AMiniGame[] chosenMinigamesObjects = new AMiniGame[4];
 
     protected static void activateAllMiniGames(GameActivity game) {
         for (int i = 0; i < 4; i++) {
@@ -54,7 +55,7 @@ public class GameMinigamesManager {
 
     }
 
-//    protected static void resolveChosenMinigameNames() {
+    //    protected static void resolveChosenMinigameNames() {
 //        boolean isGameSaved = GameSharedPref.isGameSaved();
 //        boolean isTutorialActive = GameSharedPref.isNoviceModeActivated();
 ////        String[] chosenMinigamesNames = new String[4];
@@ -138,7 +139,7 @@ public class GameMinigamesManager {
         return chosenMinigamesObjects;
     }
 
-//    public static String[] getMiniGamesNames() {
+    //    public static String[] getMiniGamesNames() {
 //        return chosenMinigamesNames;
 //    }
     public static MinigameInfoObject[] getMinigamesInfoObjects() {

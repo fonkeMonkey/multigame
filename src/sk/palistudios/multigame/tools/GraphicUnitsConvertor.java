@@ -7,7 +7,6 @@ package sk.palistudios.multigame.tools;
 import android.content.Context;
 
 /**
- *
  * @author virdzek
  */
 public class GraphicUnitsConvertor {

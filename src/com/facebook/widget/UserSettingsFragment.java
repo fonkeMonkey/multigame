@@ -25,12 +25,12 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 import com.facebook.*;
-import sk.palistudios.multigame.R;
 import com.facebook.internal.AnalyticsEvents;
 import com.facebook.internal.ImageDownloader;
 import com.facebook.internal.ImageRequest;
 import com.facebook.internal.ImageResponse;
 import com.facebook.model.GraphUser;
+import sk.palistudios.multigame.R;
 
 import java.net.URI;
 import java.net.URISyntaxException;
@@ -53,8 +53,8 @@ public class UserSettingsFragment extends FacebookFragment {
     private static final String NAME = "name";
     private static final String ID = "id";
     private static final String PICTURE = "picture";
-    private static final String FIELDS = "fields";
     private static final String REQUEST_FIELDS = TextUtils.join(",", new String[]{ID, NAME, PICTURE});
+    private static final String FIELDS = "fields";
     private LoginButton loginButton;
     private LoginButton.LoginButtonProperties loginButtonProperties = new LoginButton.LoginButtonProperties();
     private TextView connectedStateLabel;
@@ -95,7 +95,7 @@ public class UserSettingsFragment extends FacebookFragment {
 
     /**
      * @throws com.facebook.FacebookException if errors occur during the loading
-     * of user information
+     *                                        of user information
      */
     @Override
     public void onResume() {
@@ -114,7 +114,7 @@ public class UserSettingsFragment extends FacebookFragment {
      *
      * @param newSession the Session object to use
      * @throws com.facebook.FacebookException if errors occur during the loading
-     * of user information
+     *                                        of user information
      */
     @Override
     public void setSession(Session newSession) {
@@ -127,17 +127,6 @@ public class UserSettingsFragment extends FacebookFragment {
     }
 
     /**
-     * Sets the default audience to use when the session is opened. This value
-     * is only useful when specifying write permissions for the native login
-     * dialog.
-     *
-     * @param defaultAudience the default audience value to use
-     */
-    public void setDefaultAudience(SessionDefaultAudience defaultAudience) {
-        loginButtonProperties.setDefaultAudience(defaultAudience);
-    }
-
-    /**
      * Gets the default audience to use when the session is opened. This value
      * is only useful when specifying write permissions for the native login
      * dialog.
@@ -146,6 +135,17 @@ public class UserSettingsFragment extends FacebookFragment {
      */
     public SessionDefaultAudience getDefaultAudience() {
         return loginButtonProperties.getDefaultAudience();
+    }
+
+    /**
+     * Sets the default audience to use when the session is opened. This value
+     * is only useful when specifying write permissions for the native login
+     * dialog.
+     *
+     * @param defaultAudience the default audience value to use
+     */
+    public void setDefaultAudience(SessionDefaultAudience defaultAudience) {
+        loginButtonProperties.setDefaultAudience(defaultAudience);
     }
 
     /**
@@ -169,9 +169,8 @@ public class UserSettingsFragment extends FacebookFragment {
      * session explicitly).
      *
      * @param permissions the read permissions to use
-     *
      * @throws UnsupportedOperationException if setPublishPermissions has been
-     * called
+     *                                       called
      */
     public void setReadPermissions(List<String> permissions) {
         loginButtonProperties.setReadPermissions(permissions, getSession());
@@ -198,9 +197,8 @@ public class UserSettingsFragment extends FacebookFragment {
      * session explicitly).
      *
      * @param permissions the read permissions to use
-     *
      * @throws UnsupportedOperationException if setPublishPermissions has been
-     * called
+     *                                       called
      */
     public void setReadPermissions(String... permissions) {
         loginButtonProperties.setReadPermissions(Arrays.asList(permissions), getSession());
@@ -226,10 +224,9 @@ public class UserSettingsFragment extends FacebookFragment {
      * of the LoginButton class altogether (by managing the session explicitly).
      *
      * @param permissions the read permissions to use
-     *
      * @throws UnsupportedOperationException if setReadPermissions has been
-     * called
-     * @throws IllegalArgumentException if permissions is null or empty
+     *                                       called
+     * @throws IllegalArgumentException      if permissions is null or empty
      */
     public void setPublishPermissions(List<String> permissions) {
         loginButtonProperties.setPublishPermissions(permissions, getSession());
@@ -255,10 +252,9 @@ public class UserSettingsFragment extends FacebookFragment {
      * of the LoginButton class altogether (by managing the session explicitly).
      *
      * @param permissions the read permissions to use
-     *
      * @throws UnsupportedOperationException if setReadPermissions has been
-     * called
-     * @throws IllegalArgumentException if permissions is null or empty
+     *                                       called
+     * @throws IllegalArgumentException      if permissions is null or empty
      */
     public void setPublishPermissions(String... permissions) {
         loginButtonProperties.setPublishPermissions(Arrays.asList(permissions), getSession());
@@ -269,20 +265,6 @@ public class UserSettingsFragment extends FacebookFragment {
      */
     public void clearPermissions() {
         loginButtonProperties.clearPermissions();
-    }
-
-    /**
-     * Sets the login behavior for the session that will be opened. If null is
-     * specified, the default
-     * ({@link SessionLoginBehavior SessionLoginBehavior.SSO_WITH_FALLBACK} will
-     * be used.
-     *
-     * @param loginBehavior The
-     * {@link SessionLoginBehavior SessionLoginBehavior} that specifies what
-     * behaviors should be attempted during authorization.
-     */
-    public void setLoginBehavior(SessionLoginBehavior loginBehavior) {
-        loginButtonProperties.setLoginBehavior(loginBehavior);
     }
 
     /**
@@ -300,13 +282,17 @@ public class UserSettingsFragment extends FacebookFragment {
     }
 
     /**
-     * Sets an OnErrorListener for this instance of UserSettingsFragment to call
-     * into when certain exceptions occur.
+     * Sets the login behavior for the session that will be opened. If null is
+     * specified, the default
+     * ({@link SessionLoginBehavior SessionLoginBehavior.SSO_WITH_FALLBACK} will
+     * be used.
      *
-     * @param onErrorListener The listener object to set
+     * @param loginBehavior The
+     *                      {@link SessionLoginBehavior SessionLoginBehavior} that specifies what
+     *                      behaviors should be attempted during authorization.
      */
-    public void setOnErrorListener(LoginButton.OnErrorListener onErrorListener) {
-        loginButtonProperties.setOnErrorListener(onErrorListener);
+    public void setLoginBehavior(SessionLoginBehavior loginBehavior) {
+        loginButtonProperties.setLoginBehavior(loginBehavior);
     }
 
     /**
@@ -320,13 +306,13 @@ public class UserSettingsFragment extends FacebookFragment {
     }
 
     /**
-     * Sets the callback interface that will be called whenever the status of
-     * the Session associated with this LoginButton changes.
+     * Sets an OnErrorListener for this instance of UserSettingsFragment to call
+     * into when certain exceptions occur.
      *
-     * @param callback the callback interface
+     * @param onErrorListener The listener object to set
      */
-    public void setSessionStatusCallback(Session.StatusCallback callback) {
-        this.sessionStatusCallback = callback;
+    public void setOnErrorListener(LoginButton.OnErrorListener onErrorListener) {
+        loginButtonProperties.setOnErrorListener(onErrorListener);
     }
 
     /**
@@ -337,6 +323,16 @@ public class UserSettingsFragment extends FacebookFragment {
      */
     public Session.StatusCallback getSessionStatusCallback() {
         return sessionStatusCallback;
+    }
+
+    /**
+     * Sets the callback interface that will be called whenever the status of
+     * the Session associated with this LoginButton changes.
+     *
+     * @param callback the callback interface
+     */
+    public void setSessionStatusCallback(Session.StatusCallback callback) {
+        this.sessionStatusCallback = callback;
     }
 
     @Override
@@ -431,18 +427,18 @@ public class UserSettingsFragment extends FacebookFragment {
             ImageRequest.Builder requestBuilder = new ImageRequest.Builder(
                     getActivity(),
                     ImageRequest.getProfilePictureUrl(
-                    user.getId(),
-                    getResources().getDimensionPixelSize(R.dimen.com_facebook_usersettingsfragment_profile_picture_width),
-                    getResources().getDimensionPixelSize(R.dimen.com_facebook_usersettingsfragment_profile_picture_height)));
+                            user.getId(),
+                            getResources().getDimensionPixelSize(R.dimen.com_facebook_usersettingsfragment_profile_picture_width),
+                            getResources().getDimensionPixelSize(R.dimen.com_facebook_usersettingsfragment_profile_picture_height)));
 
             request = requestBuilder.setCallerTag(this)
                     .setCallback(
-                    new ImageRequest.Callback() {
-                        @Override
-                        public void onCompleted(ImageResponse response) {
-                            processImageResponse(user.getId(), response);
-                        }
-                    })
+                            new ImageRequest.Callback() {
+                                @Override
+                                public void onCompleted(ImageResponse response) {
+                                    processImageResponse(user.getId(), response);
+                                }
+                            })
                     .build();
         } catch (URISyntaxException e) {
         }

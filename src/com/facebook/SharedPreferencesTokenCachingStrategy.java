@@ -77,8 +77,7 @@ public class SharedPreferencesTokenCachingStrategy extends TokenCachingStrategy 
      * instance that provides access to a single set of token information.
      *
      * @param context The Context object to use to get the SharedPreferences
-     * object.
-     *
+     *                object.
      * @throws NullPointerException if the passed in Context is null
      */
     public SharedPreferencesTokenCachingStrategy(Context context) {
@@ -90,11 +89,9 @@ public class SharedPreferencesTokenCachingStrategy extends TokenCachingStrategy 
      * {@link SharedPreferencesTokenCachingStrategy SharedPreferencesTokenCachingStrategy}
      * instance that is distinct for the passed in cacheKey.
      *
-     * @param context The Context object to use to get the SharedPreferences
-     * object.
-     *
+     * @param context  The Context object to use to get the SharedPreferences
+     *                 object.
      * @param cacheKey Identifies a distinct set of token information.
-     *
      * @throws NullPointerException if the passed in Context is null
      */
     public SharedPreferencesTokenCachingStrategy(Context context, String cacheKey) {

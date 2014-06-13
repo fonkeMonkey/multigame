@@ -1,6 +1,5 @@
 package sk.palistudios.multigame.hall_of_fame;
 
-import sk.palistudios.multigame.tools.SoundEffectsCenter;
 import android.app.ProgressDialog;
 import android.media.AudioManager;
 import android.os.Bundle;
@@ -8,14 +7,15 @@ import android.view.Gravity;
 import android.widget.ArrayAdapter;
 import android.widget.TextView;
 import com.google.analytics.tracking.android.EasyTracker;
-import java.util.ArrayList;
 import sk.palistudios.multigame.BaseListActivity;
 import sk.palistudios.multigame.R;
 import sk.palistudios.multigame.customization_center.skins.SkinsCenterListActivity;
 import sk.palistudios.multigame.game.persistence.GameSharedPref;
+import sk.palistudios.multigame.tools.SoundEffectsCenter;
+
+import java.util.ArrayList;
 
 /**
- *
  * @author Pali
  */
 public class HallOfFameActivity extends BaseListActivity {
@@ -78,8 +78,7 @@ public class HallOfFameActivity extends BaseListActivity {
         super.onPause();
         overridePendingTransition(R.anim.fadein, R.anim.fadeout);
     }
-    
-    
+
 
     @Override
     public void onBackPressed() {

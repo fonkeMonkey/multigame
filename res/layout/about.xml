@@ -23,14 +23,14 @@
             android:layout_height="75dp"
 
 
-            android:src="@drawable/logo"
+            android:layout_gravity="left|center"
 
 
-            android:layout_gravity="left|center"/>
+            android:src="@drawable/logo"/>
 
-        <LinearLayout 
+        <LinearLayout
             android:orientation="vertical"
-        >
+            >
             <!--android:layout_height="match_parent"-->
             <!--android:layout_width="match_parent"-->
             <TextView
@@ -39,24 +39,24 @@
                 android:id="@+id/about_text"
 
 
-                android:gravity="center"
-                android:layout_gravity="center"
                 android:layout_width="fill_parent"
+                android:layout_height="fill_parent"
+                android:layout_gravity="center"
 
 
-                android:layout_height="fill_parent" 
+                android:gravity="center"
 
                 android:text="Multigame v 1.0\n©Pali Studios\n"
-/>
+                />
             <!--android:text="@raw/info"/>-->
             <TextView
-                android:gravity="center"
-                android:layout_gravity="center"
-                android:textSize="10sp"
-                android:text="Music by Deceased Superior Technician"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-/>
+                android:layout_gravity="center"
+                android:gravity="center"
+                android:text="Music by Deceased Superior Technician"
+                android:textSize="10sp"
+                />
 
         </LinearLayout>
     </TableRow>
@@ -75,19 +75,19 @@
 
 
             android:layout_height="wrap_content"
-            android:textSize="10dip"
-            android:textStyle="italic"
-
-
+            android:layout_margin="8dip"
             android:layout_span="2"
 
 
-            android:layout_margin="8dip"
+            android:text="All rights reserved."
 
 
-            android:textColor="#cccccc" 
+            android:textColor="#cccccc"
 
-            android:text="All rights reserved."/>
+
+            android:textSize="10dip"
+
+            android:textStyle="italic"/>
         <!--android:text="@raw/legal"/>-->
 
 

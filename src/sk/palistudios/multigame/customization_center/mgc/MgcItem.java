@@ -1,6 +1,7 @@
 package sk.palistudios.multigame.customization_center.mgc;
 
 // @author Pali
+
 import sk.palistudios.multigame.customization_center.AbstractItem;
 
 public class MgcItem extends AbstractItem {

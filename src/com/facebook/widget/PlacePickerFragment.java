@@ -32,11 +32,11 @@ import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import android.widget.ListView;
 import com.facebook.*;
-import sk.palistudios.multigame.R;
 import com.facebook.internal.AnalyticsEvents;
-import com.facebook.model.GraphPlace;
 import com.facebook.internal.Logger;
 import com.facebook.internal.Utility;
+import com.facebook.model.GraphPlace;
+import sk.palistudios.multigame.R;
 
 import java.util.*;
 
@@ -74,10 +74,12 @@ public class PlacePickerFragment extends PickerFragment<GraphPlace> {
      * The default radius around the center point to search.
      */
     public static final int DEFAULT_RADIUS_IN_METERS = 1000;
+    private int radiusInMeters = DEFAULT_RADIUS_IN_METERS;
     /**
      * The default number of results to retrieve.
      */
     public static final int DEFAULT_RESULTS_LIMIT = 100;
+    private int resultsLimit = DEFAULT_RESULTS_LIMIT;
     private static final int searchTextTimerDelayInMilliseconds = 2 * 1000;
     private static final String ID = "id";
     private static final String NAME = "name";
@@ -86,8 +88,6 @@ public class PlacePickerFragment extends PickerFragment<GraphPlace> {
     private static final String WERE_HERE_COUNT = "were_here_count";
     private static final String TAG = "PlacePickerFragment";
     private Location location;
-    private int radiusInMeters = DEFAULT_RADIUS_IN_METERS;
-    private int resultsLimit = DEFAULT_RESULTS_LIMIT;
     private String searchText;
     private Timer searchTextTimer;
     private boolean hasSearchTextChangedSinceLastQuery;
@@ -105,7 +105,7 @@ public class PlacePickerFragment extends PickerFragment<GraphPlace> {
      * Constructor.
      *
      * @param args a Bundle that optionally contains one or more values
-     * containing additional configuration information for the Fragment.
+     *             containing additional configuration information for the Fragment.
      */
     public PlacePickerFragment(Bundle args) {
         super(GraphPlace.class, R.layout.com_facebook_placepickerfragment, args);
@@ -205,10 +205,10 @@ public class PlacePickerFragment extends PickerFragment<GraphPlace> {
      * public to enable applications to provide their own search box UI instead
      * of the default one).
      *
-     * @param searchText the search text
+     * @param searchText                 the search text
      * @param forceReloadEventIfSameText if true, will reload even if the search
-     * text has not changed; if false, identical search text will not force a
-     * reload
+     *                                   text has not changed; if false, identical search text will not force a
+     *                                   reload
      */
     public void onSearchBoxTextChanged(String searchText, boolean forceReloadEventIfSameText) {
         if (!forceReloadEventIfSameText && Utility.stringsEqualOrEmpty(this.searchText, searchText)) {
@@ -386,18 +386,18 @@ public class PlacePickerFragment extends PickerFragment<GraphPlace> {
     }
 
     private Request createRequest(Location location, int radiusInMeters, int resultsLimit, String searchText,
-            Set<String> extraFields,
-            Session session) {
+                                  Set<String> extraFields,
+                                  Session session) {
         Request request = Request.newPlacesSearchRequest(session, location, radiusInMeters, resultsLimit, searchText,
                 null);
 
         Set<String> fields = new HashSet<String>(extraFields);
         String[] requiredFields = new String[]{
-            ID,
-            NAME,
-            LOCATION,
-            CATEGORY,
-            WERE_HERE_COUNT
+                ID,
+                NAME,
+                LOCATION,
+                CATEGORY,
+                WERE_HERE_COUNT
         };
         fields.addAll(Arrays.asList(requiredFields));
 
@@ -494,7 +494,7 @@ public class PlacePickerFragment extends PickerFragment<GraphPlace> {
 
         @Override
         protected void onLoadFinished(GraphObjectPagingLoader<GraphPlace> loader,
-                SimpleGraphObjectCursor<GraphPlace> data) {
+                                      SimpleGraphObjectCursor<GraphPlace> data) {
             super.onLoadFinished(loader, data);
 
             // We could be called in this state if we are clearing data or if we are being re-attached

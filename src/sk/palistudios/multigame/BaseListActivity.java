@@ -4,19 +4,14 @@
  */
 package sk.palistudios.multigame;
 
-import android.app.Activity;
 import android.app.ListActivity;
-import android.content.Context;
-import android.media.AudioManager;
-import android.os.Bundle;
 import sk.palistudios.multigame.tools.SoundEffectsCenter;
 
 /**
- *
  * @author virdzek
  */
 public abstract class BaseListActivity extends ListActivity {
-    
+
     @Override
     protected void onResume() {
         super.onResume();

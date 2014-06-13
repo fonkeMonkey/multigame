@@ -1,6 +1,7 @@
 package sk.palistudios.multigame.customization_center.achievements;
 
 // @author Pali
+
 import android.app.Activity;
 import sk.palistudios.multigame.R;
 import sk.palistudios.multigame.customization_center.AbstractItem;

@@ -38,7 +38,6 @@ import java.net.*;
  * @Deprecated to this class causes warnings in other deprecated classes that
  * reference this one. That is the only reason this entire class is not
  * deprecated.
- *
  * @devDocDeprecated
  */
 public final class Util {
@@ -50,7 +49,7 @@ public final class Util {
      * string
      *
      * @param parameters the parameters need to be posted
-     * @param boundary the random string as boundary
+     * @param boundary   the random string as boundary
      * @return a string of the post body
      */
     @Deprecated
@@ -144,16 +143,16 @@ public final class Util {
 
     /**
      * Connect to an HTTP URL and return the response as a string.
-     *
+     * <p/>
      * Note that the HTTP method override is used on non-GET requests. (i.e.
      * requests are made as "POST" with method specified in the body).
      *
-     * @param url - the resource to open: must be a welformed URL
+     * @param url    - the resource to open: must be a welformed URL
      * @param method - the HTTP method to use ("GET", "POST", etc.)
      * @param params - the query parameter for the URL (e.g. access_token=foo)
      * @return the URL contents as a String
      * @throws MalformedURLException - if the URL format is invalid
-     * @throws IOException - if a network problem occurs
+     * @throws IOException           - if a network problem occurs
      */
     @Deprecated
     public static String openUrl(String url, String method, Bundle params)
@@ -249,7 +248,7 @@ public final class Util {
      * Parse a server response into a JSON Object. This is a basic
      * implementation using org.json.JSONObject representation. More
      * sophisticated applications may wish to do their own parsing.
-     *
+     * <p/>
      * The parsed JSON is checked for a variety of error fields and a
      * FacebookException is thrown if an error condition is set, populated with
      * the error message and error type or code if available.
@@ -302,8 +301,8 @@ public final class Util {
      * Display a simple alert dialog with the given text and title.
      *
      * @param context Android context in which the dialog should be displayed
-     * @param title Alert dialog title
-     * @param text Alert dialog message
+     * @param title   Alert dialog title
+     * @param text    Alert dialog message
      */
     @Deprecated
     public static void showAlert(Context context, String title, String text) {

@@ -83,9 +83,9 @@ public interface GraphObject {
      * a property getter defined to return a GraphObject-derived type without
      * requiring explicit definition of an interface to define the getter.
      *
-     * @param propertyName the name of the property to get
+     * @param propertyName     the name of the property to get
      * @param graphObjectClass the GraphObject-derived interface to cast the
-     * property to
+     *                         property to
      * @return
      */
     <T extends GraphObject> T getPropertyAs(String propertyName, Class<T> graphObjectClass);
@@ -97,9 +97,9 @@ public interface GraphObject {
      * without requiring explicit definition of an interface to define the
      * getter.
      *
-     * @param propertyName the name of the property to get
+     * @param propertyName     the name of the property to get
      * @param graphObjectClass the GraphObject-derived interface to cast the
-     * property to a list of
+     *                         property to a list of
      * @return
      */
     <T extends GraphObject> GraphObjectList<T> getPropertyAsList(String propertyName, Class<T> graphObjectClass);
@@ -107,7 +107,7 @@ public interface GraphObject {
     /**
      * Sets a property of the GraphObject
      *
-     * @param propertyName the name of the property to set
+     * @param propertyName  the name of the property to set
      * @param propertyValue the value of the named property to set
      */
     void setProperty(String propertyName, Object propertyValue);
@@ -132,8 +132,8 @@ public interface GraphObject {
 
         private static final HashSet<Class<?>> verifiedGraphObjectClasses = new HashSet<Class<?>>();
         private static final SimpleDateFormat[] dateFormats = new SimpleDateFormat[]{
-            new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ssZ", Locale.US),
-            new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss", Locale.US), new SimpleDateFormat("yyyy-MM-dd", Locale.US),};
+                new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ssZ", Locale.US),
+                new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss", Locale.US), new SimpleDateFormat("yyyy-MM-dd", Locale.US),};
 
         // No objects of this type should exist.
         private Factory() {
@@ -145,9 +145,8 @@ public interface GraphObject {
          *
          * @param json the JSONObject containing the data to be exposed
          * @return a GraphObject that represents the underlying data
-         *
          * @throws com.facebook.FacebookException If the passed in Class is not
-         * a valid GraphObject interface
+         *                                        a valid GraphObject interface
          */
         public static GraphObject create(JSONObject json) {
             return create(json, GraphObject.class);
@@ -157,12 +156,11 @@ public interface GraphObject {
          * Creates a GraphObject-derived proxy that provides typed access to the
          * data in an underlying JSONObject.
          *
-         * @param json the JSONObject containing the data to be exposed
+         * @param json             the JSONObject containing the data to be exposed
          * @param graphObjectClass the GraphObject-derived type to return
          * @return a graphObjectClass that represents the underlying data
-         *
          * @throws com.facebook.FacebookException If the passed in Class is not
-         * a valid GraphObject interface
+         *                                        a valid GraphObject interface
          */
         public static <T extends GraphObject> T create(JSONObject json, Class<T> graphObjectClass) {
             return createGraphObjectProxy(graphObjectClass, json);
@@ -172,9 +170,8 @@ public interface GraphObject {
          * Creates a GraphObject proxy that initially contains no data.
          *
          * @return a GraphObject with no data
-         *
          * @throws com.facebook.FacebookException If the passed in Class is not
-         * a valid GraphObject interface
+         *                                        a valid GraphObject interface
          */
         public static GraphObject create() {
             return create(GraphObject.class);
@@ -185,9 +182,8 @@ public interface GraphObject {
          *
          * @param graphObjectClass the GraphObject-derived type to return
          * @return a graphObjectClass with no data
-         *
          * @throws com.facebook.FacebookException If the passed in Class is not
-         * a valid GraphObject interface
+         *                                        a valid GraphObject interface
          */
         public static <T extends GraphObject> T create(Class<T> graphObjectClass) {
             return createGraphObjectProxy(graphObjectClass, new JSONObject());
@@ -221,12 +217,11 @@ public interface GraphObject {
          * Creates a GraphObjectList-derived proxy that provides typed access to
          * the data in an underlying JSONArray.
          *
-         * @param array the JSONArray containing the data to be exposed
+         * @param array            the JSONArray containing the data to be exposed
          * @param graphObjectClass the GraphObject-derived type to return
          * @return a graphObjectClass that represents the underlying data
-         *
          * @throws com.facebook.FacebookException If the passed in Class is not
-         * a valid GraphObject interface
+         *                                        a valid GraphObject interface
          */
         public static <T> GraphObjectList<T> createList(JSONArray array, Class<T> graphObjectClass) {
             return new GraphObjectListImpl<T>(array, graphObjectClass);
@@ -238,9 +233,8 @@ public interface GraphObject {
          *
          * @param graphObjectClass the GraphObject-derived type to return
          * @return a GraphObjectList with no data
-         *
          * @throws com.facebook.FacebookException If the passed in Class is not
-         * a valid GraphObject interface
+         *                                        a valid GraphObject interface
          */
         public static <T> GraphObjectList<T> createList(Class<T> graphObjectClass) {
             return createList(new JSONArray(), graphObjectClass);
@@ -330,7 +324,7 @@ public interface GraphObject {
         // If expectedType is a generic type, expectedTypeAsParameterizedType must be provided in order to determine
         // generic parameter types.
         static <U> U coerceValueToExpectedType(Object value, Class<U> expectedType,
-                ParameterizedType expectedTypeAsParameterizedType) {
+                                               ParameterizedType expectedTypeAsParameterizedType) {
             if (value == null) {
                 if (boolean.class.equals(expectedType)) {
                     @SuppressWarnings("unchecked")

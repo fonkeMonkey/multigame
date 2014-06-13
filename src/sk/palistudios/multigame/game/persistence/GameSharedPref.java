@@ -11,6 +11,7 @@ public class GameSharedPref {
     private static SharedPreferences sharedPref;
     private static SharedPreferences.Editor editor;
     private static boolean runAlready = false;
+    public boolean isGameSaved;
 
     public static void initSharedPref(Activity activity) {
 
@@ -44,15 +45,6 @@ public class GameSharedPref {
         return sharedPref.getBoolean("minigamesResolved", false);
     }
 
-    public static void setChosenMinigamesNames(String[] miniGamesNames) {
-        editor.putString("MinigameV", miniGamesNames[0]);
-        editor.putString("MinigameH", miniGamesNames[1]);
-        editor.putString("MinigameT1", miniGamesNames[2]);
-        editor.putString("MinigameT2", miniGamesNames[3]);
-        editor.putBoolean("minigamesResolved", true);
-        editor.commit();
-    }
-
     public static String[] getChosenMinigamesNames() {
         String[] result = new String[4];
 
@@ -62,6 +54,15 @@ public class GameSharedPref {
         result[3] = sharedPref.getString("MinigameT2", null);
 
         return result;
+    }
+
+    public static void setChosenMinigamesNames(String[] miniGamesNames) {
+        editor.putString("MinigameV", miniGamesNames[0]);
+        editor.putString("MinigameH", miniGamesNames[1]);
+        editor.putString("MinigameT1", miniGamesNames[2]);
+        editor.putString("MinigameT2", miniGamesNames[3]);
+        editor.putBoolean("minigamesResolved", true);
+        editor.commit();
     }
 
     //    public static boolean setGameMode(String gameMode) {
@@ -145,13 +146,13 @@ public class GameSharedPref {
         editor.commit();
     }
 
+    public static String getMusicLoopChosen() {
+        return sharedPref.getString("musicLoopChosen", "dst_blam");
+    }
+
     public static void setMusicLoopChosen(String musicChosen) {
         editor.putString("musicLoopChosen", musicChosen);
         editor.commit();
-    }
-
-    public static String getMusicLoopChosen() {
-        return sharedPref.getString("musicLoopChosen", "dst_blam");
     }
 
     public static void setSkinChosen(String skinChosen) {
@@ -230,14 +231,14 @@ public class GameSharedPref {
         editor.commit();
     }
 
+    public static String getGameMode() {
+        return sharedPref.getString("game_mode", "Tutorial");
+    }
+
     public static void setGameMode(String game_mode) {
         editor.putString("game_mode", game_mode);
         editor.commit();
 
-    }
-
-    public static String getGameMode() {
-        return sharedPref.getString("game_mode", "Tutorial");
     }
 
     public static void clear() {
@@ -317,8 +318,6 @@ public class GameSharedPref {
         editor.putBoolean("db_initialized", b);
         editor.commit();
     }
-
-    public boolean isGameSaved;
 
     public static boolean isMinigamesInitialized() {
         return sharedPref.getBoolean("minigamesInitialized", false);

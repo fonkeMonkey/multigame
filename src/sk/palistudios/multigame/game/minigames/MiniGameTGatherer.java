@@ -1,35 +1,44 @@
 package sk.palistudios.multigame.game.minigames;
 
 import android.content.Context;
-import sk.palistudios.multigame.tools.RandomGenerator;
-import sk.palistudios.multigame.tools.ITimeObserver;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.Paint;
-
-import java.util.ArrayList;
-import sk.palistudios.multigame.game.GameActivity;
-import sk.palistudios.multigame.game.persistence.PaintSerializable;
-import java.io.Serializable;
 import sk.palistudios.multigame.R;
+import sk.palistudios.multigame.game.GameActivity;
 import sk.palistudios.multigame.game.GameTimeMaster;
+import sk.palistudios.multigame.game.persistence.PaintSerializable;
 import sk.palistudios.multigame.mainMenu.DebugSettings;
+import sk.palistudios.multigame.tools.ITimeObserver;
+import sk.palistudios.multigame.tools.RandomGenerator;
+
+import java.io.Serializable;
+import java.util.ArrayList;
 
 /**
- *
  * @author Pali
  */
 public class MiniGameTGatherer extends AMiniGame implements IMiniGameTouch, ITimeObserver {
 
     private static final RandomGenerator mRg = RandomGenerator.getInstance();
+    boolean gameLost = false;
+    PaintSerializable mPaintCircleColor = null;
+    PaintSerializable mPaintNumberColor = null;
     private ArrayList<CircleToTouch> mCircles = new ArrayList<CircleToTouch>();
-
+    private int mCircleSize;
+    private int touchingDistance;
+    private int textAlign;
+    private int maximumDifficulty;
+    private int difficultyStep;
+    private int touchX;
+    private int touchY;
+    private int framesToGenerateCircle = 160;
+    private int framesToGo = 20;
     public MiniGameTGatherer(String fileName, Integer position, GameActivity game) {
         super(fileName, position, game);
         type = Typ.Touch;
 
     }
-    boolean gameLost = false;
 
     public void updateMinigame() {
         if (gameLost) {
@@ -39,13 +48,6 @@ public class MiniGameTGatherer extends AMiniGame implements IMiniGameTouch, ITim
         generateNewObjects();
 
     }
-    PaintSerializable mPaintCircleColor = null;
-    PaintSerializable mPaintNumberColor = null;
-    private int mCircleSize;
-    private int touchingDistance;
-    private int textAlign;
-    private int maximumDifficulty;
-    private int difficultyStep;
 
     public void initMinigame(Bitmap mBitmap, boolean wasGameSaved) {
 
@@ -64,8 +66,6 @@ public class MiniGameTGatherer extends AMiniGame implements IMiniGameTouch, ITim
 //        difficultyStep = 8;
         isMinigameInitialized = true;
     }
-    private int touchX;
-    private int touchY;
 
     public void onUserInteracted(float x, float y) {
 
@@ -92,8 +92,6 @@ public class MiniGameTGatherer extends AMiniGame implements IMiniGameTouch, ITim
             mCanvas.drawText(String.valueOf(obj.duration), obj.x - textAlign, obj.y + textAlign, mPaintNumberColor.mPaint);
         }
     }
-    private int framesToGenerateCircle = 160;
-    private int framesToGo = 20;
 
     private void generateNewObjects() {
 
@@ -169,6 +167,16 @@ public class MiniGameTGatherer extends AMiniGame implements IMiniGameTouch, ITim
         return false;
     }
 
+    @Override
+    public void setForTutorial() {
+        framesToGenerateCircle *= 1.3;
+    }
+
+    @Override
+    public void setForClassicGame() {
+        framesToGenerateCircle *= 1.2;
+    }
+
     private class CircleToTouch implements Serializable {
 
         private int x;
@@ -185,15 +193,5 @@ public class MiniGameTGatherer extends AMiniGame implements IMiniGameTouch, ITim
         public void decreaseDuration() {
             duration--;
         }
-    }
-
-    @Override
-    public void setForTutorial() {
-        framesToGenerateCircle *= 1.3;
-    }
-
-    @Override
-    public void setForClassicGame() {
-        framesToGenerateCircle *= 1.2;
     }
 }

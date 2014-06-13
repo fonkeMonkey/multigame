@@ -1,7 +1,9 @@
 package sk.palistudios.multigame.game.persistence;
 
 // @author Pali
+
 import android.graphics.Point;
+
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;

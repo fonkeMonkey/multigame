@@ -1,21 +1,21 @@
 package sk.palistudios.multigame.customization_center.mgc;
 
 // @author Pali
-import android.app.Activity;
+
 import android.content.Context;
 import android.graphics.Color;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AbsListView;
 import android.widget.ArrayAdapter;
 import android.widget.TextView;
 import sk.palistudios.multigame.R;
-import java.util.ArrayList;
 import sk.palistudios.multigame.customization_center.IAdapter;
 import sk.palistudios.multigame.customization_center.skins.SkinItem;
 import sk.palistudios.multigame.tools.GraphicUnitsConvertor;
+
+import java.util.ArrayList;
 
 public class MgcArrayAdapter extends ArrayAdapter<MgcItem> implements IAdapter {
 

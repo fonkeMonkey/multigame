@@ -43,7 +43,7 @@ public class FacebookOperationCanceledException extends FacebookException {
      * Constructs a FacebookOperationCanceledException with a message and inner
      * error.
      *
-     * @param message A String to be returned from getMessage.
+     * @param message   A String to be returned from getMessage.
      * @param throwable A Throwable to be returned from getCause.
      */
     public FacebookOperationCanceledException(String message, Throwable throwable) {

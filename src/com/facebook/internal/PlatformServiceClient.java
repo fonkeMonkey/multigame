@@ -30,16 +30,16 @@ abstract public class PlatformServiceClient implements ServiceConnection {
 
     private final Context context;
     private final Handler handler;
+    private final String applicationId;
+    private final int protocolVersion;
     private CompletedListener listener;
     private boolean running;
     private Messenger sender;
     private int requestMessage;
     private int replyMessage;
-    private final String applicationId;
-    private final int protocolVersion;
 
     public PlatformServiceClient(Context context, int requestMessage, int replyMessage, int protocolVersion,
-            String applicationId) {
+                                 String applicationId) {
         Context applicationContext = context.getApplicationContext();
 
         this.context = (applicationContext != null) ? applicationContext : context;

@@ -1,18 +1,13 @@
 package sk.palistudios.multigame.game;
 
 // @author Pali
-import android.view.animation.AlphaAnimation;
-import android.view.animation.Animation;
-import android.view.animation.LinearInterpolator;
-import sk.palistudios.multigame.game.GameActivity;
+
 import sk.palistudios.multigame.game.minigames.AMiniGame;
-import java.util.ArrayList;
-import java.util.Timer;
-import java.util.TimerTask;
-import sk.palistudios.multigame.R;
 import sk.palistudios.multigame.game.minigames.MiniGameTCatcher;
 import sk.palistudios.multigame.tools.ILevelChangeObserver;
 import sk.palistudios.multigame.tools.ITimeObserver;
+
+import java.util.ArrayList;
 
 public class GameTimeMaster {
 
@@ -73,7 +68,7 @@ public class GameTimeMaster {
         }
     }
 
-    public static  void unregisterLevelChangedObserver(AMiniGame mg) {
+    public static void unregisterLevelChangedObserver(AMiniGame mg) {
         registeredMinigames.remove(mg);
     }
 

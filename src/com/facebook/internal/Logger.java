@@ -36,6 +36,14 @@ public class Logger {
     private StringBuilder contents;
     private int priority = Log.DEBUG;
 
+    public Logger(LoggingBehavior behavior, String tag) {
+        Validate.notNullOrEmpty(tag, "tag");
+
+        this.behavior = behavior;
+        this.tag = LOG_TAG_BASE + tag;
+        this.contents = new StringBuilder();
+    }
+
     // Note that the mapping of replaced strings is never emptied, so it should be used only for things that
     // are not expected to be too numerous, such as access tokens.
     public synchronized static void registerStringToReplace(String original, String replace) {
@@ -80,14 +88,6 @@ public class Logger {
             string = string.replace(entry.getKey(), entry.getValue());
         }
         return string;
-    }
-
-    public Logger(LoggingBehavior behavior, String tag) {
-        Validate.notNullOrEmpty(tag, "tag");
-
-        this.behavior = behavior;
-        this.tag = LOG_TAG_BASE + tag;
-        this.contents = new StringBuilder();
     }
 
     public int getPriority() {

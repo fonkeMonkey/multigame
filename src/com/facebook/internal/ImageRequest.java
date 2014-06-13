@@ -23,17 +23,6 @@ import java.net.URISyntaxException;
 
 public class ImageRequest {
 
-    public interface Callback {
-
-        /**
-         * This method should always be called on the UI thread. ImageDownloader
-         * makes sure to do this when it is responsible for issuing the
-         * ImageResponse
-         *
-         * @param response
-         */
-        void onCompleted(ImageResponse response);
-    }
     public static final int UNSPECIFIED_DIMENSION = 0;
     private static final String PROFILEPIC_URL_FORMAT =
             "https://graph.facebook.com/%s/picture";
@@ -46,6 +35,13 @@ public class ImageRequest {
     private Callback callback;
     private boolean allowCachedRedirects;
     private Object callerTag;
+    private ImageRequest(Builder builder) {
+        this.context = builder.context;
+        this.imageUri = builder.imageUrl;
+        this.callback = builder.callback;
+        this.allowCachedRedirects = builder.allowCachedRedirects;
+        this.callerTag = builder.callerTag == null ? new Object() : builder.callerTag;
+    }
 
     public static URI getProfilePictureUrl(
             String userId,
@@ -77,14 +73,6 @@ public class ImageRequest {
         return new URI(builder.toString());
     }
 
-    private ImageRequest(Builder builder) {
-        this.context = builder.context;
-        this.imageUri = builder.imageUrl;
-        this.callback = builder.callback;
-        this.allowCachedRedirects = builder.allowCachedRedirects;
-        this.callerTag = builder.callerTag == null ? new Object() : builder.callerTag;
-    }
-
     public Context getContext() {
         return context;
     }
@@ -103,6 +91,18 @@ public class ImageRequest {
 
     public Object getCallerTag() {
         return callerTag;
+    }
+
+    public interface Callback {
+
+        /**
+         * This method should always be called on the UI thread. ImageDownloader
+         * makes sure to do this when it is responsible for issuing the
+         * ImageResponse
+         *
+         * @param response
+         */
+        void onCompleted(ImageResponse response);
     }
 
     public static class Builder {

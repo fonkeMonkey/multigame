@@ -23,8 +23,9 @@ import android.os.ParcelFileDescriptor;
 import android.util.Log;
 import android.util.Pair;
 
-import java.io.*;
-import java.util.*;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.util.UUID;
 
 /**
  * <p>Implements a <a
@@ -33,13 +34,13 @@ import java.util.*;
  * images) to calls made via @link FacebookDialog}. The
  * {@link NativeAppCallAttachmentStore} class provides methods to attach and
  * clean up the attachments.
- *
+ * <p/>
  * <p>Note that this ContentProvider is only necessary if an application wishes
  * to attach images, etc., that are stored in memory and do not have another way
  * to be referenced by a content URI. For images obtained from, e.g., the Camera
  * or Gallery, that already have a content URI associated with them, use of this
  * class is not necessary.</p>
- *
+ * <p/>
  * <p>If an application wishes to attach images that are stored in-memory within
  * the application, this content provider must be listed in the application's
  * AndroidManifest.xml, and it should be named according to the pattern
@@ -60,11 +61,6 @@ public class NativeAppCallContentProvider extends ContentProvider {
 
     NativeAppCallContentProvider(AttachmentDataSource dataSource) {
         this.dataSource = dataSource;
-    }
-
-    interface AttachmentDataSource {
-
-        File openAttachment(UUID callId, String attachmentName) throws FileNotFoundException;
     }
 
     /**
@@ -143,5 +139,10 @@ public class NativeAppCallContentProvider extends ContentProvider {
         } catch (Exception exception) {
             return null;
         }
+    }
+
+    interface AttachmentDataSource {
+
+        File openAttachment(UUID callId, String attachmentName) throws FileNotFoundException;
     }
 }

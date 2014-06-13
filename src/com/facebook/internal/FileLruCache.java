@@ -49,6 +49,7 @@ import java.util.concurrent.atomic.AtomicLong;
 // corresponding file has been deleted.  Given this and that cache files never change other than deleting in trim()
 // or clear(),  we only have to ensure that there is at most one trim() or clear() process deleting files at any
 // given time.
+
 /**
  * com.facebook.internal is solely for the use of other packages within the
  * Facebook SDK for Android. Use of any of the classes in this package is
@@ -63,8 +64,8 @@ public final class FileLruCache {
     private final String tag;
     private final Limits limits;
     private final File directory;
-    private boolean isTrimPending;
     private final Object lock;
+    private boolean isTrimPending;
     private AtomicLong lastClearCacheTime = new AtomicLong(0);
 
     // The value of tag should be a final String that works as a directory name.
@@ -307,6 +308,11 @@ public final class FileLruCache {
         }
     }
 
+    private interface StreamCloseCallback {
+
+        void onClose();
+    }
+
     private static class BufferFile {
 
         private static final String FILE_NAME_PREFIX = "buffer";
@@ -398,7 +404,7 @@ public final class FileLruCache {
                 if (readCount < 1) {
                     Logger.log(LoggingBehavior.CACHE, TAG,
                             "readHeader: stream.read stopped at " + Integer.valueOf(count) + " when expected "
-                            + headerBytes.length);
+                                    + headerBytes.length);
                     return null;
                 }
                 count += readCount;
@@ -570,15 +576,15 @@ public final class FileLruCache {
             return byteCount;
         }
 
-        int getFileCount() {
-            return fileCount;
-        }
-
         void setByteCount(int n) {
             if (n < 0) {
                 throw new InvalidParameterException("Cache byte-count limit must be >= 0");
             }
             byteCount = n;
+        }
+
+        int getFileCount() {
+            return fileCount;
         }
 
         void setFileCount(int n) {
@@ -636,10 +642,5 @@ public final class FileLruCache {
 
             return result;
         }
-    }
-
-    private interface StreamCloseCallback {
-
-        void onClose();
     }
 }

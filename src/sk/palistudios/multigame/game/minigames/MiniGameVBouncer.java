@@ -12,11 +12,27 @@ import sk.palistudios.multigame.mainMenu.DebugSettings;
 import sk.palistudios.multigame.tools.RandomGenerator;
 
 /**
- *
  * @author Pali
  */
 public class MiniGameVBouncer extends AMiniGame implements IMiniGameVertical {
 
+    PointSerializable mPointBall = null;
+    PaintSerializable mPaintBall = null;
+    PaintSerializable mPaintBar = null;
+    float movementSensitivity;
+    float velocityX;
+    float velocityY;
+    float difficultyStepX;
+    float difficultyStepY;
+    float maxDifficulty;
+    private int ballSize;
+    private int barHeight;
+    private int barTop;
+    private int barLeft;
+    private int barBottom;
+    private int barRight;
+    private int barWidth;
+    private float actualMovement = 0;
     public MiniGameVBouncer(String fileName, Integer position, GameActivity game) {
         super(fileName, position, game);
         type = Typ.Vertical;
@@ -28,22 +44,6 @@ public class MiniGameVBouncer extends AMiniGame implements IMiniGameVertical {
 
 
     }
-    private int ballSize;
-    private int barHeight;
-    PointSerializable mPointBall = null;
-    PaintSerializable mPaintBall = null;
-    PaintSerializable mPaintBar = null;
-    private int barTop;
-    private int barLeft;
-    private int barBottom;
-    private int barRight;
-    private int barWidth;
-    float movementSensitivity;
-    float velocityX;
-    float velocityY;
-    float difficultyStepX;
-    float difficultyStepY;
-    float maxDifficulty;
 
     public void initMinigame(Bitmap mBitmap, boolean wasGameSaved) {
 
@@ -86,7 +86,6 @@ public class MiniGameVBouncer extends AMiniGame implements IMiniGameVertical {
         mCanvas.drawCircle(mPointBall.mPoint.x, mPointBall.mPoint.y, ballSize, mPaintBall.mPaint);
         mCanvas.drawRect(barLeft, barTop, barRight, barBottom, mPaintBar.mPaint);
     }
-    private float actualMovement = 0;
 
     public void onUserInteracted(float movement) {
 

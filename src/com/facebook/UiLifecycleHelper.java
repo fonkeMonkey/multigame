@@ -55,7 +55,7 @@ public class UiLifecycleHelper {
      * Creates a new UiLifecycleHelper.
      *
      * @param activity the Activity associated with the helper. If calling from
-     * a Fragment, use {@link android.support.v4.app.Fragment#getActivity()}
+     *                 a Fragment, use {@link android.support.v4.app.Fragment#getActivity()}
      * @param callback the callback for Session status changes, can be null
      */
     public UiLifecycleHelper(Activity activity, Session.StatusCallback callback) {
@@ -117,8 +117,8 @@ public class UiLifecycleHelper {
      * To be called from an Activity or Fragment's onActivityResult method.
      *
      * @param requestCode the request code
-     * @param resultCode the result code
-     * @param data the result data
+     * @param resultCode  the result code
+     * @param data        the result data
      */
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         onActivityResult(requestCode, resultCode, data, null);
@@ -128,14 +128,14 @@ public class UiLifecycleHelper {
      * To be called from an Activity or Fragment's onActivityResult method, when
      * the results of a FacebookDialog call are expected.
      *
-     * @param requestCode the request code
-     * @param resultCode the result code
-     * @param data the result data
+     * @param requestCode    the request code
+     * @param resultCode     the result code
+     * @param data           the result data
      * @param dialogCallback the callback for handling FacebookDialog results,
-     * can be null
+     *                       can be null
      */
     public void onActivityResult(int requestCode, int resultCode, Intent data,
-            FacebookDialog.Callback facebookDialogCallback) {
+                                 FacebookDialog.Callback facebookDialogCallback) {
         Session session = Session.getActiveSession();
         if (session != null) {
             session.onActivityResult(activity, requestCode, resultCode, data);
@@ -208,7 +208,7 @@ public class UiLifecycleHelper {
      * time -- always call getAppEventsLogger to get the right logger for the
      * current Session. If no Session is currently available, this method will
      * return null.
-     *
+     * <p/>
      * To ensure delivery of app events across Activity lifecycle events,
      * calling Activities should be sure to call the onStop method.
      *
@@ -232,30 +232,8 @@ public class UiLifecycleHelper {
         return appEventsLogger;
     }
 
-    /**
-     * The BroadcastReceiver implementation that either adds or removes the
-     * callback from the active Session object as it's SET or UNSET.
-     */
-    private class ActiveSessionBroadcastReceiver extends BroadcastReceiver {
-
-        @Override
-        public void onReceive(Context context, Intent intent) {
-            if (Session.ACTION_ACTIVE_SESSION_SET.equals(intent.getAction())) {
-                Session session = Session.getActiveSession();
-                if (session != null && callback != null) {
-                    session.addCallback(callback);
-                }
-            } else if (Session.ACTION_ACTIVE_SESSION_UNSET.equals(intent.getAction())) {
-                Session session = Session.getActiveSession();
-                if (session != null && callback != null) {
-                    session.removeCallback(callback);
-                }
-            }
-        }
-    }
-
     private boolean handleFacebookDialogActivityResult(int requestCode, int resultCode, Intent data,
-            FacebookDialog.Callback facebookDialogCallback) {
+                                                       FacebookDialog.Callback facebookDialogCallback) {
         if (pendingFacebookDialogCall == null || pendingFacebookDialogCall.getRequestCode() != requestCode) {
             return false;
         }
@@ -308,5 +286,27 @@ public class UiLifecycleHelper {
                     pendingFacebookDialogCall.getRequestCode(), cancelIntent, facebookDialogCallback);
         }
         pendingFacebookDialogCall = null;
+    }
+
+    /**
+     * The BroadcastReceiver implementation that either adds or removes the
+     * callback from the active Session object as it's SET or UNSET.
+     */
+    private class ActiveSessionBroadcastReceiver extends BroadcastReceiver {
+
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            if (Session.ACTION_ACTIVE_SESSION_SET.equals(intent.getAction())) {
+                Session session = Session.getActiveSession();
+                if (session != null && callback != null) {
+                    session.addCallback(callback);
+                }
+            } else if (Session.ACTION_ACTIVE_SESSION_UNSET.equals(intent.getAction())) {
+                Session session = Session.getActiveSession();
+                if (session != null && callback != null) {
+                    session.removeCallback(callback);
+                }
+            }
+        }
     }
 }

@@ -7,9 +7,8 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.TextView;
 import com.google.analytics.tracking.android.EasyTracker;
-import sk.palistudios.multigame.R;
-import java.util.ArrayList;
 import sk.palistudios.multigame.BaseListActivity;
+import sk.palistudios.multigame.R;
 import sk.palistudios.multigame.customization_center.CustomizationCenterActivity;
 import sk.palistudios.multigame.customization_center.skins.SkinsCenterListActivity;
 import sk.palistudios.multigame.game.persistence.GameSharedPref;
@@ -17,8 +16,9 @@ import sk.palistudios.multigame.mainMenu.DebugSettings;
 import sk.palistudios.multigame.tools.SoundEffectsCenter;
 import sk.palistudios.multigame.tools.Toaster;
 
+import java.util.ArrayList;
+
 /**
- *
  * @author Pali
  */
 public class MusicCenterListActivity extends BaseListActivity {

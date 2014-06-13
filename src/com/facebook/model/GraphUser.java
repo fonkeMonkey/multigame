@@ -18,7 +18,7 @@ package com.facebook.model;
 /**
  * Provides a strongly-typed representation of a User as defined by the Graph
  * API.
- *
+ * <p/>
  * Note that this interface is intended to be used with GraphObject.Factory and
  * not implemented directly.
  */

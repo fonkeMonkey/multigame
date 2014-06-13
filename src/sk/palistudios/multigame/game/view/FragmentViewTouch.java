@@ -1,16 +1,14 @@
 package sk.palistudios.multigame.game.view;
 
-import sk.palistudios.multigame.game.minigames.AMiniGame;
 import android.content.Context;
 import android.view.MotionEvent;
 import android.view.View;
 import sk.palistudios.multigame.game.GameMinigamesManager;
+import sk.palistudios.multigame.game.minigames.AMiniGame;
 import sk.palistudios.multigame.game.minigames.IMiniGameTouch;
-import sk.palistudios.multigame.game.minigames.MiniGameHBalance;
 import sk.palistudios.multigame.game.persistence.GameSharedPref;
 
 /**
- *
  * @author Pali
  */
 public class FragmentViewTouch extends AFragmentView {

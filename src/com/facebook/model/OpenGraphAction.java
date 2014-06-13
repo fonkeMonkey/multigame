@@ -24,7 +24,7 @@ import java.util.List;
  * Provides a strongly-typed representation of an Open Graph Action. For more
  * documentation of OG Actions, see:
  * https://developers.facebook.com/docs/opengraph/actions/
- *
+ * <p/>
  * Note that this interface is intended to be used with GraphObject.Factory or
  * OpenGraphAction.Factory and not implemented directly.
  */
@@ -326,7 +326,7 @@ public interface OpenGraphAction extends GraphObject {
          * Share dialog.
          *
          * @param type the Open Graph action type for the action, or null if it
-         * will be specified later
+         *             will be specified later
          * @return an OpenGraphAction
          */
         public static OpenGraphAction createForPost(String type) {
@@ -337,8 +337,8 @@ public interface OpenGraphAction extends GraphObject {
          * Creates an OpenGraphAction suitable for posting via, e.g., a native
          * Share dialog.
          *
-         * @param type the Open Graph action type for the action, or null if it
-         * will be specified later
+         * @param type             the Open Graph action type for the action, or null if it
+         *                         will be specified later
          * @param graphObjectClass the OpenGraphAction-derived type to return
          * @return an OpenGraphAction
          */

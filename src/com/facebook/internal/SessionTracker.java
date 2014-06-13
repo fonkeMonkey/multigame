@@ -30,18 +30,18 @@ import com.facebook.SessionState;
  */
 public class SessionTracker {
 
-    private Session session;
     private final Session.StatusCallback callback;
     private final BroadcastReceiver receiver;
     private final LocalBroadcastManager broadcastManager;
+    private Session session;
     private boolean isTracking = false;
 
     /**
      * Constructs a SessionTracker to track the active Session object.
      *
-     * @param context the context object.
+     * @param context  the context object.
      * @param callback the callback to use whenever the active Session's state
-     * changes
+     *                 changes
      */
     public SessionTracker(Context context, Session.StatusCallback callback) {
         this(context, callback, null);
@@ -51,9 +51,9 @@ public class SessionTracker {
      * Constructs a SessionTracker to track the Session object passed in. If the
      * Session is null, then it will track the active Session instead.
      *
-     * @param context the context object.
+     * @param context  the context object.
      * @param callback the callback to use whenever the Session's state changes
-     * @param session the Session object to track
+     * @param session  the Session object to track
      */
     SessionTracker(Context context, Session.StatusCallback callback, Session session) {
         this(context, callback, session, true);
@@ -63,9 +63,9 @@ public class SessionTracker {
      * Constructs a SessionTracker to track the Session object passed in. If the
      * Session is null, then it will track the active Session instead.
      *
-     * @param context the context object.
-     * @param callback the callback to use whenever the Session's state changes
-     * @param session the Session object to track
+     * @param context       the context object.
+     * @param callback      the callback to use whenever the Session's state changes
+     * @param session       the Session object to track
      * @param startTracking whether to start tracking the Session right away
      */
     public SessionTracker(Context context, Session.StatusCallback callback, Session session, boolean startTracking) {
@@ -86,20 +86,6 @@ public class SessionTracker {
      */
     public Session getSession() {
         return (session == null) ? Session.getActiveSession() : session;
-    }
-
-    /**
-     * Returns the current Session that's being tracked if it's open, otherwise
-     * returns null.
-     *
-     * @return the current Session if it's open, otherwise returns null
-     */
-    public Session getOpenSession() {
-        Session openSession = getSession();
-        if (openSession != null && openSession.isOpened()) {
-            return openSession;
-        }
-        return null;
     }
 
     /**
@@ -129,14 +115,28 @@ public class SessionTracker {
                 }
                 broadcastManager.unregisterReceiver(receiver);
             } else {
-                // We're currently tracking a Session, but are now switching 
-                // to a new Session, so we remove the callback from the old 
+                // We're currently tracking a Session, but are now switching
+                // to a new Session, so we remove the callback from the old
                 // Session, and add it to the new one.
                 session.removeCallback(callback);
             }
             session = newSession;
             session.addCallback(callback);
         }
+    }
+
+    /**
+     * Returns the current Session that's being tracked if it's open, otherwise
+     * returns null.
+     *
+     * @return the current Session if it's open, otherwise returns null
+     */
+    public Session getOpenSession() {
+        Session openSession = getSession();
+        if (openSession != null && openSession.isOpened()) {
+            return openSession;
+        }
+        return null;
     }
 
     /**

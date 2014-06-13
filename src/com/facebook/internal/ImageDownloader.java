@@ -29,16 +29,17 @@ import java.net.HttpURLConnection;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.net.URL;
-import java.util.*;
+import java.util.HashMap;
+import java.util.Map;
 
 public class ImageDownloader {
 
     private static final int DOWNLOAD_QUEUE_MAX_CONCURRENT = WorkQueue.DEFAULT_MAX_CONCURRENT;
-    private static final int CACHE_READ_QUEUE_MAX_CONCURRENT = 2;
-    private static Handler handler;
     private static WorkQueue downloadQueue = new WorkQueue(DOWNLOAD_QUEUE_MAX_CONCURRENT);
+    private static final int CACHE_READ_QUEUE_MAX_CONCURRENT = 2;
     private static WorkQueue cacheReadQueue = new WorkQueue(CACHE_READ_QUEUE_MAX_CONCURRENT);
     private static final Map<RequestKey, DownloaderContext> pendingRequests = new HashMap<RequestKey, DownloaderContext>();
+    private static Handler handler;
 
     /**
      * Downloads the image specified in the passed in request. If a callback is

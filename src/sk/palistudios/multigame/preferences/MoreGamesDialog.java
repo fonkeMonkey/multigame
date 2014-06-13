@@ -1,6 +1,7 @@
 package sk.palistudios.multigame.preferences;
 
 // @author Pali
+
 import android.content.Context;
 import android.preference.Preference;
 import android.util.AttributeSet;

@@ -22,13 +22,13 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewStub;
 import android.widget.*;
-import com.facebook.*;
-import sk.palistudios.multigame.R;
+import com.facebook.FacebookException;
 import com.facebook.internal.ImageDownloader;
 import com.facebook.internal.ImageRequest;
 import com.facebook.internal.ImageResponse;
 import com.facebook.model.GraphObject;
 import org.json.JSONObject;
+import sk.palistudios.multigame.R;
 
 import java.net.URI;
 import java.net.URISyntaxException;
@@ -63,52 +63,27 @@ class GraphObjectAdapter<T extends GraphObject> extends BaseAdapter implements S
     private ArrayList<String> prefetchedProfilePictureIds = new ArrayList<String>();
     private OnErrorListener onErrorListener;
 
-    public interface DataNeededListener {
-
-        public void onDataNeeded();
-    }
-
-    public interface OnErrorListener {
-
-        void onError(GraphObjectAdapter<?> adapter, FacebookException error);
-    }
-
-    public static class SectionAndItem<T extends GraphObject> {
-
-        public String sectionKey;
-        public T graphObject;
-
-        public enum Type {
-
-            GRAPH_OBJECT,
-            SECTION_HEADER,
-            ACTIVITY_CIRCLE
-        }
-
-        public SectionAndItem(String sectionKey, T graphObject) {
-            this.sectionKey = sectionKey;
-            this.graphObject = graphObject;
-        }
-
-        public Type getType() {
-            if (sectionKey == null) {
-                return Type.ACTIVITY_CIRCLE;
-            } else if (graphObject == null) {
-                return Type.SECTION_HEADER;
-            } else {
-                return Type.GRAPH_OBJECT;
-            }
-        }
-    }
-
-    interface Filter<T> {
-
-        boolean includeItem(T graphObject);
-    }
-
     public GraphObjectAdapter(Context context) {
         this.context = context;
         this.inflater = LayoutInflater.from(context);
+    }
+
+    private static int compareGraphObjects(GraphObject a, GraphObject b, Collection<String> sortFields,
+                                           Collator collator) {
+        for (String sortField : sortFields) {
+            String sa = (String) a.getProperty(sortField);
+            String sb = (String) b.getProperty(sortField);
+
+            if (sa != null && sb != null) {
+                int result = collator.compare(sa, sb);
+                if (result != 0) {
+                    return result;
+                }
+            } else if (!(sa == null && sb == null)) {
+                return (sa == null) ? -1 : 1;
+            }
+        }
+        return 0;
     }
 
     public List<String> getSortFields() {
@@ -748,12 +723,12 @@ class GraphObjectAdapter<T extends GraphObject> extends BaseAdapter implements S
             ImageRequest.Builder builder = new ImageRequest.Builder(context.getApplicationContext(), pictureURI)
                     .setCallerTag(this)
                     .setCallback(
-                    new ImageRequest.Callback() {
-                        @Override
-                        public void onCompleted(ImageResponse response) {
-                            processImageResponse(response, profileId, imageView);
-                        }
-                    });
+                            new ImageRequest.Callback() {
+                                @Override
+                                public void onCompleted(ImageResponse response) {
+                                    processImageResponse(response, profileId, imageView);
+                                }
+                            });
 
             ImageRequest newRequest = builder.build();
             pendingRequests.put(profileId, newRequest);
@@ -798,22 +773,19 @@ class GraphObjectAdapter<T extends GraphObject> extends BaseAdapter implements S
         }
     }
 
-    private static int compareGraphObjects(GraphObject a, GraphObject b, Collection<String> sortFields,
-            Collator collator) {
-        for (String sortField : sortFields) {
-            String sa = (String) a.getProperty(sortField);
-            String sb = (String) b.getProperty(sortField);
+    public interface DataNeededListener {
 
-            if (sa != null && sb != null) {
-                int result = collator.compare(sa, sb);
-                if (result != 0) {
-                    return result;
-                }
-            } else if (!(sa == null && sb == null)) {
-                return (sa == null) ? -1 : 1;
-            }
-        }
-        return 0;
+        public void onDataNeeded();
+    }
+
+    public interface OnErrorListener {
+
+        void onError(GraphObjectAdapter<?> adapter, FacebookException error);
+    }
+
+    interface Filter<T> {
+
+        boolean includeItem(T graphObject);
     }
 
     // Graph object type to navigate the JSON that sometimes comes back instead of a URL string
@@ -826,5 +798,33 @@ class GraphObjectAdapter<T extends GraphObject> extends BaseAdapter implements S
     private interface ItemPictureData extends GraphObject {
 
         String getUrl();
+    }
+
+    public static class SectionAndItem<T extends GraphObject> {
+
+        public String sectionKey;
+        public T graphObject;
+
+        public SectionAndItem(String sectionKey, T graphObject) {
+            this.sectionKey = sectionKey;
+            this.graphObject = graphObject;
+        }
+
+        public Type getType() {
+            if (sectionKey == null) {
+                return Type.ACTIVITY_CIRCLE;
+            } else if (graphObject == null) {
+                return Type.SECTION_HEADER;
+            } else {
+                return Type.GRAPH_OBJECT;
+            }
+        }
+
+        public enum Type {
+
+            GRAPH_OBJECT,
+            SECTION_HEADER,
+            ACTIVITY_CIRCLE
+        }
     }
 }

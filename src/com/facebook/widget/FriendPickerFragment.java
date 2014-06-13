@@ -21,10 +21,13 @@ import android.content.res.TypedArray;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.util.AttributeSet;
-import com.facebook.*;
-import sk.palistudios.multigame.R;
+import com.facebook.AppEventsLogger;
+import com.facebook.FacebookException;
+import com.facebook.Request;
+import com.facebook.Session;
 import com.facebook.internal.AnalyticsEvents;
 import com.facebook.model.GraphUser;
+import sk.palistudios.multigame.R;
 
 import java.util.Arrays;
 import java.util.HashSet;
@@ -65,7 +68,7 @@ public class FriendPickerFragment extends PickerFragment<GraphUser> {
      * Constructor.
      *
      * @param args a Bundle that optionally contains one or more values
-     * containing additional configuration information for the Fragment.
+     *             containing additional configuration information for the Fragment.
      */
     @SuppressLint("ValidFragment")
     public FriendPickerFragment(Bundle args) {
@@ -107,7 +110,7 @@ public class FriendPickerFragment extends PickerFragment<GraphUser> {
      * Sets whether the user can select multiple friends, or only one friend.
      *
      * @param multiSelect true if the user can select multiple friends, false if
-     * only one friend
+     *                    only one friend
      */
     public void setMultiSelect(boolean multiSelect) {
         if (this.multiSelect != multiSelect) {
@@ -215,8 +218,8 @@ public class FriendPickerFragment extends PickerFragment<GraphUser> {
 
         Set<String> fields = new HashSet<String>(extraFields);
         String[] requiredFields = new String[]{
-            ID,
-            NAME
+                ID,
+                NAME
         };
         fields.addAll(Arrays.asList(requiredFields));
 
@@ -246,7 +249,7 @@ public class FriendPickerFragment extends PickerFragment<GraphUser> {
 
         @Override
         protected void onLoadFinished(GraphObjectPagingLoader<GraphUser> loader,
-                SimpleGraphObjectCursor<GraphUser> data) {
+                                      SimpleGraphObjectCursor<GraphUser> data) {
             super.onLoadFinished(loader, data);
 
             // We could be called in this state if we are clearing data or if we are being re-attached

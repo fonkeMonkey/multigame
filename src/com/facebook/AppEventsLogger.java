@@ -21,7 +21,9 @@ import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v4.content.LocalBroadcastManager;
 import android.util.Log;
-import com.facebook.internal.*;
+import com.facebook.internal.Logger;
+import com.facebook.internal.Utility;
+import com.facebook.internal.Validate;
 import com.facebook.model.GraphObject;
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -78,60 +80,29 @@ public class AppEventsLogger {
     // Enums
 
     /**
-     * Controls when an AppEventsLogger sends log events to the server
+     * The action used to indicate that a flush of app events has occurred. This
+     * should be used as an action in an IntentFilter and BroadcastReceiver
+     * registered with the
+     * {@link android.support.v4.content.LocalBroadcastManager}.
      */
-    public enum FlushBehavior {
-
-        /**
-         * Flush automatically: periodically (once a minute or after every 100
-         * events), and always at app reactivation. This is the default value.
-         */
-        AUTO,
-        /**
-         * Only flush when AppEventsLogger.flush() is explicitly invoked.
-         */
-        EXPLICIT_ONLY,
-    }
-
-    private enum SuppressionTimeoutBehavior {
-        // Successfully logging an event will reset the timeout period (i.e., events will log no more than every N
-        // seconds).
-
-        RESET_TIMEOUT_WHEN_LOG_SUCCESSFUL,
-        // Attempting to log an event, even if it is suppressed, will reset the timeout period (i.e., events will not
-        // be logged until they have been "silent" for at least N seconds).
-        RESET_TIMEOUT_WHEN_LOG_ATTEMPTED,
-    }
-
-    private static class EventSuppression {
-        // Timeout period in seconds
-
-        private int timeoutPeriod;
-        private SuppressionTimeoutBehavior behavior;
-
-        EventSuppression(int timeoutPeriod, SuppressionTimeoutBehavior behavior) {
-            this.timeoutPeriod = timeoutPeriod;
-            this.behavior = behavior;
-        }
-
-        int getTimeoutPeriod() {
-            return timeoutPeriod;
-        }
-
-        SuppressionTimeoutBehavior getBehavior() {
-            return behavior;
-        }
-    }
+    public static final String ACTION_APP_EVENTS_FLUSHED = "com.facebook.sdk.APP_EVENTS_FLUSHED";
+    public static final String APP_EVENTS_EXTRA_NUM_EVENTS_FLUSHED = "com.facebook.sdk.APP_EVENTS_NUM_EVENTS_FLUSHED";
+    public static final String APP_EVENTS_EXTRA_FLUSH_RESULT = "com.facebook.sdk.APP_EVENTS_FLUSH_RESULT";
     // Constants
     private static final String TAG = AppEventsLogger.class.getCanonicalName();
     private static final int NUM_LOG_EVENTS_TO_TRY_TO_FLUSH_AFTER = 100;
     private static final int FLUSH_PERIOD_IN_SECONDS = 60;
     private static final int APP_SUPPORTS_ATTRIBUTION_ID_RECHECK_PERIOD_IN_SECONDS = 60 * 60 * 24;
     private static final int APP_ACTIVATE_SUPPRESSION_PERIOD_IN_SECONDS = 5 * 60;
+    @SuppressWarnings("serial")
+    private static Map<String, EventSuppression> mapEventNameToSuppress = new HashMap<String, EventSuppression>() {
+        {
+            put(AppEventsConstants.EVENT_NAME_ACTIVATED_APP,
+                    new EventSuppression(APP_ACTIVATE_SUPPRESSION_PERIOD_IN_SECONDS,
+                            SuppressionTimeoutBehavior.RESET_TIMEOUT_WHEN_LOG_ATTEMPTED));
+        }
+    };
     private static final String APP_EVENT_PREFERENCES = "com.facebook.sdk.appEventPreferences";
-    // Instance member variables
-    private final Context context;
-    private final AccessTokenAppIdPair accessTokenAppId;
     private static Map<AccessTokenAppIdPair, SessionEventsState> stateMap =
             new ConcurrentHashMap<AccessTokenAppIdPair, SessionEventsState>();
     private static Timer flushTimer;
@@ -141,481 +112,9 @@ public class AppEventsLogger {
     private static Context applicationContext;
     private static Object staticLock = new Object();
     private static Map<String, Date> mapEventsToSuppressionTime = new HashMap<String, Date>();
-    @SuppressWarnings("serial")
-    private static Map<String, EventSuppression> mapEventNameToSuppress = new HashMap<String, EventSuppression>() {
-        {
-            put(AppEventsConstants.EVENT_NAME_ACTIVATED_APP,
-                    new EventSuppression(APP_ACTIVATE_SUPPRESSION_PERIOD_IN_SECONDS,
-                    SuppressionTimeoutBehavior.RESET_TIMEOUT_WHEN_LOG_ATTEMPTED));
-        }
-    };
-
-    // Rather than retaining Sessions, we extract the information we need and track app events by
-    // application ID and access token (which may be null for Session-less calls). This avoids needing to
-    // worry about Session lifecycle and also allows us to coalesce app events from different Sessions
-    // that have the same access token/app ID.
-    private static class AccessTokenAppIdPair implements Serializable {
-
-        private static final long serialVersionUID = 1L;
-        private final String accessToken;
-        private final String applicationId;
-
-        AccessTokenAppIdPair(Session session) {
-            this(session.getAccessToken(), session.getApplicationId());
-        }
-
-        AccessTokenAppIdPair(String accessToken, String applicationId) {
-            this.accessToken = Utility.isNullOrEmpty(accessToken) ? null : accessToken;
-            this.applicationId = applicationId;
-        }
-
-        String getAccessToken() {
-            return accessToken;
-        }
-
-        String getApplicationId() {
-            return applicationId;
-        }
-
-        @Override
-        public int hashCode() {
-            return (accessToken == null ? 0 : accessToken.hashCode())
-                    ^ (applicationId == null ? 0 : applicationId.hashCode());
-        }
-
-        @Override
-        public boolean equals(Object o) {
-            if (!(o instanceof AccessTokenAppIdPair)) {
-                return false;
-            }
-            AccessTokenAppIdPair p = (AccessTokenAppIdPair) o;
-            return Utility.areObjectsEqual(p.accessToken, accessToken)
-                    && Utility.areObjectsEqual(p.applicationId, applicationId);
-        }
-
-        private static class SerializationProxyV1 implements Serializable {
-
-            private static final long serialVersionUID = -2488473066578201069L;
-            private final String accessToken;
-            private final String appId;
-
-            private SerializationProxyV1(String accessToken, String appId) {
-                this.accessToken = accessToken;
-                this.appId = appId;
-            }
-
-            private Object readResolve() {
-                return new AccessTokenAppIdPair(accessToken, appId);
-            }
-        }
-
-        private Object writeReplace() {
-            return new SerializationProxyV1(accessToken, applicationId);
-        }
-    }
-
-    /**
-     * Sets whether events sent to Facebook should be restricted from being used
-     * for purposes than analytics and conversions, such as remarketing for this
-     * user. Defaults to false. This value is stored on the device and persists
-     * across app launches.
-     *
-     * @param context Used to read the value.
-     *
-     * @beta
-     */
-    public static boolean getLimitEventUsage(Context context) {
-        SharedPreferences preferences = context.getSharedPreferences(APP_EVENT_PREFERENCES, Context.MODE_PRIVATE);
-        return preferences.getBoolean("limitEventUsage", false);
-    }
-
-    /**
-     * Sets whether events sent to Facebook should be restricted from being used
-     * for purposes than analytics and conversions, such as remarketing for this
-     * user. Defaults to false. This value is stored on the device and persists
-     * across app launches. Changes to this setting will apply to any events
-     * currently queued to be flushed, as well as any subsequent events.
-     *
-     * @param context Used to persist this value across app runs.
-     *
-     * @beta
-     */
-    public static void setLimitEventUsage(Context context, boolean limitEventUsage) {
-        SharedPreferences preferences = context.getSharedPreferences(APP_EVENT_PREFERENCES, Context.MODE_PRIVATE);
-        SharedPreferences.Editor editor = preferences.edit();
-        editor.putBoolean("limitEventUsage", limitEventUsage);
-        editor.commit();
-    }
-
-    /**
-     * Notifies the events system that the app has launched & logs an
-     * activatedApp event. Should be called whenever your app becomes active,
-     * typically in the onResume() method of each long-running Activity of your
-     * app.
-     *
-     * Use this method if your application ID is stored in application metadata,
-     * otherwise see
-     * {@link AppEventsLogger#activateApp(android.content.Context, String)}.
-     *
-     * @param context Used to access the applicationId and the attributionId for
-     * non-authenticated users.
-     *
-     * @beta
-     */
-    public static void activateApp(Context context) {
-        activateApp(context, Utility.getMetadataApplicationId(context));
-    }
-
-    /**
-     * Notifies the events system that the app has launched & logs an
-     * activatedApp event. Should be called whenever your app becomes active,
-     * typically in the onResume() method of each long-running Activity of your
-     * app.
-     *
-     * @param context Used to access the attributionId for non-authenticated
-     * users.
-     *
-     * @param applicationId The specific applicationId to report the activation
-     * for.
-     *
-     * @beta
-     */
-    @SuppressWarnings("deprecation")
-    public static void activateApp(Context context, String applicationId) {
-        if (context == null || applicationId == null) {
-            throw new IllegalArgumentException("Both context and applicationId must be non-null");
-        }
-
-        // activateApp supercedes publishInstall in the public API, so we need to explicitly invoke it, since the server
-        // can't reliably infer install state for all conditions of an app activate.
-        Settings.publishInstallAsync(context, applicationId);
-
-        AppEventsLogger logger = new AppEventsLogger(context, applicationId, null);
-        logger.logEvent(AppEventsConstants.EVENT_NAME_ACTIVATED_APP);
-    }
-
-    /**
-     * Build an AppEventsLogger instance to log events through. The Facebook app
-     * that these events are targeted at comes from this application's metadata.
-     * The application ID used to log events will be determined from the app ID
-     * specified in the package metadata.
-     *
-     * @param context Used to access the applicationId and the attributionId for
-     * non-authenticated users.
-     *
-     * @return AppEventsLogger instance to invoke log* methods on.
-     *
-     * @beta
-     */
-    public static AppEventsLogger newLogger(Context context) {
-        return new AppEventsLogger(context, null, null);
-    }
-
-    /**
-     * Build an AppEventsLogger instance to log events through.
-     *
-     * @param context Used to access the attributionId for non-authenticated
-     * users.
-     * @param session Explicitly specified Session to log events against. If
-     * null, the activeSession will be used if it's open, otherwise the logging
-     * will happen against the default app ID specified via the app ID specified
-     * in the package metadata.
-     *
-     * @return AppEventsLogger instance to invoke log* methods on.
-     *
-     * @beta
-     */
-    public static AppEventsLogger newLogger(Context context, Session session) {
-        return new AppEventsLogger(context, null, session);
-    }
-
-    /**
-     * Build an AppEventsLogger instance to log events through.
-     *
-     * @param context Used to access the attributionId for non-authenticated
-     * users.
-     * @param applicationId Explicitly specified Facebook applicationId to log
-     * events against. If null, the default app ID specified in the package
-     * metadata will be used.
-     * @param session Explicitly specified Session to log events against. If
-     * null, the activeSession will be used if it's open, otherwise the logging
-     * will happen against the specified app ID.
-     *
-     * @return AppEventsLogger instance to invoke log* methods on.
-     *
-     * @beta
-     */
-    public static AppEventsLogger newLogger(Context context, String applicationId, Session session) {
-        return new AppEventsLogger(context, applicationId, session);
-    }
-
-    /**
-     * Build an AppEventsLogger instance to log events that are attributed to
-     * the application but not to any particular Session.
-     *
-     * @param context Used to access the attributionId for non-authenticated
-     * users.
-     * @param applicationId Explicitly specified Facebook applicationId to log
-     * events against. If null, the default app ID specified in the package
-     * metadata will be used.
-     *
-     * @return AppEventsLogger instance to invoke log* methods on.
-     *
-     * @beta
-     */
-    public static AppEventsLogger newLogger(Context context, String applicationId) {
-        return new AppEventsLogger(context, applicationId, null);
-    }
-    /**
-     * The action used to indicate that a flush of app events has occurred. This
-     * should be used as an action in an IntentFilter and BroadcastReceiver
-     * registered with the
-     * {@link android.support.v4.content.LocalBroadcastManager}.
-     */
-    public static final String ACTION_APP_EVENTS_FLUSHED = "com.facebook.sdk.APP_EVENTS_FLUSHED";
-    public static final String APP_EVENTS_EXTRA_NUM_EVENTS_FLUSHED = "com.facebook.sdk.APP_EVENTS_NUM_EVENTS_FLUSHED";
-    public static final String APP_EVENTS_EXTRA_FLUSH_RESULT = "com.facebook.sdk.APP_EVENTS_FLUSH_RESULT";
-
-    /**
-     * Access the behavior that AppEventsLogger uses to determine when to flush
-     * logged events to the server. This setting applies to all instances of
-     * AppEventsLogger.
-     *
-     * @return specified flush behavior.
-     *
-     * @beta
-     */
-    public static FlushBehavior getFlushBehavior() {
-        synchronized (staticLock) {
-            return flushBehavior;
-        }
-    }
-
-    /**
-     * Set the behavior that this AppEventsLogger uses to determine when to
-     * flush logged events to the server. This setting applies to all instances
-     * of AppEventsLogger.
-     *
-     * @param flushBehavior the desired behavior.
-     *
-     * @beta
-     */
-    public static void setFlushBehavior(FlushBehavior flushBehavior) {
-        synchronized (staticLock) {
-            AppEventsLogger.flushBehavior = flushBehavior;
-        }
-    }
-
-    /**
-     * Log an app event with the specified name.
-     *
-     * @param eventName eventName used to denote the event. Choose amongst the
-     * EVENT_NAME_* constants in {@link AppEventsConstants} when possible. Or
-     * create your own if none of the EVENT_NAME_* constants are applicable.
-     * Event names should be 40 characters or less, alphanumeric, and can
-     * include spaces, underscores or hyphens, but mustn't have a space or
-     * hyphen as the first character. Any given app should have no more than
-     * ~300 distinct event names.
-     *
-     * @beta
-     */
-    public void logEvent(String eventName) {
-        logEvent(eventName, null);
-    }
-
-    /**
-     * Log an app event with the specified name and the supplied value.
-     *
-     * @param eventName eventName used to denote the event. Choose amongst the
-     * EVENT_NAME_* constants in {@link AppEventsConstants} when possible. Or
-     * create your own if none of the EVENT_NAME_* constants are applicable.
-     * Event names should be 40 characters or less, alphanumeric, and can
-     * include spaces, underscores or hyphens, but mustn't have a space or
-     * hyphen as the first character. Any given app should have no more than
-     * ~300 distinct event names.
-     *                  * @param eventName
-     * @param valueToSum a value to associate with the event which will be
-     * summed up in Insights for across all instances of the event, so that
-     * average values can be determined, etc.
-     *
-     * @beta
-     */
-    public void logEvent(String eventName, double valueToSum) {
-        logEvent(eventName, valueToSum, null);
-    }
-
-    /**
-     * Log an app event with the specified name and set of parameters.
-     *
-     * @param eventName eventName used to denote the event. Choose amongst the
-     * EVENT_NAME_* constants in {@link AppEventsConstants} when possible. Or
-     * create your own if none of the EVENT_NAME_* constants are applicable.
-     * Event names should be 40 characters or less, alphanumeric, and can
-     * include spaces, underscores or hyphens, but mustn't have a space or
-     * hyphen as the first character. Any given app should have no more than
-     * ~300 distinct event names.
-     * @param parameters A Bundle of parameters to log with the event. Insights
-     * will allow looking at the logs of these events via different parameter
-     * values. You can log on the order of 10 parameters with each distinct
-     * eventName. It's advisable to keep the number of unique values provided
-     * for each parameter in the, at most, thousands. As an example, don't
-     * attempt to provide a unique parameter value for each unique user in your
-     * app. You won't get meaningful aggregate reporting on so many parameter
-     * values. The values in the bundles should be Strings or numeric values.
-     *
-     * @beta
-     */
-    public void logEvent(String eventName, Bundle parameters) {
-        logEvent(eventName, null, parameters, false);
-    }
-
-    /**
-     * Log an app event with the specified name, supplied value, and set of
-     * parameters.
-     *
-     * @param eventName eventName used to denote the event. Choose amongst the
-     * EVENT_NAME_* constants in {@link AppEventsConstants} when possible. Or
-     * create your own if none of the EVENT_NAME_* constants are applicable.
-     * Event names should be 40 characters or less, alphanumeric, and can
-     * include spaces, underscores or hyphens, but mustn't have a space or
-     * hyphen as the first character. Any given app should have no more than
-     * ~300 distinct event names.
-     * @param valueToSum a value to associate with the event which will be
-     * summed up in Insights for across all instances of the event, so that
-     * average values can be determined, etc.
-     * @param parameters A Bundle of parameters to log with the event. Insights
-     * will allow looking at the logs of these events via different parameter
-     * values. You can log on the order of 10 parameters with each distinct
-     * eventName. It's advisable to keep the number of unique values provided
-     * for each parameter in the, at most, thousands. As an example, don't
-     * attempt to provide a unique parameter value for each unique user in your
-     * app. You won't get meaningful aggregate reporting on so many parameter
-     * values. The values in the bundles should be Strings or numeric values.
-     *
-     * @beta
-     */
-    public void logEvent(String eventName, double valueToSum, Bundle parameters) {
-        logEvent(eventName, valueToSum, parameters, false);
-    }
-
-    /**
-     * Logs a purchase event with Facebook, in the specified amount and with the
-     * specified currency.
-     *
-     * @param purchaseAmount Amount of purchase, in the currency specified by
-     * the 'currency' parameter. This value will be rounded to the thousandths
-     * place (e.g., 12.34567 becomes 12.346).
-     * @param currency Currency used to specify the amount.
-     *
-     * @beta
-     */
-    public void logPurchase(BigDecimal purchaseAmount, Currency currency) {
-        logPurchase(purchaseAmount, currency, null);
-    }
-
-    /**
-     * Logs a purchase event with Facebook, in the specified amount and with the
-     * specified currency. Additional detail about the purchase can be passed in
-     * through the parameters bundle.
-     *
-     * @param purchaseAmount Amount of purchase, in the currency specified by
-     * the 'currency' parameter. This value will be rounded to the thousandths
-     * place (e.g., 12.34567 becomes 12.346).
-     * @param currency Currency used to specify the amount.
-     * @param parameters Arbitrary additional information for describing this
-     * event. Should have no more than 10 entries, and keys should be mostly
-     * consistent from one purchase event to the next.
-     *
-     * @beta
-     */
-    public void logPurchase(BigDecimal purchaseAmount, Currency currency, Bundle parameters) {
-
-        if (purchaseAmount == null) {
-            notifyDeveloperError("purchaseAmount cannot be null");
-            return;
-        } else if (currency == null) {
-            notifyDeveloperError("currency cannot be null");
-            return;
-        }
-
-        if (parameters == null) {
-            parameters = new Bundle();
-        }
-        parameters.putString(AppEventsConstants.EVENT_PARAM_CURRENCY, currency.getCurrencyCode());
-
-        logEvent(AppEventsConstants.EVENT_NAME_PURCHASED, purchaseAmount.doubleValue(), parameters);
-        eagerFlush();
-    }
-
-    /**
-     * Explicitly flush any stored events to the server. Implicit flushes may
-     * happen depending on the value of getFlushBehavior. This method allows for
-     * explicit, app invoked flushing.
-     *
-     * @beta
-     */
-    public void flush() {
-        flush(FlushReason.EXPLICIT);
-    }
-
-    /**
-     * Call this when the consuming Activity/Fragment receives an onStop()
-     * callback in order to persist any outstanding events to disk, so they may
-     * be flushed at a later time. The next flush (explicit or not) will check
-     * for any outstanding events and, if present, include them in that flush.
-     * Note that this call may trigger an I/O operation on the calling thread.
-     * Explicit use of this method is not necessary if the consumer is making
-     * use of {@link UiLifecycleHelper}, which will take care of making the call
-     * in its own onStop() callback.
-     *
-     * @beta
-     */
-    public static void onContextStop() {
-        PersistedEvents.persistEvents(applicationContext, stateMap);
-    }
-
-    boolean isValidForSession(Session session) {
-        AccessTokenAppIdPair other = new AccessTokenAppIdPair(session);
-        return accessTokenAppId.equals(other);
-    }
-
-    /**
-     * This method is intended only for internal use by the Facebook SDK and
-     * other use is unsupported.
-     */
-    public void logSdkEvent(String eventName, Double valueToSum, Bundle parameters) {
-        logEvent(eventName, valueToSum, parameters, true);
-    }
-
-    /**
-     * Returns the app ID this logger was configured to log to.
-     *
-     * @return the Facebook app ID
-     */
-    public String getApplicationId() {
-        return accessTokenAppId.getApplicationId();
-    }
-
-    //
-    // Private implementation
-    //
-    private enum FlushReason {
-
-        EXPLICIT,
-        TIMER,
-        SESSION_CHANGE,
-        PERSISTED_EVENTS,
-        EVENT_THRESHOLD,
-        EAGER_FLUSHING_EVENT,
-    }
-
-    private enum FlushResult {
-
-        SUCCESS,
-        SERVER_ERROR,
-        NO_CONNECTIVITY,
-        UNKNOWN_ERROR
-    }
+    // Instance member variables
+    private final Context context;
+    private final AccessTokenAppIdPair accessTokenAppId;
 
     /**
      * Constructor is private, newLogger() methods should be used to build an
@@ -646,6 +145,190 @@ public class AppEventsLogger {
         }
 
         initializeTimersIfNeeded();
+    }
+
+    /**
+     * Sets whether events sent to Facebook should be restricted from being used
+     * for purposes than analytics and conversions, such as remarketing for this
+     * user. Defaults to false. This value is stored on the device and persists
+     * across app launches.
+     *
+     * @param context Used to read the value.
+     * @beta
+     */
+    public static boolean getLimitEventUsage(Context context) {
+        SharedPreferences preferences = context.getSharedPreferences(APP_EVENT_PREFERENCES, Context.MODE_PRIVATE);
+        return preferences.getBoolean("limitEventUsage", false);
+    }
+
+    /**
+     * Sets whether events sent to Facebook should be restricted from being used
+     * for purposes than analytics and conversions, such as remarketing for this
+     * user. Defaults to false. This value is stored on the device and persists
+     * across app launches. Changes to this setting will apply to any events
+     * currently queued to be flushed, as well as any subsequent events.
+     *
+     * @param context Used to persist this value across app runs.
+     * @beta
+     */
+    public static void setLimitEventUsage(Context context, boolean limitEventUsage) {
+        SharedPreferences preferences = context.getSharedPreferences(APP_EVENT_PREFERENCES, Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = preferences.edit();
+        editor.putBoolean("limitEventUsage", limitEventUsage);
+        editor.commit();
+    }
+
+    /**
+     * Notifies the events system that the app has launched & logs an
+     * activatedApp event. Should be called whenever your app becomes active,
+     * typically in the onResume() method of each long-running Activity of your
+     * app.
+     * <p/>
+     * Use this method if your application ID is stored in application metadata,
+     * otherwise see
+     * {@link AppEventsLogger#activateApp(android.content.Context, String)}.
+     *
+     * @param context Used to access the applicationId and the attributionId for
+     *                non-authenticated users.
+     * @beta
+     */
+    public static void activateApp(Context context) {
+        activateApp(context, Utility.getMetadataApplicationId(context));
+    }
+
+    /**
+     * Notifies the events system that the app has launched & logs an
+     * activatedApp event. Should be called whenever your app becomes active,
+     * typically in the onResume() method of each long-running Activity of your
+     * app.
+     *
+     * @param context       Used to access the attributionId for non-authenticated
+     *                      users.
+     * @param applicationId The specific applicationId to report the activation
+     *                      for.
+     * @beta
+     */
+    @SuppressWarnings("deprecation")
+    public static void activateApp(Context context, String applicationId) {
+        if (context == null || applicationId == null) {
+            throw new IllegalArgumentException("Both context and applicationId must be non-null");
+        }
+
+        // activateApp supercedes publishInstall in the public API, so we need to explicitly invoke it, since the server
+        // can't reliably infer install state for all conditions of an app activate.
+        Settings.publishInstallAsync(context, applicationId);
+
+        AppEventsLogger logger = new AppEventsLogger(context, applicationId, null);
+        logger.logEvent(AppEventsConstants.EVENT_NAME_ACTIVATED_APP);
+    }
+
+    /**
+     * Build an AppEventsLogger instance to log events through. The Facebook app
+     * that these events are targeted at comes from this application's metadata.
+     * The application ID used to log events will be determined from the app ID
+     * specified in the package metadata.
+     *
+     * @param context Used to access the applicationId and the attributionId for
+     *                non-authenticated users.
+     * @return AppEventsLogger instance to invoke log* methods on.
+     * @beta
+     */
+    public static AppEventsLogger newLogger(Context context) {
+        return new AppEventsLogger(context, null, null);
+    }
+
+    /**
+     * Build an AppEventsLogger instance to log events through.
+     *
+     * @param context Used to access the attributionId for non-authenticated
+     *                users.
+     * @param session Explicitly specified Session to log events against. If
+     *                null, the activeSession will be used if it's open, otherwise the logging
+     *                will happen against the default app ID specified via the app ID specified
+     *                in the package metadata.
+     * @return AppEventsLogger instance to invoke log* methods on.
+     * @beta
+     */
+    public static AppEventsLogger newLogger(Context context, Session session) {
+        return new AppEventsLogger(context, null, session);
+    }
+
+    /**
+     * Build an AppEventsLogger instance to log events through.
+     *
+     * @param context       Used to access the attributionId for non-authenticated
+     *                      users.
+     * @param applicationId Explicitly specified Facebook applicationId to log
+     *                      events against. If null, the default app ID specified in the package
+     *                      metadata will be used.
+     * @param session       Explicitly specified Session to log events against. If
+     *                      null, the activeSession will be used if it's open, otherwise the logging
+     *                      will happen against the specified app ID.
+     * @return AppEventsLogger instance to invoke log* methods on.
+     * @beta
+     */
+    public static AppEventsLogger newLogger(Context context, String applicationId, Session session) {
+        return new AppEventsLogger(context, applicationId, session);
+    }
+
+    /**
+     * Build an AppEventsLogger instance to log events that are attributed to
+     * the application but not to any particular Session.
+     *
+     * @param context       Used to access the attributionId for non-authenticated
+     *                      users.
+     * @param applicationId Explicitly specified Facebook applicationId to log
+     *                      events against. If null, the default app ID specified in the package
+     *                      metadata will be used.
+     * @return AppEventsLogger instance to invoke log* methods on.
+     * @beta
+     */
+    public static AppEventsLogger newLogger(Context context, String applicationId) {
+        return new AppEventsLogger(context, applicationId, null);
+    }
+
+    /**
+     * Access the behavior that AppEventsLogger uses to determine when to flush
+     * logged events to the server. This setting applies to all instances of
+     * AppEventsLogger.
+     *
+     * @return specified flush behavior.
+     * @beta
+     */
+    public static FlushBehavior getFlushBehavior() {
+        synchronized (staticLock) {
+            return flushBehavior;
+        }
+    }
+
+    /**
+     * Set the behavior that this AppEventsLogger uses to determine when to
+     * flush logged events to the server. This setting applies to all instances
+     * of AppEventsLogger.
+     *
+     * @param flushBehavior the desired behavior.
+     * @beta
+     */
+    public static void setFlushBehavior(FlushBehavior flushBehavior) {
+        synchronized (staticLock) {
+            AppEventsLogger.flushBehavior = flushBehavior;
+        }
+    }
+
+    /**
+     * Call this when the consuming Activity/Fragment receives an onStop()
+     * callback in order to persist any outstanding events to disk, so they may
+     * be flushed at a later time. The next flush (explicit or not) will check
+     * for any outstanding events and, if present, include them in that flush.
+     * Note that this call may trigger an I/O operation on the calling thread.
+     * Explicit use of this method is not necessary if the consumer is making
+     * use of {@link UiLifecycleHelper}, which will take care of making the call
+     * in its own onStop() callback.
+     *
+     * @beta
+     */
+    public static void onContextStop() {
+        PersistedEvents.persistEvents(applicationContext, stateMap);
     }
 
     private static void initializeTimersIfNeeded() {
@@ -686,12 +369,6 @@ public class AppEventsLogger {
                 },
                 0, // start immediately
                 APP_SUPPORTS_ATTRIBUTION_ID_RECHECK_PERIOD_IN_SECONDS * 1000);
-    }
-
-    private void logEvent(String eventName, Double valueToSum, Bundle parameters, boolean isImplicitlyLogged) {
-
-        AppEvent event = new AppEvent(eventName, valueToSum, parameters, isImplicitlyLogged);
-        logEvent(context, event, accessTokenAppId);
     }
 
     private static void logEvent(Context context, AppEvent event, AccessTokenAppIdPair accessTokenAppId) {
@@ -856,15 +533,9 @@ public class AppEventsLogger {
         return null;
     }
 
-    private static class FlushStatistics {
-
-        public int numEvents = 0;
-        public FlushResult result = FlushResult.SUCCESS;
-    }
-
     private static Request buildRequestForSession(final AccessTokenAppIdPair accessTokenAppId,
-            final SessionEventsState sessionEventsState, final boolean limitEventUsage,
-            final FlushStatistics flushState) {
+                                                  final SessionEventsState sessionEventsState, final boolean limitEventUsage,
+                                                  final FlushStatistics flushState) {
         String applicationId = accessTokenAppId.getApplicationId();
 
         Utility.FetchedAppSettings fetchedAppSettings = Utility.queryAppSettings(applicationId, false);
@@ -901,7 +572,7 @@ public class AppEventsLogger {
     }
 
     private static void handleResponse(AccessTokenAppIdPair accessTokenAppId, Request request, Response response,
-            SessionEventsState sessionEventsState, FlushStatistics flushState) {
+                                       SessionEventsState sessionEventsState, FlushStatistics flushState) {
         FacebookRequestError error = response.getError();
         String resultDescription = "Success";
 
@@ -981,20 +652,331 @@ public class AppEventsLogger {
         Logger.log(LoggingBehavior.DEVELOPER_ERRORS, "AppEvents", message);
     }
 
+    /**
+     * Log an app event with the specified name.
+     *
+     * @param eventName eventName used to denote the event. Choose amongst the
+     *                  EVENT_NAME_* constants in {@link AppEventsConstants} when possible. Or
+     *                  create your own if none of the EVENT_NAME_* constants are applicable.
+     *                  Event names should be 40 characters or less, alphanumeric, and can
+     *                  include spaces, underscores or hyphens, but mustn't have a space or
+     *                  hyphen as the first character. Any given app should have no more than
+     *                  ~300 distinct event names.
+     * @beta
+     */
+    public void logEvent(String eventName) {
+        logEvent(eventName, null);
+    }
+
+    /**
+     * Log an app event with the specified name and the supplied value.
+     *
+     * @param eventName  eventName used to denote the event. Choose amongst the
+     *                   EVENT_NAME_* constants in {@link AppEventsConstants} when possible. Or
+     *                   create your own if none of the EVENT_NAME_* constants are applicable.
+     *                   Event names should be 40 characters or less, alphanumeric, and can
+     *                   include spaces, underscores or hyphens, but mustn't have a space or
+     *                   hyphen as the first character. Any given app should have no more than
+     *                   ~300 distinct event names.
+     *                   * @param eventName
+     * @param valueToSum a value to associate with the event which will be
+     *                   summed up in Insights for across all instances of the event, so that
+     *                   average values can be determined, etc.
+     * @beta
+     */
+    public void logEvent(String eventName, double valueToSum) {
+        logEvent(eventName, valueToSum, null);
+    }
+
+    /**
+     * Log an app event with the specified name and set of parameters.
+     *
+     * @param eventName  eventName used to denote the event. Choose amongst the
+     *                   EVENT_NAME_* constants in {@link AppEventsConstants} when possible. Or
+     *                   create your own if none of the EVENT_NAME_* constants are applicable.
+     *                   Event names should be 40 characters or less, alphanumeric, and can
+     *                   include spaces, underscores or hyphens, but mustn't have a space or
+     *                   hyphen as the first character. Any given app should have no more than
+     *                   ~300 distinct event names.
+     * @param parameters A Bundle of parameters to log with the event. Insights
+     *                   will allow looking at the logs of these events via different parameter
+     *                   values. You can log on the order of 10 parameters with each distinct
+     *                   eventName. It's advisable to keep the number of unique values provided
+     *                   for each parameter in the, at most, thousands. As an example, don't
+     *                   attempt to provide a unique parameter value for each unique user in your
+     *                   app. You won't get meaningful aggregate reporting on so many parameter
+     *                   values. The values in the bundles should be Strings or numeric values.
+     * @beta
+     */
+    public void logEvent(String eventName, Bundle parameters) {
+        logEvent(eventName, null, parameters, false);
+    }
+
+    /**
+     * Log an app event with the specified name, supplied value, and set of
+     * parameters.
+     *
+     * @param eventName  eventName used to denote the event. Choose amongst the
+     *                   EVENT_NAME_* constants in {@link AppEventsConstants} when possible. Or
+     *                   create your own if none of the EVENT_NAME_* constants are applicable.
+     *                   Event names should be 40 characters or less, alphanumeric, and can
+     *                   include spaces, underscores or hyphens, but mustn't have a space or
+     *                   hyphen as the first character. Any given app should have no more than
+     *                   ~300 distinct event names.
+     * @param valueToSum a value to associate with the event which will be
+     *                   summed up in Insights for across all instances of the event, so that
+     *                   average values can be determined, etc.
+     * @param parameters A Bundle of parameters to log with the event. Insights
+     *                   will allow looking at the logs of these events via different parameter
+     *                   values. You can log on the order of 10 parameters with each distinct
+     *                   eventName. It's advisable to keep the number of unique values provided
+     *                   for each parameter in the, at most, thousands. As an example, don't
+     *                   attempt to provide a unique parameter value for each unique user in your
+     *                   app. You won't get meaningful aggregate reporting on so many parameter
+     *                   values. The values in the bundles should be Strings or numeric values.
+     * @beta
+     */
+    public void logEvent(String eventName, double valueToSum, Bundle parameters) {
+        logEvent(eventName, valueToSum, parameters, false);
+    }
+
+    /**
+     * Logs a purchase event with Facebook, in the specified amount and with the
+     * specified currency.
+     *
+     * @param purchaseAmount Amount of purchase, in the currency specified by
+     *                       the 'currency' parameter. This value will be rounded to the thousandths
+     *                       place (e.g., 12.34567 becomes 12.346).
+     * @param currency       Currency used to specify the amount.
+     * @beta
+     */
+    public void logPurchase(BigDecimal purchaseAmount, Currency currency) {
+        logPurchase(purchaseAmount, currency, null);
+    }
+
+    /**
+     * Logs a purchase event with Facebook, in the specified amount and with the
+     * specified currency. Additional detail about the purchase can be passed in
+     * through the parameters bundle.
+     *
+     * @param purchaseAmount Amount of purchase, in the currency specified by
+     *                       the 'currency' parameter. This value will be rounded to the thousandths
+     *                       place (e.g., 12.34567 becomes 12.346).
+     * @param currency       Currency used to specify the amount.
+     * @param parameters     Arbitrary additional information for describing this
+     *                       event. Should have no more than 10 entries, and keys should be mostly
+     *                       consistent from one purchase event to the next.
+     * @beta
+     */
+    public void logPurchase(BigDecimal purchaseAmount, Currency currency, Bundle parameters) {
+
+        if (purchaseAmount == null) {
+            notifyDeveloperError("purchaseAmount cannot be null");
+            return;
+        } else if (currency == null) {
+            notifyDeveloperError("currency cannot be null");
+            return;
+        }
+
+        if (parameters == null) {
+            parameters = new Bundle();
+        }
+        parameters.putString(AppEventsConstants.EVENT_PARAM_CURRENCY, currency.getCurrencyCode());
+
+        logEvent(AppEventsConstants.EVENT_NAME_PURCHASED, purchaseAmount.doubleValue(), parameters);
+        eagerFlush();
+    }
+
+    /**
+     * Explicitly flush any stored events to the server. Implicit flushes may
+     * happen depending on the value of getFlushBehavior. This method allows for
+     * explicit, app invoked flushing.
+     *
+     * @beta
+     */
+    public void flush() {
+        flush(FlushReason.EXPLICIT);
+    }
+
+    boolean isValidForSession(Session session) {
+        AccessTokenAppIdPair other = new AccessTokenAppIdPair(session);
+        return accessTokenAppId.equals(other);
+    }
+
+    /**
+     * This method is intended only for internal use by the Facebook SDK and
+     * other use is unsupported.
+     */
+    public void logSdkEvent(String eventName, Double valueToSum, Bundle parameters) {
+        logEvent(eventName, valueToSum, parameters, true);
+    }
+
+    /**
+     * Returns the app ID this logger was configured to log to.
+     *
+     * @return the Facebook app ID
+     */
+    public String getApplicationId() {
+        return accessTokenAppId.getApplicationId();
+    }
+
+    private void logEvent(String eventName, Double valueToSum, Bundle parameters, boolean isImplicitlyLogged) {
+
+        AppEvent event = new AppEvent(eventName, valueToSum, parameters, isImplicitlyLogged);
+        logEvent(context, event, accessTokenAppId);
+    }
+
+    /**
+     * Controls when an AppEventsLogger sends log events to the server
+     */
+    public enum FlushBehavior {
+
+        /**
+         * Flush automatically: periodically (once a minute or after every 100
+         * events), and always at app reactivation. This is the default value.
+         */
+        AUTO,
+        /**
+         * Only flush when AppEventsLogger.flush() is explicitly invoked.
+         */
+        EXPLICIT_ONLY,
+    }
+
+    private enum SuppressionTimeoutBehavior {
+        // Successfully logging an event will reset the timeout period (i.e., events will log no more than every N
+        // seconds).
+
+        RESET_TIMEOUT_WHEN_LOG_SUCCESSFUL,
+        // Attempting to log an event, even if it is suppressed, will reset the timeout period (i.e., events will not
+        // be logged until they have been "silent" for at least N seconds).
+        RESET_TIMEOUT_WHEN_LOG_ATTEMPTED,
+    }
+
+    //
+    // Private implementation
+    //
+    private enum FlushReason {
+
+        EXPLICIT,
+        TIMER,
+        SESSION_CHANGE,
+        PERSISTED_EVENTS,
+        EVENT_THRESHOLD,
+        EAGER_FLUSHING_EVENT,
+    }
+
+    private enum FlushResult {
+
+        SUCCESS,
+        SERVER_ERROR,
+        NO_CONNECTIVITY,
+        UNKNOWN_ERROR
+    }
+
+    private static class EventSuppression {
+        // Timeout period in seconds
+
+        private int timeoutPeriod;
+        private SuppressionTimeoutBehavior behavior;
+
+        EventSuppression(int timeoutPeriod, SuppressionTimeoutBehavior behavior) {
+            this.timeoutPeriod = timeoutPeriod;
+            this.behavior = behavior;
+        }
+
+        int getTimeoutPeriod() {
+            return timeoutPeriod;
+        }
+
+        SuppressionTimeoutBehavior getBehavior() {
+            return behavior;
+        }
+    }
+
+    // Rather than retaining Sessions, we extract the information we need and track app events by
+    // application ID and access token (which may be null for Session-less calls). This avoids needing to
+    // worry about Session lifecycle and also allows us to coalesce app events from different Sessions
+    // that have the same access token/app ID.
+    private static class AccessTokenAppIdPair implements Serializable {
+
+        private static final long serialVersionUID = 1L;
+        private final String accessToken;
+        private final String applicationId;
+
+        AccessTokenAppIdPair(Session session) {
+            this(session.getAccessToken(), session.getApplicationId());
+        }
+
+        AccessTokenAppIdPair(String accessToken, String applicationId) {
+            this.accessToken = Utility.isNullOrEmpty(accessToken) ? null : accessToken;
+            this.applicationId = applicationId;
+        }
+
+        String getAccessToken() {
+            return accessToken;
+        }
+
+        String getApplicationId() {
+            return applicationId;
+        }
+
+        @Override
+        public int hashCode() {
+            return (accessToken == null ? 0 : accessToken.hashCode())
+                    ^ (applicationId == null ? 0 : applicationId.hashCode());
+        }
+
+        @Override
+        public boolean equals(Object o) {
+            if (!(o instanceof AccessTokenAppIdPair)) {
+                return false;
+            }
+            AccessTokenAppIdPair p = (AccessTokenAppIdPair) o;
+            return Utility.areObjectsEqual(p.accessToken, accessToken)
+                    && Utility.areObjectsEqual(p.applicationId, applicationId);
+        }
+
+        private Object writeReplace() {
+            return new SerializationProxyV1(accessToken, applicationId);
+        }
+
+        private static class SerializationProxyV1 implements Serializable {
+
+            private static final long serialVersionUID = -2488473066578201069L;
+            private final String accessToken;
+            private final String appId;
+
+            private SerializationProxyV1(String accessToken, String appId) {
+                this.accessToken = accessToken;
+                this.appId = appId;
+            }
+
+            private Object readResolve() {
+                return new AccessTokenAppIdPair(accessToken, appId);
+            }
+        }
+    }
+
+    private static class FlushStatistics {
+
+        public int numEvents = 0;
+        public FlushResult result = FlushResult.SUCCESS;
+    }
+
     //
     // Deprecated Stuff
     //
     static class SessionEventsState {
 
+        public static final String EVENT_COUNT_KEY = "event_count";
+        public static final String ENCODED_EVENTS_KEY = "encoded_events";
+        public static final String NUM_SKIPPED_KEY = "num_skipped";
+        private final int MAX_ACCUMULATED_LOG_EVENTS = 1000;
         private List<AppEvent> accumulatedEvents = new ArrayList<AppEvent>();
         private List<AppEvent> inFlightEvents = new ArrayList<AppEvent>();
         private int numSkippedEventsDueToFullBuffer;
         private String attributionId;
         private String packageName;
-        public static final String EVENT_COUNT_KEY = "event_count";
-        public static final String ENCODED_EVENTS_KEY = "encoded_events";
-        public static final String NUM_SKIPPED_KEY = "num_skipped";
-        private final int MAX_ACCUMULATED_LOG_EVENTS = 1000;
 
         public SessionEventsState(String attributionId, String packageName) {
             this.attributionId = attributionId;
@@ -1024,7 +1006,7 @@ public class AppEventsLogger {
         }
 
         public int populateRequest(Request request, boolean includeImplicitEvents,
-                boolean includeAttribution, boolean limitEventUsage) {
+                                   boolean includeAttribution, boolean limitEventUsage) {
 
             int numSkipped;
             JSONArray jsonArray;
@@ -1067,7 +1049,7 @@ public class AppEventsLogger {
         }
 
         private void populateRequest(Request request, int numSkipped, JSONArray events, boolean includeAttribution,
-                boolean limitEventUsage) {
+                                     boolean limitEventUsage) {
             GraphObject publishParams = GraphObject.Factory.create();
             publishParams.setProperty("event", "CUSTOM_APP_EVENTS");
 
@@ -1112,9 +1094,9 @@ public class AppEventsLogger {
     static class AppEvent implements Serializable {
 
         private static final long serialVersionUID = 1L;
+        private static final HashSet<String> validatedIdentifiers = new HashSet<String>();
         private JSONObject jsonObject;
         private boolean isImplicit;
-        private static final HashSet<String> validatedIdentifiers = new HashSet<String>();
         private String name;
 
         public AppEvent(String eventName, Double valueToSum, Bundle parameters, boolean isImplicitlyLogged) {
@@ -1153,7 +1135,7 @@ public class AppEventsLogger {
                         if (!(value instanceof String) && !(value instanceof Number)) {
                             throw new FacebookException(
                                     String.format("Parameter value '%s' for key '%s' should be a string or a numeric type.",
-                                    value, key));
+                                            value, key));
                         }
 
                         jsonObject.put(key, value.toString());
@@ -1174,13 +1156,13 @@ public class AppEventsLogger {
             }
         }
 
-        public String getName() {
-            return name;
-        }
-
         private AppEvent(String jsonString, boolean isImplicit) throws JSONException {
             jsonObject = new JSONObject(jsonString);
             this.isImplicit = isImplicit;
+        }
+
+        public String getName() {
+            return name;
         }
 
         public boolean getIsImplicit() {
@@ -1220,11 +1202,21 @@ public class AppEventsLogger {
                 } else {
                     throw new FacebookException(
                             String.format("Skipping event named '%s' due to illegal name - must be under 40 chars "
-                            + "and alphanumeric, _, - or space, and not start with a space or hyphen.",
-                            identifier));
+                                            + "and alphanumeric, _, - or space, and not start with a space or hyphen.",
+                                    identifier));
                 }
             }
 
+        }
+
+        private Object writeReplace() {
+            return new SerializationProxyV1(jsonObject.toString(), isImplicit);
+        }
+
+        @Override
+        public String toString() {
+            return String.format("\"%s\", implicit: %b, json: %s", jsonObject.optString("_eventName"),
+                    isImplicit, jsonObject.toString());
         }
 
         private static class SerializationProxyV1 implements Serializable {
@@ -1241,16 +1233,6 @@ public class AppEventsLogger {
             private Object readResolve() throws JSONException {
                 return new AppEvent(jsonString, isImplicit);
             }
-        }
-
-        private Object writeReplace() {
-            return new SerializationProxyV1(jsonObject.toString(), isImplicit);
-        }
-
-        @Override
-        public String toString() {
-            return String.format("\"%s\", implicit: %b, json: %s", jsonObject.optString("_eventName"),
-                    isImplicit, jsonObject.toString());
         }
     }
 
@@ -1279,14 +1261,14 @@ public class AppEventsLogger {
         }
 
         public static void persistEvents(Context context, AccessTokenAppIdPair accessTokenAppId,
-                SessionEventsState eventsToPersist) {
+                                         SessionEventsState eventsToPersist) {
             Map<AccessTokenAppIdPair, SessionEventsState> map = new HashMap<AccessTokenAppIdPair, SessionEventsState>();
             map.put(accessTokenAppId, eventsToPersist);
             persistEvents(context, map);
         }
 
         public static void persistEvents(Context context,
-                Map<AccessTokenAppIdPair, SessionEventsState> eventsToPersist) {
+                                         Map<AccessTokenAppIdPair, SessionEventsState> eventsToPersist) {
             synchronized (staticLock) {
                 // Note that we don't track which instance of AppEventsLogger added a particular event to
                 // SessionEventsState; when a particular Context is being destroyed, we'll persist all accumulated

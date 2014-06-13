@@ -1,153 +1,164 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout
     android:id="@+id/widget37"
+    xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
-    android:orientation="vertical"
-    xmlns:android="http://schemas.android.com/apk/res/android">
+    android:orientation="vertical">
+
     <LinearLayout
         android:id="@+id/widget38"
         android:layout_width="fill_parent"
         android:layout_height="30dp"
-    >
+        >
         <!--android:padding="2dp"-->
-        
+
     </LinearLayout>
+
     <LinearLayout
         android:id="@+id/widget39"
         android:layout_width="fill_parent"
         android:layout_height="100dp">
+
         <ImageView
             android:id="@+id/logo"
-            android:contentDescription="Logo"
             android:layout_width="100dp"
             android:layout_height="fill_parent"
-            android:layout_marginLeft="10dp" 
+            android:layout_marginLeft="10dp"
+            android:contentDescription="Logo"
             android:src="@drawable/logo_summer"/>
-        
+
         <!-- pismenka -->
         <LinearLayout
             android:id="@+id/widget45"
             android:layout_width="fill_parent"
             android:layout_height="fill_parent"
-            android:orientation="vertical"
-            android:gravity="right"
-            android:layout_weight="3"
             android:layout_marginLeft="10dp"
-        >
+            android:layout_weight="3"
+            android:gravity="right"
+            android:orientation="vertical"
+            >
             <!--android:padding="10dp"-->
 
             <TextView
                 android:id="@+id/widget46"
                 android:layout_width="fill_parent"
                 android:layout_height="0dp"
-                android:text="MultiGame"
-                android:gravity="left"
                 android:layout_weight="2"
+                android:gravity="left"
+                android:text="MultiGame"
                 android:textSize="@dimen/Multigame_label_size"
-                android:textStyle="bold" />
+                android:textStyle="bold"/>
             <!--android:layout_marginTop="5dp"-->
             <TextView
                 android:id="@+id/widget47"
                 android:layout_width="fill_parent"
                 android:layout_height="0dp"
+                android:layout_marginLeft="2dp"
+                android:layout_weight="1"
+                android:gravity="left"
                 android:text="More games. More fun."
                 android:textSize="@dimen/slogan_size"
-                android:gravity="left"
-                android:layout_weight="1" 
-                android:layout_marginLeft="2dp"
-/>
+                />
             <!--android:text="Why bother playing just one game?"-->
             <!--android:text="Multitasking.\u00A0Multiaddiction."-->
             <TextView
                 android:id="@+id/widget48"
                 android:layout_width="fill_parent"
                 android:layout_height="0dp"
-                android:textSize="@dimen/slogan_size"
-                android:layout_weight="1" />
+                android:layout_weight="1"
+                android:textSize="@dimen/slogan_size"/>
             <!--android:text="Play them all!"-->
             <!--android:text="Multifun."-->
         </LinearLayout>
     </LinearLayout>
+
     <LinearLayout
         android:id="@+id/widget49"
         android:layout_width="fill_parent"
         android:layout_height="50dp"
-        android:padding="2dp"
-        android:orientation="horizontal"
         android:gravity="right"
-    >
+        android:orientation="horizontal"
+        android:padding="2dp"
+        >
     </LinearLayout>
+
     <TableLayout
         android:id="@+id/widget56"
         android:layout_width="fill_parent"
         android:layout_height="fill_parent"
-        android:padding="1dp"
-        android:orientation="vertical">
+        android:orientation="vertical"
+        android:padding="1dp">
+
         <TableRow
             android:id="@+id/widget58"
             android:layout_width="fill_parent"
             android:layout_height="0dp"
-            android:orientation="horizontal"
+            android:layout_weight="1"
             android:gravity="bottom"
-            android:padding="1dp"
-            android:layout_weight="1">
+            android:orientation="horizontal"
+            android:padding="1dp">
+
             <Button
                 android:id="@+id/mainMenu_button_start"
                 android:layout_width="0dp"
                 android:layout_height="fill_parent"
-                android:text="@string/button_game" 
+                android:layout_weight="1"
+                android:background="@drawable/button_background_ul"
                 android:onClick="startGame"
-                android:layout_weight="1" 
-                android:textSize="@dimen/main_menutext_size"
-                android:background="@drawable/button_background_ul"/>
-                
-            <View  android:layout_width="2dp"
-                   android:layout_height="fill_parent"
-                   android:background="@android:color/white" />
+                android:text="@string/button_game"
+                android:textSize="@dimen/main_menutext_size"/>
+
+            <View
+                android:layout_width="2dp"
+                android:layout_height="fill_parent"
+                android:background="@android:color/white"/>
+
             <Button
                 android:id="@+id/mainMenu_button_MGC"
                 android:layout_width="0dp"
                 android:layout_height="fill_parent"
-                android:text="@string/button_customization_center"
-                android:textSize="@dimen/main_menutext_size"
+                android:layout_weight="1"
+                android:background="@drawable/button_background_ur"
                 android:onClick="showMGC"
-                android:layout_weight="1" 
-                android:background="@drawable/button_background_ur"/>
+                android:text="@string/button_customization_center"
+                android:textSize="@dimen/main_menutext_size"/>
         </TableRow>
+
         <TableRow
             android:id="@+id/widget57"
             android:layout_width="fill_parent"
             android:layout_height="0dp"
-            android:orientation="horizontal"
             android:layout_weight="1"
+            android:orientation="horizontal"
             android:padding="1dp">
-            
+
             <Button
                 android:id="@+id/mainMenu_button_preferences"
                 android:layout_width="0dp"
                 android:layout_height="fill_parent"
-                android:textSize="@dimen/main_menutext_size"
-                android:text="@string/button_preferences"
+                android:layout_weight="1"
+                android:background="@drawable/button_background_ll"
                 android:onClick="showPreferences"
-                android:layout_weight="1" 
-                android:background="@drawable/button_background_ll"/>
-            
-            
-            <View  android:layout_width="2dp"
-                   android:layout_height="fill_parent"
-                   android:background="@android:color/white" />
-            
+                android:text="@string/button_preferences"
+                android:textSize="@dimen/main_menutext_size"/>
+
+
+            <View
+                android:layout_width="2dp"
+                android:layout_height="fill_parent"
+                android:background="@android:color/white"/>
+
             <Button
                 android:id="@+id/mainMenu_button_HOF"
                 android:layout_width="0dp"
                 android:layout_height="fill_parent"
-                android:textSize="@dimen/main_menutext_size"
-                android:text="@string/button_hall_of_fame"
-                android:onClick="showHallOfFame"
-                android:layout_weight="1" 
+                android:layout_weight="1"
                 android:background="@drawable/button_background_lr"
-/>
+                android:onClick="showHallOfFame"
+                android:text="@string/button_hall_of_fame"
+                android:textSize="@dimen/main_menutext_size"
+                />
 
         </TableRow>
     </TableLayout>

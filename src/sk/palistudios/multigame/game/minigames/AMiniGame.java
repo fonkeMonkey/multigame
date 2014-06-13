@@ -1,44 +1,32 @@
 package sk.palistudios.multigame.game.minigames;
 
 // @author Pali
+
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
-import java.io.Serializable;
 import sk.palistudios.multigame.R;
-import sk.palistudios.multigame.customization_center.skins.SkinsCenterListActivity;
 import sk.palistudios.multigame.game.GameActivity;
-import sk.palistudios.multigame.game.persistence.GameSharedPref;
 import sk.palistudios.multigame.game.persistence.GameSaverLoader;
 import sk.palistudios.multigame.tools.ITimeObserver;
 
+import java.io.Serializable;
+
 public abstract class AMiniGame implements Serializable, ITimeObserver {
 
+    protected final int colorAlt2;
     public Typ type;
-    String mFileName;
-    protected int mHeight;
-    protected int mWidth;
     public Integer mPosition;
     public transient GameActivity mGame;
-    private boolean active = false;
+    protected int mHeight;
+    protected int mWidth;
     protected int colorMain;
     protected int colorAlt;
+    String mFileName;
     boolean isMinigameInitialized;
-    protected final int colorAlt2;
-
-    public abstract void updateMinigame();
-
-    public abstract String getName();
-
-    public enum Typ {
-
-        Horizontal,
-        Vertical,
-        Touch
-    }
+    private boolean active = false;
 
     /**
-     *
      * @param game
      */
     public AMiniGame(String fileName, int position, GameActivity game) {
@@ -51,6 +39,10 @@ public abstract class AMiniGame implements Serializable, ITimeObserver {
         this.colorAlt = mGame.getResources().getColor(R.color.gameAlt);
         this.colorAlt2 = mGame.getResources().getColor(R.color.gameAlt2);
     }
+
+    public abstract void updateMinigame();
+
+    public abstract String getName();
 
     public abstract void onDifficultyIncreased();
 
@@ -93,5 +85,12 @@ public abstract class AMiniGame implements Serializable, ITimeObserver {
 
     public boolean isMinigameInitilized() {
         return isMinigameInitialized;
+    }
+
+    public enum Typ {
+
+        Horizontal,
+        Vertical,
+        Touch
     }
 }

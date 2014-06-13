@@ -31,11 +31,11 @@ import java.util.List;
  * <p>Basic implementation of a Fragment that uses a Session to perform Single
  * Sign On (SSO). This class is package private, and is not intended to be
  * consumed by external applications.</p>
- *
+ * <p/>
  * <p>The method {@link android.support.v4.app.Fragment#onActivityResult} is
  * used to manage the session information, so if you override it in a subclass,
  * be sure to call {@code super.onActivityResult}.</p>
- *
+ * <p/>
  * <p>The methods in this class are not thread-safe.</p>
  */
 class FacebookFragment extends Fragment {
@@ -67,28 +67,17 @@ class FacebookFragment extends Fragment {
     }
 
     /**
-     * Use the supplied Session object instead of the active Session.
-     *
-     * @param newSession the Session object to use
-     */
-    public void setSession(Session newSession) {
-        if (sessionTracker != null) {
-            sessionTracker.setSession(newSession);
-        }
-    }
-
-    // METHOD TO BE OVERRIDDEN
-    /**
      * Called when the session state changes. Override this method to take
      * action on session state changes.
      *
-     * @param state the new state
+     * @param state     the new state
      * @param exception any exceptions that occurred during the state change
      */
     protected void onSessionStateChange(SessionState state, Exception exception) {
     }
 
-    // ACCESSORS (CANNOT BE OVERRIDDEN)
+    // METHOD TO BE OVERRIDDEN
+
     /**
      * Gets the current Session.
      *
@@ -99,6 +88,19 @@ class FacebookFragment extends Fragment {
             return sessionTracker.getSession();
         }
         return null;
+    }
+
+    // ACCESSORS (CANNOT BE OVERRIDDEN)
+
+    /**
+     * Use the supplied Session object instead of the active Session.
+     *
+     * @param newSession the Session object to use
+     */
+    public void setSession(Session newSession) {
+        if (sessionTracker != null) {
+            sessionTracker.setSession(newSession);
+        }
     }
 
     /**
@@ -207,7 +209,7 @@ class FacebookFragment extends Fragment {
      * the associated meta-data value and an empty list respectively.
      *
      * @param applicationId the applicationID, can be null
-     * @param permissions the permissions list, can be null
+     * @param permissions   the permissions list, can be null
      */
     protected final void openSessionForRead(String applicationId, List<String> permissions) {
         openSessionForRead(applicationId, permissions, SessionLoginBehavior.SSO_WITH_FALLBACK,
@@ -220,12 +222,12 @@ class FacebookFragment extends Fragment {
      * the associated meta-data value and an empty list respectively.
      *
      * @param applicationId the applicationID, can be null
-     * @param permissions the permissions list, can be null
-     * @param behavior the login behavior to use with the session
-     * @param activityCode the activity code to use for the SSO activity
+     * @param permissions   the permissions list, can be null
+     * @param behavior      the login behavior to use with the session
+     * @param activityCode  the activity code to use for the SSO activity
      */
     protected final void openSessionForRead(String applicationId, List<String> permissions,
-            SessionLoginBehavior behavior, int activityCode) {
+                                            SessionLoginBehavior behavior, int activityCode) {
         openSession(applicationId, permissions, behavior, activityCode, SessionAuthorizationType.READ);
     }
 
@@ -235,7 +237,7 @@ class FacebookFragment extends Fragment {
      * meta-data value. The permissions list cannot be null.
      *
      * @param applicationId the applicationID, can be null
-     * @param permissions the permissions list, cannot be null
+     * @param permissions   the permissions list, cannot be null
      */
     protected final void openSessionForPublish(String applicationId, List<String> permissions) {
         openSessionForPublish(applicationId, permissions, SessionLoginBehavior.SSO_WITH_FALLBACK,
@@ -248,17 +250,17 @@ class FacebookFragment extends Fragment {
      * meta-data value. The permissions list cannot be null.
      *
      * @param applicationId the applicationID, can be null
-     * @param permissions the permissions list, cannot be null
-     * @param behavior the login behavior to use with the session
-     * @param activityCode the activity code to use for the SSO activity
+     * @param permissions   the permissions list, cannot be null
+     * @param behavior      the login behavior to use with the session
+     * @param activityCode  the activity code to use for the SSO activity
      */
     protected final void openSessionForPublish(String applicationId, List<String> permissions,
-            SessionLoginBehavior behavior, int activityCode) {
+                                               SessionLoginBehavior behavior, int activityCode) {
         openSession(applicationId, permissions, behavior, activityCode, SessionAuthorizationType.PUBLISH);
     }
 
     private void openSession(String applicationId, List<String> permissions,
-            SessionLoginBehavior behavior, int activityCode, SessionAuthorizationType authType) {
+                             SessionLoginBehavior behavior, int activityCode, SessionAuthorizationType authType) {
         if (sessionTracker != null) {
             Session currentSession = sessionTracker.getSession();
             if (currentSession == null || currentSession.getState().isClosed()) {
@@ -287,8 +289,8 @@ class FacebookFragment extends Fragment {
 
         @Override
         public void call(Session session,
-                SessionState state,
-                Exception exception) {
+                         SessionState state,
+                         Exception exception) {
             FacebookFragment.this.onSessionStateChange(state, exception);
         }
     }

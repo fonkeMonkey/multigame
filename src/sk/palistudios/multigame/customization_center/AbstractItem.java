@@ -3,14 +3,13 @@ package sk.palistudios.multigame.customization_center;
 import sk.palistudios.multigame.game.persistence.GameSharedPref;
 
 /**
- *
  * @author Pali
  */
 public class AbstractItem {
 
+    protected boolean chosen;
     String computerName;
     String humanName;
-    protected boolean chosen;
     private String unlockDescription;
 
     public AbstractItem(String computerName, String humanName, boolean chosen) {

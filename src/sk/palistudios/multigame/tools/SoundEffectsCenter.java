@@ -7,14 +7,10 @@ package sk.palistudios.multigame.tools;
 import android.content.Context;
 import android.media.AudioManager;
 import android.media.MediaPlayer;
-import java.io.IOException;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import sk.palistudios.multigame.R;
 import sk.palistudios.multigame.game.persistence.GameSharedPref;
 
 /**
- *
  * @author virdzek
  */
 public class SoundEffectsCenter {
@@ -22,9 +18,9 @@ public class SoundEffectsCenter {
     public static MediaPlayer mp_forward;
     public static MediaPlayer mp_back;
     public static MediaPlayer mp_tab;
-    private static float VOLUME = 0.25f;
-    private static boolean isInitialized = false; 
     public static AudioManager audioManager;
+    private static float VOLUME = 0.25f;
+    private static boolean isInitialized = false;
 
     public static void init(Context context) {
 
@@ -36,16 +32,16 @@ public class SoundEffectsCenter {
         mp_tab.setAudioStreamType(AudioManager.STREAM_MUSIC);
         isInitialized = true;
     }
-    
+
     public static void muteSystemSounds(Context context, boolean status) {
-        if(audioManager == null){
+        if (audioManager == null) {
             audioManager = (AudioManager) context.getSystemService(Context.AUDIO_SERVICE);
         }
         audioManager.setStreamMute(AudioManager.STREAM_SYSTEM, status);
     }
 
     public static void playForwardSound(Context context) {
-        if(!isInitialized){
+        if (!isInitialized) {
             init(context);
         }
         if (GameSharedPref.isSoundOn()) {
@@ -54,20 +50,20 @@ public class SoundEffectsCenter {
     }
 
     public static void playBackSound(Context context) {
-        if(!isInitialized){
+        if (!isInitialized) {
             init(context);
         }
-        
+
         if (GameSharedPref.isSoundOn()) {
             mp_back.start();
         }
     }
 
     public static void playTabSound(Context context) {
-        if(!isInitialized){
+        if (!isInitialized) {
             init(context);
         }
-        
+
         if (GameSharedPref.isSoundOn()) {
             mp_tab.start();
         }

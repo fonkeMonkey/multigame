@@ -41,7 +41,7 @@ public interface GraphObjectList<T> extends List<T> {
      * @return a list representing the same underlying data, exposed as the new
      * GraphObject-derived type
      * @throws com.facebook.FacebookGraphObjectException if T does not derive
-     * from GraphObject
+     *                                                   from GraphObject
      */
     public <U extends GraphObject> GraphObjectList<U> castToListOf(Class<U> graphObjectClass);
 

@@ -25,12 +25,15 @@ import android.text.TextUtils;
 import android.util.Log;
 import android.webkit.CookieManager;
 import android.webkit.CookieSyncManager;
-import com.facebook.*;
+import com.facebook.FacebookException;
+import com.facebook.Request;
+import com.facebook.Session;
 import com.facebook.model.GraphObject;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 import org.json.JSONTokener;
+import sk.palistudios.multigame.BuildConfig;
 
 import java.io.*;
 import java.net.HttpURLConnection;
@@ -39,7 +42,6 @@ import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
-import sk.palistudios.multigame.BuildConfig;
 
 /**
  * com.facebook.internal is solely for the use of other packages within the
@@ -48,39 +50,20 @@ import sk.palistudios.multigame.BuildConfig;
  */
 public final class Utility {
 
+    // This is the default used by the buffer streams, but they trace a warning if you do not specify.
+    public static final int DEFAULT_STREAM_BUFFER_SIZE = 8192;
     static final String LOG_TAG = "FacebookSDK";
     private static final String HASH_ALGORITHM_MD5 = "MD5";
     private static final String URL_SCHEME = "https";
     private static final String SUPPORTS_ATTRIBUTION = "supports_attribution";
     private static final String SUPPORTS_IMPLICIT_SDK_LOGGING = "supports_implicit_sdk_logging";
     private static final String[] APP_SETTING_FIELDS = new String[]{
-        SUPPORTS_ATTRIBUTION,
-        SUPPORTS_IMPLICIT_SDK_LOGGING
+            SUPPORTS_ATTRIBUTION,
+            SUPPORTS_IMPLICIT_SDK_LOGGING
     };
     private static final String APPLICATION_FIELDS = "fields";
-    // This is the default used by the buffer streams, but they trace a warning if you do not specify.
-    public static final int DEFAULT_STREAM_BUFFER_SIZE = 8192;
     private static Map<String, FetchedAppSettings> fetchedAppSettings =
             new ConcurrentHashMap<String, FetchedAppSettings>();
-
-    public static class FetchedAppSettings {
-
-        private boolean supportsAttribution;
-        private boolean supportsImplicitLogging;
-
-        private FetchedAppSettings(boolean supportsAttribution, boolean supportsImplicitLogging) {
-            this.supportsAttribution = supportsAttribution;
-            this.supportsImplicitLogging = supportsImplicitLogging;
-        }
-
-        public boolean supportsAttribution() {
-            return supportsAttribution;
-        }
-
-        public boolean supportsImplicitLogging() {
-            return supportsImplicitLogging;
-        }
-    }
 
     // Returns true iff all items in subset are in superset, treating null and
     // empty collections as
@@ -391,5 +374,24 @@ public final class Utility {
             }
         }
         return result;
+    }
+
+    public static class FetchedAppSettings {
+
+        private boolean supportsAttribution;
+        private boolean supportsImplicitLogging;
+
+        private FetchedAppSettings(boolean supportsAttribution, boolean supportsImplicitLogging) {
+            this.supportsAttribution = supportsAttribution;
+            this.supportsImplicitLogging = supportsImplicitLogging;
+        }
+
+        public boolean supportsAttribution() {
+            return supportsAttribution;
+        }
+
+        public boolean supportsImplicitLogging() {
+            return supportsImplicitLogging;
+        }
     }
 }

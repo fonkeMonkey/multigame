@@ -1,35 +1,77 @@
 package sk.palistudios.multigame.game;
 
 // @author Pali
+
 import android.app.Activity;
 import android.content.Context;
-import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Window;
 import android.view.WindowManager;
-import android.widget.Toast;
-import com.facebook.FacebookException;
-import com.facebook.FacebookOperationCanceledException;
-import com.facebook.Session;
-import com.facebook.SessionState;
-import com.facebook.UiLifecycleHelper;
-import com.facebook.widget.FacebookDialog;
+import com.facebook.*;
 import com.facebook.widget.WebDialog;
-import java.util.Arrays;
-import java.util.List;
 import sk.palistudios.multigame.R;
-import sk.palistudios.multigame.game.persistence.GameSharedPref;
 import sk.palistudios.multigame.mainMenu.MainMenuActivity;
 import sk.palistudios.multigame.tools.Toaster;
 
 public class GameFacebookShare {
 
     public final static String TAG = "FB Share";
-    private UiLifecycleHelper uiHelper;
+    //    private static void publishStoryNew(Activity act, int score) {
+//        // This function will invoke the Feed Dialog to post to a user's Timeline and News Feed
+//// It will attempt to use the Facebook Native Share dialog
+//// If that's not supported we'll fall back to the web based dialog.
+//
+////        GraphUser currentFBUser = application.getCurrentFBUser();
+//
+//// This first parameter is used for deep linking so that anyone who clicks the link will start smashing this user
+//// who sent the post
+////        String link = "https://apps.facebook.com/friendsmashsample/?challenge_brag=";
+////        if (currentFBUser != null) {
+////            link += currentFBUser.getId();
+////        }
+//
+//// Define the other parameters
+//        String name = "Check out my multitasking skills!";
+//        String caption = "http://play.google.com/store/apps/details?id=sk.palistudios.multigame";
+//        String description = "I just achieved incredible " + score + " points in Multigame! Can you beat that?";
+//        String picture = "http://s24.postimg.org/9jb0yf9wh/logo_summer.png";
+//        String link = "http://play.google.com/store/apps/details?id=sk.palistudios.multigame";
+//
+//
+//        if (FacebookDialog.canPresentShareDialog(act, FacebookDialog.ShareDialogFeature.SHARE_DIALOG)) {
+//
+//            // Create the Native Share dialog
+//            FacebookDialog shareDialog = new FacebookDialog.ShareDialogBuilder(act)
+//                    .setLink(link)
+//                    .setName(name)
+//                    .setCaption(caption)
+//                    .setPicture(picture)
+//                    .build();
+//            MainMenu.setWallPostAchievementDone();
+//            // Show the Native Share dialog
+////        ((HomeActivity)(act)).getFbUiLifecycleHelper().trackPendingDialogCall(shareDialog.present());
+//        } else {
+//
+//            // Prepare the web dialog parameters
+//            Bundle params = new Bundle();
+////            params.putString("link", link);
+//            params.putString("name", name);
+//            params.putString("caption", caption);
+//            params.putString("description", description);
+//            params.putString("picture", picture);
+//            params.putString("link", link);
+//
+//            // Show FBDialog without a notification bar
+//            showDialogWithoutNotificationBar(act, "feed", params);
+//        }
+//
+//    }
+    private static WebDialog dialog;
 //    private static final List<String> PERMISSIONS = Arrays.asList("publish_actions");
 //    private static final String PENDING_PUBLISH_KEY = "pendingPublishReauthorization";
 //    private static boolean pendingPublishReauthorization = false;
+    private UiLifecycleHelper uiHelper;
 
     public static void shareScoreToFacebook(final int score, final boolean isWinner) {
         final MainMenuActivity mainMenu = MainMenuActivity.getInstance();
@@ -83,7 +125,6 @@ public class GameFacebookShare {
 //                }
             }
         });
-
 
 
     }
@@ -150,74 +191,23 @@ public class GameFacebookShare {
         }).build();
         feedDialog.show();
     }
-//    private static void publishStoryNew(Activity act, int score) {
-//        // This function will invoke the Feed Dialog to post to a user's Timeline and News Feed
-//// It will attempt to use the Facebook Native Share dialog
-//// If that's not supported we'll fall back to the web based dialog.
-//
-////        GraphUser currentFBUser = application.getCurrentFBUser();
-//
-//// This first parameter is used for deep linking so that anyone who clicks the link will start smashing this user
-//// who sent the post
-////        String link = "https://apps.facebook.com/friendsmashsample/?challenge_brag=";
-////        if (currentFBUser != null) {
-////            link += currentFBUser.getId();
-////        }
-//
-//// Define the other parameters
-//        String name = "Check out my multitasking skills!";
-//        String caption = "http://play.google.com/store/apps/details?id=sk.palistudios.multigame";
-//        String description = "I just achieved incredible " + score + " points in Multigame! Can you beat that?";
-//        String picture = "http://s24.postimg.org/9jb0yf9wh/logo_summer.png";
-//        String link = "http://play.google.com/store/apps/details?id=sk.palistudios.multigame";
-//
-//
-//        if (FacebookDialog.canPresentShareDialog(act, FacebookDialog.ShareDialogFeature.SHARE_DIALOG)) {
-//
-//            // Create the Native Share dialog
-//            FacebookDialog shareDialog = new FacebookDialog.ShareDialogBuilder(act)
-//                    .setLink(link)
-//                    .setName(name)
-//                    .setCaption(caption)
-//                    .setPicture(picture)
-//                    .build();
-//            MainMenu.setWallPostAchievementDone();
-//            // Show the Native Share dialog
-////        ((HomeActivity)(act)).getFbUiLifecycleHelper().trackPendingDialogCall(shareDialog.present());
-//        } else {
-//
-//            // Prepare the web dialog parameters
-//            Bundle params = new Bundle();
-////            params.putString("link", link);
-//            params.putString("name", name);
-//            params.putString("caption", caption);
-//            params.putString("description", description);
-//            params.putString("picture", picture);
-//            params.putString("link", link);
-//
-//            // Show FBDialog without a notification bar
-//            showDialogWithoutNotificationBar(act, "feed", params);
-//        }
-//
-//    }
-    private static WebDialog dialog;
 
     private static void showDialogWithoutNotificationBar(Activity act, String action, Bundle params) {
         dialog = new WebDialog.Builder(act, Session.getActiveSession(), action, params).
                 setOnCompleteListener(new WebDialog.OnCompleteListener() {
-            @Override
-            public void onComplete(Bundle values, FacebookException error) {
-                if (error != null && !(error instanceof FacebookOperationCanceledException)) {
+                    @Override
+                    public void onComplete(Bundle values, FacebookException error) {
+                        if (error != null && !(error instanceof FacebookOperationCanceledException)) {
 //                    ((HomeActivity) getActivity()).
 //                            showError(getResources().getString(R.string.network_error), false);
-                }
+                        }
 
-                dialog = null;
-                MainMenuActivity.setWallPostAchievementDone();
+                        dialog = null;
+                        MainMenuActivity.setWallPostAchievementDone();
 //                dialogAction = null;
 //                dialogParams = null;
-            }
-        }).build();
+                    }
+                }).build();
 
         Window dialog_window = dialog.getWindow();
         dialog_window.setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,

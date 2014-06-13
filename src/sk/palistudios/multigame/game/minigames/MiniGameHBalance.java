@@ -13,25 +13,46 @@ import sk.palistudios.multigame.mainMenu.DebugSettings;
 import sk.palistudios.multigame.tools.RandomGenerator;
 
 /**
- *
  * @author Pali
  */
 public class MiniGameHBalance extends AMiniGame implements IMiniGameHorizontal {
 
-    //Difficulty settings
-    private int DIF_FRAMES_TO_RANDOM = 160;
     int framestoRandom = 60;
-    private int DIF_SHORTEST_BAR = 4;
-
-    public MiniGameHBalance(String fileName, Integer position, GameActivity game) {
-        super(fileName, position, game);
-        type = Typ.Horizontal;
-    }
     float maxSpeed;
     float maxLean;
     float difficultyStep;
     float maxDifficulty;
     float speedDelta;
+    PointSerializable[] mBar;
+    int mBallSize;
+    PaintSerializable mPaintBallColor = null;
+    PaintSerializable mPaintBarColor = null;
+    int splitHeight;
+    float movementSensitivity;
+    int leanRatio;
+    PointSerializable newPBarLeftEdge = null;
+    PointSerializable newPBarRightEdge = null;
+    int barLength;
+    int barLeftEdgeX;
+    int barRightEdgeX;
+    PointSerializable pointBarLeftEdge;
+    PointSerializable pointBarRightEdge;
+    int newBarLeftEdge;
+    int newBarRightEdge;
+    float lean;
+    PointSerializable pBallCenter;
+    float momentalBallSpeed;
+    int overEdgeToLose;
+    float ballXAxis;
+    float ballYAxis;
+    int barWidth;
+    //Difficulty settings
+    private int DIF_FRAMES_TO_RANDOM = 160;
+    private int DIF_SHORTEST_BAR = 4;
+    public MiniGameHBalance(String fileName, Integer position, GameActivity game) {
+        super(fileName, position, game);
+        type = Typ.Horizontal;
+    }
 
     public void updateMinigame() {
 
@@ -70,13 +91,6 @@ public class MiniGameHBalance extends AMiniGame implements IMiniGameHorizontal {
             mGame.onGameLost(mPosition);
         }
     }
-    PointSerializable[] mBar;
-    int mBallSize;
-    PaintSerializable mPaintBallColor = null;
-    PaintSerializable mPaintBarColor = null;
-    int splitHeight;
-    float movementSensitivity;
-    int leanRatio;
 
     public void initMinigame(Bitmap mBitmap, boolean wasGameSaved) {
 
@@ -125,21 +139,6 @@ public class MiniGameHBalance extends AMiniGame implements IMiniGameHorizontal {
                 pointBarRightEdge.mPoint.x, pointBarRightEdge.mPoint.y, mPaintBarColor.mPaint);
         mCanvas.drawCircle(pBallCenter.mPoint.x, pBallCenter.mPoint.y, mBallSize, mPaintBallColor.mPaint);
     }
-    PointSerializable newPBarLeftEdge = null;
-    PointSerializable newPBarRightEdge = null;
-    int barLength;
-    int barLeftEdgeX;
-    int barRightEdgeX;
-    PointSerializable pointBarLeftEdge;
-    PointSerializable pointBarRightEdge;
-    int newBarLeftEdge;
-    int newBarRightEdge;
-    float lean;
-    PointSerializable pBallCenter;
-    float momentalBallSpeed;
-    int overEdgeToLose;
-    float ballXAxis;
-    float ballYAxis;
 
     public void onUserInteracted(float movement) {
         if (mWidth == 0 || mHeight == 0) {
@@ -164,7 +163,6 @@ public class MiniGameHBalance extends AMiniGame implements IMiniGameHorizontal {
 
 
     }
-    int barWidth;
 
     @Override
     public void onDifficultyIncreased() {

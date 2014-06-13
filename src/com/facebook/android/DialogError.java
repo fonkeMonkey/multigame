@@ -28,7 +28,6 @@ package com.facebook.android;
  * @Deprecated to this class causes warnings in other deprecated classes that
  * reference this one. That is the only reason this entire class is not
  * deprecated.
- *
  * @devDocDeprecated
  */
 public class DialogError extends Throwable {
