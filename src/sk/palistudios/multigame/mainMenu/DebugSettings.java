@@ -24,6 +24,6 @@ public class DebugSettings {
     //    final private int GAME_REFRESH_INTERVAL = 1000 / GAME_UPDATES_PER_SECOND;
 
     public static void debugInit(Context context){
-        GameSharedPref.setSkinChosen("summer");
+        GameSharedPref.setGameMode("Tutorial");
     }
 }

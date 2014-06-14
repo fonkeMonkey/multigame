@@ -175,6 +175,18 @@ public class GameActivity extends FragmentActivity implements SensorEventListene
         mFragmentViews[2].setGameSaved(wasGameSaved);
         mFragmentViews[3].setGameSaved(wasGameSaved);
 
+        if (mTutorialMode) {
+            setBarTextColors(scoreView, getString(R.string.score), "Tutorial");
+            setBarTextColors(difficultyView, "Level: ", "Tutorial");
+//            scoreView.setText(Html.fromHtml(getString(R.string.score)) + "Tutorial");
+//            difficultyView.setText("Level: Tutorial");
+        } else {
+            setBarTextColors(scoreView, getString(R.string.score), String.valueOf(0));
+            setBarTextColors(difficultyView, "Level: ", String.valueOf(1));
+//            scoreView.setText(getString(R.string.score) + String.valueOf(score));
+//            difficultyView.setText("Level: " + String.valueOf(level));
+        }
+
 
     }
 
@@ -265,17 +277,17 @@ public class GameActivity extends FragmentActivity implements SensorEventListene
             if (mTutorialMode) {
                 if (sTutorialLastLevel == 0) {
                     if (!sTutorialRestart) {
-                        GameUIWindows.showTutorialWindow(this);
+                        GameDialogs.showWelcomeTutorialWindow(this);
                     } else {
                         sTutorialRestart = false;
-                        GameUIWindows.showTutorialMinigameDemoWindow(this, false);
+                        GameDialogs.showNextTutorialWindow(this, false);
                     }
                 } else {
                     if (!sTutorialRestart) {
-                        GameUIWindows.showTutorialMinigameDemoWindow(this, true);
+                        GameDialogs.showNextTutorialWindow(this, true);
                     } else {
                         sTutorialRestart = false;
-                        GameUIWindows.showTutorialMinigameDemoWindow(this, false);
+                        GameDialogs.showNextTutorialWindow(this, false);
                     }
                 }
 
@@ -365,11 +377,11 @@ public class GameActivity extends FragmentActivity implements SensorEventListene
                     if (sTutorialLastLevel != 3) {
 
 //                    GameTimeMaster.stopTimers();
-                        GameUIWindows.showTutorialMinigameDemoWindow(game, true);
+                        GameDialogs.showNextTutorialWindow(game, true);
 
                     } else {
 //                    GameTimeMaster.stopTimers();
-                        GameUIWindows.showTutorialEndWindow(game);
+                        GameDialogs.showTutorialWinnerWindow(game);
                         sTutorialLastLevel = 0;
                     }
                 }
@@ -453,7 +465,7 @@ public class GameActivity extends FragmentActivity implements SensorEventListene
         overridePendingTransition(R.anim.fadein, R.anim.fadeout);
         getWindow().clearFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
         if (mTutorialMode) {
-            GameUIWindows.sLostGame = true;
+            GameDialogs.sLostGame = true;
             stopTutorial();
         } else {
             if (mGameLoopHandler != null && mRunnableGameLoop != null) {
@@ -546,7 +558,7 @@ public class GameActivity extends FragmentActivity implements SensorEventListene
 
                 colorFragmentGray(loser);
 
-                GameUIWindows.showTutorialLoserDialogWindow(this);
+                GameDialogs.showTutorialLoserDialogWindow(this);
                 return;
             }
 
@@ -563,9 +575,9 @@ public class GameActivity extends FragmentActivity implements SensorEventListene
             HofDatabaseCenter.getHofDb().close();
 
             if (isInHallOfFame) {
-                GameUIWindows.showWinnerDialogWindow(this);
+                GameDialogs.showWinnerDialogWindow(this);
             } else {
-                GameUIWindows.showLoserDialogWindow(this);
+                GameDialogs.showLoserDialogWindow(this);
             }
 
         }
@@ -605,7 +617,7 @@ public class GameActivity extends FragmentActivity implements SensorEventListene
 
         if (mTutorialMode) {
 //            Toaster.toastLong(getString(R.string.exit_tutorial), this);
-            GameUIWindows.sLostGame = true;
+            GameDialogs.sLostGame = true;
             stopTutorial();
         } else {
             saveGame();
@@ -658,7 +670,7 @@ public class GameActivity extends FragmentActivity implements SensorEventListene
     public void onDestroy() {
         super.onDestroy();
         if (mTutorialMode) {
-            GameUIWindows.sLostGame = true;
+            GameDialogs.sLostGame = true;
         }
 //        sTutorialRestart = false;
         mMusicPlayer = null;

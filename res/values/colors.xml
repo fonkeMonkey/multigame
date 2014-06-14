@@ -48,35 +48,40 @@
 
 
     <!--    Girl power     -->
-    <color name="pinkyMenu1">#CA278C</color>
-    <color name="pinkyMenu2">#E47297</color>
-    <color name="pinkyMenu3">#CC99CC</color>
-    <color name="pinkyMenu4">#D08AAF</color>
-    <!--    <color name="pinkyMain">#660066</color>
-        <color name="pinkyAlt">#000000</color>-->
-    <color name="pinkyHeader">#9C1C6B</color>
-    <color name="pinkyChosen">#D08AAF</color>
+    <color name="pinkyMenu1">#710067</color>
+    <color name="pinkyMenu2">#AD009F</color>
+    <color name="pinkyMenu3">#D636C9</color>
+    <color name="pinkyMenu4">#D660CC</color>
 
-    <color name="pinky_top_bar_bg">#FFD773</color>
-    <color name="pinky_top_bar_label">#A65800</color>
+    <color name="pinkyHeader">#AD009F</color>
+    <color name="pinkyChosen">#D660CC</color>
+
+    <color name="pinky_top_bar_bg">#D660CC</color>
+    <color name="pinky_top_bar_label">#710067</color>
     <color name="pinky_top_bar_number">#FFFFFF</color>
-    <color name="pinky_top_bar_separator">#FFBD73</color>
-    <color name="pinky_top_bar_separator_down">#BF7C30</color>
+    <color name="pinky_top_bar_separator">#AD009F</color>
+    <color name="pinky_top_bar_separator_down">#AD009F</color>
 
 
     <!--    Blue sky     -->
-    <color name="blueSkyMenu1">#34DDDD</color>
-    <color name="blueSkyMenu2">#78D5E3</color>
-    <color name="blueSkyMenu3">#add8e6</color>
-    <color name="blueSkyMenu4">#87ceeb</color>
-    <color name="blueSkyHeader">#78D5E3</color>
-    <color name="blueSkyChosen">#93E2D5</color>
+    <color name="blueSkyMenu1">#03406A</color>
+    <color name="blueSkyMenu2">#0A64A4</color>
+    <color name="blueSkyMenu3">#3E94D1</color>
+    <color name="blueSkyMenu4">#65A5D1</color>
 
-    <color name="blue_sky_top_bar_bg">#FFA540</color>
-    <color name="blue_sky_top_bar_label">#FF8700</color>
+    <color name="blueSkyHeader">#0A64A4</color>
+    <color name="blueSkyChosen">#65A5D1</color>
+
+    <color name="blue_sky_top_bar_bg">#65A5D1</color>
+    <color name="blue_sky_top_bar_label">#03406A</color>
     <color name="blue_sky_top_bar_number">#FFFFFF</color>
-    <color name="blue_sky_top_bar_separator">#FFBD73</color>
-    <color name="blue_sky_top_bar_separator_down">#BF7C30</color>
+    <color name="blue_sky_top_bar_separator">#3E94D1</color>
+    <color name="blue_sky_top_bar_separator_down">#0A64A4</color>
+
+
+
+
+
 
     <dimen name="com_facebook_picker_place_image_size">64dp</dimen>
     <color name="com_facebook_picker_search_bar_background">#f5f5f7</color>

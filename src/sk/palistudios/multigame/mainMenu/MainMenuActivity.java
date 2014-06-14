@@ -15,7 +15,7 @@ import sk.palistudios.multigame.R;
 import sk.palistudios.multigame.customization_center.skins.SkinItem;
 import sk.palistudios.multigame.customization_center.skins.SkinsCenterListActivity;
 import sk.palistudios.multigame.game.GameActivity;
-import sk.palistudios.multigame.game.GameUIWindows;
+import sk.palistudios.multigame.game.GameDialogs;
 import sk.palistudios.multigame.game.persistence.GameSharedPref;
 import sk.palistudios.multigame.tools.SoundEffectsCenter;
 import sk.palistudios.multigame.tools.Toaster;
@@ -102,32 +102,15 @@ public class MainMenuActivity extends BaseActivity {
 //        buttonPreferences.setBackground(getResources().getDrawable(R.drawable.button_background_ll));
 //        buttonHof.setBackground(getResources().getDrawable(R.drawable.button_background_lr));
 //        buttonAbout.setBackgroundColor(currentSkin.getBarSeparatorColor());
-
-        /* TODO zasa hacky lebo sa mi to nechce redezignova*/
-        if (GameSharedPref.isSkinChosen("kuba")) {
-            buttonStart.getBackground().setColorFilter(getResources().getColor(R.color.kubaMenu1), Mode.SRC);
-            buttonCc.getBackground().setColorFilter(getResources().getColor(R.color.kubaMenu2), Mode.SRC);
-            buttonPreferences.getBackground().setColorFilter(getResources().getColor(R.color.kubaMenu3), Mode.SRC);
-            buttonHof.getBackground().setColorFilter(getResources().getColor(R.color.kubaMenu4), Mode.SRC);
-        } else if (GameSharedPref.isSkinChosen("summer")) {
-            buttonStart.getBackground().setColorFilter(getResources().getColor(R.color.summerMenu1), Mode.SRC);
-            buttonCc.getBackground().setColorFilter(getResources().getColor(R.color.summerMenu2), Mode.SRC);
-            buttonPreferences.getBackground().setColorFilter(getResources().getColor(R.color.summerMenu3), Mode.SRC);
-            buttonHof.getBackground().setColorFilter(getResources().getColor(R.color.summerMenu4), Mode.SRC);
-        } else {
-            buttonStart.getBackground().setColorFilter(currentSkin.getBarBgColor(), Mode.SRC);
-            buttonCc.getBackground().setColorFilter(currentSkin.getBarLabelColor(), Mode.SRC);
-            buttonPreferences.getBackground().setColorFilter(currentSkin.getBarSeparatorColor(), Mode.SRC);
-            buttonHof.getBackground().setColorFilter(currentSkin.getBarTextColor(), Mode.SRC);
-        }
+        setMainMenuColors();
 
         if (mShowHighScoreStatus) {
-            GameUIWindows.showWinnerDialogAfterShareWindow(getInstance(), mShowHighScoreScore);
+            GameDialogs.showWinnerDialogAfterShareWindow(getInstance(), mShowHighScoreScore);
             mShowHighScoreStatus = false;
         }
         if (isThereADialogToShow) {
             //only works now for the ask to connect dialog
-            GameUIWindows.askUserToConnect(this, GameActivity.dialogIsWinner, GameActivity.dialogScore);
+            GameDialogs.askUserToConnect(this, GameActivity.dialogIsWinner, GameActivity.dialogScore);
             isThereADialogToShow = false;
         }
 
@@ -141,11 +124,35 @@ public class MainMenuActivity extends BaseActivity {
         GameActivity.sTutorialRestart = false;
     }
 
+    private void setMainMenuColors() {
+    /* Zasa hacky lebo sa mi to nechce redezignovat. */
+        if (GameSharedPref.isSkinChosen("kuba")) {
+            buttonStart.getBackground().setColorFilter(getResources().getColor(R.color.kubaMenu1), Mode.SRC);
+            buttonCc.getBackground().setColorFilter(getResources().getColor(R.color.kubaMenu2), Mode.SRC);
+            buttonPreferences.getBackground().setColorFilter(getResources().getColor(R.color.kubaMenu3), Mode.SRC);
+            buttonHof.getBackground().setColorFilter(getResources().getColor(R.color.kubaMenu4), Mode.SRC);
+        } else if (GameSharedPref.isSkinChosen("summer")) {
+            buttonStart.getBackground().setColorFilter(getResources().getColor(R.color.summerMenu1), Mode.SRC);
+            buttonCc.getBackground().setColorFilter(getResources().getColor(R.color.summerMenu2), Mode.SRC);
+            buttonPreferences.getBackground().setColorFilter(getResources().getColor(R.color.summerMenu3), Mode.SRC);
+            buttonHof.getBackground().setColorFilter(getResources().getColor(R.color.summerMenu4), Mode.SRC);
+        } else if (GameSharedPref.isSkinChosen("girl_power")){
+            buttonStart.getBackground().setColorFilter(getResources().getColor(R.color.pinkyMenu1), Mode.SRC);
+            buttonCc.getBackground().setColorFilter(getResources().getColor(R.color.pinkyMenu2), Mode.SRC);
+            buttonPreferences.getBackground().setColorFilter(getResources().getColor(R.color.pinkyMenu3), Mode.SRC);
+            buttonHof.getBackground().setColorFilter(getResources().getColor(R.color.pinkyMenu4), Mode.SRC);
+        } else if (GameSharedPref.isSkinChosen("blue_sky")){
+            buttonStart.getBackground().setColorFilter(getResources().getColor(R.color.blueSkyMenu1), Mode.SRC);
+            buttonCc.getBackground().setColorFilter(getResources().getColor(R.color.blueSkyMenu2), Mode.SRC);
+            buttonPreferences.getBackground().setColorFilter(getResources().getColor(R.color.blueSkyMenu3), Mode.SRC);
+            buttonHof.getBackground().setColorFilter(getResources().getColor(R.color.blueSkyMenu4), Mode.SRC);
+        }
+    }
+
     @Override
     protected void onPause() {
         super.onPause();
         overridePendingTransition(R.anim.fadein, R.anim.fadeout);
-
     }
 
     public void startGame(View view) {

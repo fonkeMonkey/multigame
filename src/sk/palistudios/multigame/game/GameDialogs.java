@@ -9,6 +9,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.text.Html;
 import android.widget.EditText;
+import eu.inmite.android.lib.dialogs.SimpleDialogFragment;
 import sk.palistudios.multigame.R;
 import sk.palistudios.multigame.game.persistence.GameSharedPref;
 import sk.palistudios.multigame.hall_of_fame.HallOfFameActivity;
@@ -19,19 +20,19 @@ import sk.palistudios.multigame.mainMenu.MainMenuActivity;
 import sk.palistudios.multigame.tools.InternetChecker;
 import sk.palistudios.multigame.tools.SoundEffectsCenter;
 
-public class GameUIWindows {
+public class GameDialogs {
 
     public final static int ASK_USER_TO_CONNECT = 1;
     public static boolean sLostGame = true;
 
-    public static void showTutorialWindow(final GameActivity game) {
+    public static void showWelcomeTutorialWindow(final GameActivity game) {
 
         DialogInterface.OnClickListener dialogClickListener = new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 switch (which) {
                     case DialogInterface.BUTTON_POSITIVE:
-                        showTutorialMinigameDemoWindow(game, true);
+                        showNextTutorialWindow(game, true);
                         SoundEffectsCenter.playForwardSound(game);
                         break;
                     case DialogInterface.BUTTON_NEGATIVE:
@@ -46,14 +47,15 @@ public class GameUIWindows {
         };
         GameMinigamesManager.deactivateAllMiniGames(game);
 
-        AlertDialog.Builder builder = new AlertDialog.Builder(game);
-        builder.setCancelable(false).setMessage(game.getString(R.string.tutorial_welcome)).setNegativeButton(game.getString(R.string.tutorial_negative), dialogClickListener).setPositiveButton(Html.fromHtml("<b>" + game.getString(R.string.tutorial_positive) + "</b>"), dialogClickListener).show();
+        SimpleDialogFragment.createBuilder(game, game.getSupportFragmentManager()).setTitle("Placeholder").setMessage(game.getString(R.string.tutorial_welcome)).setPositiveButtonText(game.getString(R.string.tutorial_positive)).setNegativeButtonText(game.getString(R.string.tutorial_negative)).setCancelable(false).show();
+
+//        AlertDialog.Builder builder = new AlertDialog.Builder(game);
+//        builder.setCancelable(false).setMessage(game.getString(R.string.tutorial_welcome)).setNegativeButton(game.getString(R.string.tutorial_negative), dialogClickListener).setPositiveButton(Html.fromHtml("<b>" + game.getString(R.string.tutorial_positive) + "</b>"), dialogClickListener).show();
     }
 
-    /* Nechce sa mi s tým jebať, ale tento názov je dosť zavádzajúci. */
-    public static void showTutorialMinigameDemoWindow(final GameActivity game, boolean showPopup) {
+    public static void showNextTutorialWindow(final GameActivity game, boolean showPopup) {
         GameMinigamesManager.deactivateAllMiniGames(game);
-        if (!GameUIWindows.sLostGame) {
+        if (!GameDialogs.sLostGame) {
             GameActivity.sTutorialLastLevel++;
         }
         sLostGame = false;
@@ -77,9 +79,9 @@ public class GameUIWindows {
 //                        GameSharedPref.switchNoviceMode();
                             game.finish();
 //                        if (number != 3) {
-//                            showTutorialMinigameDemoWindow(game, number + 1);
+//                            showNextTutorialWindow(game, number + 1);
 //                        } else {
-//                            showTutorialEndWindow(game);
+//                            showTutorialWinnerWindow(game);
 //                        }
                             break;
                     }
@@ -110,7 +112,7 @@ public class GameUIWindows {
         }
     }
 
-    public static void showTutorialEndWindow(final GameActivity game) {
+    public static void showTutorialWinnerWindow(final GameActivity game) {
         DialogInterface.OnClickListener dialogClickListener = new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
@@ -140,7 +142,7 @@ public class GameUIWindows {
                         SoundEffectsCenter.playForwardSound(game);
                         sLostGame = true;
 //                        Game.sTutorialLastLevel--;
-//                        showTutorialMinigameDemoWindow(game, false);
+//                        showNextTutorialWindow(game, false);
                         game.stopTutorial();
                         GameActivity.sTutorialRestart = true;
                         restartGame(game);
@@ -209,9 +211,12 @@ public class GameUIWindows {
 
         final EditText userNameEditText = new EditText(game);
         userNameEditText.setSingleLine();
-        if (!"".equals(GameSharedPref.getLastHofName())) {
+        userNameEditText.setText("Anonym");
+        if (!(("").equals(GameSharedPref.getLastHofName()))) {
             userNameEditText.setText(GameSharedPref.getLastHofName());
         }
+        userNameEditText.setSelection(userNameEditText.getText().length());
+
 
         final Activity act = game;
         final int score = game.getScore();
@@ -225,11 +230,7 @@ public class GameUIWindows {
                         break;
                     case DialogInterface.BUTTON_NEGATIVE:
                         String playerName = userNameEditText.getText().toString();
-                        if (playerName.equals("")) {
-                            playerName = "Anonym";
-                        } else {
-                            GameSharedPref.setLastHofName(playerName);
-                        }
+                        GameSharedPref.setLastHofName(playerName);
 
                         HofDatabaseCenter db = HofDatabaseCenter.getHofDb();
 //                        db.open();
@@ -326,7 +327,7 @@ public class GameUIWindows {
         builder.setCancelable(false).setMessage(act.getString(R.string.game_share_no_connection)).setPositiveButton(Html.fromHtml("<b>" + "OK" + "</b>"), dialogClickListener).setNegativeButton(act.getString(R.string.cancel), dialogClickListener).show();
         MainMenuActivity.isThereADialogToShow = true;
         GameActivity.isDialogPresent = true;
-        GameActivity.dialogType = GameUIWindows.ASK_USER_TO_CONNECT;
+        GameActivity.dialogType = GameDialogs.ASK_USER_TO_CONNECT;
         GameActivity.dialogScore = score;
         GameActivity.dialogIsWinner = isWinner;
     }

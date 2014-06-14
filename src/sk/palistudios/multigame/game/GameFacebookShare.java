@@ -181,7 +181,7 @@ public class GameFacebookShare {
                     Log.d(TAG, "X button");
 //					Toast.makeText(FacebookPostToFeedActivity.this, "Closed", Toast.LENGTH_LONG).show();
                 } else {
-                    GameUIWindows.askUserToConnect(act, isWinner, score);
+                    GameDialogs.askUserToConnect(act, isWinner, score);
 //                    Log.d(TAG, "Network error");
 //					Toast.makeText(act, "Sorry, there does not appear to be working internet connection available.", Toast.LENGTH_LONG)
 //							.show();
