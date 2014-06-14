@@ -31,20 +31,9 @@ public class MinigamesCenterListActivity extends BaseListActivity {
     public void onCreate(Bundle icicle) {
         super.onCreate(icicle);
         setVolumeControlStream(AudioManager.STREAM_MUSIC);
-//        fillAllMinigames();
-
-//        resolveActiveMinigamesNames();
-
-        //create the view
-//        fillAdapter();
         initAdapter();
 
-//        if(!GameSharedPref.isAchievementFulfilled("pro") && DebugSettings.adsActivated){
         setContentView(R.layout.list_layout);
-//        }else{
-//            setContentView(R.layout.list_layout_adfree);
-//        }
-
         tmpChosenMinigames = GameSharedPref.getChosenMinigamesNames();
 
         TextView header = new TextView(this);
@@ -58,9 +47,6 @@ public class MinigamesCenterListActivity extends BaseListActivity {
         footer.setTextSize(60);
         footer.setText(" ");
         getListView().addFooterView(footer, null, false);
-
-//        ListView listView = (ListView) inflater.inflate(R.layout.store_list, null);
-
 
         getListView().addHeaderView(header);
 
@@ -146,9 +132,6 @@ public class MinigamesCenterListActivity extends BaseListActivity {
 
     }
 
-    //    private void resolveActiveMinigamesNames() {
-//        tmpChosenMinigames = GameSharedPref.getChosenMinigamesNames();
-//    }
     @Override
     public void onBackPressed() {
         super.onBackPressed();
@@ -166,72 +149,7 @@ public class MinigamesCenterListActivity extends BaseListActivity {
         items.add(new MgcItem(SYMBOL_MINIGAME_VERTICAL, "VBird", "Bird", GameSharedPref.isMinigameChosen("VBird")));
         items.add(new MgcItem(SYMBOL_MINIGAME_VERTICAL, "VBouncer", "Bouncer", GameSharedPref.isMinigameChosen("VBouncer"), (String) getResources().getString(R.string.cc_achievements_good_start_description) + (String) getResources().getString(R.string.cc_achievements_requirement_ending)));
 
-
-//        for (String musicLoopPCName : GameSharedPref.getAllMusicLoopsPCNames()) {
-//            String currentMusicLoopHumanName = GameSharedPref.getAllMusicLoopsHumanNames()[i];
-//            if (GameSharedPref.isMusicLoopChosen(musicLoopPCName)) {
-//                items.add(new MusicItem(musicLoopPCName, currentMusicLoopHumanName, true));
-//
-//            } else {
-//                items.add(new MusicItem(musicLoopPCName, currentMusicLoopHumanName, false));
-//            }
-//            i++;
-//        }
-
         minigamesAdapter = new MgcArrayAdapter(this, items, SkinsCenterListActivity.getCurrentSkin(this));
     }
-//    public void fillAdapter() {
-//
-//        ArrayList<MgcItem> items = new ArrayList<MgcItem>();
-//
-//        for (String minigame : GameSharedPref.getAllMinigamesNames()) {
-//            if (isGameActive(minigame)) {
-//                items.add(new MgcItem(minigame.charAt(0), minigame.substring(1), "✓"));
-//
-//            } else {
-//                items.add(new MgcItem(minigame.charAt(0), minigame.substring(1), "X"));
-//            }
-//        }
-//
-//        minigamesAdapter = new MgcArrayAdapter(this, items);
-//
-//    }
-//    @Override
-//    protected void onPause() {
-//        super.onPause();
-//        GameSharedPref.SetChosenMinigamesNames(tmpChosenMinigames);
-//
-//    }
-//    private void fillAllMinigames() {
-//
-//        String[] allMinigames = new String[6];
-//
-//        allMinigames[0] = "HBalance";
-//        allMinigames[1] = "TCatcher";
-//        allMinigames[2] = "TGatherer";
-//        allMinigames[3] = "TInvader";
-//        allMinigames[4] = "VBird";
-//        allMinigames[5] = "VBouncer";
-//
-//
-//    }
-//    private boolean isGameActive(String minigame) {
-//        for (String minigameActive : tmpChosenMinigames) {
-//            if (minigame.compareTo(minigameActive) == 0) {
-//                return true;
-//            }
-//
-//        }
-//        return false;
-//    }
 
-    @Override
-    public void onStart() {
-        super.onStart();
-    }
-
-    @Override
-    public void onStop() {
-        super.onStop();
-    }
 }

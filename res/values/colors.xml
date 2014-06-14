@@ -12,8 +12,16 @@
     <color name="gameAlt2">#B4BBC8</color>
 
 
-    <color name="kubaHeader">#468D8E</color>
-    <color name="kubaChosen">#7FC0C1</color>
+
+
+    <!--    Kuba     -->
+    <color name="kubaMenu1">#D98179</color>
+    <color name="kubaMenu2">#7DC0C2</color>
+    <color name="kubaMenu3">#6CB1B3</color>
+    <color name="kubaMenu4">#5DA0A2</color>
+
+    <color name="kubaHeader">#D98179</color>
+    <color name="kubaChosen">#7DC0C2</color>
 
     <color name="kuba_top_bar_bg">#7FC0C1</color>
     <color name="kuba_top_bar_label">#468D8E</color>
@@ -22,11 +30,8 @@
     <color name="kuba_top_bar_separator_down">#67ACAD</color>
 
 
-    <color name="kubaMenu1">#D98179</color>
-    <color name="kubaMenu2">#7DC0C2</color>
-    <color name="kubaMenu3">#6CB1B3</color>
-    <color name="kubaMenu4">#5DA0A2</color>
 
+    <!--    Summer     -->
     <color name="summerMenu1">#F1A100</color>
     <color name="summerMenu2">#FFB454</color>
     <color name="summerMenu3">#FFE37F</color>
@@ -37,6 +42,9 @@
     <color name="summerChosen">#FFE37F</color>
 
 
+
+
+    <!--    Girl power     -->
     <color name="pinkyMenu1">#CA278C</color>
     <color name="pinkyMenu2">#E47297</color>
     <color name="pinkyMenu3">#CC99CC</color>
@@ -46,6 +54,10 @@
     <color name="pinkyHeader">#9C1C6B</color>
     <color name="pinkyChosen">#D08AAF</color>
 
+
+
+
+    <!--    Blue sky     -->
     <color name="blueSkyMenu1">#34DDDD</color>
     <color name="blueSkyMenu2">#78D5E3</color>
     <color name="blueSkyMenu3">#add8e6</color>

@@ -58,85 +58,53 @@ public class MgcArrayAdapter extends ArrayAdapter<MgcItem> implements IAdapter {
                     .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
             view = vi.inflate(R.layout.mgc_listitem, null);
         }
-        TextView textView1 = (TextView) view.findViewById(R.id.mgc_type);
+        View background = view.findViewById(R.id.mgc_row);
+
+//        TextView textView1 = (TextView) view.findViewById(R.id.mgc_type);
         TextView textView2 = (TextView) view.findViewById(R.id.mgc_name);
 
-        textView1.setText(String.valueOf(getItem(position).type));
+//        textView1.setText(String.valueOf(getItem(position).type));
+        showCorrectLeftIcon(view, getItem(position).type);
         textView2.setText(String.valueOf(getItem(position).getHumanName()));
 
-        textView1.setPadding(GraphicUnitsConvertor.convertDptoPx(context, 3), 0, 0, 0);
-        textView1.setGravity(Gravity.CENTER);
-
-        textView1.setTextSize(25);
-        textView2.setTextSize(25);
-
         if (myItems.get(position).isChosen()) {
-            textView2.setBackgroundColor(colorChosen);
+//            textView1.setBackgroundColor(colorChosen);
+            background.setBackgroundColor(colorChosen);
         } else {
-            textView2.setBackgroundColor(Color.WHITE);
+//            textView1.setBackgroundColor(Color.WHITE);
+            background.setBackgroundColor(Color.WHITE);
         }
 
         if (myItems.get(position).isLocked()) {
-            textView2.setBackgroundColor(Color.LTGRAY);
+//            textView1.setBackgroundColor(Color.LTGRAY);
+            background.setBackgroundColor(Color.LTGRAY);
         }
 
         return view;
     }
 
-    //                AdView adView = new AdView(activity, AdSize.BANNER, ADMOB_PUBLISHER_ID);
-//
-//// Disable focus for sub-views of the AdView to avoid problems with
-//
-//// trackpad navigation of the list.
-//
-//                for (int i = 0; i < adView.getChildCount(); i++) {
-//
-//                    adView.getChildAt(i).setFocusable(false);
-//
-//                }
-//
-//                adView.setFocusable(false);
-//
-//// Default layout params have to be converted to ListView compatible
-//
-//// params otherwise there will be a ClassCastException.
-//
-//                float density = activity.getResources().getDisplayMetrics().density;
-//
-//                int height = Math.round(AdSize.BANNER.getHeight() * density);
-//
-//                AbsListView.LayoutParams params = new AbsListView.LayoutParams(AbsListView.LayoutParams.FILL_PARENT,
-//                        height);
-//
-//                adView.setLayoutParams(params);
-//
-//                adView.loadAd(new AdRequest());
-//
-//                return adView;
-//
-//            }
-//        AdView adView = new AdView((Activity)context, AdSize.BANNER,
-//                                   "ca-app-pub-5314490326517173/8380820043");
-//
-//        // Convert the default layout parameters so that they play nice with
-//        // ListView.
-//
-//        float density = context.getResources().getDisplayMetrics().density;
-//        int height = Math.round(AdSize.BANNER.getHeight() * density);
-//        AbsListView.LayoutParams params = new AbsListView.LayoutParams(
-//            AbsListView.LayoutParams.FILL_PARENT,
-//            height);
-//        adView.setLayoutParams(params);
-//        AdRequest adRequest = new AdRequest();
-//        adRequest.addTestDevice(AdRequest.TEST_EMULATOR);
-//        
-////        AdManager.setTestDevices( new String[] { AdManager.TEST_EMULATOR, "E83D20734F72FB3108F104ABC0FFC738", //Phone ID 
-////} );
-////}
-//        
-//        adView.loadAd(adRequest);
-//        return adView;
-//        }
+    private void showCorrectLeftIcon(View view, char type) {
+        TextView horizontal = (TextView) view.findViewById(R.id.mgc_type_h);
+        TextView vertical = (TextView) view.findViewById(R.id.mgc_type_v);
+        TextView touch = (TextView) view.findViewById(R.id.mgc_type_t);
+
+        if (type == '⇅') {
+            horizontal.setVisibility(View.GONE);
+            touch.setVisibility(View.INVISIBLE);
+            vertical.setVisibility(View.VISIBLE);
+        }
+        if (type == '✋') {
+            horizontal.setVisibility(View.GONE);
+            touch.setVisibility(View.VISIBLE);
+            vertical.setVisibility(View.GONE);
+        }
+        if (type == '⇆') {
+            horizontal.setVisibility(View.VISIBLE);
+            touch.setVisibility(View.INVISIBLE);
+            vertical.setVisibility(View.GONE);
+        }
+    }
+
     @Override
     public MgcItem getItem(int position) {
         return myItems.get(position);

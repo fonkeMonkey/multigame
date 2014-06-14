@@ -27,8 +27,8 @@
             android:id="@+id/game_score_separator"
             android:layout_width="2px"
             android:layout_height="match_parent"
-            android:layout_marginBottom="5dp"
-            android:layout_marginTop="5dp"
+            android:layout_marginBottom="@dimen/margin_small"
+            android:layout_marginTop="@dimen/margin_small"
             android:background="@color/kuba_top_bar_separator"
             ></View>
 
