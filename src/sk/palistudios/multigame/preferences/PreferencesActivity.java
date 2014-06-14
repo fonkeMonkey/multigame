@@ -9,7 +9,6 @@ import android.preference.Preference.OnPreferenceChangeListener;
 import android.preference.Preference.OnPreferenceClickListener;
 import android.view.Gravity;
 import android.widget.TextView;
-import com.google.analytics.tracking.android.EasyTracker;
 import sk.palistudios.multigame.R;
 import sk.palistudios.multigame.customization_center.skins.SkinsCenterListActivity;
 import sk.palistudios.multigame.game.persistence.GameSharedPref;
@@ -210,13 +209,11 @@ public class PreferencesActivity extends PreferenceActivity {
     @Override
     public void onStart() {
         super.onStart();
-        EasyTracker.getInstance(this).activityStart(this);
     }
 
     @Override
     public void onStop() {
         super.onStop();
         SoundEffectsCenter.muteSystemSounds(this, false);
-        EasyTracker.getInstance(this).activityStop(this);  // Add this method.
     }
 }

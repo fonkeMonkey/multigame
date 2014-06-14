@@ -15,7 +15,6 @@ import android.view.View.OnClickListener;
 import android.widget.TabHost;
 import android.widget.TabHost.TabSpec;
 import android.widget.TextView;
-import com.google.analytics.tracking.android.EasyTracker;
 import sk.palistudios.multigame.R;
 import sk.palistudios.multigame.customization_center.achievements.AchievementsCenterListActivity;
 import sk.palistudios.multigame.customization_center.mgc.MinigamesCenterListActivity;
@@ -205,13 +204,11 @@ public class CustomizationCenterActivity extends TabActivity {
     @Override
     public void onStart() {
         super.onStart();
-        EasyTracker.getInstance(this).activityStart(this);
     }
 
     @Override
     public void onStop() {
         super.onStop();
         SoundEffectsCenter.muteSystemSounds(this, false);
-        EasyTracker.getInstance(this).activityStop(this);  // Add this method.
     }
 }

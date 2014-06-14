@@ -4,7 +4,6 @@ import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.Paint;
-import com.google.analytics.tracking.android.Log;
 import sk.palistudios.multigame.R;
 import sk.palistudios.multigame.game.GameActivity;
 import sk.palistudios.multigame.game.persistence.PaintSerializable;
@@ -208,7 +207,6 @@ public class MiniGameHBalance extends AMiniGame implements IMiniGameHorizontal {
 //        maxLean /= 2;
 //        maxSpeed /= 1.6;
 //        maxSpeed /= 0;
-        Log.i("Balance set.");
 
     }
 }

@@ -6,7 +6,6 @@ import android.media.AudioManager;
 import android.os.Bundle;
 import android.view.Gravity;
 import android.widget.TextView;
-import com.google.analytics.tracking.android.EasyTracker;
 import sk.palistudios.multigame.BaseListActivity;
 import sk.palistudios.multigame.R;
 import sk.palistudios.multigame.customization_center.CustomizationCenterActivity;
@@ -123,12 +122,10 @@ public class AchievementsCenterListActivity extends BaseListActivity {
     @Override
     public void onStart() {
         super.onStart();
-        EasyTracker.getInstance(this).activityStart(this);
     }
 
     @Override
     public void onStop() {
         super.onStop();
-        EasyTracker.getInstance(this).activityStop(this);  // Add this method.
     }
 }
