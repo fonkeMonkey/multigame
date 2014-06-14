@@ -11,6 +11,9 @@ import android.media.AudioManager;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.v4.app.FragmentActivity;
+import android.text.Spannable;
+import android.text.SpannableString;
+import android.text.style.ForegroundColorSpan;
 import android.view.MotionEvent;
 import android.view.Surface;
 import android.view.View;
@@ -137,12 +140,6 @@ public class GameActivity extends FragmentActivity implements SensorEventListene
             GameTimeMaster.registerLevelChangedObserver(GameMinigamesManager.getMinigamesObjects()[i]);
 
         }
-
-//        GameMinigamesManager.deactivateMinigame(game, 0);
-//        GameMinigamesManager.deactivateMinigame(game, 1);
-//        GameMinigamesManager.deactivateMinigame(game, 2);
-//        GameMinigamesManager.deactivateMinigame(game, 3);
-
 
         for (int i = 0; i < 4; i++) {
             game.mFragmentViews[i].invalidate();
@@ -415,14 +412,17 @@ public class GameActivity extends FragmentActivity implements SensorEventListene
 
     private void refreshDisplayGame() {
         score += level * DebugSettings.SCORE_COEFICIENT;
-//        frames++;
 
         if (mTutorialMode) {
-            scoreView.setText(getString(R.string.score) + "Tutorial");
-            difficultyView.setText("Level: Tutorial");
+            setBarTextColors(scoreView, getString(R.string.score), "Tutorial");
+            setBarTextColors(difficultyView, "Level: ", "Tutorial");
+//            scoreView.setText(Html.fromHtml(getString(R.string.score)) + "Tutorial");
+//            difficultyView.setText("Level: Tutorial");
         } else {
-            scoreView.setText(getString(R.string.score) + String.valueOf(score));
-            difficultyView.setText("Level: " + String.valueOf(level));
+            setBarTextColors(scoreView, getString(R.string.score), String.valueOf(score));
+            setBarTextColors(difficultyView, "Level: ", String.valueOf(level));
+//            scoreView.setText(getString(R.string.score) + String.valueOf(score));
+//            difficultyView.setText("Level: " + String.valueOf(level));
         }
 
 
@@ -433,6 +433,18 @@ public class GameActivity extends FragmentActivity implements SensorEventListene
             }
         }
 
+    }
+
+    private void setBarTextColors(TextView textView, String firstWord, String secondWord) {
+        Spannable firstPart = new SpannableString(firstWord);
+        int firstColor = SkinsCenterListActivity.getCurrentSkin(this).getBarLabelColor();
+        firstPart.setSpan(new ForegroundColorSpan(firstColor), 0, firstPart.length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+        textView.setText(firstPart);
+
+        Spannable secondPart = new SpannableString(secondWord);
+        int secondColor = SkinsCenterListActivity.getCurrentSkin(this).getBarTextColor();
+        secondPart.setSpan(new ForegroundColorSpan(secondColor), 0, secondPart.length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+        textView.append(secondPart);
     }
 
     @Override

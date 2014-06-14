@@ -32,16 +32,19 @@
 
 
     <!--    Summer     -->
-    <color name="summerMenu1">#F1A100</color>
-    <color name="summerMenu2">#FFB454</color>
-    <color name="summerMenu3">#FFE37F</color>
-    <color name="summerMenu4">#DCBC09</color>
-    <!--    <color name="summerMain">#AA0114</color>
-        <color name="summerAlt">#000000</color>-->
-    <color name="summerHeader">#F1A100</color>
-    <color name="summerChosen">#FFE37F</color>
+    <color name="summerMenu1">#FF8700</color> X
+    <color name="summerMenu2">#FFA540</color> x
+    <color name="summerMenu3">#FFBD73</color>
+    <color name="summerMenu4">#FFD773</color>
 
+    <color name="summerHeader">#FF8700</color>
+    <color name="summerChosen">#FFD773</color>
 
+    <color name="summer_top_bar_bg">#FFA540</color>
+    <color name="summer_top_bar_label">#BF7C30</color>
+    <color name="summer_top_bar_number">#FFFFFF</color>
+    <color name="summer_top_bar_separator">#FFBD73</color>
+    <color name="summer_top_bar_separator_down">#A65800</color>
 
 
     <!--    Girl power     -->
@@ -54,7 +57,11 @@
     <color name="pinkyHeader">#9C1C6B</color>
     <color name="pinkyChosen">#D08AAF</color>
 
-
+    <color name="pinky_top_bar_bg">#FFD773</color>
+    <color name="pinky_top_bar_label">#A65800</color>
+    <color name="pinky_top_bar_number">#FFFFFF</color>
+    <color name="pinky_top_bar_separator">#FFBD73</color>
+    <color name="pinky_top_bar_separator_down">#BF7C30</color>
 
 
     <!--    Blue sky     -->
@@ -62,24 +69,14 @@
     <color name="blueSkyMenu2">#78D5E3</color>
     <color name="blueSkyMenu3">#add8e6</color>
     <color name="blueSkyMenu4">#87ceeb</color>
-    <!--<color name="blueSky4">#93E2D5</color>-->
-    <!--<color name="blueSkyMain">#000000</color>-->
-    <!--<color name="blueSkyMain">#ff8c00</color>-->
-    <!--<color name="blueSkyMain">#9400D3</color>-->
-    <!--<color name="blueSkyAlt">#191970</color>-->
-    <!--<color name="blueSkyAlt">#000000</color>-->
     <color name="blueSkyHeader">#78D5E3</color>
     <color name="blueSkyChosen">#93E2D5</color>
 
-    <!--    <color name="pastel1">#CC0000</color>
-        <color name="pastel2">#99FF00</color>
-        <color name="pastel3">#FFCC00</color>
-        <color name="pastel4">#3333FF</color>
-        <color name="pastelMain">#FFFFFF</color>
-        <color name="pastelAlt">#000000</color>
-        <color name="pastelHeader">#CC0000</color>
-        <color name="pastelChosen">#99FF00</color>-->
-    <!-- facebook -->
+    <color name="blue_sky_top_bar_bg">#FFA540</color>
+    <color name="blue_sky_top_bar_label">#FF8700</color>
+    <color name="blue_sky_top_bar_number">#FFFFFF</color>
+    <color name="blue_sky_top_bar_separator">#FFBD73</color>
+    <color name="blue_sky_top_bar_separator_down">#BF7C30</color>
 
     <dimen name="com_facebook_picker_place_image_size">64dp</dimen>
     <color name="com_facebook_picker_search_bar_background">#f5f5f7</color>

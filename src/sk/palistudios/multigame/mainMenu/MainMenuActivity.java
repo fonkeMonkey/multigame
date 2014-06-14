@@ -109,12 +109,11 @@ public class MainMenuActivity extends BaseActivity {
             buttonCc.getBackground().setColorFilter(getResources().getColor(R.color.kubaMenu2), Mode.SRC);
             buttonPreferences.getBackground().setColorFilter(getResources().getColor(R.color.kubaMenu3), Mode.SRC);
             buttonHof.getBackground().setColorFilter(getResources().getColor(R.color.kubaMenu4), Mode.SRC);
-
         } else if (GameSharedPref.isSkinChosen("summer")) {
-            buttonStart.getBackground().setColorFilter(currentSkin.getBarBgColor(), Mode.SRC);
-            buttonCc.getBackground().setColorFilter(currentSkin.getBarSeparatorColor(), Mode.SRC);
-            buttonPreferences.getBackground().setColorFilter(currentSkin.getBarLabelColor(), Mode.SRC);
-            buttonHof.getBackground().setColorFilter(currentSkin.getBarTextColor(), Mode.SRC);
+            buttonStart.getBackground().setColorFilter(getResources().getColor(R.color.summerMenu1), Mode.SRC);
+            buttonCc.getBackground().setColorFilter(getResources().getColor(R.color.summerMenu2), Mode.SRC);
+            buttonPreferences.getBackground().setColorFilter(getResources().getColor(R.color.summerMenu3), Mode.SRC);
+            buttonHof.getBackground().setColorFilter(getResources().getColor(R.color.summerMenu4), Mode.SRC);
         } else {
             buttonStart.getBackground().setColorFilter(currentSkin.getBarBgColor(), Mode.SRC);
             buttonCc.getBackground().setColorFilter(currentSkin.getBarLabelColor(), Mode.SRC);

@@ -62,6 +62,10 @@ public class ApplicationInitializer {
         if (DebugSettings.tutorialCompleted) {
             GameSharedPref.onTutorialCompleted();
         }
+
+        if (DebugSettings.debugInit) {
+            DebugSettings.debugInit(context);
+        }
     }
 
     private static void initActiveMinigames() {

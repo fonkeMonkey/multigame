@@ -40,12 +40,11 @@ public class SkinsCenterListActivity extends BaseListActivity {
         int logoID = 0;
 
         if (currentSkinComputerName.compareTo("summer") == 0) {
-            color1 = context.getResources().getColor(R.color.summerMenu1);
-            color2 = context.getResources().getColor(R.color.summerMenu2);
-            color3 = context.getResources().getColor(R.color.summerMenu3);
-            color4 = context.getResources().getColor(R.color.summerMenu4);
-            color5 = context.getResources().getColor(R.color.summerMenu4);
-//            colorAlt = context.getResources().getColor(R.color.summerAlt);
+            color1 = context.getResources().getColor(R.color.summer_top_bar_bg);
+            color2 = context.getResources().getColor(R.color.summer_top_bar_label);
+            color3 = context.getResources().getColor(R.color.summer_top_bar_number);
+            color4 = context.getResources().getColor(R.color.summer_top_bar_separator);
+            color5 = context.getResources().getColor(R.color.summer_top_bar_separator_down);
             colorHeader = context.getResources().getColor(R.color.summerHeader);
             colorChosen = context.getResources().getColor(R.color.summerChosen);
             logoID = R.drawable.logo_summer;
@@ -58,22 +57,18 @@ public class SkinsCenterListActivity extends BaseListActivity {
             color3 = context.getResources().getColor(R.color.kuba_top_bar_number);
             color4 = context.getResources().getColor(R.color.kuba_top_bar_separator);
             color5 = context.getResources().getColor(R.color.kuba_top_bar_separator_down);
-//            colorMain = context.getResources().getColor(R.color.kubaMain);
-//            colorAlt = context.getResources().getColor(R.color.kubaAlt);
             colorHeader = context.getResources().getColor(R.color.kubaHeader);
             colorChosen = context.getResources().getColor(R.color.kubaChosen);
             logoID = R.drawable.logo;
-            humanName = "Default";
+            humanName = "Kuba";
         }
 
         if (currentSkinComputerName.compareTo("girl_power") == 0) {
-            color1 = context.getResources().getColor(R.color.pinkyMenu1);
-            color2 = context.getResources().getColor(R.color.pinkyMenu2);
-            color3 = context.getResources().getColor(R.color.pinkyMenu3);
-            color4 = context.getResources().getColor(R.color.pinkyMenu4);
-            color5 = context.getResources().getColor(R.color.pinkyMenu4);
-//            colorMain = context.getResources().getColor(R.color.pinkyMain);
-//            colorAlt = context.getResources().getColor(R.color.pinkyAlt);
+            color1 = context.getResources().getColor(R.color.pinky_top_bar_bg);
+            color2 = context.getResources().getColor(R.color.pinky_top_bar_label);
+            color3 = context.getResources().getColor(R.color.pinky_top_bar_number);
+            color4 = context.getResources().getColor(R.color.pinky_top_bar_separator);
+            color5 = context.getResources().getColor(R.color.pinky_top_bar_separator_down);
             colorHeader = context.getResources().getColor(R.color.pinkyHeader);
             colorChosen = context.getResources().getColor(R.color.pinkyChosen);
             logoID = R.drawable.logo_pinky;
@@ -81,13 +76,11 @@ public class SkinsCenterListActivity extends BaseListActivity {
         }
 
         if (currentSkinComputerName.compareTo("blue_sky") == 0) {
-            color1 = context.getResources().getColor(R.color.blueSkyMenu1);
-            color2 = context.getResources().getColor(R.color.blueSkyMenu2);
-            color3 = context.getResources().getColor(R.color.blueSkyMenu3);
-            color4 = context.getResources().getColor(R.color.blueSkyMenu4);
-            color5 = context.getResources().getColor(R.color.blueSkyMenu4);
-//            colorMain = context.getResources().getColor(R.color.blueSkyMain);
-//            colorAlt = context.getResources().getColor(R.color.blueSkyAlt);
+            color1 = context.getResources().getColor(R.color.blue_sky_top_bar_bg);
+            color2 = context.getResources().getColor(R.color.blue_sky_top_bar_label);
+            color3 = context.getResources().getColor(R.color.blue_sky_top_bar_number);
+            color4 = context.getResources().getColor(R.color.blue_sky_top_bar_separator);
+            color5 = context.getResources().getColor(R.color.blue_sky_top_bar_separator_down);
             colorHeader = context.getResources().getColor(R.color.blueSkyHeader);
             colorChosen = context.getResources().getColor(R.color.blueSkyChosen);
             logoID = R.drawable.logo_blue_sky;
