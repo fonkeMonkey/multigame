@@ -8,16 +8,14 @@
         <item name="android:typeface">monospace</item>
     </style>
 
-    <style name="Multigame" parent="@android:style/Theme.Light.NoTitleBar.Fullscreen">
+    <style name="Multigame_style_game" parent="@android:style/Theme.Light.NoTitleBar.Fullscreen">
         <item name="sdlDialogStyle">@style/DialogStyleLight.Custom</item>
-    </style>
-
-    <style name="Multigame_style" parent="Multigame">
-    </style>
-
-    <style name="Multigame_style_no_sound" parent="Multigame">
         <item name="android:soundEffectsEnabled">false</item>
+    </style>
 
+    <style name="Multigame_style_other" parent="@android:style/Theme.Light.NoTitleBar">
+        <item name="sdlDialogStyle">@style/DialogStyleLight.Custom</item>
+        <item name="android:soundEffectsEnabled">false</item>
     </style>
 
     <style name="DialogStyleLight.Custom">
@@ -33,13 +31,13 @@
         <item name="dialogBackground">@color/kuba_top_bar_number</item>
     </style>
 
-    <style name="Theme.Splash" parent="android:Theme.Holo.Light">
-        <!--<item name="android:windowBackground">@drawable/splash_screen</item>-->
-        <item name="android:windowNoTitle">true</item>
-        <item name="android:windowActionBar">false</item>
-        <item name="android:windowFullscreen">true</item>
-        <item name="android:soundEffectsEnabled">false</item>
-    </style>
+    <!--<style name="Theme.Splash" parent="android:Theme.Holo.Light">-->
+        <!--&lt;!&ndash;<item name="android:windowBackground">@drawable/splash_screen</item>&ndash;&gt;-->
+        <!--<item name="android:windowNoTitle">true</item>-->
+        <!--<item name="android:windowActionBar">false</item>-->
+        <!--<item name="android:windowFullscreen">true</item>-->
+        <!--<item name="android:soundEffectsEnabled">false</item>-->
+    <!--</style>-->
 
     <!--facebook-->
     <color name="com_facebook_blue">#3B5998</color>

@@ -1,15 +1,12 @@
 package sk.palistudios.multigame.customization_center;
 
-import android.annotation.TargetApi;
 import android.app.Activity;
 import android.app.TabActivity;
-import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
 import android.media.AudioManager;
 import android.os.Build;
 import android.os.Bundle;
-import android.util.AttributeSet;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.TabHost;
@@ -53,21 +50,6 @@ public class CustomizationCenterActivity extends TabActivity {
 
     }
 
-    //    public static void setMusicArrayAdapter(MusicArrayAdapter musicArrayAdapter) {
-//        CustomizationCenter.musicArrayAdapter = musicArrayAdapter;
-//    }
-//
-//    public static void setSkinArrayAdapter(SkinsArrayAdapter skinArrayAdapter) {
-//        CustomizationCenter.skinArrayAdapter = skinArrayAdapter;
-//    }
-//
-//    public static void setMgcArrayAdapter(MgcArrayAdapter mgcArrayAdapter) {
-//        CustomizationCenter.mgcArrayAdapter = mgcArrayAdapter;
-//    }
-//
-//    public static void setAchievementsArrayAdapter(AchievementsArrayAdapter achievementsArrayAdapter) {
-//        CustomizationCenter.achievementsArrayAdapter = achievementsArrayAdapter;
-//    }
     public static void addAdapter(IAdapter adapter) {
         adapters.add(adapter);
     }
@@ -163,7 +145,6 @@ public class CustomizationCenterActivity extends TabActivity {
                 }
             });
         }
-        getTabWidget().setBackgroundColor(Color.BLACK);
         if (android.os.Build.VERSION.SDK_INT > Build.VERSION_CODES.ECLAIR_MR1) {
             getTabWidget().setStripEnabled(false);
         }

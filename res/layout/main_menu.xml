@@ -12,6 +12,7 @@
         android:layout_height="0dp"
         android:layout_weight="5"
         android:gravity="center"
+        android:background="#FFFFFF"
         android:orientation="vertical"
         >
 
