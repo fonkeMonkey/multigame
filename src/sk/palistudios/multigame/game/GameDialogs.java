@@ -32,7 +32,7 @@ public class GameDialogs {
                 switch (which) {
                     case DialogInterface.BUTTON_POSITIVE:
                         showNextTutorialWindow(game, true);
-                        SoundEffectsCenter.playForwardSound(game);
+//                        SoundEffectsCenter.playForwardSound(game);
                         break;
                     case DialogInterface.BUTTON_NEGATIVE:
                         game.stopTutorial();
@@ -67,7 +67,7 @@ public class GameDialogs {
                         case DialogInterface.BUTTON_POSITIVE:
 
 //                        game.stopTutorialLoop();
-                            SoundEffectsCenter.playForwardSound(game);
+//                            SoundEffectsCenter.playForwardSound(game);
                             game.startGameTutorial();
 //                        game.startTutorialLoop();
                             break;
@@ -138,7 +138,7 @@ public class GameDialogs {
             public void onClick(DialogInterface dialog, int which) {
                 switch (which) {
                     case DialogInterface.BUTTON_POSITIVE:
-                        SoundEffectsCenter.playForwardSound(game);
+//                        SoundEffectsCenter.playForwardSound(game);
                         sLostGame = true;
 //                        Game.sTutorialLastLevel--;
 //                        showNextTutorialWindow(game, false);
