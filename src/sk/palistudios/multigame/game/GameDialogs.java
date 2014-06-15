@@ -10,6 +10,7 @@ import android.content.Intent;
 import android.text.Html;
 import android.widget.EditText;
 import sk.palistudios.multigame.R;
+import sk.palistudios.multigame.customization_center.mgc.MinigamesCenterListActivity;
 import sk.palistudios.multigame.game.persistence.GameSharedPref;
 import sk.palistudios.multigame.hall_of_fame.HallOfFameActivity;
 import sk.palistudios.multigame.hall_of_fame.HofDatabaseCenter;
@@ -17,7 +18,6 @@ import sk.palistudios.multigame.hall_of_fame.HofItem;
 import sk.palistudios.multigame.mainMenu.DebugSettings;
 import sk.palistudios.multigame.mainMenu.MainMenuActivity;
 import sk.palistudios.multigame.tools.InternetChecker;
-import sk.palistudios.multigame.tools.SoundEffectsCenter;
 
 public class GameDialogs {
 
@@ -93,14 +93,14 @@ public class GameDialogs {
 
             switch (GameActivity.sTutorialLastLevel) {
                 case 0:
-                    symbol = "<font color=#F1A100><b>(⇅)</b></font>";
+                    symbol = "<font color=#F1A100><b>(" + MinigamesCenterListActivity.SYMBOL_MINIGAME_VERTICAL + ")</b></font>";
                     break;
                 case 1:
-                    symbol = "<font color=#F1A100><b>(⇆)</b></font>";
+                    symbol = "<font color=#F1A100><b>(" + MinigamesCenterListActivity.SYMBOL_MINIGAME_HORIZONTAL + ")</b></font>";
                     break;
                 case 2:
                 case 3:
-                    symbol = "<font color=#F1A100><b>(✋)</b></font>";
+                    symbol = "<font color=#F1A100><b>(" + MinigamesCenterListActivity.SYMBOL_MINIGAME_TOUCH + ")</b></font>";
                     break;
 
             }

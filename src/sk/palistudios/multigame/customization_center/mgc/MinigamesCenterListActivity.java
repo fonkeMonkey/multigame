@@ -22,7 +22,7 @@ import java.util.ArrayList;
 public class MinigamesCenterListActivity extends BaseListActivity {
 
     public static char SYMBOL_MINIGAME_HORIZONTAL = '⇆';
-    public static char SYMBOL_MINIGAME_TOUCH = '✋';
+    public static char SYMBOL_MINIGAME_TOUCH = '⇩';
     public static char SYMBOL_MINIGAME_VERTICAL = '⇅';
     private static String[] tmpChosenMinigames = new String[4];
     private MgcArrayAdapter minigamesAdapter;

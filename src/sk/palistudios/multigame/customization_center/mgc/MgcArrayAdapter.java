@@ -4,16 +4,11 @@ package sk.palistudios.multigame.customization_center.mgc;
 
 import android.content.Context;
 import android.graphics.Color;
-import android.view.Gravity;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
-import android.widget.ArrayAdapter;
-import android.widget.TextView;
+import android.view.*;
+import android.widget.*;
 import sk.palistudios.multigame.R;
 import sk.palistudios.multigame.customization_center.IAdapter;
 import sk.palistudios.multigame.customization_center.skins.SkinItem;
-import sk.palistudios.multigame.tools.GraphicUnitsConvertor;
 
 import java.util.ArrayList;
 
@@ -23,6 +18,7 @@ public class MgcArrayAdapter extends ArrayAdapter<MgcItem> implements IAdapter {
     private Context context;
     private int lastTActivated;
     private int colorChosen;
+    private FrameLayout mFrame;
 //    SkinItem skin;
 //    public MgcArrayAdapter(Context context, ArrayList<MgcItem> objects) {
 //        super(context, R.layout.mgc_listitem, objects);
@@ -41,6 +37,9 @@ public class MgcArrayAdapter extends ArrayAdapter<MgcItem> implements IAdapter {
         colorChosen = currentSkin.getColorChosen();
     }
 
+    TextView mHorizontal;
+    TextView mVertical;
+    TextView mTouch;
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
 //
@@ -52,12 +51,36 @@ public class MgcArrayAdapter extends ArrayAdapter<MgcItem> implements IAdapter {
 //            } else {
 
         View view = convertView;
-
         if (view == null) {
             LayoutInflater vi = (LayoutInflater) context
                     .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
             view = vi.inflate(R.layout.mgc_listitem, null);
         }
+
+        mFrame = (FrameLayout) view.findViewById(R.id.mgc_frame);
+        mHorizontal = (TextView) view.findViewById(R.id.mgc_type_h);
+        mVertical = (TextView) view.findViewById(R.id.mgc_type_v);
+        mTouch = (TextView) view.findViewById(R.id.mgc_type_t);
+
+//        ViewTreeObserver viewTreeObserver = view.getViewTreeObserver();
+//        if (viewTreeObserver.isAlive()) {
+//            final View finalView = view;
+//            viewTreeObserver.addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
+//                @Override
+//                public void onGlobalLayout() {
+//                    finalView.getViewTreeObserver().removeGlobalOnLayoutListener(this);
+//                    LinearLayout.LayoutParams params =
+//                            ( LinearLayout.LayoutParams) mFrame.getLayoutParams();
+//
+//                    params.height = mHorizontal.getMeasuredHeight();
+//                    params.width = mHorizontal.getMeasuredWidth();
+//                    mFrame.setLayoutParams(params);
+//                    mFrame.requestLayout();
+//                }
+//            });
+//        }
+
+
         View background = view.findViewById(R.id.mgc_row);
 
 //        TextView textView1 = (TextView) view.findViewById(R.id.mgc_type);
@@ -84,24 +107,25 @@ public class MgcArrayAdapter extends ArrayAdapter<MgcItem> implements IAdapter {
     }
 
     private void showCorrectLeftIcon(View view, char type) {
-        TextView horizontal = (TextView) view.findViewById(R.id.mgc_type_h);
-        TextView vertical = (TextView) view.findViewById(R.id.mgc_type_v);
-        TextView touch = (TextView) view.findViewById(R.id.mgc_type_t);
 
-        if (type == '⇅') {
-            horizontal.setVisibility(View.GONE);
-            touch.setVisibility(View.INVISIBLE);
-            vertical.setVisibility(View.VISIBLE);
+
+
+//        mTouch.requestLayout();
+
+        if (type == MinigamesCenterListActivity.SYMBOL_MINIGAME_VERTICAL) {
+            mHorizontal.setVisibility(View.INVISIBLE);
+            mTouch.setVisibility(View.GONE);
+            mVertical.setVisibility(View.VISIBLE);
         }
-        if (type == '✋') {
-            horizontal.setVisibility(View.GONE);
-            touch.setVisibility(View.VISIBLE);
-            vertical.setVisibility(View.GONE);
+        if (type == MinigamesCenterListActivity.SYMBOL_MINIGAME_TOUCH) {
+            mHorizontal.setVisibility(View.INVISIBLE);
+            mTouch.setVisibility(View.VISIBLE);
+            mVertical.setVisibility(View.GONE);
         }
-        if (type == '⇆') {
-            horizontal.setVisibility(View.VISIBLE);
-            touch.setVisibility(View.INVISIBLE);
-            vertical.setVisibility(View.GONE);
+        if (type == MinigamesCenterListActivity.SYMBOL_MINIGAME_HORIZONTAL) {
+            mHorizontal.setVisibility(View.VISIBLE);
+            mTouch.setVisibility(View.GONE);
+            mVertical.setVisibility(View.GONE);
         }
     }
 
