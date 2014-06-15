@@ -9,7 +9,6 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.text.Html;
 import android.widget.EditText;
-import eu.inmite.android.lib.dialogs.SimpleDialogFragment;
 import sk.palistudios.multigame.R;
 import sk.palistudios.multigame.game.persistence.GameSharedPref;
 import sk.palistudios.multigame.hall_of_fame.HallOfFameActivity;
@@ -177,8 +176,9 @@ public class GameDialogs {
             public void onClick(DialogInterface dialog, int which) {
                 switch (which) {
                     case DialogInterface.BUTTON_POSITIVE:
-                        restartGame(game);
+                        getBackToMainMenu(game);
                         break;
+
 
                     case DialogInterface.BUTTON_NEUTRAL:
                         if (InternetChecker.isNetworkAvailable(game)) {
@@ -195,13 +195,13 @@ public class GameDialogs {
                         break;
 
                     case DialogInterface.BUTTON_NEGATIVE:
-                        getBackToMainMenu(game);
+                        restartGame(game);
                         break;
                 }
             }
         };
         AlertDialog.Builder builder = new AlertDialog.Builder(game);
-        builder.setCancelable(false).setMessage(game.getString(R.string.game_loser)).setPositiveButton(Html.fromHtml("<b>" + game.getString(R.string.game_retry) + "</b>"), dialogClickListener).setNegativeButton("OK", dialogClickListener).setNeutralButton(game.getString(R.string.game_share), dialogClickListener).show();
+        builder.setCancelable(false).setMessage(game.getString(R.string.game_loser)).setNegativeButton(Html.fromHtml("<b>" + game.getString(R.string.game_retry) + "</b>"), dialogClickListener).setPositiveButton("OK", dialogClickListener).setNeutralButton(game.getString(R.string.game_share), dialogClickListener).show();
 //        game.dialogvisible = true;
         //        AlertDialog dialog = builder.create();
 //        dialog.show();

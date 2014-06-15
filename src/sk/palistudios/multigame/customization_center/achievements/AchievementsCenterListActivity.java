@@ -62,7 +62,7 @@ public class AchievementsCenterListActivity extends BaseListActivity {
                     GameSharedPref.isAchievementFulfilled("competitive"), (String) context.getResources().getString(R.string.cc_skins_skin_name)));
 
             achievements.add(new AchievementItem("champion", (String) context.getResources().getString(R.string.cc_achievements_champion_name), (String) context.getResources().getString(R.string.cc_achievements_champion_description),
-                    "SCORE", 10001, "summer", (String) context.getResources().getString(R.string.cc_skins_summer_name),
+                    "SCORE", 1001, "summer", (String) context.getResources().getString(R.string.cc_skins_summer_name),
                     GameSharedPref.isAchievementFulfilled("champion"), (String) context.getResources().getString(R.string.cc_skins_skin_name)));
         }
     }
