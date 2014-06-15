@@ -16,7 +16,7 @@ import sk.palistudios.multigame.game.persistence.GameSharedPref;
 public class SoundEffectsCenter {
 
     /* Field to control the volume of the app sounds. */
-    private static final double VOLUME_COEFICIENT = 0.5;
+    private static final double VOLUME_COEFICIENT = 0.3d;
     public static MediaPlayer mp_forward;
     public static MediaPlayer mp_back;
     public static MediaPlayer mp_tab;
