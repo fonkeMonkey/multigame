@@ -23,19 +23,6 @@ dependencies {
     compile fileTree(dir: 'libs', include: ['*.jar'])
 }
 
-android.applicationVariants.all{ variant ->
-    variant.processManifest.doFirst {
-        File manifestFile = file("${buildDir}/exploded-aar/com.google.android.gms/play-services/4.1.32/AndroidManifest.xml")
-        if (manifestFile.exists()) {
-            println("Replacing minSdkVersion in Android Google play services")
-            String content = manifestFile.getText('UTF-8')
-            content = content.replaceAll(/minSdkVersion="8"/, 'minSdkVersion=\"7\"')
-            manifestFile.write(content, 'UTF-8')
-            println(content)
-        }
-    }
-}
-
 android {
     compileSdkVersion 19
 
@@ -53,6 +40,21 @@ android {
         instrumentTest.setRoot('tests')
     }
 
+}
+
+android {
+    buildTypes {
+        release {
+            runProguard true
+            proguardFile getDefaultProguardFile('proguard-android.txt')
+        }
+    }
+}
+
+android {
+    lintOptions {
+        abortOnError false
+    }
 }
 
 android {
