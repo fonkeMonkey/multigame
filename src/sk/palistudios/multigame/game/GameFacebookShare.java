@@ -17,60 +17,7 @@ import sk.palistudios.multigame.tools.Toaster;
 public class GameFacebookShare {
 
     public final static String TAG = "FB Share";
-    //    private static void publishStoryNew(Activity act, int score) {
-//        // This function will invoke the Feed Dialog to post to a user's Timeline and News Feed
-//// It will attempt to use the Facebook Native Share dialog
-//// If that's not supported we'll fall back to the web based dialog.
-//
-////        GraphUser currentFBUser = application.getCurrentFBUser();
-//
-//// This first parameter is used for deep linking so that anyone who clicks the link will start smashing this user
-//// who sent the post
-////        String link = "https://apps.facebook.com/friendsmashsample/?challenge_brag=";
-////        if (currentFBUser != null) {
-////            link += currentFBUser.getId();
-////        }
-//
-//// Define the other parameters
-//        String name = "Check out my multitasking skills!";
-//        String caption = "http://play.google.com/store/apps/details?id=sk.palistudios.multigame";
-//        String description = "I just achieved incredible " + score + " points in Multigame! Can you beat that?";
-//        String picture = "http://s24.postimg.org/9jb0yf9wh/logo_summer.png";
-//        String link = "http://play.google.com/store/apps/details?id=sk.palistudios.multigame";
-//
-//
-//        if (FacebookDialog.canPresentShareDialog(act, FacebookDialog.ShareDialogFeature.SHARE_DIALOG)) {
-//
-//            // Create the Native Share dialog
-//            FacebookDialog shareDialog = new FacebookDialog.ShareDialogBuilder(act)
-//                    .setLink(link)
-//                    .setName(name)
-//                    .setCaption(caption)
-//                    .setPicture(picture)
-//                    .build();
-//            MainMenu.setWallPostAchievementDone();
-//            // Show the Native Share dialog
-////        ((HomeActivity)(act)).getFbUiLifecycleHelper().trackPendingDialogCall(shareDialog.present());
-//        } else {
-//
-//            // Prepare the web dialog parameters
-//            Bundle params = new Bundle();
-////            params.putString("link", link);
-//            params.putString("name", name);
-//            params.putString("caption", caption);
-//            params.putString("description", description);
-//            params.putString("picture", picture);
-//            params.putString("link", link);
-//
-//            // Show FBDialog without a notification bar
-//            showDialogWithoutNotificationBar(act, "feed", params);
-//        }
-//
-//    }
     private static WebDialog dialog;
-//    private static final List<String> PERMISSIONS = Arrays.asList("publish_actions");
-//    private static final String PENDING_PUBLISH_KEY = "pendingPublishReauthorization";
-//    private static boolean pendingPublishReauthorization = false;
     private UiLifecycleHelper uiHelper;
 
     public static void shareScoreToFacebook(final int score, final boolean isWinner) {
@@ -79,38 +26,13 @@ public class GameFacebookShare {
 
         Session.openActiveSession(mainMenu, true, new Session.StatusCallback() {
             public void call(Session session, SessionState state, Exception exception) {
-//                mainMenu.onSessionStateChange(session, state, exception);
-//                session = Session.getActiveSession();
-//                askForLogin(act, session);
-//                publishStory(act);
-
-//                if ( //                        pendingPublishReauthorization
-                //                        &&
-                //                        state.equals(SessionState.OPENED_TOKEN_UPDATED)) {
-//                        state.equals(SessionState.OPENED)) {
-//                if (session.isOpened()) {
 
                 //Keď som sa logol
                 if (state == SessionState.OPENED) {
                     Log.i("facebookState", "OPENED");
-//                    requestMorePermissions(mainMenu, score);
-//                    publishStoryNew(mainMenu, score);
-//                    Context context = mainMenu.getApplicationContext();
-//                    Intent intent = new Intent(context, MainMenu.class);
-//                    intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-//                    intent.setFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
-//                    mainMenu.startActivity(intent);
                     openSessionAndPublish(mainMenu, score, isWinner);
                     return;
-//                }
                 }
-
-//                //Keď som dostal viac permissions
-//                if (state == SessionState.OPENED_TOKEN_UPDATED) {
-//                    Log.e("facebookState", "OPENED + UPDATED");
-//                    publishStoryNew(mainMenu, score);
-//                    return;
-//                }
 
                 if (state == SessionState.CLOSED_LOGIN_FAILED) {
                     Log.e("facebookState", "failed");
@@ -148,7 +70,7 @@ public class GameFacebookShare {
         String name = act.getString(R.string.facebook_label);
         String caption = "http://play.google.com/store/apps/details?id=sk.palistudios.multigame";
         String description = act.getString(R.string.facebook_description1) + score + act.getString(R.string.facebook_description2);
-        String picture = "http://s24.postimg.org/9jb0yf9wh/logo_summer.png";
+        String picture = "http://s3.postimg.org/jks1t6zjj/logo.png";
         String link = "http://play.google.com/store/apps/details?id=sk.palistudios.multigame";
 
         Bundle params = new Bundle();

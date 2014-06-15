@@ -47,10 +47,10 @@ public class GameDialogs {
         };
         GameMinigamesManager.deactivateAllMiniGames(game);
 
-        SimpleDialogFragment.createBuilder(game, game.getSupportFragmentManager()).setTitle("Placeholder").setMessage(game.getString(R.string.tutorial_welcome)).setPositiveButtonText(game.getString(R.string.tutorial_positive)).setNegativeButtonText(game.getString(R.string.tutorial_negative)).setCancelable(false).show();
+//        SimpleDialogFragment.createBuilder(game, game.getSupportFragmentManager()).setTitle("Placeholder").setMessage(game.getString(R.string.tutorial_welcome)).setPositiveButtonText(game.getString(R.string.tutorial_positive)).setNegativeButtonText(game.getString(R.string.tutorial_negative)).setCancelable(false).show();
 
-//        AlertDialog.Builder builder = new AlertDialog.Builder(game);
-//        builder.setCancelable(false).setMessage(game.getString(R.string.tutorial_welcome)).setNegativeButton(game.getString(R.string.tutorial_negative), dialogClickListener).setPositiveButton(Html.fromHtml("<b>" + game.getString(R.string.tutorial_positive) + "</b>"), dialogClickListener).show();
+        AlertDialog.Builder builder = new AlertDialog.Builder(game);
+        builder.setCancelable(false).setMessage(game.getString(R.string.tutorial_welcome)).setNegativeButton(game.getString(R.string.tutorial_negative), dialogClickListener).setPositiveButton(Html.fromHtml("<b>" + game.getString(R.string.tutorial_positive) + "</b>"), dialogClickListener).show();
     }
 
     public static void showNextTutorialWindow(final GameActivity game, boolean showPopup) {
