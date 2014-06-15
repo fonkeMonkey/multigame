@@ -1,16 +1,18 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout android:id="@+id/game"
-              xmlns:android="http://schemas.android.com/apk/res/android"
-              android:layout_width="fill_parent"
-              android:layout_height="fill_parent"
-              android:orientation="vertical"
+<LinearLayout
+    android:id="@+id/game"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:orientation="vertical"
     >
 
-    <LinearLayout android:id="@+id/game_bar"
-                  xmlns:android="http://schemas.android.com/apk/res/android"
-                  android:layout_width="fill_parent"
-                  android:layout_height="25dp"
-                  android:orientation="horizontal">
+    <LinearLayout
+        android:id="@+id/game_bar"
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="fill_parent"
+        android:layout_height="25dp"
+        android:orientation="horizontal">
 
         <TextView
             android:id="@+id/game_level"
@@ -51,10 +53,11 @@
         android:layout_height="1dp"
         android:background="@android:color/black"/>
 
-    <TableLayout android:id="@+id/tableLayout1"
-                 xmlns:android="http://schemas.android.com/apk/res/android"
-                 android:layout_width="fill_parent"
-                 android:layout_height="fill_parent"
+    <TableLayout
+        android:id="@+id/tableLayout1"
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
         >
 
         <TableRow
@@ -62,10 +65,7 @@
             android:layout_width="fill_parent"
             android:layout_height="fill_parent"
             android:layout_weight="1"
-            android:paddingBottom="1dp"
             >
-            <!--android:padding="1dp"-->
-
 
             <fragment
                 android:id="@+id/fragment1"
@@ -74,11 +74,6 @@
                 android:layout_width="fill_parent"
                 android:layout_height="fill_parent"
                 android:layout_weight="1"/>
-
-            <!--            <View  android:layout_width="1dp"
-                               android:layout_height="wrap_content"
-                               android:background="@android:color/white"
-                               />-->
 
             <fragment
                 android:id="@+id/fragment2"
@@ -93,12 +88,7 @@
             android:id="@+id/tableRow2"
             android:layout_width="fill_parent"
             android:layout_height="fill_parent"
-
             android:layout_weight="1">
-            <!--            android:paddingTop="0dp"
-                        android:paddingLeft="1dp"
-                        android:paddingRight="1dp"
-                        android:paddingBottom="1dp" -->
 
             <fragment
                 android:id="@+id/fragment3"
@@ -107,10 +97,6 @@
                 android:layout_width="fill_parent"
                 android:layout_height="fill_parent"
                 android:layout_weight="1"/>
-
-            <!--            <View  android:layout_width="1dp"
-                               android:layout_height="wrap_content"
-                               android:background="@android:color/white" />-->
 
             <fragment
                 android:id="@+id/fragment4"
