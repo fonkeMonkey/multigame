@@ -15,6 +15,8 @@ import sk.palistudios.multigame.game.persistence.GameSharedPref;
  */
 public class SoundEffectsCenter {
 
+    /* Field to control the volume of the app sounds. */
+    private static final double VOLUME_COEFICIENT = 0.5;
     public static MediaPlayer mp_forward;
     public static MediaPlayer mp_back;
     public static MediaPlayer mp_tab;
@@ -88,16 +90,16 @@ public class SoundEffectsCenter {
     public static void setVolumeBasedOnRingVolume(Context context) {
         AudioManager audio = (AudioManager) context.getSystemService(Context.AUDIO_SERVICE);
 
-// Get the current ringer volume as a percentage of the max ringer volume.
+        // Get the current ringer volume as a percentage of the max ringer volume.
         int currentVolume = audio.getStreamVolume(AudioManager.STREAM_RING);
         int maxRingerVolume = audio.getStreamMaxVolume(AudioManager.STREAM_RING);
         double proportion = currentVolume / (double) maxRingerVolume;
 
-// Calculate a desired music volume as that same percentage of the max music volume.
+        // Calculate a desired music volume as that same percentage of the max music volume.
         int maxMusicVolume = audio.getStreamMaxVolume(AudioManager.STREAM_MUSIC);
-        int desiredMusicVolume = (int) (proportion * maxMusicVolume);
+        int desiredMusicVolume = (int) (proportion * maxMusicVolume * VOLUME_COEFICIENT);
 
-// Set the music stream volume.
+        // Set the music stream volume.
         audio.setStreamVolume(AudioManager.STREAM_MUSIC, desiredMusicVolume, 0 /*flags*/);
     }
 }
