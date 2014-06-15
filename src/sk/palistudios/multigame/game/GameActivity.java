@@ -8,6 +8,7 @@ import android.hardware.SensorEvent;
 import android.hardware.SensorEventListener;
 import android.hardware.SensorManager;
 import android.media.AudioManager;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.v4.app.FragmentActivity;
@@ -790,15 +791,20 @@ public class GameActivity extends FragmentActivity implements SensorEventListene
     private void resolveOrientation() {
         WindowManager windowManager = (WindowManager) getSystemService(WINDOW_SERVICE);
         Configuration config = getResources().getConfiguration();
-        int rotation = windowManager.getDefaultDisplay().getRotation();
 
-        if (((rotation == Surface.ROTATION_0 || rotation == Surface.ROTATION_180)
-                && config.orientation == Configuration.ORIENTATION_LANDSCAPE)
-                || ((rotation == Surface.ROTATION_90 || rotation == Surface.ROTATION_270)
-                && config.orientation == Configuration.ORIENTATION_PORTRAIT)) {
-            mOrientation = Configuration.ORIENTATION_LANDSCAPE;
+        if (Build.VERSION.SDK_INT < 8) {
+            mOrientation = config.orientation;
         } else {
-            mOrientation = Configuration.ORIENTATION_PORTRAIT;
+            int rotation = windowManager.getDefaultDisplay().getRotation();
+
+            if (((rotation == Surface.ROTATION_0 || rotation == Surface.ROTATION_180)
+                    && config.orientation == Configuration.ORIENTATION_LANDSCAPE)
+                    || ((rotation == Surface.ROTATION_90 || rotation == Surface.ROTATION_270)
+                    && config.orientation == Configuration.ORIENTATION_PORTRAIT)) {
+                mOrientation = Configuration.ORIENTATION_LANDSCAPE;
+            } else {
+                mOrientation = Configuration.ORIENTATION_PORTRAIT;
+            }
         }
     }
 
