@@ -21,7 +21,7 @@ public class MiniGameVBird extends AMiniGame implements IMiniGameVertical {
     private final static RandomGenerator mRG = RandomGenerator.getInstance();
     PaintSerializable mPaintBird = null;
     PaintSerializable mPaintObstacle = null;
-//    private int mBlur;
+    //    private int mBlur;
     float movementSensitivity;
     private ArrayList<Obstacle> mObstacles = new ArrayList<Obstacle>();
     private float movementThreshold;
@@ -159,16 +159,6 @@ public class MiniGameVBird extends AMiniGame implements IMiniGameVertical {
 //    private int[] mBlurMemory = new int[blurMemorySize];
 
     private void moveBird() {
-
-        /* Blur */
-//        for (int i = mBlurMemory.length - 1; i > 0; i--) {
-//            mBlurMemory[i] = mBlurMemory[i - 1];
-//        }
-//        mBlurMemory[0] = mBirdTop;
-
-
-//        mBirdTopBefore2 = mBirdTopBefore1;
-//        mBirdTopBefore1 = mBirdTop;
 
         //      checking the edges
         if (mBirdTop + actualMovement > mHeight - mBirdSize) {

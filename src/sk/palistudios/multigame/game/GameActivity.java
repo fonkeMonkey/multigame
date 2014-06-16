@@ -497,8 +497,12 @@ public class GameActivity extends FragmentActivity implements SensorEventListene
 
             if (!gameStopped) {
                 if (!isDefaultCoordinatesSet && GameSharedPref.getAutoCalibrationEnabled()) {
-                    DEFAULT_AXIS_X = event.values[1];
-                    DEFAULT_AXIS_Y = event.values[0];
+                    /* Na stojaka je to 10, opacny stojak - 10, rovina nula, ten gece nevie ale na ktoru stranu je otoceny,
+                    ide to z oboch stran od 10 do -10. akuratze ked sa tocis okolo 10 on to odcitava, takze ti to akoby pretecie.
+                    preto ja nastavim os ak je moc velka na 8.5 tam zvycajne sa uz tolko netocis aby ti to pretekalo cez 10
+                     */
+                    DEFAULT_AXIS_X = normaliseAxis(event.values[1]);
+                    DEFAULT_AXIS_Y = normaliseAxis(event.values[0]);
                     isDefaultCoordinatesSet = true;
                 }
 
@@ -524,6 +528,16 @@ public class GameActivity extends FragmentActivity implements SensorEventListene
                 }
             }
         }
+    }
+
+    private float normaliseAxis(float value) {
+        if (value > 8.5) {
+            return 8.5f;
+        }
+        if (value < -8.5) {
+            return -8.5f;
+        }
+        return value;
     }
 
     @Override
