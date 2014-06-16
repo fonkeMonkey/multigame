@@ -219,9 +219,6 @@ public class GameDialogs {
                 Intent intent;
                 switch (which) {
                     case DialogInterface.BUTTON_POSITIVE:
-                        restartGame(game);
-                        break;
-                    case DialogInterface.BUTTON_NEGATIVE:
                         String playerName = userNameEditText.getText().toString();
                         GameSharedPref.setLastHofName(playerName);
 
@@ -232,6 +229,10 @@ public class GameDialogs {
                         intent = new Intent(act, HallOfFameActivity.class);
                         game.startActivity(intent);
 //                        game.dialogvisible = false;
+
+                        break;
+                    case DialogInterface.BUTTON_NEGATIVE:
+                        restartGame(game);
                         break;
                     case DialogInterface.BUTTON_NEUTRAL:
                         if (InternetChecker.isNetworkAvailable(game)) {
@@ -251,7 +252,7 @@ public class GameDialogs {
         };
         AlertDialog.Builder builder = new AlertDialog.Builder(game);
 //        game.dialogvisible = true;
-        builder.setCancelable(false).setView(userNameEditText).setMessage(game.getString(R.string.game_winner)).setPositiveButton(game.getString(R.string.game_retry), dialogClickListener).setNegativeButton(Html.fromHtml("<b>" + "OK" + "</b>"), dialogClickListener).setNeutralButton("Share", dialogClickListener).show();
+        builder.setCancelable(false).setView(userNameEditText).setMessage(game.getString(R.string.game_winner)).setPositiveButton(Html.fromHtml("<b>" + "OK" + "</b>"), dialogClickListener).setNegativeButton(game.getString(R.string.game_retry), dialogClickListener).setNeutralButton("Share", dialogClickListener).show();
 //        AlertDialog dialog = builder.create();
 //        dialog.show();
     }
