@@ -17,6 +17,7 @@ import java.util.ArrayList;
 
 public class MusicArrayAdapter extends ArrayAdapter<MusicItem> implements IAdapter {
 
+    private final int colorDisabled;
     TextView rowView = null;
     private ArrayList<MusicItem> myItems = new ArrayList<MusicItem>();
     private Context context;
@@ -27,6 +28,7 @@ public class MusicArrayAdapter extends ArrayAdapter<MusicItem> implements IAdapt
         this.context = context;
         myItems = objects;
         colorChosen = skin.getColorChosen();
+        colorDisabled = context.getResources().getColor(R.color.listview_inactive_item);
     }
 
     @Override
@@ -51,7 +53,7 @@ public class MusicArrayAdapter extends ArrayAdapter<MusicItem> implements IAdapt
             rowView.setBackgroundColor(Color.WHITE);
         }
         if (myItems.get(position).isLocked()) {
-            rowView.setBackgroundColor(Color.LTGRAY);
+            rowView.setBackgroundColor(colorDisabled);
         }
 
         return view;

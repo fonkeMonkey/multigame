@@ -78,6 +78,7 @@
     <color name="blue_sky_top_bar_separator">#3E94D1</color>
     <color name="blue_sky_top_bar_separator_down">#0A64A4</color>
 
+    <color name="listview_inactive_item">#55cccccc</color>
 
 
 

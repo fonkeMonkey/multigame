@@ -18,6 +18,7 @@ import java.util.ArrayList;
 
 public class AchievementsArrayAdapter extends ArrayAdapter<AchievementItem> implements IAdapter {
 
+    private final int colorDisabled;
     TextView rowViewName = null;
     TextView rowViewDescription = null;
     TextView rowViewReward = null;
@@ -30,6 +31,7 @@ public class AchievementsArrayAdapter extends ArrayAdapter<AchievementItem> impl
         this.context = context;
         myItems = items;
         colorChosen = currentSkin.getBarSeparatorColor();
+        colorDisabled = context.getResources().getColor(R.color.listview_inactive_item);
     }
 
     @Override

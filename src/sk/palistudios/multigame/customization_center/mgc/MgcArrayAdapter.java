@@ -14,6 +14,7 @@ import java.util.ArrayList;
 
 public class MgcArrayAdapter extends ArrayAdapter<MgcItem> implements IAdapter {
 
+    private final int colorDisabled;
     private ArrayList<MgcItem> myItems = new ArrayList<MgcItem>();
     private Context context;
     private int lastTActivated;
@@ -33,8 +34,8 @@ public class MgcArrayAdapter extends ArrayAdapter<MgcItem> implements IAdapter {
         this.context = context;
         myItems = items;
         lastTActivated = findFirstActiveTouchGame();
-//        skin = currentSkin;
         colorChosen = currentSkin.getColorChosen();
+        colorDisabled = context.getResources().getColor(R.color.listview_inactive_item);
     }
 
     TextView mHorizontal;
@@ -62,25 +63,6 @@ public class MgcArrayAdapter extends ArrayAdapter<MgcItem> implements IAdapter {
         mVertical = (TextView) view.findViewById(R.id.mgc_type_v);
         mTouch = (TextView) view.findViewById(R.id.mgc_type_t);
 
-//        ViewTreeObserver viewTreeObserver = view.getViewTreeObserver();
-//        if (viewTreeObserver.isAlive()) {
-//            final View finalView = view;
-//            viewTreeObserver.addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
-//                @Override
-//                public void onGlobalLayout() {
-//                    finalView.getViewTreeObserver().removeGlobalOnLayoutListener(this);
-//                    LinearLayout.LayoutParams params =
-//                            ( LinearLayout.LayoutParams) mFrame.getLayoutParams();
-//
-//                    params.height = mHorizontal.getMeasuredHeight();
-//                    params.width = mHorizontal.getMeasuredWidth();
-//                    mFrame.setLayoutParams(params);
-//                    mFrame.requestLayout();
-//                }
-//            });
-//        }
-
-
         View background = view.findViewById(R.id.mgc_row);
 
 //        TextView textView1 = (TextView) view.findViewById(R.id.mgc_type);
@@ -100,7 +82,7 @@ public class MgcArrayAdapter extends ArrayAdapter<MgcItem> implements IAdapter {
 
         if (myItems.get(position).isLocked()) {
 //            textView1.setBackgroundColor(Color.LTGRAY);
-            background.setBackgroundColor(Color.LTGRAY);
+            background.setBackgroundColor(colorDisabled);
         }
 
         return view;

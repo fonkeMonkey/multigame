@@ -16,6 +16,7 @@ import java.util.ArrayList;
 
 public class SkinsArrayAdapter extends ArrayAdapter<SkinItem> implements IAdapter {
 
+    private final int colorDisabled;
     private ArrayList<SkinItem> myItems = new ArrayList<SkinItem>();
     private Context context;
     private int colorChosen;
@@ -25,6 +26,7 @@ public class SkinsArrayAdapter extends ArrayAdapter<SkinItem> implements IAdapte
         this.context = context;
         myItems = objects;
         colorChosen = skin.getColorChosen();
+        colorDisabled = context.getResources().getColor(R.color.listview_inactive_item);
 
     }
 
@@ -50,7 +52,7 @@ public class SkinsArrayAdapter extends ArrayAdapter<SkinItem> implements IAdapte
             textView1.setBackgroundColor(Color.WHITE);
         }
         if (myItems.get(position).isLocked()) {
-            textView1.setBackgroundColor(Color.LTGRAY);
+            textView1.setBackgroundColor(colorDisabled);
         }
 
         return view;
