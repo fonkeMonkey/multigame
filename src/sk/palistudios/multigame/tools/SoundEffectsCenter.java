@@ -16,30 +16,36 @@ import sk.palistudios.multigame.game.persistence.GameSharedPref;
 public class SoundEffectsCenter {
 
     /* Field to control the volume of the app sounds. */
-    private static final double VOLUME_COEFICIENT = 0.3d;
+    private static final float VOLUME_COEFICIENT = 0.3f;
     public static MediaPlayer mp_forward;
     public static MediaPlayer mp_back;
     public static MediaPlayer mp_tab;
-    public static AudioManager audioManager;
-    private static float VOLUME = 0.25f;
+    public static AudioManager mAudioManager;
     private static boolean isInitialized = false;
+    private static int mDesiredMusicVolume;
 
     public static void init(Context context) {
+        float soundVolume = VOLUME_COEFICIENT;
+        //TODO virdzek  * mDesiredMusicVolume nejak to ešte napasovať možno (alebo to robí automaticky ten stream?
 
         mp_forward = MediaPlayer.create(context, R.raw.button_forward);
         mp_forward.setAudioStreamType(AudioManager.STREAM_MUSIC);
+        mp_forward.setVolume(soundVolume, soundVolume);
         mp_back = MediaPlayer.create(context, R.raw.button_back);
         mp_back.setAudioStreamType(AudioManager.STREAM_MUSIC);
+        mp_back.setVolume(soundVolume, soundVolume);
         mp_tab = MediaPlayer.create(context, R.raw.button_tab);
         mp_tab.setAudioStreamType(AudioManager.STREAM_MUSIC);
+        mp_tab.setVolume(soundVolume, soundVolume);
+
         isInitialized = true;
     }
 
     public static void muteSystemSounds(Context context, boolean status) {
-        if (audioManager == null) {
-            audioManager = (AudioManager) context.getSystemService(Context.AUDIO_SERVICE);
+        if (mAudioManager == null) {
+            mAudioManager = (AudioManager) context.getSystemService(Context.AUDIO_SERVICE);
         }
-        audioManager.setStreamMute(AudioManager.STREAM_SYSTEM, status);
+        mAudioManager.setStreamMute(AudioManager.STREAM_SYSTEM, status);
     }
 
     public static void playForwardSound(Context context) {
@@ -87,7 +93,7 @@ public class SoundEffectsCenter {
         isInitialized = false;
     }
 
-    public static void setVolumeBasedOnRingVolume(Context context) {
+    public static void setVolumeBasedOnRingVolume(Context context)  {
         AudioManager audio = (AudioManager) context.getSystemService(Context.AUDIO_SERVICE);
 
         // Get the current ringer volume as a percentage of the max ringer volume.
@@ -97,9 +103,9 @@ public class SoundEffectsCenter {
 
         // Calculate a desired music volume as that same percentage of the max music volume.
         int maxMusicVolume = audio.getStreamMaxVolume(AudioManager.STREAM_MUSIC);
-        int desiredMusicVolume = (int) (proportion * maxMusicVolume * VOLUME_COEFICIENT);
+        mDesiredMusicVolume = (int) (proportion * maxMusicVolume);
 
         // Set the music stream volume.
-        audio.setStreamVolume(AudioManager.STREAM_MUSIC, desiredMusicVolume, 0 /*flags*/);
+        audio.setStreamVolume(AudioManager.STREAM_MUSIC, mDesiredMusicVolume, 0 /*flags*/);
     }
 }
