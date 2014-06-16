@@ -93,14 +93,14 @@ public class GameDialogs {
 
             switch (GameActivity.sTutorialLastLevel) {
                 case 0:
-                    symbol = "<font color=#F1A100><b>(" + MinigamesCenterListActivity.SYMBOL_MINIGAME_VERTICAL + ")</b></font>";
+                    symbol = "<font color=#D98179><b>(" + MinigamesCenterListActivity.SYMBOL_MINIGAME_VERTICAL + ")</b></font>";
                     break;
                 case 1:
-                    symbol = "<font color=#F1A100><b>(" + MinigamesCenterListActivity.SYMBOL_MINIGAME_HORIZONTAL + ")</b></font>";
+                    symbol = "<font color=#D98179><b>(" + MinigamesCenterListActivity.SYMBOL_MINIGAME_HORIZONTAL + ")</b></font>";
                     break;
                 case 2:
                 case 3:
-                    symbol = "<font color=#F1A100><b>(" + MinigamesCenterListActivity.SYMBOL_MINIGAME_TOUCH + ")</b></font>";
+                    symbol = "<font color=#D98179><b>(" + MinigamesCenterListActivity.SYMBOL_MINIGAME_TOUCH + ")</b></font>";
                     break;
 
             }
@@ -176,7 +176,7 @@ public class GameDialogs {
             public void onClick(DialogInterface dialog, int which) {
                 switch (which) {
                     case DialogInterface.BUTTON_POSITIVE:
-                        getBackToMainMenu(game);
+                        restartGame(game);
                         break;
 
 
@@ -185,26 +185,19 @@ public class GameDialogs {
 
                             GameFacebookShare.shareScoreToFacebook(score, false);
                             game.finish();
-//                            game.dialogvisible = false;
-//                            getBackToMainMenu(game);
                         } else {
                             askUserToConnect(game, false, score);
-//                            Toaster.toastLong("Sorry, no internet connection available", game);
-//                            getBackToMainMenu(game);
                         }
                         break;
 
                     case DialogInterface.BUTTON_NEGATIVE:
-                        restartGame(game);
+                        getBackToMainMenu(game);
                         break;
                 }
             }
         };
         AlertDialog.Builder builder = new AlertDialog.Builder(game);
-        builder.setCancelable(false).setMessage(game.getString(R.string.game_loser)).setNegativeButton(Html.fromHtml("<b>" + game.getString(R.string.game_retry) + "</b>"), dialogClickListener).setPositiveButton("OK", dialogClickListener).setNeutralButton(game.getString(R.string.game_share), dialogClickListener).show();
-//        game.dialogvisible = true;
-        //        AlertDialog dialog = builder.create();
-//        dialog.show();
+        builder.setCancelable(false).setMessage(game.getString(R.string.game_loser)).setNegativeButton("OK", dialogClickListener).setPositiveButton(Html.fromHtml("<b>" + game.getString(R.string.game_retry) + "</b>"), dialogClickListener).setNeutralButton(game.getString(R.string.game_share), dialogClickListener).show();
     }
 
     public static void showWinnerDialogWindow(final GameActivity game) {
