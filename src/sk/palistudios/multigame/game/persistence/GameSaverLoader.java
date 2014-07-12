@@ -27,19 +27,18 @@ public class GameSaverLoader {
 
     public static void loadGame(GameActivity game) {
 
-        int[] gameDetails = GameSharedPref.loadGameDetails();
-        game.setGameDetails(gameDetails[1], gameDetails[0], gameDetails[2]);
-        boolean[] activityFlags = GameSharedPref.loadMinigamesActivity();
-        GameMinigamesManager.setCurrentlyActiveMinigames(activityFlags);
-
-
-        GameMinigamesManager.getMinigamesObjects()[0] = loadMinigameFromFile("MG_V", game);
-        GameMinigamesManager.getMinigamesObjects()[1] = loadMinigameFromFile("MG_H", game);
-        GameMinigamesManager.getMinigamesObjects()[2] = loadMinigameFromFile("MG_T1", game);
-        GameMinigamesManager.getMinigamesObjects()[3] = loadMinigameFromFile("MG_T2", game);
-
-        /* Keď sa dojebe loadovanie spusti novú hru */
+         /* Keď sa dojebe loadovanie spusti novú hru */
         try {
+            int[] gameDetails = GameSharedPref.loadGameDetails();
+            game.setGameDetails(gameDetails[1], gameDetails[0], gameDetails[2]);
+            boolean[] activityFlags = GameSharedPref.loadMinigamesActivity();
+            GameMinigamesManager.setCurrentlyActiveMinigames(activityFlags);
+
+            GameMinigamesManager.getMinigamesObjects()[0] = loadMinigameFromFile("MG_V", game);
+            GameMinigamesManager.getMinigamesObjects()[1] = loadMinigameFromFile("MG_H", game);
+            GameMinigamesManager.getMinigamesObjects()[2] = loadMinigameFromFile("MG_T1", game);
+            GameMinigamesManager.getMinigamesObjects()[3] = loadMinigameFromFile("MG_T2", game);
+
             for (AMiniGame minigame : GameMinigamesManager.getMinigamesObjects()) {
                 minigame.mGame = game;
                 minigame.onMinigameLoaded();
@@ -48,10 +47,7 @@ public class GameSaverLoader {
             GameSharedPref.setGameSaved(false);
             game.recreate();
         }
-
-//        game.getEditor().commit();
         GameSharedPref.setMinigamesInitialized(true);
-//        GameMinigamesManager.setMinigamesInitialized(true, game);
     }
 
     public static AMiniGame loadMinigameFromFile(String mFileName, GameActivity game) {
@@ -79,13 +75,12 @@ public class GameSaverLoader {
         return minigame;
     }
 
-    public static void SaveMinigametoFile(String mFileName, Object object, GameActivity game) {
-        Context mContext = game;
+    public static void SaveMinigametoFile(String mFileName, AMiniGame miniGame, GameActivity context) {
         FileOutputStream fos = null;
         try {
-            fos = mContext.openFileOutput(mFileName, Context.MODE_PRIVATE);
+            fos = context.openFileOutput(mFileName, Context.MODE_PRIVATE);
             ObjectOutputStream os = new ObjectOutputStream(fos);
-            os.writeObject(object);
+            os.writeObject(miniGame);
             os.close();
         } catch (IOException ex) {
             Logger.getLogger(AMiniGame.class.getName()).log(Level.SEVERE, "File IO Exception: " + mFileName, ex);
