@@ -162,6 +162,8 @@
     <string name="rate">Rate</string>
     <string name="rate_msg">Would you like to rate Multigame 5 stars on Google Play?</string>
 
+    <string name="button_hall_of_fame_multigame_fan">Multigame fan</string>
+
     <!-- facebook -->
 
     <string name="com_facebook_dialogloginactivity_ok_button">OK</string>

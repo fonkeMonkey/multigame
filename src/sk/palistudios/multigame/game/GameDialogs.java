@@ -204,7 +204,7 @@ public class GameDialogs {
 
         final EditText userNameEditText = new EditText(game);
         userNameEditText.setSingleLine();
-        userNameEditText.setText("Anonym");
+        userNameEditText.setText(game.getString(R.string.button_hall_of_fame_multigame_fan));
         if (!(("").equals(GameSharedPref.getLastHofName()))) {
             userNameEditText.setText(GameSharedPref.getLastHofName());
         }
@@ -269,7 +269,7 @@ public class GameDialogs {
                     case DialogInterface.BUTTON_POSITIVE:
                         String playerName = userNameEditText.getText().toString();
                         if (playerName.equals("")) {
-                            playerName = "Anonym";
+                            playerName = act.getString(R.string.button_hall_of_fame_multigame_fan);
                         }
 
                         HofDatabaseCenter db = HofDatabaseCenter.getHofDb();

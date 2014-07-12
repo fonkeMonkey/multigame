@@ -82,7 +82,7 @@
     <string name="cc_achievements_competitive_description">Comparte tu puntuación en Facebook</string>
 
     <string name="cc_achievements_champion_name">Campeón</string>
-    <string name="cc_achievements_champion_description">Sé en salón de la fama</string>
+    <string name="cc_achievements_champion_description">Sé ňen salón de la fama</string>
 
     <string name="cc_achievements_pro_name">Pro</string>
     <string name="cc_achievements_pro_description">Alcanza el nivel 15</string>
@@ -155,6 +155,7 @@
     <string name="pref_game_mode">Modo de Juego</string>
     <string name="pref_rate">Puntuar en Google Play</string>
 
+    <string name="button_hall_of_fame_multigame_fan">Fan de Multigame</string>
     <!-- Rate -->
     <string name="rate">Puntuar</string>
     <string name="rate_msg">¿Te gustaría puntuar Multigame con 5 estrellas en Google Play?</string>
