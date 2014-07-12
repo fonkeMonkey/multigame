@@ -309,7 +309,7 @@ public class GameActivity extends FragmentActivity implements SensorEventListene
                     if (playingFirstTime) {
                         Toaster.toastLong((String) getResources().getString(R.string.game_touch_save), this);
                         mToast = Toaster.toastLong((String) getResources().getString(R.string.game_touch_start), this);
-                        if(SoundEffectsCenter.getCurrentVolume(this) == 0){
+                        if(SoundEffectsCenter.getCurrentVolume(this) == 0 && !sRaisedVolumeForTutorialAlready){
                             SoundEffectsCenter.raiseCurrentVolume(this);
                         }
                         GameSharedPref.setPlayingGameFirstTimeFalse();
