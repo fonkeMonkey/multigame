@@ -37,6 +37,13 @@ public class ApplicationInitializer {
             GameSharedPref.setGameRunningForFirstTime(false);
         }
 
+        /* One time run for update/fresh installs. */
+        boolean shouldRunUpdateCode = GameSharedPref.shouldRunUpdateCode(context);
+        if(shouldRunUpdateCode){
+            GameSharedPref.unlockItem("kuba");
+        }
+        GameSharedPref.setLastSeenVersion(context);
+
         if (DebugSettings.debugFirstRun) {
             GameSharedPref.clear();
             clearDatabase(context);

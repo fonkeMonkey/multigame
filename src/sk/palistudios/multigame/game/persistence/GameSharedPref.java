@@ -3,11 +3,15 @@ package sk.palistudios.multigame.game.persistence;
 // @author Pali
 
 import android.app.Activity;
+import android.content.Context;
 import android.content.SharedPreferences;
+import android.content.pm.PackageInfo;
+import android.content.pm.PackageManager;
 
 public class GameSharedPref {
 
     private static final String KUBA_SKIN_SET_ALREADY = "kuba_skin_set_already";
+    private static final String LAST_SEEN_VERSION = "last_seen_version";
     private static SharedPreferences sharedPref;
     private static SharedPreferences.Editor editor;
     private static boolean runAlready = false;
@@ -461,4 +465,45 @@ public class GameSharedPref {
         editor.putBoolean(KUBA_SKIN_SET_ALREADY, true);
         editor.commit();
     }
+
+    public static boolean shouldRunUpdateCode(Context context) {
+        int oldVersion = getLastSeenVersion();
+        int currentVersion = -1;
+        try {
+            PackageInfo pInfo = context.getPackageManager().getPackageInfo(context.getPackageName(), 0);
+            currentVersion = pInfo.versionCode;
+        } catch (PackageManager.NameNotFoundException e) {
+            e.printStackTrace();
+        }
+
+        if (oldVersion == -1 || currentVersion == -1) {
+            /* Should not happen ever. */
+            return false;
+        }
+
+        if (oldVersion == 0) {
+            return true;
+        }
+        if (oldVersion == currentVersion) {
+            return false;
+        }
+        return true;
+    }
+
+    private static int getLastSeenVersion() {
+        return sharedPref.getInt(LAST_SEEN_VERSION, 0);
+    }
+
+    public static void setLastSeenVersion(Context context) {
+        int version = -1;
+        try {
+            PackageInfo pInfo = context.getPackageManager().getPackageInfo(context.getPackageName(), 0);
+            version = pInfo.versionCode;
+        } catch (PackageManager.NameNotFoundException e) {
+            e.printStackTrace();
+        }
+        editor.putInt(LAST_SEEN_VERSION, version);
+        editor.commit();
+    }
+
 }
