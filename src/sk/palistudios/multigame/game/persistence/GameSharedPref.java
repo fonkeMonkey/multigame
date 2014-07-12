@@ -141,14 +141,7 @@ public class GameSharedPref {
         return false;
     }
 
-    public static boolean isPlayingFirstTime() {
-        return sharedPref.getBoolean("firstTime", true);
-    }
 
-    public static void setPlayingFirstTimeFalse() {
-        editor.putBoolean("firstTime", false);
-        editor.commit();
-    }
 
     public static String getMusicLoopChosen() {
         return sharedPref.getString("musicLoopChosen", "dst_blam");
@@ -439,12 +432,21 @@ public class GameSharedPref {
 //
 //        return allMusicNames;
 //    }
-    public static boolean isGameRunningForFirstTime() {
+    public static boolean isAppRunningForFirstTime() {
         return sharedPref.getBoolean("firstTime", true);
     }
 
-    public static void setGameRunningForFirstTime(boolean status) {
+    public static void setAppRunningForFirstTime(boolean status) {
         editor.putBoolean("firstTime", status);
+        editor.commit();
+    }
+
+    public static boolean isPlayingGameFirstTime() {
+        return sharedPref.getBoolean("firstTimePlayingGame", true);
+    }
+
+    public static void setPlayingGameFirstTimeFalse() {
+        editor.putBoolean("firstTimePlayingGame", false);
         editor.commit();
     }
 
@@ -466,7 +468,7 @@ public class GameSharedPref {
         editor.commit();
     }
 
-    public static boolean shouldRunUpdateCode(Context context) {
+    public static boolean isUpdateOrFreshInstall(Context context) {
         int oldVersion = getLastSeenVersion();
         int currentVersion = -1;
         try {

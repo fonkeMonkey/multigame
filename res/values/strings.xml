@@ -141,7 +141,7 @@
     <!-- Game -->
     <string name="game_touch_start">Touch the screen to start the game!</string>
     <string name="game_touch_resume">Touch the screen to resume the game!</string>
-    <string name="game_touch_save">You can save your progress anytime by using the back button.</string>
+    <string name="game_touch_save">You can save your progress anytime by using the \'back\' button.</string>
     <string name="game_game_saved">Game saved</string>
 
     <!-- Preferences -->
@@ -164,6 +164,7 @@
 
     <string name="button_hall_of_fame_multigame_fan">Multigame fan</string>
 
+    <string name="increase_music_volume">Increasing volume will improve your gameplay experience.</string>
     <!-- facebook -->
 
     <string name="com_facebook_dialogloginactivity_ok_button">OK</string>

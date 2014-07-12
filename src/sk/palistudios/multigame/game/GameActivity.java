@@ -50,6 +50,8 @@ public class GameActivity extends FragmentActivity implements SensorEventListene
     public static boolean dialogIsWinner = false;
     public static int sTutorialLastLevel = 0;
     public static boolean sTutorialRestart = false;
+    private static boolean sIncreaseVolumeShown = false;
+    private static boolean sRaisedVolumeForTutorialAlready = false;
     final private int GAME_UPDATES_PER_SECOND = 40;
     final private int GAME_SKIP_FRAMES = 1000 / GAME_UPDATES_PER_SECOND;
     final private int MAX_FRAMESKIP = 8;
@@ -277,6 +279,9 @@ public class GameActivity extends FragmentActivity implements SensorEventListene
 
             if (mTutorialMode) {
                 if (sTutorialLastLevel == 0) {
+                    if(SoundEffectsCenter.getCurrentVolume(this) == 0 && !sRaisedVolumeForTutorialAlready){
+                        SoundEffectsCenter.raiseCurrentVolume(this);
+                    }
                     if (!sTutorialRestart) {
                         GameDialogs.showWelcomeTutorialWindow(this);
                     } else {
@@ -298,15 +303,22 @@ public class GameActivity extends FragmentActivity implements SensorEventListene
                     mToast = Toaster.toastLong((String) getResources().getString(R.string.game_touch_resume), this);
                     wasActivityPaused = false;
                 } else {
-                    boolean playingFirstTime = GameSharedPref.isPlayingFirstTime();
+                    boolean playingFirstTime = GameSharedPref.isPlayingGameFirstTime();
 //                    GameMinigamesManager.setAllMinigamesDifficultyForClassicGame();
                     GameMinigamesManager.setAllMinigamesDifficultyForTutorial();
                     if (playingFirstTime) {
-                        Toaster.toastShort((String) getResources().getString(R.string.game_touch_save), this);
+                        Toaster.toastLong((String) getResources().getString(R.string.game_touch_save), this);
                         mToast = Toaster.toastLong((String) getResources().getString(R.string.game_touch_start), this);
-                        GameSharedPref.setPlayingFirstTimeFalse();
+                        if(SoundEffectsCenter.getCurrentVolume(this) == 0){
+                            SoundEffectsCenter.raiseCurrentVolume(this);
+                        }
+                        GameSharedPref.setPlayingGameFirstTimeFalse();
                     } else {
                         mToast = Toaster.toastLong((String) getResources().getString(R.string.game_touch_start), this);
+                        if(SoundEffectsCenter.getCurrentVolume(this) == 0 && !sIncreaseVolumeShown){
+                            Toaster.toastLong(getString(R.string.increase_music_volume), this);
+                            sIncreaseVolumeShown = true;
+                        }
                     }
                 }
 

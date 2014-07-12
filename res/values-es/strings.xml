@@ -156,6 +156,8 @@
     <string name="pref_rate">Puntuar en Google Play</string>
 
     <string name="button_hall_of_fame_multigame_fan">Fan de Multigame</string>
+
+
     <!-- Rate -->
     <string name="rate">Puntuar</string>
     <string name="rate_msg">¿Te gustaría puntuar Multigame con 5 estrellas en Google Play?</string>
@@ -187,5 +189,7 @@
     <string name="com_facebook_requesterror_password_changed">Your Facebook password has changed. Please log into this app again to reconnect your Facebook account.</string>
     <string name="com_facebook_requesterror_reconnect">Please log into this app again to reconnect your Facebook account.</string>
     <string name="com_facebook_requesterror_permissions">This app doesn’t have permission to do this. To change permissions, try logging into the app again.</string>
+
+    <string name="increase_music_volume">El aumento de volumen va a mejorar su experiencia de juego.</string>
 
 </resources>

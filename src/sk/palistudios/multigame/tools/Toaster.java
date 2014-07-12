@@ -18,28 +18,17 @@ public class Toaster {
 
         Toast toast = Toast.makeText(context, text, duration);
         toast.show();
-
-//        mToasts.add(toast);
-
     }
 
     public static Toast toastLong(String text, Activity activity) {
-        Context context = activity;
         int duration = Toast.LENGTH_LONG;
 
-        Toast toast = Toast.makeText(context, text, duration);
+        Toast toast = Toast.makeText(activity, text, duration);
         toast.show();
 
         return toast;
-//        mToasts.add(toast);
     }
 
-    //    public static void cancelAllToasts(){
-//        for (Toast toast : mToasts) {
-//            toast.cancel();
-//        }
-//        mToasts.clear();
-//    }
     public static void toastLong(String text, Context mContext) {
         int duration = Toast.LENGTH_LONG;
 

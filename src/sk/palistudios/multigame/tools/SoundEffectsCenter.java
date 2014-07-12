@@ -108,4 +108,21 @@ public class SoundEffectsCenter {
         // Set the music stream volume.
         audio.setStreamVolume(AudioManager.STREAM_MUSIC, mDesiredMusicVolume, 0 /*flags*/);
     }
+
+    public static int getCurrentVolume(Context context){
+        AudioManager audio = (AudioManager) context.getSystemService(Context.AUDIO_SERVICE);
+        return audio.getStreamVolume(AudioManager.STREAM_MUSIC);
+    }
+
+    public static void raiseCurrentVolume(Context context) {
+        AudioManager audio = (AudioManager) context.getSystemService(Context.AUDIO_SERVICE);
+        audio.adjustStreamVolume(AudioManager.STREAM_MUSIC,
+                AudioManager.ADJUST_RAISE, AudioManager.FLAG_REMOVE_SOUND_AND_VIBRATE);
+        audio.adjustStreamVolume(AudioManager.STREAM_MUSIC,
+                AudioManager.ADJUST_RAISE, AudioManager.FLAG_REMOVE_SOUND_AND_VIBRATE);
+        audio.adjustStreamVolume(AudioManager.STREAM_MUSIC,
+                AudioManager.ADJUST_RAISE, AudioManager.FLAG_REMOVE_SOUND_AND_VIBRATE);
+        audio.adjustStreamVolume(AudioManager.STREAM_MUSIC,
+                AudioManager.ADJUST_RAISE, AudioManager.FLAG_REMOVE_SOUND_AND_VIBRATE);
+    }
 }

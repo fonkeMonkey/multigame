@@ -28,17 +28,17 @@ public class ApplicationInitializer {
         SoundEffectsCenter.init(context);
         GameSharedPref.increaseTimesMultigameRun();
 
-        boolean firstTime = GameSharedPref.isGameRunningForFirstTime();
+        boolean firstTime = GameSharedPref.isAppRunningForFirstTime();
         if (firstTime) {
             initCustomizationItems();
             initActiveMinigames();
             initAllMinigames();
 
-            GameSharedPref.setGameRunningForFirstTime(false);
+            GameSharedPref.setAppRunningForFirstTime(false);
         }
 
         /* One time run for update/fresh installs. */
-        boolean shouldRunUpdateCode = GameSharedPref.shouldRunUpdateCode(context);
+        boolean shouldRunUpdateCode = GameSharedPref.isUpdateOrFreshInstall(context);
         if(shouldRunUpdateCode){
             GameSharedPref.unlockItem("kuba");
         }
@@ -58,7 +58,7 @@ public class ApplicationInitializer {
 
             initDatabase(context);
 
-            GameSharedPref.setGameRunningForFirstTime(false);
+            GameSharedPref.setAppRunningForFirstTime(false);
 
         }
 

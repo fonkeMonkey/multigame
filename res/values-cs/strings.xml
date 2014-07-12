@@ -142,7 +142,7 @@
     <!-- Game -->
     <string name="game_touch_start">Dotkni se obrazovky, aby jsi spustil hru!</string>
     <string name="game_touch_resume">Dotkni se obrazovky, aby jsi pokračoval ve hře!</string>
-    <string name="game_touch_save">Můžeš uložit svou hru zmáčknutím "back" tlačítka na telefonu.</string>
+    <string name="game_touch_save">Můžeš uložit svou hru zmáčknutím \'back\' tlačítka na telefonu.</string>
     <string name="game_game_saved">Hra uložena</string>
 
 
@@ -195,5 +195,8 @@
     <string name="com_facebook_requesterror_password_changed">Your Facebook password has changed. Please log into this app again to reconnect your Facebook account.</string>
     <string name="com_facebook_requesterror_reconnect">Please log into this app again to reconnect your Facebook account.</string>
     <string name="com_facebook_requesterror_permissions">This app doesn’t have permission to do this. To change permissions, try logging into the app again.</string>
+
+
+    <string name="increase_music_volume">Zvýšení hlasitosti zvuku zlepší tvůj herní zážitek.</string>
 
 </resources>
