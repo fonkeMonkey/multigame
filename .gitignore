@@ -3,10 +3,13 @@ build/
 gen/
 .gradle/
 .idea/
+/\!avast/
+kluc.txt
 
 # files for the dex VM
 *.dex
 
 # Java class files
 *.class
+
 
