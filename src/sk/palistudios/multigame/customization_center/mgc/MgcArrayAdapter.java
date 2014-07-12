@@ -20,14 +20,6 @@ public class MgcArrayAdapter extends ArrayAdapter<MgcItem> implements IAdapter {
     private int lastTActivated;
     private int colorChosen;
     private FrameLayout mFrame;
-//    SkinItem skin;
-//    public MgcArrayAdapter(Context context, ArrayList<MgcItem> objects) {
-//        super(context, R.layout.mgc_listitem, objects);
-//        this.context = context;
-//        myItems = objects;
-//        lastTActivated = findFirstActiveTouchGame();
-//
-//    }
 
     MgcArrayAdapter(Context context, ArrayList<MgcItem> items, SkinItem currentSkin) {
         super(context, R.layout.mgc_listitem, items);
@@ -43,14 +35,6 @@ public class MgcArrayAdapter extends ArrayAdapter<MgcItem> implements IAdapter {
     TextView mTouch;
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
-//
-        //TODO reklama
-//            if (convertView instanceof AdView) {
-////
-//                return convertView;
-////
-//            } else {
-
         View view = convertView;
         if (view == null) {
             LayoutInflater vi = (LayoutInflater) context
@@ -65,23 +49,18 @@ public class MgcArrayAdapter extends ArrayAdapter<MgcItem> implements IAdapter {
 
         View background = view.findViewById(R.id.mgc_row);
 
-//        TextView textView1 = (TextView) view.findViewById(R.id.mgc_type);
         TextView textView2 = (TextView) view.findViewById(R.id.mgc_name);
 
-//        textView1.setText(String.valueOf(getItem(position).type));
         showCorrectLeftIcon(view, getItem(position).type);
         textView2.setText(String.valueOf(getItem(position).getHumanName()));
 
         if (myItems.get(position).isChosen()) {
-//            textView1.setBackgroundColor(colorChosen);
             background.setBackgroundColor(colorChosen);
         } else {
-//            textView1.setBackgroundColor(Color.WHITE);
             background.setBackgroundColor(Color.WHITE);
         }
 
         if (myItems.get(position).isLocked()) {
-//            textView1.setBackgroundColor(Color.LTGRAY);
             background.setBackgroundColor(colorDisabled);
         }
 
@@ -89,11 +68,6 @@ public class MgcArrayAdapter extends ArrayAdapter<MgcItem> implements IAdapter {
     }
 
     private void showCorrectLeftIcon(View view, char type) {
-
-
-
-//        mTouch.requestLayout();
-
         if (type == MinigamesCenterListActivity.SYMBOL_MINIGAME_VERTICAL) {
             mHorizontal.setVisibility(View.INVISIBLE);
             mTouch.setVisibility(View.GONE);
@@ -134,8 +108,8 @@ public class MgcArrayAdapter extends ArrayAdapter<MgcItem> implements IAdapter {
         }
 
         for (MgcItem item : myItems) {
-
-            if (type != MinigamesCenterListActivity.SYMBOL_MINIGAME_TOUCH) {//H or V
+            //H or V
+            if (type != MinigamesCenterListActivity.SYMBOL_MINIGAME_TOUCH) {
                 if (item.type == type) {
                     item.inactivate();
                 }
@@ -173,8 +147,6 @@ public class MgcArrayAdapter extends ArrayAdapter<MgcItem> implements IAdapter {
         }
 
         return "";
-
-
     }
 
     private int findFirstActiveTouchGame() {
@@ -192,9 +164,4 @@ public class MgcArrayAdapter extends ArrayAdapter<MgcItem> implements IAdapter {
     public void setColorChosen(int colorChosen) {
         this.colorChosen = colorChosen;
     }
-//    private void reDraw() {
-//
-//        
-//
-//    }
 }

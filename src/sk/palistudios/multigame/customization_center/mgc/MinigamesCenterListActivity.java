@@ -91,7 +91,7 @@ public class MinigamesCenterListActivity extends BaseListActivity {
 
                         break;
                     case 3:
-                        tmpChosenMinigames[2] = "TGatherer";
+//                        tmpChosenMinigames[2] = "TGatherer";
                         minigameToChange = minigamesAdapter.activateItem(SYMBOL_MINIGAME_TOUCH, position);
 
                         if ("TCatcher".equals(minigameToChange)) {
@@ -107,9 +107,21 @@ public class MinigamesCenterListActivity extends BaseListActivity {
 
                         break;
                     case 4:
-                        tmpChosenMinigames[3] = "TInvader";
-                        minigamesAdapter.activateItem(SYMBOL_MINIGAME_TOUCH, position);
-                        ;
+//                        tmpChosenMinigames[3] = "TInvader";
+                        minigameToChange = minigamesAdapter.activateItem(SYMBOL_MINIGAME_TOUCH, position);
+
+                        if ("TCatcher".equals(minigameToChange)) {
+                            tmpChosenMinigames[2] = "TGatherer";
+                            tmpChosenMinigames[3] = "TInvader";
+                        }
+
+                        if ("TGatherer".equals(minigameToChange)) {
+                            tmpChosenMinigames[2] = "TInvader";
+                            tmpChosenMinigames[3] = "TCatcher";
+                        }
+
+//                        minigamesAdapter.activateItem(SYMBOL_MINIGAME_TOUCH, position);
+//                        ;
                         break;
                     case 5:
                         tmpChosenMinigames[0] = "VBird";
