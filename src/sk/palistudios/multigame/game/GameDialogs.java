@@ -341,7 +341,7 @@ public class GameDialogs {
 
     private static void restartGame(GameActivity game) {
         int apiVersion = Integer.valueOf(android.os.Build.VERSION.SDK);
-        if (apiVersion > 11) {
+        if (apiVersion >= 11) {
             game.recreate();
         } else {
             Intent intent = game.getIntent();

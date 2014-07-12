@@ -3,6 +3,7 @@ package sk.palistudios.multigame.game.persistence;
 // @author Pali
 
 import android.content.Context;
+import android.content.Intent;
 import sk.palistudios.multigame.game.GameActivity;
 import sk.palistudios.multigame.game.GameMinigamesManager;
 import sk.palistudios.multigame.game.minigames.AMiniGame;
@@ -45,12 +46,19 @@ public class GameSaverLoader {
             }
         } catch (Exception e) {
             GameSharedPref.setGameSaved(false);
-            game.recreate();
+            int apiVersion = Integer.valueOf(android.os.Build.VERSION.SDK);
+            if (apiVersion >= 11) {
+                game.recreate();
+            } else {
+                Intent intent = game.getIntent();
+                game.finish();
+                game.startActivity(intent);
+            }
         }
         GameSharedPref.setMinigamesInitialized(true);
     }
 
-    public static AMiniGame loadMinigameFromFile(String mFileName, GameActivity game) {
+    public static AMiniGame loadMinigameFromFile(String mFileName, GameActivity game) throws NotSerializableException{
         Context mContext = game;
         FileInputStream fis = null;
         AMiniGame minigame = null;
@@ -63,6 +71,8 @@ public class GameSaverLoader {
             Logger.getLogger(AMiniGame.class.getName()).log(Level.SEVERE, "LoadGame OptionalDataException", ex);
         } catch (ClassNotFoundException ex) {
             Logger.getLogger(AMiniGame.class.getName()).log(Level.SEVERE, "LoadGame ClassNotFoundException", ex);
+        } catch (NotSerializableException ex){
+            Logger.getLogger(AMiniGame.class.getName()).log(Level.SEVERE, "Not serializable", ex);
         } catch (IOException ex) {
             Logger.getLogger(AMiniGame.class.getName()).log(Level.SEVERE, "Loadgame IO exception", ex);
         } finally {
