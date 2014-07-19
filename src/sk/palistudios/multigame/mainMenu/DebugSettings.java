@@ -18,7 +18,7 @@ public class DebugSettings {
     /* DEBUG */
     public static boolean debugInit = false;
     public static boolean debugFirstRun = false;
-    public static boolean unlockAllItems = true;
+    public static boolean unlockAllItems = false;
     public static boolean tutorialCompleted = false;
     public static boolean alwaysWinner = false;
 
