@@ -3,6 +3,7 @@ package sk.palistudios.multigame.customization_center.skins;
 import android.app.Activity;
 import android.content.Context;
 import android.media.AudioManager;
+import android.os.Build;
 import android.os.Bundle;
 import android.view.Gravity;
 import android.view.View;
@@ -47,7 +48,11 @@ public class SkinsCenterListActivity extends BaseListActivity {
             color5 = context.getResources().getColor(R.color.summer_top_bar_separator_down);
             colorHeader = context.getResources().getColor(R.color.summerHeader);
             colorChosen = context.getResources().getColor(R.color.summerChosen);
-            logoID = R.drawable.logo_summer;
+            if (Build.VERSION.SDK_INT == Build.VERSION_CODES.KITKAT) {
+                logoID = R.drawable.logo_summer_kk;
+            } else {
+                logoID = R.drawable.logo_summer;
+            }
             humanName = "Summer";
         }
 
@@ -71,7 +76,11 @@ public class SkinsCenterListActivity extends BaseListActivity {
             color5 = context.getResources().getColor(R.color.pinky_top_bar_separator_down);
             colorHeader = context.getResources().getColor(R.color.pinkyHeader);
             colorChosen = context.getResources().getColor(R.color.pinkyChosen);
-            logoID = R.drawable.logo_pinky;
+            if (Build.VERSION.SDK_INT == Build.VERSION_CODES.KITKAT) {
+                logoID = R.drawable.logo_pinky_kk;
+            } else {
+                logoID = R.drawable.logo_pinky;
+            }
             humanName = "Girl Power";
         }
 
@@ -83,7 +92,11 @@ public class SkinsCenterListActivity extends BaseListActivity {
             color5 = context.getResources().getColor(R.color.blue_sky_top_bar_separator_down);
             colorHeader = context.getResources().getColor(R.color.blueSkyHeader);
             colorChosen = context.getResources().getColor(R.color.blueSkyChosen);
-            logoID = R.drawable.logo_blue_sky;
+            if (Build.VERSION.SDK_INT == Build.VERSION_CODES.KITKAT) {
+                logoID = R.drawable.logo_blue_sky_kk;
+            } else {
+                logoID = R.drawable.logo_blue_sky;
+            }
             humanName = "Blue Sky";
         }
 

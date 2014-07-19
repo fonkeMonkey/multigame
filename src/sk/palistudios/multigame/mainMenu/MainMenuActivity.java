@@ -12,7 +12,6 @@ import android.widget.ImageView;
 import com.facebook.Session;
 import sk.palistudios.multigame.BaseActivity;
 import sk.palistudios.multigame.R;
-import sk.palistudios.multigame.customization_center.skins.SkinItem;
 import sk.palistudios.multigame.customization_center.skins.SkinsCenterListActivity;
 import sk.palistudios.multigame.game.GameActivity;
 import sk.palistudios.multigame.game.GameDialogs;
@@ -84,24 +83,7 @@ public class MainMenuActivity extends BaseActivity {
         setStartGameButtonName();
 
 
-        SkinItem currentSkin = SkinsCenterListActivity.getCurrentSkin(this);
-
-//               color1 = getResources().getColor(R.color.kubaMenu1);
-//            color2 = getResources().getColor(R.color.kubaMenu2);
-//            color3 = getResources().getColor(R.color.kubaMenu3);
-//            color4 = getResources().getColor(R.color.kubaMenu4);
         logo.setImageResource(SkinsCenterListActivity.getCurrentSkin(this).getLogoID());
-//        logo.setImageResource(R.drawable.logo);
-//        buttonStart.setBackgroundColor(currentSkin.getBarBgColor());
-//        buttonCc.setBackgroundColor(currentSkin.getBarLabelColor());
-//        buttonPreferences.setBackgroundColor(currentSkin.getBarTextColor());
-//        buttonHof.setBackgroundColor(currentSkin.getBarSeparatorColor());
-
-//        buttonStart.setBackground(getResources().getDrawable(R.drawable.button_background_ul));
-//        buttonCc.setBackground(getResources().getDrawable(R.drawable.button_background_ur));
-//        buttonPreferences.setBackground(getResources().getDrawable(R.drawable.button_background_ll));
-//        buttonHof.setBackground(getResources().getDrawable(R.drawable.button_background_lr));
-//        buttonAbout.setBackgroundColor(currentSkin.getBarSeparatorColor());
         setMainMenuColors();
 
         if (mShowHighScoreStatus) {
@@ -136,12 +118,12 @@ public class MainMenuActivity extends BaseActivity {
             buttonCc.getBackground().setColorFilter(getResources().getColor(R.color.summerMenu2), Mode.SRC);
             buttonPreferences.getBackground().setColorFilter(getResources().getColor(R.color.summerMenu3), Mode.SRC);
             buttonHof.getBackground().setColorFilter(getResources().getColor(R.color.summerMenu4), Mode.SRC);
-        } else if (GameSharedPref.isSkinChosen("girl_power")){
+        } else if (GameSharedPref.isSkinChosen("girl_power")) {
             buttonStart.getBackground().setColorFilter(getResources().getColor(R.color.pinkyMenu1), Mode.SRC);
             buttonCc.getBackground().setColorFilter(getResources().getColor(R.color.pinkyMenu2), Mode.SRC);
             buttonPreferences.getBackground().setColorFilter(getResources().getColor(R.color.pinkyMenu3), Mode.SRC);
             buttonHof.getBackground().setColorFilter(getResources().getColor(R.color.pinkyMenu4), Mode.SRC);
-        } else if (GameSharedPref.isSkinChosen("blue_sky")){
+        } else if (GameSharedPref.isSkinChosen("blue_sky")) {
             buttonStart.getBackground().setColorFilter(getResources().getColor(R.color.blueSkyMenu1), Mode.SRC);
             buttonCc.getBackground().setColorFilter(getResources().getColor(R.color.blueSkyMenu2), Mode.SRC);
             buttonPreferences.getBackground().setColorFilter(getResources().getColor(R.color.blueSkyMenu3), Mode.SRC);
