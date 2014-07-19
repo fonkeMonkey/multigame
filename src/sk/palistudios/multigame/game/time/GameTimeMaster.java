@@ -3,10 +3,8 @@ package sk.palistudios.multigame.game.time;
 // @author Pali
 
 import sk.palistudios.multigame.game.GameActivity;
-import sk.palistudios.multigame.game.ILevelChangedObserver;
 import sk.palistudios.multigame.game.minigames.AMiniGame;
 import sk.palistudios.multigame.game.minigames.MiniGameTCatcher;
-import sk.palistudios.multigame.tools.ITimeObserver;
 
 import java.util.ArrayList;
 

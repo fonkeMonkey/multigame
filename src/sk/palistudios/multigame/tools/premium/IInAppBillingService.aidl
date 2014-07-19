@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package sk.palistudios.multigame.tools.premiumUpgrade;
+package sk.palistudios.multigame.tools.premium;
 
 import android.os.Bundle;
 
