@@ -3,7 +3,7 @@ package sk.palistudios.multigame.game.view;
 import android.content.Context;
 import android.view.MotionEvent;
 import android.view.View;
-import sk.palistudios.multigame.game.GameMinigamesManager;
+import sk.palistudios.multigame.game.minigames.MinigamesManager;
 import sk.palistudios.multigame.game.minigames.AMiniGame;
 import sk.palistudios.multigame.game.minigames.IMiniGameTouch;
 import sk.palistudios.multigame.game.persistence.GameSharedPref;
@@ -25,7 +25,7 @@ public class FragmentViewTouch extends AFragmentView {
             @Override
             public boolean onTouch(final View view, final MotionEvent event) {
 
-                if (GameMinigamesManager.isMiniGameActive(position) && !minigame.mGame.isGameStopped()) {
+                if (MinigamesManager.isMiniGameActive(position) && !minigame.mGame.isGameStopped()) {
 
                     ((IMiniGameTouch) mMiniGame).onUserInteracted(event.getX(), event.getY());
                     return true;

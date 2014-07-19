@@ -11,7 +11,7 @@ import sk.palistudios.multigame.R;
 import sk.palistudios.multigame.customization_center.CustomizationCenterActivity;
 import sk.palistudios.multigame.customization_center.skins.SkinsCenterListActivity;
 import sk.palistudios.multigame.game.persistence.GameSharedPref;
-import sk.palistudios.multigame.tools.SoundEffectsCenter;
+import sk.palistudios.multigame.tools.sound.SoundEffectsCenter;
 import sk.palistudios.multigame.tools.Toaster;
 
 import java.util.ArrayList;
@@ -136,7 +136,7 @@ public class MinigamesCenterListActivity extends BaseListActivity {
                 }
                 GameSharedPref.SetChosenMinigamesNames(tmpChosenMinigames);
                 minigamesAdapter.notifyDataSetChanged();
-//                GameMinigamesManager.changeChosenMinigamesNames(tmpActiveMinigames);
+//                MinigamesManager.changeChosenMinigamesNames(tmpActiveMinigames);
 
             }
         });

@@ -1,4 +1,4 @@
-package sk.palistudios.multigame.tools;
+package sk.palistudios.multigame.game.time;
 
 // @author Pali
 public interface ITimeObserver {

@@ -16,7 +16,7 @@ import sk.palistudios.multigame.customization_center.skins.SkinsCenterListActivi
 import sk.palistudios.multigame.game.GameActivity;
 import sk.palistudios.multigame.game.GameDialogs;
 import sk.palistudios.multigame.game.persistence.GameSharedPref;
-import sk.palistudios.multigame.tools.SoundEffectsCenter;
+import sk.palistudios.multigame.tools.sound.SoundEffectsCenter;
 import sk.palistudios.multigame.tools.Toaster;
 
 public class MainMenuActivity extends BaseActivity {

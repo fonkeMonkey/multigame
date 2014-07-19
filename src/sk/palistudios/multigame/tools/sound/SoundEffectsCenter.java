@@ -2,7 +2,7 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-package sk.palistudios.multigame.tools;
+package sk.palistudios.multigame.tools.sound;
 
 import android.content.Context;
 import android.media.AudioManager;

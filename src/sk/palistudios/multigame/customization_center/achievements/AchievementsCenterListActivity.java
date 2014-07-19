@@ -12,7 +12,7 @@ import sk.palistudios.multigame.customization_center.CustomizationCenterActivity
 import sk.palistudios.multigame.customization_center.skins.SkinsCenterListActivity;
 import sk.palistudios.multigame.game.persistence.GameSharedPref;
 import sk.palistudios.multigame.mainMenu.DebugSettings;
-import sk.palistudios.multigame.tools.SoundEffectsCenter;
+import sk.palistudios.multigame.tools.sound.SoundEffectsCenter;
 
 import java.util.ArrayList;
 

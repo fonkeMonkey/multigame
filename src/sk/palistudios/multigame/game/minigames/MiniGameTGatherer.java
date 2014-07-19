@@ -6,10 +6,10 @@ import android.graphics.Canvas;
 import android.graphics.Paint;
 import sk.palistudios.multigame.R;
 import sk.palistudios.multigame.game.GameActivity;
-import sk.palistudios.multigame.game.GameTimeMaster;
+import sk.palistudios.multigame.game.time.GameTimeMaster;
 import sk.palistudios.multigame.game.persistence.PaintSerializable;
 import sk.palistudios.multigame.mainMenu.DebugSettings;
-import sk.palistudios.multigame.tools.ITimeObserver;
+import sk.palistudios.multigame.game.time.ITimeObserver;
 import sk.palistudios.multigame.tools.RandomGenerator;
 
 import java.io.Serializable;

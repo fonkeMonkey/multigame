@@ -1,10 +1,11 @@
-package sk.palistudios.multigame.game;
+package sk.palistudios.multigame.game.time;
 
 // @author Pali
 
+import sk.palistudios.multigame.game.GameActivity;
+import sk.palistudios.multigame.game.ILevelChangedObserver;
 import sk.palistudios.multigame.game.minigames.AMiniGame;
 import sk.palistudios.multigame.game.minigames.MiniGameTCatcher;
-import sk.palistudios.multigame.tools.ILevelChangeObserver;
 import sk.palistudios.multigame.tools.ITimeObserver;
 
 import java.util.ArrayList;
@@ -12,7 +13,7 @@ import java.util.ArrayList;
 public class GameTimeMaster {
 
     private static ArrayList<ITimeObserver> registeredObservers = new ArrayList<ITimeObserver>();
-    private static ArrayList<ILevelChangeObserver> registeredLevelChangeObservers = new ArrayList<ILevelChangeObserver>();
+    private static ArrayList<ILevelChangedObserver> registeredLevelChangeObservers = new ArrayList<ILevelChangedObserver>();
     private static ArrayList<AMiniGame> registeredMinigames = new ArrayList<AMiniGame>();
 
     public static void onSecondPassed() {
@@ -28,7 +29,7 @@ public class GameTimeMaster {
             }
         }
 
-        for (ILevelChangeObserver obs : registeredLevelChangeObservers) {
+        for (ILevelChangedObserver obs : registeredLevelChangeObservers) {
             obs.onLevelChanged();
         }
 
@@ -62,7 +63,7 @@ public class GameTimeMaster {
         }
     }
 
-    public static void registerLevelChangedObserver(ILevelChangeObserver obs) {
+    public static void registerLevelChangedObserver(ILevelChangedObserver obs) {
         if (!registeredLevelChangeObservers.contains(obs)) {
             registeredLevelChangeObservers.add(obs);
         }
@@ -72,7 +73,7 @@ public class GameTimeMaster {
         registeredMinigames.remove(mg);
     }
 
-    public static void unregisterLevelChangedObserver(ILevelChangeObserver obs) {
+    public static void unregisterLevelChangedObserver(ILevelChangedObserver obs) {
         registeredLevelChangeObservers.remove(obs);
     }
 }

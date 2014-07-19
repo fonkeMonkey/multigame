@@ -6,7 +6,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import sk.palistudios.multigame.R;
-import sk.palistudios.multigame.game.GameMinigamesManager;
+import sk.palistudios.multigame.game.minigames.MinigamesManager;
 import sk.palistudios.multigame.game.minigames.AMiniGame;
 
 /**
@@ -28,7 +28,7 @@ public class Fragment4 extends AFragment {
         }
         Activity activity = getActivity();
 
-        AMiniGame minigame = GameMinigamesManager.getMinigamesObjects()[3];
+        AMiniGame minigame = MinigamesManager.getMinigamesObjects()[3];
 
         mView = new FragmentViewTouch(activity, getResources().getColor(R.color.game_background_4), minigame, position);
 

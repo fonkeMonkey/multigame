@@ -8,7 +8,7 @@ import android.graphics.Canvas;
 import sk.palistudios.multigame.R;
 import sk.palistudios.multigame.game.GameActivity;
 import sk.palistudios.multigame.game.persistence.GameSaverLoader;
-import sk.palistudios.multigame.tools.ITimeObserver;
+import sk.palistudios.multigame.game.time.ITimeObserver;
 
 import java.io.Serializable;
 

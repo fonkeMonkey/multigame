@@ -6,7 +6,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import sk.palistudios.multigame.R;
-import sk.palistudios.multigame.game.GameMinigamesManager;
+import sk.palistudios.multigame.game.minigames.MinigamesManager;
 import sk.palistudios.multigame.game.minigames.AMiniGame;
 
 /**
@@ -24,7 +24,7 @@ public class Fragment1 extends AFragment {
         }
 
         Activity activity = getActivity();
-        AMiniGame minigame = GameMinigamesManager.getMinigamesObjects()[0];
+        AMiniGame minigame = MinigamesManager.getMinigamesObjects()[0];
         mView = new FragmentView(activity, getResources().getColor(R.color.game_background_1)
 //                SkinsCenterListActivity.getCurrentSkin(activity).getBarBgColor()
                 , minigame);

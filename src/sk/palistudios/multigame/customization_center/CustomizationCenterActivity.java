@@ -3,7 +3,6 @@ package sk.palistudios.multigame.customization_center;
 import android.app.Activity;
 import android.app.TabActivity;
 import android.content.Intent;
-import android.graphics.Color;
 import android.media.AudioManager;
 import android.os.Build;
 import android.os.Bundle;
@@ -20,7 +19,7 @@ import sk.palistudios.multigame.customization_center.music.MusicCenterListActivi
 import sk.palistudios.multigame.customization_center.skins.SkinItem;
 import sk.palistudios.multigame.customization_center.skins.SkinsCenterListActivity;
 import sk.palistudios.multigame.mainMenu.DebugSettings;
-import sk.palistudios.multigame.tools.SoundEffectsCenter;
+import sk.palistudios.multigame.tools.sound.SoundEffectsCenter;
 
 import java.util.ArrayList;
 

@@ -68,7 +68,7 @@ public abstract class AFragmentView extends SurfaceView {
         mBitmap = Bitmap.createBitmap(width, height, Bitmap.Config.ARGB_8888);
         mMiniGame.initMinigame(mBitmap, wasGameSaved);
         GameSharedPref.setMinigamesInitialized(true);
-//        GameMinigamesManager.setMinigamesInitialized(true, Game.getActiveGame());
+//        MinigamesManager.setMinigamesInitialized(true, Game.getActiveGame());
         isMinigameInitialized = true;
     }
 

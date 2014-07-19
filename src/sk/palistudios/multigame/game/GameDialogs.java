@@ -11,13 +11,15 @@ import android.text.Html;
 import android.widget.EditText;
 import sk.palistudios.multigame.R;
 import sk.palistudios.multigame.customization_center.mgc.MinigamesCenterListActivity;
+import sk.palistudios.multigame.game.minigames.MinigamesManager;
 import sk.palistudios.multigame.game.persistence.GameSharedPref;
 import sk.palistudios.multigame.hall_of_fame.HallOfFameActivity;
 import sk.palistudios.multigame.hall_of_fame.HofDatabaseCenter;
 import sk.palistudios.multigame.hall_of_fame.HofItem;
 import sk.palistudios.multigame.mainMenu.DebugSettings;
 import sk.palistudios.multigame.mainMenu.MainMenuActivity;
-import sk.palistudios.multigame.tools.InternetChecker;
+import sk.palistudios.multigame.tools.internet.FacebookSharer;
+import sk.palistudios.multigame.tools.internet.InternetChecker;
 
 public class GameDialogs {
 
@@ -44,7 +46,7 @@ public class GameDialogs {
                 }
             }
         };
-        GameMinigamesManager.deactivateAllMiniGames(game);
+        MinigamesManager.deactivateAllMiniGames(game);
 
 //        SimpleDialogFragment.createBuilder(game, game.getSupportFragmentManager()).setTitle("Placeholder").setMessage(game.getString(R.string.tutorial_welcome)).setPositiveButtonText(game.getString(R.string.tutorial_positive)).setNegativeButtonText(game.getString(R.string.tutorial_negative)).setCancelable(false).show();
 
@@ -53,7 +55,7 @@ public class GameDialogs {
     }
 
     public static void showNextTutorialWindow(final GameActivity game, boolean showPopup) {
-        GameMinigamesManager.deactivateAllMiniGames(game);
+        MinigamesManager.deactivateAllMiniGames(game);
         if (!GameDialogs.sLostGame) {
             GameActivity.sTutorialLastLevel++;
         }
@@ -104,7 +106,7 @@ public class GameDialogs {
                     break;
 
             }
-            String message = symbol + game.getString(R.string.minigame) + (GameActivity.sTutorialLastLevel + 1) + ": " + GameMinigamesManager.getMinigamesObjects()[GameActivity.sTutorialLastLevel].getName() + " - " + GameMinigamesManager.getMinigamesObjects()[GameActivity.sTutorialLastLevel].getDescription(game);
+            String message = symbol + game.getString(R.string.minigame) + (GameActivity.sTutorialLastLevel + 1) + ": " + MinigamesManager.getMinigamesObjects()[GameActivity.sTutorialLastLevel].getName() + " - " + MinigamesManager.getMinigamesObjects()[GameActivity.sTutorialLastLevel].getDescription(game);
             builder.setCancelable(false).setMessage(Html.fromHtml(message)).setPositiveButton(Html.fromHtml("<b>" + game.getString(R.string.tutorial_try) + "</b>"), dialogClickListener).setNegativeButton(game.getString(R.string.tutorial_negative), dialogClickListener).show();
         } else {
             game.startGameTutorial();
@@ -125,7 +127,7 @@ public class GameDialogs {
                 }
             }
         };
-        GameMinigamesManager.deactivateAllMiniGames(game);
+        MinigamesManager.deactivateAllMiniGames(game);
         game.stopTutorial();
         AlertDialog.Builder builder = new AlertDialog.Builder(game);
         builder.setCancelable(false).setMessage(game.getString(R.string.tutorial_finished)).setPositiveButton("OK", dialogClickListener).show();
@@ -183,7 +185,7 @@ public class GameDialogs {
                     case DialogInterface.BUTTON_NEUTRAL:
                         if (InternetChecker.isNetworkAvailable(game)) {
 
-                            GameFacebookShare.shareScoreToFacebook(score, false);
+                            FacebookSharer.shareScoreToFacebook(score, false);
                             game.finish();
                         } else {
                             askUserToConnect(game, false, score);
@@ -237,7 +239,7 @@ public class GameDialogs {
                     case DialogInterface.BUTTON_NEUTRAL:
                         if (InternetChecker.isNetworkAvailable(game)) {
                             MainMenuActivity.setOfferHighScore(game.getScore());
-                            GameFacebookShare.shareScoreToFacebook(score, true);
+                            FacebookSharer.shareScoreToFacebook(score, true);
                             game.finish();
 //                            game.dialogvisible = false;
 //                            getBackToMainMenu(game);
@@ -303,7 +305,7 @@ public class GameDialogs {
                             if (isWinner) {
                                 MainMenuActivity.setOfferHighScore(score);
                             }
-                            GameFacebookShare.shareScoreToFacebook(score, isWinner);
+                            FacebookSharer.shareScoreToFacebook(score, isWinner);
 //                            game.hasDialogShown = false;
                         } else {
                             askUserToConnect(act, isWinner, score);

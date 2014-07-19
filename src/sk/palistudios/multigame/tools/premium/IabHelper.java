@@ -12,7 +12,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package sk.palistudios.multigame.tools.premiumUpgrade;
+package sk.palistudios.multigame.tools.premium;
 
 import android.app.Activity;
 import android.app.PendingIntent;

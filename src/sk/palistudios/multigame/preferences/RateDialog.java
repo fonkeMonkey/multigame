@@ -8,7 +8,7 @@ import android.preference.DialogPreference;
 import android.util.AttributeSet;
 import sk.palistudios.multigame.R;
 import sk.palistudios.multigame.game.persistence.GameSharedPref;
-import sk.palistudios.multigame.tools.InternetChecker;
+import sk.palistudios.multigame.tools.internet.InternetChecker;
 import sk.palistudios.multigame.tools.Toaster;
 
 public class RateDialog extends DialogPreference {

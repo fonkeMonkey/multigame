@@ -7,7 +7,7 @@ package sk.palistudios.multigame;
 import android.content.Intent;
 import android.media.AudioManager;
 import android.os.Bundle;
-import sk.palistudios.multigame.tools.SoundEffectsCenter;
+import sk.palistudios.multigame.tools.sound.SoundEffectsCenter;
 
 /**
  * @author virdzek

@@ -29,14 +29,17 @@ import com.facebook.Session;
 import sk.palistudios.multigame.R;
 import sk.palistudios.multigame.customization_center.achievements.AchievementsCenterListActivity;
 import sk.palistudios.multigame.customization_center.skins.SkinsCenterListActivity;
+import sk.palistudios.multigame.game.minigames.MinigamesManager;
 import sk.palistudios.multigame.game.minigames.IMiniGameHorizontal;
 import sk.palistudios.multigame.game.minigames.IMiniGameVertical;
 import sk.palistudios.multigame.game.persistence.GameSaverLoader;
 import sk.palistudios.multigame.game.persistence.GameSharedPref;
+import sk.palistudios.multigame.game.time.GameTimeMaster;
 import sk.palistudios.multigame.game.view.*;
 import sk.palistudios.multigame.hall_of_fame.HofDatabaseCenter;
 import sk.palistudios.multigame.mainMenu.DebugSettings;
-import sk.palistudios.multigame.tools.SoundEffectsCenter;
+import sk.palistudios.multigame.tools.sound.MusicPlayer;
+import sk.palistudios.multigame.tools.sound.SoundEffectsCenter;
 import sk.palistudios.multigame.tools.Toaster;
 
 /**
@@ -59,7 +62,7 @@ public class GameActivity extends FragmentActivity implements SensorEventListene
     public Runnable mRunnableGameLoop;
     Handler displayHandler;
     Toast mToast;
-    GameMusicPlayer mMusicPlayer;
+    MusicPlayer mMusicPlayer;
     Handler mHandlerTutorial;
     Runnable mRunnableTutorial;
     Handler mGameLoopHandler;
@@ -120,15 +123,15 @@ public class GameActivity extends FragmentActivity implements SensorEventListene
         wasGameSaved = GameSharedPref.isGameSaved();
 
         GameSharedPref.setMinigamesInitialized(false);
-        GameMinigamesManager.LoadMinigamesObjects(this);
+        MinigamesManager.loadMinigamesObjects(this);
 
         int musicID = getResources().getIdentifier(GameSharedPref.getMusicLoopChosen(), "raw", this.getPackageName());
 
-        mMusicPlayer = new GameMusicPlayer(musicID, this);
+        mMusicPlayer = new MusicPlayer(musicID, this);
 
         //I need to have direct pointer because of speed
-        minigametoSendEvents1 = (IMiniGameVertical) GameMinigamesManager.getMinigamesObjects()[0];
-        minigametoSendEvents2 = (IMiniGameHorizontal) GameMinigamesManager.getMinigamesObjects()[1];
+        minigametoSendEvents1 = (IMiniGameVertical) MinigamesManager.getMinigamesObjects()[0];
+        minigametoSendEvents2 = (IMiniGameHorizontal) MinigamesManager.getMinigamesObjects()[1];
 
         resolveOrientation();
 
@@ -137,8 +140,8 @@ public class GameActivity extends FragmentActivity implements SensorEventListene
 
     public void initMinigames(GameActivity game) {
         for (int i = 0; i < 4; i++) {
-            GameMinigamesManager.activateMinigame(game, i);
-            GameTimeMaster.registerLevelChangedObserver(GameMinigamesManager.getMinigamesObjects()[i]);
+            MinigamesManager.activateMinigame(game, i);
+            GameTimeMaster.registerLevelChangedObserver(MinigamesManager.getMinigamesObjects()[i]);
 
         }
 
@@ -221,7 +224,7 @@ public class GameActivity extends FragmentActivity implements SensorEventListene
                     long nextUpdateGame = -1;
 
                     public void run() {
-                        if (!GameMinigamesManager.areAllMinigamesInitialized()) {
+                        if (!MinigamesManager.areAllMinigamesInitialized()) {
                             mGameLoopHandler.postDelayed(this, 25);
                             return;
                         }
@@ -296,7 +299,7 @@ public class GameActivity extends FragmentActivity implements SensorEventListene
                     wasActivityPaused = false;
                 } else {
                     boolean playingFirstTime = GameSharedPref.isPlayingGameFirstTime();
-                    GameMinigamesManager.setAllMinigamesDifficultyForTutorial();
+                    MinigamesManager.setAllMinigamesDifficultyForTutorial();
                     if (playingFirstTime) {
                         Toaster.toastLong((String) getResources().getString(R.string.game_touch_save), this);
                         mToast = Toaster.toastLong((String) getResources().getString(R.string.game_touch_start), this);
@@ -343,9 +346,9 @@ public class GameActivity extends FragmentActivity implements SensorEventListene
         stopTutorialGameLoop();
 
         final GameActivity game = this;
-        GameMinigamesManager.deactivateAllMiniGames(this);
+        MinigamesManager.deactivateAllMiniGames(this);
         for (int i = 0; i <= sTutorialLastLevel; i++) {
-            GameMinigamesManager.activateMinigame(game, i);
+            MinigamesManager.activateMinigame(game, i);
         }
         if (mMusicPlayer != null && GameSharedPref.isMusicOn()) {
             if (!mStartedMusicForTutorial) {
@@ -356,7 +359,7 @@ public class GameActivity extends FragmentActivity implements SensorEventListene
             }
         }
 
-        GameMinigamesManager.setAllMinigamesDifficultyForTutorial();
+        MinigamesManager.setAllMinigamesDifficultyForTutorial();
         gameStopped = false;
         startTutorialGameLoop();
         if (mRunnableTutorial == null) {
@@ -410,8 +413,8 @@ public class GameActivity extends FragmentActivity implements SensorEventListene
 
     private void updateGame() {
         for (int i = 0; i < 4; i++) {
-            if (GameMinigamesManager.currentlyActiveMinigames[i] == true) {
-                GameMinigamesManager.getMinigamesObjects()[i].updateMinigame();
+            if (MinigamesManager.currentlyActiveMinigames[i] == true) {
+                MinigamesManager.getMinigamesObjects()[i].updateMinigame();
             }
         }
 
@@ -430,7 +433,7 @@ public class GameActivity extends FragmentActivity implements SensorEventListene
 
 
         for (int i = 0; i < 4; i++) {
-            if (GameMinigamesManager.currentlyActiveMinigames[i] == true) {
+            if (MinigamesManager.currentlyActiveMinigames[i] == true) {
                 mFragmentViews[i].invalidate();
             }
         }
@@ -496,20 +499,20 @@ public class GameActivity extends FragmentActivity implements SensorEventListene
 
                 if (mOrientation == Configuration.ORIENTATION_LANDSCAPE) {
 
-                    if (GameMinigamesManager.isMiniGameActive(0)) {
+                    if (MinigamesManager.isMiniGameActive(0)) {
                         minigametoSendEvents1.onUserInteracted(event.values[1] - DEFAULT_AXIS_X);
                     }
 
-                    if (GameMinigamesManager.isMiniGameActive(1)) {
+                    if (MinigamesManager.isMiniGameActive(1)) {
                         minigametoSendEvents2.onUserInteracted(-event.values[0] - DEFAULT_AXIS_Y);
                     }
 
                 } else {
-                    if (GameMinigamesManager.isMiniGameActive(0)) {
+                    if (MinigamesManager.isMiniGameActive(0)) {
                         minigametoSendEvents1.onUserInteracted(event.values[0] - DEFAULT_AXIS_Y);
                     }
 
-                    if (GameMinigamesManager.isMiniGameActive(1)) {
+                    if (MinigamesManager.isMiniGameActive(1)) {
                         minigametoSendEvents2.onUserInteracted(event.values[1] - DEFAULT_AXIS_X);
                     }
 

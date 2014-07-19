@@ -1,4 +1,4 @@
-package sk.palistudios.multigame.game;
+package sk.palistudios.multigame.tools.internet;
 
 // @author Pali
 
@@ -11,10 +11,11 @@ import android.view.WindowManager;
 import com.facebook.*;
 import com.facebook.widget.WebDialog;
 import sk.palistudios.multigame.R;
+import sk.palistudios.multigame.game.GameDialogs;
 import sk.palistudios.multigame.mainMenu.MainMenuActivity;
 import sk.palistudios.multigame.tools.Toaster;
 
-public class GameFacebookShare {
+public class FacebookSharer {
 
     public final static String TAG = "FB Share";
     private static WebDialog dialog;

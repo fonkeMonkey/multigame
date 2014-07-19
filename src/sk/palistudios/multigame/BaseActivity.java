@@ -6,7 +6,7 @@ package sk.palistudios.multigame;
 
 import android.app.Activity;
 import com.google.analytics.tracking.android.EasyTracker;
-import sk.palistudios.multigame.tools.SoundEffectsCenter;
+import sk.palistudios.multigame.tools.sound.SoundEffectsCenter;
 
 /**
  * @author virdzek

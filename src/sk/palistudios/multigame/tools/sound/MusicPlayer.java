@@ -1,4 +1,4 @@
-package sk.palistudios.multigame.game;
+package sk.palistudios.multigame.tools.sound;
 
 // @author Pali
 
@@ -6,13 +6,13 @@ import android.content.Context;
 import android.media.MediaPlayer;
 import android.util.Log;
 
-public class GameMusicPlayer {
+public class MusicPlayer {
 //    String musicName;
 
     MediaPlayer mp = null;
     String TAG = "MEdiaPlayer";
 
-    public GameMusicPlayer(int musicRID, Context context) {
+    public MusicPlayer(int musicRID, Context context) {
         mp = MediaPlayer.create(context, musicRID);
         mp.setVolume(0.25f, 0.25f);
         mp.setOnErrorListener(new MediaPlayer.OnErrorListener() {

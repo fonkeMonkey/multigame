@@ -7,7 +7,7 @@ import android.media.AudioManager;
 import android.os.Bundle;
 import android.view.View;
 import sk.palistudios.multigame.mainMenu.DebugSettings;
-import sk.palistudios.multigame.tools.SoundEffectsCenter;
+import sk.palistudios.multigame.tools.sound.SoundEffectsCenter;
 
 //import com.appflood.AppFlood;
 

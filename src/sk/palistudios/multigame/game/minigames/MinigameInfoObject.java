@@ -1,4 +1,4 @@
-package sk.palistudios.multigame.game;
+package sk.palistudios.multigame.game.minigames;
 
 // @author Pali
 public class MinigameInfoObject {

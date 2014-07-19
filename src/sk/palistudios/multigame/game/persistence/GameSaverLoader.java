@@ -5,7 +5,7 @@ package sk.palistudios.multigame.game.persistence;
 import android.content.Context;
 import android.content.Intent;
 import sk.palistudios.multigame.game.GameActivity;
-import sk.palistudios.multigame.game.GameMinigamesManager;
+import sk.palistudios.multigame.game.minigames.MinigamesManager;
 import sk.palistudios.multigame.game.minigames.AMiniGame;
 
 import java.io.*;
@@ -19,9 +19,9 @@ public class GameSaverLoader {
         final int scoreToSave = game.getScore();
         final int levelToSave = game.getLevel();
         final int framesToSave = game.getFrames();
-        final boolean[] activeMinigames = GameMinigamesManager.getCurrentlyActiveMinigames();
+        final boolean[] activeMinigames = MinigamesManager.getCurrentlyActiveMinigames();
         GameSharedPref.saveGameDetails(scoreToSave, levelToSave, framesToSave, activeMinigames);
-        for (AMiniGame minigame : GameMinigamesManager.getMinigamesObjects()) {
+        for (AMiniGame minigame : MinigamesManager.getMinigamesObjects()) {
             minigame.saveMinigame();
         }
     }
@@ -33,14 +33,14 @@ public class GameSaverLoader {
             int[] gameDetails = GameSharedPref.loadGameDetails();
             game.setGameDetails(gameDetails[1], gameDetails[0], gameDetails[2]);
             boolean[] activityFlags = GameSharedPref.loadMinigamesActivity();
-            GameMinigamesManager.setCurrentlyActiveMinigames(activityFlags);
+            MinigamesManager.setCurrentlyActiveMinigames(activityFlags);
 
-            GameMinigamesManager.getMinigamesObjects()[0] = loadMinigameFromFile("MG_V", game);
-            GameMinigamesManager.getMinigamesObjects()[1] = loadMinigameFromFile("MG_H", game);
-            GameMinigamesManager.getMinigamesObjects()[2] = loadMinigameFromFile("MG_T1", game);
-            GameMinigamesManager.getMinigamesObjects()[3] = loadMinigameFromFile("MG_T2", game);
+            MinigamesManager.getMinigamesObjects()[0] = loadMinigameFromFile("MG_V", game);
+            MinigamesManager.getMinigamesObjects()[1] = loadMinigameFromFile("MG_H", game);
+            MinigamesManager.getMinigamesObjects()[2] = loadMinigameFromFile("MG_T1", game);
+            MinigamesManager.getMinigamesObjects()[3] = loadMinigameFromFile("MG_T2", game);
 
-            for (AMiniGame minigame : GameMinigamesManager.getMinigamesObjects()) {
+            for (AMiniGame minigame : MinigamesManager.getMinigamesObjects()) {
                 minigame.mGame = game;
                 minigame.onMinigameLoaded();
             }

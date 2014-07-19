@@ -1,17 +1,17 @@
-package sk.palistudios.multigame.game;
+package sk.palistudios.multigame.game.minigames;
 
 // @author Pali
 
 import android.util.Log;
-import sk.palistudios.multigame.game.minigames.AMiniGame;
+import sk.palistudios.multigame.game.GameActivity;
+import sk.palistudios.multigame.game.time.GameTimeMaster;
 import sk.palistudios.multigame.game.persistence.GameSaverLoader;
 import sk.palistudios.multigame.game.persistence.GameSharedPref;
 
 import java.lang.reflect.Constructor;
 
-public class GameMinigamesManager {
+public class MinigamesManager {
 
-    //    private static String[] chosenMinigamesNames = new String[4];
     public static boolean[] currentlyActiveMinigames = new boolean[4];
     private static AMiniGame[] chosenMinigamesObjects = new AMiniGame[4];
 
@@ -23,7 +23,7 @@ public class GameMinigamesManager {
 
     }
 
-    protected static void deactivateAllMiniGames(GameActivity game) {
+    public static void deactivateAllMiniGames(GameActivity game) {
 
         for (int i = 0; i < 4; i++) {
             deactivateMinigame(game, i);
@@ -34,12 +34,9 @@ public class GameMinigamesManager {
         currentlyActiveMinigames[number] = true;
         game.getmFragmentViews()[number].setBackgroundColored();
 
-        AMiniGame minigame = GameMinigamesManager.getMinigamesObjects()[number];
+        AMiniGame minigame = MinigamesManager.getMinigamesObjects()[number];
 
         minigame.onMinigameActivated();
-
-//        TimeMaster.registerTimeObserver(minigame);
-
 
     }
 
@@ -47,44 +44,14 @@ public class GameMinigamesManager {
         currentlyActiveMinigames[number] = false;
         game.getmFragmentViews()[number].setBackgroundGray();
 
-        AMiniGame minigame = GameMinigamesManager.getMinigamesObjects()[number];
+        AMiniGame minigame = MinigamesManager.getMinigamesObjects()[number];
 
         minigame.onMinigameDeactivated();
         GameTimeMaster.unregisterLevelChangedObserver(minigame);
-//        TimeMaster.unregisterTimeObserver(minigame);
 
     }
 
-    //    protected static void resolveChosenMinigameNames() {
-//        boolean isGameSaved = GameSharedPref.isGameSaved();
-//        boolean isTutorialActive = GameSharedPref.isNoviceModeActivated();
-////        String[] chosenMinigamesNames = new String[4];
-//
-//        if(isTutorialActive){
-////            chosenMinigamesNames = GameSharedPref.getChosenMinigamesNames();
-//            return;
-//        }
-//        
-//        if (!isGameSaved) {
-//            boolean isMinigamesNamesResolved = GameSharedPref.isMinigamesResolved();//game.getSharedPref().getBoolean("minigamesResolved", false);
-//            if (!isMinigamesNamesResolved) {
-////                chosenMinigamesNames[0] = "VBird";
-////                chosenMinigamesNames[1] = "HBalance";
-////                chosenMinigamesNames[2] = "TCatcher";
-////                chosenMinigamesNames[3] = "TGatherer";
-////                GameSharedPref.setChosenMinigamesNames(chosenMinigamesNames);
-//            } else {
-////                miniGamesNames[0] = game.getSharedPref().getString("MinigameV", null);
-////                miniGamesNames[1] = game.getSharedPref().getString("MinigameH", null);
-////                miniGamesNames[2] = game.getSharedPref().getString("MinigameT1", null);
-////                miniGamesNames[3] = game.getSharedPref().getString("MinigameT2", null);
-////                chosenMinigamesNames = GameSharedPref.getChosenMinigamesNames();
-//            }
-//        } else {
-//            //names will be resolved when loading game
-//        }
-//    }
-    protected static void LoadMinigamesObjects(GameActivity game) {
+    public static void loadMinigamesObjects(GameActivity game) {
         boolean isGameSaved = GameSharedPref.isGameSaved();
         boolean isTutorialActive = GameSharedPref.isTutorialModeActivated();
 
@@ -139,9 +106,6 @@ public class GameMinigamesManager {
         return chosenMinigamesObjects;
     }
 
-    //    public static String[] getMiniGamesNames() {
-//        return chosenMinigamesNames;
-//    }
     public static MinigameInfoObject[] getMinigamesInfoObjects() {
         String[] minigamesNames = GameSharedPref.getAllMinigamesNames();
         String[] minigamesTypes = GameSharedPref.getAllMinigamesTypes();

@@ -5,7 +5,7 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.preference.DialogPreference;
 import android.util.AttributeSet;
-import sk.palistudios.multigame.tools.premiumUpgrade.PremiumUpgrader;
+import sk.palistudios.multigame.tools.premium.PremiumUpgrader;
 
 public class UpgradeToPremiumDialog extends DialogPreference {
 

@@ -1,4 +1,4 @@
-package sk.palistudios.multigame.tools.premiumUpgrade;
+package sk.palistudios.multigame.tools.premium;
 
 // @author Pali
 
