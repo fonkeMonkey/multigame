@@ -78,7 +78,6 @@ public class GameActivity extends FragmentActivity implements SensorEventListene
     private float DEFAULT_AXIS_X = 0f;
     private float DEFAULT_AXIS_Y = 0f;
     private LinearLayout gameBar;
-    //Gaining top on activity stack
     private View gameScoreSeparatorDown;
     private Runnable mRunnableTime;
     private Handler mTimeHandler;
@@ -96,7 +95,6 @@ public class GameActivity extends FragmentActivity implements SensorEventListene
         animation.setDuration(500); // duration - half a second
         animation.setInterpolator(new LinearInterpolator());
         animation.setRepeatCount(0);
-//        animation.setRepeatMode(Animation.REVERSE); // Reverse animation at
         LinearLayout gameLayout = (LinearLayout) game.findViewById(R.id.game);
         gameLayout.startAnimation(animation);
     }
@@ -181,13 +179,9 @@ public class GameActivity extends FragmentActivity implements SensorEventListene
         if (mTutorialMode) {
             setBarTextColors(scoreView, getString(R.string.score), "Tutorial");
             setBarTextColors(difficultyView, "Level: ", "Tutorial");
-//            scoreView.setText(Html.fromHtml(getString(R.string.score)) + "Tutorial");
-//            difficultyView.setText("Level: Tutorial");
         } else {
             setBarTextColors(scoreView, getString(R.string.score), String.valueOf(0));
             setBarTextColors(difficultyView, "Level: ", String.valueOf(1));
-//            scoreView.setText(getString(R.string.score) + String.valueOf(score));
-//            difficultyView.setText("Level: " + String.valueOf(level));
         }
 
 
@@ -207,7 +201,6 @@ public class GameActivity extends FragmentActivity implements SensorEventListene
             finish();
 
         } else {
-//
             //register listener for accelerometer
             sm = (SensorManager) getSystemService(SENSOR_SERVICE);
             sensor = sm.getDefaultSensor(Sensor.TYPE_ACCELEROMETER);//SensorList(Sensor.TYPE_GYROSCOPE).get(0);
@@ -298,13 +291,11 @@ public class GameActivity extends FragmentActivity implements SensorEventListene
                 }
 
             } else {
-//            TimeMaster.registerTimeObserver(this);
                 if (wasGameSaved) {
                     mToast = Toaster.toastLong((String) getResources().getString(R.string.game_touch_resume), this);
                     wasActivityPaused = false;
                 } else {
                     boolean playingFirstTime = GameSharedPref.isPlayingGameFirstTime();
-//                    GameMinigamesManager.setAllMinigamesDifficultyForClassicGame();
                     GameMinigamesManager.setAllMinigamesDifficultyForTutorial();
                     if (playingFirstTime) {
                         Toaster.toastLong((String) getResources().getString(R.string.game_touch_save), this);
@@ -321,8 +312,6 @@ public class GameActivity extends FragmentActivity implements SensorEventListene
                         }
                     }
                 }
-
-//            }
             }
         }
     }
@@ -331,9 +320,6 @@ public class GameActivity extends FragmentActivity implements SensorEventListene
         super.onStart();
 
     }
-    //Loosing top on activity stack
-//    private boolean onPauseRunAlready = false;
-
     public void startGame() {
         if (mRunnableGameLoop != null) {
 
@@ -361,8 +347,6 @@ public class GameActivity extends FragmentActivity implements SensorEventListene
         for (int i = 0; i <= sTutorialLastLevel; i++) {
             GameMinigamesManager.activateMinigame(game, i);
         }
-//        GameTimeMaster.startTimers(getSeconds(), this);
-
         if (mMusicPlayer != null && GameSharedPref.isMusicOn()) {
             if (!mStartedMusicForTutorial) {
                 mMusicPlayer.startMusic();
@@ -389,11 +373,9 @@ public class GameActivity extends FragmentActivity implements SensorEventListene
 
                     if (sTutorialLastLevel != 3) {
 
-//                    GameTimeMaster.stopTimers();
                         GameDialogs.showNextTutorialWindow(game, true);
 
                     } else {
-//                    GameTimeMaster.stopTimers();
                         GameDialogs.showTutorialWinnerWindow(game);
                         sTutorialLastLevel = 0;
                     }
@@ -441,19 +423,14 @@ public class GameActivity extends FragmentActivity implements SensorEventListene
         if (mTutorialMode) {
             setBarTextColors(scoreView, getString(R.string.score), "Tutorial");
             setBarTextColors(difficultyView, "Level: ", "Tutorial");
-//            scoreView.setText(Html.fromHtml(getString(R.string.score)) + "Tutorial");
-//            difficultyView.setText("Level: Tutorial");
         } else {
             setBarTextColors(scoreView, getString(R.string.score), String.valueOf(score));
             setBarTextColors(difficultyView, "Level: ", String.valueOf(level));
-//            scoreView.setText(getString(R.string.score) + String.valueOf(score));
-//            difficultyView.setText("Level: " + String.valueOf(level));
         }
 
 
         for (int i = 0; i < 4; i++) {
             if (GameMinigamesManager.currentlyActiveMinigames[i] == true) {
-//                GameMinigamesManager.getMinigamesObjects()[i].updateMinigame();
                 mFragmentViews[i].invalidate();
             }
         }
@@ -493,7 +470,6 @@ public class GameActivity extends FragmentActivity implements SensorEventListene
         if (!gameStopped && !closedByButton) {
             if (!mTutorialMode) {
                 saveGame();
-//            onPauseRunAlready = true;
             }
         }
 
@@ -636,47 +612,24 @@ public class GameActivity extends FragmentActivity implements SensorEventListene
     public void onBackPressed() {
         super.onBackPressed();
 
-//        if(DebugSettings.tutorialCompleted){
-//            mTutorialMode = false;
-//        }else{
-//            mTutorialMode = GameSharedPref.isTutorialModeActivated();
-//        }
-
         if (mTutorialMode) {
-//            Toaster.toastLong(getString(R.string.exit_tutorial), this);
             GameDialogs.sLostGame = true;
             stopTutorial();
         } else {
             saveGame();
-//            GameSharedPref.setGameSaved(true);
-//            wasGameSaved = true;
         }
         closedByButton = true;
         finish();
     }
-//
-//    @Override
-//    public boolean onKeyDown(int keyCode, KeyEvent event) {
-//        if (event.getKeyCode() == KeyEvent.KEYCODE_POWER) {
-//            closedByButton = true;
-//            return true;
-//        }
-//        return super.onKeyDown(keyCode, event);
-//    }
 
     @Override
     public void onUserLeaveHint() {
         super.onUserLeaveHint();
 
-//        mTutorialMode = GameSharedPref.isTutorialModeActivated();
-
         if (mTutorialMode) {
-//            Toaster.toastLong(getString(R.string.exit_tutorial), this);
             stopTutorial();
         } else {
             saveGame();
-//            GameSharedPref.setGameSaved(true);
-//            wasGameSaved = true;
         }
         closedByButton = true;
         finish();
@@ -699,17 +652,11 @@ public class GameActivity extends FragmentActivity implements SensorEventListene
         if (mTutorialMode) {
             GameDialogs.sLostGame = true;
         }
-//        sTutorialRestart = false;
         mMusicPlayer = null;
-//        musicPlayer.stopMusic();
-//        musicPlayer = null;
-//        isDialogPresent = false;
-
     }
 
     public void stopCurrentGame() {
         sm.unregisterListener(this);
-//        GameTimeMaster.stopTimers();
 
         if (mGameLoopHandler != null && mRunnableGameLoop != null) {
             mGameLoopHandler.removeCallbacks(mRunnableGameLoop);
@@ -719,13 +666,10 @@ public class GameActivity extends FragmentActivity implements SensorEventListene
         if (mTimeHandler != null) {
             mTimeHandler.removeCallbacks(mRunnableTime);
         }
-//        GameMinigamesManager.stopAllMiniGames(this);
         GameSharedPref.setMinigamesInitialized(false);
         if (mMusicPlayer != null) {
             mMusicPlayer.pauseMusic();
         }
-
-        //        GameMinigamesManager.setMinigamesInitialized(false, this);
     }
 
     public void stopTutorial() {
@@ -746,7 +690,6 @@ public class GameActivity extends FragmentActivity implements SensorEventListene
             mTimeHandler = null;
         }
 
-//        GameTimeMaster.stopTimers();
         if (mHandlerTutorial != null) {
             mHandlerTutorial.removeCallbacks(mRunnableTutorial);
             mHandlerTutorial = null;
@@ -758,8 +701,6 @@ public class GameActivity extends FragmentActivity implements SensorEventListene
         }
 
         GameSharedPref.setMinigamesInitialized(false);
-//        musicPlayer.pauseMusic();
-
     }
 
     public AFragmentView[] getmFragmentViews() {
@@ -784,9 +725,6 @@ public class GameActivity extends FragmentActivity implements SensorEventListene
         level = newLevel;
     }
 
-    //    public void setMainMenuActivity(Activity mainMenu) {
-//        mainMenuActivity = mainMenu;
-//    }
     public int getFrames() {
         return frames;
     }

@@ -1,11 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 
 
-<!--android:installLocation="preferExternal"-->
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
           package="sk.palistudios.multigame"
-          android:versionCode="11"
-          android:versionName="1.51"
+          android:versionCode="12"
+          android:versionName="1.52"
     >
 
     <meta-data
@@ -56,7 +55,6 @@
             >
         </activity>
 
-        <!--android:screenOrientation="portrait"-->
         <activity
             android:name="sk.palistudios.multigame.hall_of_fame.HallOfFameActivity"
             android:label="Hall Of Fame"
@@ -64,7 +62,6 @@
             >
         </activity>
 
-        <!--android:screenOrientation="portrait"-->
         <activity
             android:name="sk.palistudios.multigame.customization_center.CustomizationCenterActivity"
             android:label="Customization Center"
@@ -72,40 +69,34 @@
             >
         </activity>
 
-        <!--android:screenOrientation="portrait"-->
         <activity
             android:name="sk.palistudios.multigame.preferences.PreferencesActivity"
             android:label="Preferences"
             android:theme="@style/Multigame_style_other"
             >
-            <!--android:launchMode="singleInstance"-->
         </activity>
 
 
         <!-- TABS -->
 
-        <!--android:screenOrientation="portrait"-->
         <activity
             android:name="sk.palistudios.multigame.customization_center.achievements.AchievementsCenterListActivity"
             android:label="AchievementsCenter"
             android:theme="@style/Multigame_style_other">
         </activity>
 
-        <!--android:screenOrientation="portrait"-->
         <activity
             android:name="sk.palistudios.multigame.customization_center.mgc.MinigamesCenterListActivity"
             android:label="MiniGamesCenter"
             android:theme="@style/Multigame_style_other">
         </activity>
 
-        <!--android:screenOrientation="portrait"-->
         <activity
             android:name="sk.palistudios.multigame.customization_center.skins.SkinsCenterListActivity"
             android:label="SkinsCenter"
             android:theme="@style/Multigame_style_other">
         </activity>
 
-        <!--android:screenOrientation="portrait"-->
         <activity
             android:name="sk.palistudios.multigame.customization_center.music.MusicCenterListActivity"
             android:label="MusicCenter"
