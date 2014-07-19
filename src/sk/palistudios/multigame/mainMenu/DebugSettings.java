@@ -18,10 +18,9 @@ public class DebugSettings {
     /* DEBUG */
     public static boolean debugInit = false;
     public static boolean debugFirstRun = false;
-    public static boolean unlockAllItems = false;
+    public static boolean unlockAllItems = true;
     public static boolean tutorialCompleted = false;
     public static boolean alwaysWinner = false;
-    //    final private int GAME_REFRESH_INTERVAL = 1000 / GAME_UPDATES_PER_SECOND;
 
     public static void debugInit(Context context){
 //        GameSharedPref.setGameMode("Tutorial");
