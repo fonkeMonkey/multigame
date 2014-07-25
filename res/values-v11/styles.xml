@@ -9,7 +9,7 @@
     </style>
 
     <style name="Multigame_style_game" parent="@android:style/Theme.Holo.Light">
-        <item name="sdlDialogStyle">@style/DialogStyleLight.Custom</item>
+        <!--<item name="sdlDialogStyle">@style/DialogStyleLight.Custom</item>-->
         <item name="android:soundEffectsEnabled">false</item>
         <item name="android:windowActionBar">false</item>
         <item name="android:windowNoTitle">true</item>
@@ -17,7 +17,7 @@
     </style>
 
     <style name="Multigame_style_other" parent="@android:style/Theme.Holo.Light">
-        <item name="sdlDialogStyle">@style/DialogStyleLight.Custom</item>
+        <!--<item name="sdlDialogStyle">@style/DialogStyleLight.Custom</item>-->
         <item name="android:soundEffectsEnabled">false</item>
         <item name="android:windowActionBar">false</item>
         <item name="android:windowNoTitle">true</item>

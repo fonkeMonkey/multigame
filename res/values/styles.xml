@@ -9,27 +9,27 @@
     </style>
 
     <style name="Multigame_style_game" parent="@android:style/Theme.Light.NoTitleBar.Fullscreen">
-        <item name="sdlDialogStyle">@style/DialogStyleLight.Custom</item>
+        <!--<item name="sdlDialogStyle">@style/DialogStyleLight.Custom</item>-->
         <item name="android:soundEffectsEnabled">false</item>
     </style>
 
     <style name="Multigame_style_other" parent="@android:style/Theme.Light.NoTitleBar">
-        <item name="sdlDialogStyle">@style/DialogStyleLight.Custom</item>
+        <!--<item name="sdlDialogStyle">@style/DialogStyleLight.Custom</item>-->
         <item name="android:soundEffectsEnabled">false</item>
     </style>
 
-    <style name="DialogStyleLight.Custom">
-        <!-- anything can be left out: -->
-        <item name="titleTextColor">@color/kubaMenu1</item>
-        <item name="titleSeparatorColor">@color/kubaMenu4</item>
-        <item name="messageTextColor">@color/kubaMenu4</item>
-        <item name="buttonTextColor">@color/kubaMenu4</item>
-        <item name="buttonSeparatorColor">@color/kubaMenu4</item>
-        <item name="buttonBackgroundColorNormal">@color/kuba_top_bar_number</item>
-        <item name="buttonBackgroundColorPressed">@color/kubaMenu1</item>
-        <item name="buttonBackgroundColorFocused">@color/kubaMenu1</item>
-        <item name="dialogBackground">@color/kuba_top_bar_number</item>
-    </style>
+    <!--<style name="DialogStyleLight.Custom">-->
+        <!--&lt;!&ndash; anything can be left out: &ndash;&gt;-->
+        <!--<item name="titleTextColor">@color/kubaMenu1</item>-->
+        <!--<item name="titleSeparatorColor">@color/kubaMenu4</item>-->
+        <!--<item name="messageTextColor">@color/kubaMenu4</item>-->
+        <!--<item name="buttonTextColor">@color/kubaMenu4</item>-->
+        <!--<item name="buttonSeparatorColor">@color/kubaMenu4</item>-->
+        <!--<item name="buttonBackgroundColorNormal">@color/kuba_top_bar_number</item>-->
+        <!--<item name="buttonBackgroundColorPressed">@color/kubaMenu1</item>-->
+        <!--<item name="buttonBackgroundColorFocused">@color/kubaMenu1</item>-->
+        <!--<item name="dialogBackground">@color/kuba_top_bar_number</item>-->
+    <!--</style>-->
 
     <!--<style name="Theme.Splash" parent="android:Theme.Holo.Light">-->
         <!--&lt;!&ndash;<item name="android:windowBackground">@drawable/splash_screen</item>&ndash;&gt;-->
