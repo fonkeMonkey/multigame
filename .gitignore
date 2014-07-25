@@ -5,6 +5,7 @@ gen/
 .idea/
 /\!avast/
 kluc.txt
+.idea64.lnk
 
 # files for the dex VM
 *.dex
