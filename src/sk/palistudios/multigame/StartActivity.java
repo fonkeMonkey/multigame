@@ -7,6 +7,7 @@ package sk.palistudios.multigame;
 import android.content.Intent;
 import android.media.AudioManager;
 import android.os.Bundle;
+import sk.palistudios.multigame.tools.internet.LeaderBoardActivity;
 import sk.palistudios.multigame.tools.sound.SoundEffectsCenter;
 
 /**
@@ -25,7 +26,9 @@ public class StartActivity extends BaseActivity {
         setVolumeControlStream(AudioManager.STREAM_MUSIC);
         SoundEffectsCenter.setVolumeBasedOnRingVolume(this);
 
-        Intent intent = new Intent(this, sk.palistudios.multigame.mainMenu.MainMenuActivity.class);
+        //TODO virdzek debug
+//        Intent intent = new Intent(this, sk.palistudios.multigame.mainMenu.MainMenuActivity.class);
+        Intent intent = new Intent(this, LeaderBoardActivity.class);
 
         startActivity(intent);
     }
