@@ -92,12 +92,12 @@ public class GameSaverLoader {
             ObjectOutputStream os = new ObjectOutputStream(fos);
             os.writeObject(miniGame);
             os.close();
-        } catch (IOException ex) {
+        } catch (Exception ex) {
             Logger.getLogger(AMiniGame.class.getName()).log(Level.SEVERE, "File IO Exception: " + mFileName, ex);
         } finally {
             try {
                 fos.close();
-            } catch (IOException ex) {
+            } catch (Exception ex) {
                 Logger.getLogger(AMiniGame.class.getName()).log(Level.SEVERE, "File IO Exception: " + mFileName, ex);
             }
         }
