@@ -73,7 +73,7 @@ public class GameSaverLoader {
             Logger.getLogger(AMiniGame.class.getName()).log(Level.SEVERE, "LoadGame ClassNotFoundException", ex);
         } catch (NotSerializableException ex){
             Logger.getLogger(AMiniGame.class.getName()).log(Level.SEVERE, "Not serializable", ex);
-        } catch (IOException ex) {
+        } catch (Exception ex) {
             Logger.getLogger(AMiniGame.class.getName()).log(Level.SEVERE, "Loadgame IO exception", ex);
         } finally {
             try {
