@@ -29,9 +29,11 @@
   <string name="game_achievement_fulfilled_1">Dosažený cíl :\u0020</string>
   <string name="game_achievement_fulfilled_2">.\u0020 Nová\u0020</string>
   <string name="game_achievement_fulfilled_3">\u0020v sekci přizpůsobení odemčená!</string>
-  <string name="game_winner">Blahopřejeme! Dokázal jsi se probojovat do síně slávy! Zadej své jméno a užívej jsi zaslouženou slávu.</string>
+  <string name="game_winner_title">Blahopřejeme!</string>
+  <string name="game_winner">Dokázal jsi se probojovat do síně slávy! Zadej své jméno a užívej jsi zaslouženou slávu.</string>
   <string name="game_ask_for_name">Zadej své jméno do síně slávy.</string>
-  <string name="game_loser">Omlouváme se, ale tvoje skóre nebylo dostatečně dobré, aby jsi se dostal do síně slávy. Hodně štěstí při dalším pokusu!</string>
+  <string name="game_loser_title">Sorry</string>
+  <string name="game_loser">Tvoje skóre nebylo dostatečně dobré, aby jsi se dostal do síně slávy. Hodně štěstí při dalším pokusu!</string>
   <string name="game_share">Sdílet</string>
   <string name="game_share_no_connection">Chtěl jsi sdílet své skóre, ale vypadá to, že připojení k internetu není momentálně dostupné.. Zkusit znovu?</string>
   <string name="game_retry">Zkus znovu</string>
@@ -43,11 +45,13 @@
 
   <!-- Tutorial -->
   <string name="exit_tutorial">Opustil jsi tutoriál.</string>
-  <string name="tutorial_welcome">Vítej v Multigame tutoriálu! Nové minihry budou přidávané, aby sis zvykl na multitasking. Hodně štěstí!</string>
+  <string name="tutorial_welcome_title">Vítej v Multigame tutoriálu!</string>
+  <string name="tutorial_welcome">Nové minihry budou přidávané, aby sis zvykl na multitasking. Hodně štěstí!</string>
   <string name="tutorial_negative">Opustit tutoriál</string>
   <string name="tutorial_positive">Začněme!</string>
   <string name="tutorial_try">OK</string>
-  <string name="tutorial_finished">Blahopřejeme, podařilo se Ti ukončit tutoriál a můžeš nyní hrát normální hru! Pokud by jsi měl chuť jsi ještě zahrát tutoriál (možná s jinými minihrami), můžeš jej znovu aktivovat v nastavení.</string>
+  <string name="tutorial_finished_title">Blahopřejeme!!</string>
+  <string name="tutorial_finished">Podařilo se Ti ukončit tutoriál a můžeš nyní hrát normální hru! Pokud by jsi měl chuť jsi ještě zahrát tutoriál (možná s jinými minihrami), můžeš jej znovu aktivovat v nastavení.</string>
   <string name="tutorial_failed">Dobrý pokus, ale bude to třeba ještě trochu vypilovat. Zkus ještě jednou.</string>
 
 

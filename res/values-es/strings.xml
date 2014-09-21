@@ -29,9 +29,11 @@
   <string name="game_achievement_fulfilled_2">.\u0020 Nuevo\u0020</string>
   <string name="game_achievement_fulfilled_3">\¡\u0020 en centro de personalización desbloqueado! </string>
   <string name="game_achievement_adfree_fulfilled">Reto superado: versión sin publicidad</string>
-  <string name="game_winner">¡Felicidades! ¡Has llegado al Salón de la Fama! Por favor, introduce tu nombre y disfruta de la fama.</string>
+  <string name="game_winner_title">¡Felicidades!</string>
+  <string name="game_winner">¡Has llegado al Salón de la Fama! Por favor, introduce tu nombre y disfruta de la fama.</string>
   <string name="game_ask_for_name">Por favor, proporcionanos tu nombre para el Salón de la Fama.</string>
-  <string name="game_loser">Lo sentimos, tu puntuación no es lo suficientemente buena para hacerte famoso y entrar en el Salón de la Fama. ¡Mejor suerte la próxima vez!</string>
+  <string name="game_loser_title">Lo sentimos</string>
+  <string name="game_loser">Tu puntuación no es lo suficientemente buena para hacerte famoso y entrar en el Salón de la Fama. ¡Mejor suerte la próxima vez!</string>
   <string name="game_share">Compartir</string>
   <string name="game_share_no_connection">Querías compartir tu puntuación, pero parece que no hay una conexión a Internet disponible. ¿Quieres intentarlo de nuevo?</string>
   <string name="game_retry">Reintentar</string>
@@ -43,11 +45,13 @@
 
   <!-- Tutorial -->
   <string name="exit_tutorial">Has salido del tutorial.</string>
-  <string name="tutorial_welcome">¡Bienvenido al tutorial de Multigame! Nuevos minijuegos se añadirán para acostumbrarte a la multitarea. ¡Que te diviertas!</string>
+  <string name="tutorial_welcome_title">¡Bienvenido al tutorial de Multigame!</string>
+  <string name="tutorial_welcome">Nuevos minijuegos se añadirán para acostumbrarte a la multitarea. ¡Que te diviertas!</string>
   <string name="tutorial_negative">Salir del tutorial</string>
   <string name="tutorial_positive">¡Comencemos!</string>
   <string name="tutorial_try">¡Pruébalo!</string>
-  <string name="tutorial_finished">Felicidades, has finalizado el tutorial y ahora puedes comenzar a jugar en serio! Si deseas volver al tutorial más tarde (quizá con minijuegos diferentes), puedes volver a activarlo desde el menú de preferencias.</string>
+  <string name="tutorial_finished_title">Felicidades!!</string>
+  <string name="tutorial_finished">Has finalizado el tutorial y ahora puedes comenzar a jugar en serio! Si deseas volver al tutorial más tarde (quizá con minijuegos diferentes), puedes volver a activarlo desde el menú de preferencias.</string>
   <string name="tutorial_failed">Buen intento, pero necesitas mejorar un poco. Inténtalo de nuevo.</string>
 
   <!-- Customization center -->

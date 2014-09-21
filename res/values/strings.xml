@@ -26,9 +26,11 @@
   <string name="game_achievement_fulfilled_2">.\u0020 New\u0020</string>
   <string name="game_achievement_fulfilled_3">\u0020 in customization center unlocked! </string>
   <string name="game_achievement_adfree_fulfilled">Achievement fulfilled: Ad-free version</string>
-  <string name="game_winner">Congratulations! You have made it to the Hall of fame! Please provide your name and enjoy the fame.</string>
+  <string name="game_winner_title">Congratulations!</string>
+  <string name="game_winner">You have made it to the Hall of fame! Please provide your name and enjoy the fame.</string>
   <string name="game_ask_for_name">Please provide your name for the Hall of fame.</string>
-  <string name="game_loser">Sorry, your score was not good enough to make you famous and enter the Hall of fame. Better luck next time!</string>
+  <string name="game_loser_title">Sorry</string>
+  <string name="game_loser">Your score was not good enough to make you famous and enter the Hall of fame. Better luck next time!</string>
   <string name="game_share">Share</string>
   <string name="game_share_no_connection">You wanted to share your score, but there does not appear to be any internet connection available.. Try again?</string>
   <string name="game_retry">Retry</string>
@@ -39,11 +41,13 @@
 
   <!-- Tutorial -->
   <string name="exit_tutorial">You have exited the tutorial.</string>
-  <string name="tutorial_welcome">Welcome to the Multigame tutorial! New minigames will be added for you to get used to multitasking. Have fun!</string>
+  <string name="tutorial_welcome_title">Welcome to the Multigame tutorial!</string>
+  <string name="tutorial_welcome">New minigames will be added for you to get used to multitasking. Have fun!</string>
   <string name="tutorial_negative">Exit the tutorial</string>
   <string name="tutorial_positive">Let\'s start!</string>
   <string name="tutorial_try">Let\'s give it a try!</string>
-  <string name="tutorial_finished">Congratulations, you have successfully finished the tutorial and you can now try the real deal! If you would like to play the tutorial later(maybe with different minigames), just switch it on again in the preferences menu.</string>
+  <string name="tutorial_finished_title">Congratulations!!</string>
+  <string name="tutorial_finished">You have successfully finished the tutorial and you can now try the real deal! If you would like to play the tutorial later(maybe with different minigames), just switch it on again in the preferences menu.</string>
   <string name="tutorial_failed">Nice try, but it needs some little improvement. Give it another shot.</string>
 
   <!-- Customization center -->
