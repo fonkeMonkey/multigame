@@ -181,7 +181,8 @@ public class GameDialogs {
     game.mMusicPlayer.stopMusic();
 
     AlertDialog.Builder builder = new AlertDialog.Builder(game);
-    builder.setCancelable(false).setMessage(game.getString(
+    builder.setCancelable(false).setTitle(game.getString(
+        R.string.tutorial_failed_title)).setMessage(game.getString(
         R.string.tutorial_failed)).setPositiveButton(Html.fromHtml("<b>OK</b>"),
         dialogClickListener)
         //                //.setNegativeButton(game.getString(R.string.tutorial_negative),

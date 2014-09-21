@@ -53,7 +53,8 @@
   <string name="tutorial_try">OK</string>
   <string name="tutorial_finished_title">Blahoželáme!!</string>
   <string name="tutorial_finished">Podarilo sa Ti ukončiť tutoriál a môžeš teraz hrať normálnu hru! Ak by si mal chuť si ešte zahrať tutoriál(možno s inými minihrami), môžeš ho znova aktivovať v nastaveniach.</string>
-  <string name="tutorial_failed">Pekný pokus, ale bude to treba ešte trocha vypilovať. Skús ešte raz.</string>
+  <string name="tutorial_failed_title">Pekný pokus</string>
+  <string name="tutorial_failed">Bude to ale treba ešte trocha vypilovať. Skús ešte raz.</string>
 
 
   <!-- Minigames description -->

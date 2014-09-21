@@ -52,7 +52,8 @@
   <string name="tutorial_try">¡Pruébalo!</string>
   <string name="tutorial_finished_title">Felicidades!!</string>
   <string name="tutorial_finished">Has finalizado el tutorial y ahora puedes comenzar a jugar en serio! Si deseas volver al tutorial más tarde (quizá con minijuegos diferentes), puedes volver a activarlo desde el menú de preferencias.</string>
-  <string name="tutorial_failed">Buen intento, pero necesitas mejorar un poco. Inténtalo de nuevo.</string>
+  <string name="tutorial_failed_title">Buen intento</string>
+  <string name="tutorial_failed">Pero necesitas mejorar un poco. Inténtalo de nuevo.</string>
 
   <!-- Customization center -->
   <string name="cc_unlocks">desbloqueo\u0020</string>

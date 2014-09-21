@@ -48,7 +48,8 @@
   <string name="tutorial_try">Let\'s give it a try!</string>
   <string name="tutorial_finished_title">Congratulations!!</string>
   <string name="tutorial_finished">You have successfully finished the tutorial and you can now try the real deal! If you would like to play the tutorial later(maybe with different minigames), just switch it on again in the preferences menu.</string>
-  <string name="tutorial_failed">Nice try, but it needs some little improvement. Give it another shot.</string>
+  <string name="tutorial_failed_title">Nice try</string>
+  <string name="tutorial_failed">However it needs some little improvement. Give it another shot.</string>
 
   <!-- Customization center -->
   <string name="cc_unlocks">unlocks\u0020</string>
