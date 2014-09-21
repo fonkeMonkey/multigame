@@ -7,6 +7,7 @@ package sk.palistudios.multigame;
 import android.content.Intent;
 import android.media.AudioManager;
 import android.os.Bundle;
+
 import sk.palistudios.multigame.tools.sound.SoundEffectsCenter;
 
 /**
@@ -14,19 +15,19 @@ import sk.palistudios.multigame.tools.sound.SoundEffectsCenter;
  */
 public class StartActivity extends BaseActivity {
 
-    /**
-     * Called when the activity is first created.
-     */
-    @Override
-    public void onCreate(Bundle icicle) {
-        super.onCreate(icicle);
+  /**
+   * Called when the activity is first created.
+   */
+  @Override
+  public void onCreate(Bundle icicle) {
+    super.onCreate(icicle);
 
         /* Nastav zvuk a pusti to */
-        setVolumeControlStream(AudioManager.STREAM_MUSIC);
-        SoundEffectsCenter.setVolumeBasedOnRingVolume(this);
+    setVolumeControlStream(AudioManager.STREAM_MUSIC);
+    SoundEffectsCenter.setVolumeBasedOnRingVolume(this);
 
-        Intent intent = new Intent(this, sk.palistudios.multigame.mainMenu.MainMenuActivity.class);
+    Intent intent = new Intent(this, sk.palistudios.multigame.mainMenu.MainMenuActivity.class);
 
-        startActivity(intent);
-    }
+    startActivity(intent);
+  }
 }

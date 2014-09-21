@@ -18,68 +18,68 @@ package com.facebook.internal;
 import java.util.Collection;
 
 /**
- * com.facebook.internal is solely for the use of other packages within the
- * Facebook SDK for Android. Use of any of the classes in this package is
- * unsupported, and they may be modified or removed without warning at any time.
+ * com.facebook.internal is solely for the use of other packages within the Facebook SDK for
+ * Android. Use of any of the classes in this package is unsupported, and they may be modified or
+ * removed without warning at any time.
  */
 public final class Validate {
 
-    public static void notNull(Object arg, String name) {
+  public static void notNull(Object arg, String name) {
+    if (arg == null) {
+      throw new NullPointerException("Argument '" + name + "' cannot be null");
+    }
+  }
+
+  public static <T> void notEmpty(Collection<T> container, String name) {
+    if (container.isEmpty()) {
+      throw new IllegalArgumentException("Container '" + name + "' cannot be empty");
+    }
+  }
+
+  public static <T> void containsNoNulls(Collection<T> container, String name) {
+    Validate.notNull(container, name);
+    for (T item : container) {
+      if (item == null) {
+        throw new NullPointerException("Container '" + name + "' cannot contain null values");
+      }
+    }
+  }
+
+  public static void containsNoNullOrEmpty(Collection<String> container, String name) {
+    Validate.notNull(container, name);
+    for (String item : container) {
+      if (item == null) {
+        throw new NullPointerException("Container '" + name + "' cannot contain null values");
+      }
+      if (item.length() == 0) {
+        throw new IllegalArgumentException("Container '" + name + "' cannot contain empty values");
+      }
+    }
+  }
+
+  public static <T> void notEmptyAndContainsNoNulls(Collection<T> container, String name) {
+    Validate.containsNoNulls(container, name);
+    Validate.notEmpty(container, name);
+  }
+
+  public static void notNullOrEmpty(String arg, String name) {
+    if (Utility.isNullOrEmpty(arg)) {
+      throw new IllegalArgumentException("Argument '" + name + "' cannot be null or empty");
+    }
+  }
+
+  public static void oneOf(Object arg, String name, Object... values) {
+    for (Object value : values) {
+      if (value != null) {
+        if (value.equals(arg)) {
+          return;
+        }
+      } else {
         if (arg == null) {
-            throw new NullPointerException("Argument '" + name + "' cannot be null");
+          return;
         }
+      }
     }
-
-    public static <T> void notEmpty(Collection<T> container, String name) {
-        if (container.isEmpty()) {
-            throw new IllegalArgumentException("Container '" + name + "' cannot be empty");
-        }
-    }
-
-    public static <T> void containsNoNulls(Collection<T> container, String name) {
-        Validate.notNull(container, name);
-        for (T item : container) {
-            if (item == null) {
-                throw new NullPointerException("Container '" + name + "' cannot contain null values");
-            }
-        }
-    }
-
-    public static void containsNoNullOrEmpty(Collection<String> container, String name) {
-        Validate.notNull(container, name);
-        for (String item : container) {
-            if (item == null) {
-                throw new NullPointerException("Container '" + name + "' cannot contain null values");
-            }
-            if (item.length() == 0) {
-                throw new IllegalArgumentException("Container '" + name + "' cannot contain empty values");
-            }
-        }
-    }
-
-    public static <T> void notEmptyAndContainsNoNulls(Collection<T> container, String name) {
-        Validate.containsNoNulls(container, name);
-        Validate.notEmpty(container, name);
-    }
-
-    public static void notNullOrEmpty(String arg, String name) {
-        if (Utility.isNullOrEmpty(arg)) {
-            throw new IllegalArgumentException("Argument '" + name + "' cannot be null or empty");
-        }
-    }
-
-    public static void oneOf(Object arg, String name, Object... values) {
-        for (Object value : values) {
-            if (value != null) {
-                if (value.equals(arg)) {
-                    return;
-                }
-            } else {
-                if (arg == null) {
-                    return;
-                }
-            }
-        }
-        throw new IllegalArgumentException("Argument '" + name + "' was not one of the allowed values");
-    }
+    throw new IllegalArgumentException("Argument '" + name + "' was not one of the allowed values");
+  }
 }

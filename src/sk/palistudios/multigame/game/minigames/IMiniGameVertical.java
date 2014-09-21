@@ -5,5 +5,5 @@ package sk.palistudios.multigame.game.minigames;
  */
 public interface IMiniGameVertical {
 
-    public void onUserInteracted(float movement);
+  public void onUserInteracted(float movement);
 }

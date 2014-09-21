@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string-array name="gameModeOptions">
-        <item>@string/pref_gameMode_Tutorial</item>
-        <item>@string/pref_gameMode_Classic</item>
-    </string-array>
+  <string-array name="gameModeOptions">
+    <item>@string/pref_gameMode_Tutorial</item>
+    <item>@string/pref_gameMode_Classic</item>
+  </string-array>
 
-    <!--    <string-array name="listValues">
-            <item>1 is selected</item>
-            <item>2 is selected</item>
-            <item>3 is selected</item>
-        </string-array>-->
+  <!--    <string-array name="listValues">
+          <item>1 is selected</item>
+          <item>2 is selected</item>
+          <item>3 is selected</item>
+      </string-array>-->
 </resources>

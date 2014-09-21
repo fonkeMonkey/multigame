@@ -1,173 +1,173 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <!-- General -->
-    <string name="cancel">Cancel</string>
-    <string name="internet_no_connection">Internet connection not available. Please try again later.</string>
+  <!-- General -->
+  <string name="cancel">Cancel</string>
+  <string name="internet_no_connection">Internet connection not available. Please try again later.</string>
 
-    <!-- Main Menu -->
-    <string name="app_name">multiGame</string>
-    <string name="app_id">225517634276553</string>
-    <string name="edit_message">Enter a message</string>
-    <string name="button_send">Send</string>
-    <string name="menu_settings">Settings</string>
-    <string name="title_activity_main">multiGame</string>
-    <string name="button_game">Start the game!</string>
-    <string name="button_resume">Resume the game!</string>
-    <string name="button_tutorial">Start the tutorial!</string>
-    <string name="button_resume_tutorial">Resume the tutorial!</string>
-    <string name="button_customization_center">Customization Center</string>
-    <string name="button_hall_of_fame">Hall of Fame</string>
-    <string name="button_preferences">Preferences</string>
-    <!-- Game -->
+  <!-- Main Menu -->
+  <string name="app_name">multiGame</string>
+  <string name="app_id">225517634276553</string>
+  <string name="edit_message">Enter a message</string>
+  <string name="button_send">Send</string>
+  <string name="menu_settings">Settings</string>
+  <string name="title_activity_main">multiGame</string>
+  <string name="button_game">Start the game!</string>
+  <string name="button_resume">Resume the game!</string>
+  <string name="button_tutorial">Start the tutorial!</string>
+  <string name="button_resume_tutorial">Resume the tutorial!</string>
+  <string name="button_customization_center">Customization Center</string>
+  <string name="button_hall_of_fame">Hall of Fame</string>
+  <string name="button_preferences">Preferences</string>
+  <!-- Game -->
 
-    <string name="score">Score:\u0020</string>
-    <string name="game_achievement_fulfilled_1">Achievement fulfilled: </string>
-    <string name="game_achievement_fulfilled_2">.\u0020 New\u0020</string>
-    <string name="game_achievement_fulfilled_3">\u0020 in customization center unlocked! </string>
-    <string name="game_achievement_adfree_fulfilled">Achievement fulfilled: Ad-free version</string>
-    <string name="game_winner">Congratulations! You have made it to the Hall of fame! Please provide your name and enjoy the fame.</string>
-    <string name="game_ask_for_name">Please provide your name for the Hall of fame.</string>
-    <string name="game_loser">Sorry, your score was not good enough to make you famous and enter the Hall of fame. Better luck next time!</string>
-    <string name="game_share">Share</string>
-    <string name="game_share_no_connection">You wanted to share your score, but there does not appear to be any internet connection available.. Try again?</string>
-    <string name="game_retry">Retry</string>
-    <string name="facebook_login_failed">Sorry, facebook login failed.</string>
-    <string name="facebook_label">Check out my multitasking skills!</string>
-    <string name="facebook_description1">I just achieved incredible\u0020</string>
-    <string name="facebook_description2">\u0020points in Multigame! Can you beat that?</string>
+  <string name="score">Score:\u0020</string>
+  <string name="game_achievement_fulfilled_1">Achievement fulfilled: </string>
+  <string name="game_achievement_fulfilled_2">.\u0020 New\u0020</string>
+  <string name="game_achievement_fulfilled_3">\u0020 in customization center unlocked! </string>
+  <string name="game_achievement_adfree_fulfilled">Achievement fulfilled: Ad-free version</string>
+  <string name="game_winner">Congratulations! You have made it to the Hall of fame! Please provide your name and enjoy the fame.</string>
+  <string name="game_ask_for_name">Please provide your name for the Hall of fame.</string>
+  <string name="game_loser">Sorry, your score was not good enough to make you famous and enter the Hall of fame. Better luck next time!</string>
+  <string name="game_share">Share</string>
+  <string name="game_share_no_connection">You wanted to share your score, but there does not appear to be any internet connection available.. Try again?</string>
+  <string name="game_retry">Retry</string>
+  <string name="facebook_login_failed">Sorry, facebook login failed.</string>
+  <string name="facebook_label">Check out my multitasking skills!</string>
+  <string name="facebook_description1">I just achieved incredible\u0020</string>
+  <string name="facebook_description2">\u0020points in Multigame! Can you beat that?</string>
 
-    <!-- Tutorial -->
-    <string name="exit_tutorial">You have exited the tutorial.</string>
-    <string name="tutorial_welcome">Welcome to the Multigame tutorial! New minigames will be added for you to get used to multitasking. Have fun!</string>
-    <string name="tutorial_negative">Exit the tutorial</string>
-    <string name="tutorial_positive">Let\'s start!</string>
-    <string name="tutorial_try">Let\'s give it a try!</string>
-    <string name="tutorial_finished">Congratulations, you have successfully finished the tutorial and you can now try the real deal! If you would like to play the tutorial later(maybe with different minigames), just switch it on again in the preferences menu.</string>
-    <string name="tutorial_failed">Nice try, but it needs some little improvement. Give it another shot.</string>
+  <!-- Tutorial -->
+  <string name="exit_tutorial">You have exited the tutorial.</string>
+  <string name="tutorial_welcome">Welcome to the Multigame tutorial! New minigames will be added for you to get used to multitasking. Have fun!</string>
+  <string name="tutorial_negative">Exit the tutorial</string>
+  <string name="tutorial_positive">Let\'s start!</string>
+  <string name="tutorial_try">Let\'s give it a try!</string>
+  <string name="tutorial_finished">Congratulations, you have successfully finished the tutorial and you can now try the real deal! If you would like to play the tutorial later(maybe with different minigames), just switch it on again in the preferences menu.</string>
+  <string name="tutorial_failed">Nice try, but it needs some little improvement. Give it another shot.</string>
 
-    <!-- Customization center -->
-    <string name="cc_unlocks">unlocks\u0020</string>
-    <string name="cc_music_tab_name">Music</string>
-    <string name="cc_minigames_tab_name">Minigames</string>
-    <string name="cc_skins_tab_name">Skins</string>
-    <string name="cc_achievements_tab_name">Achievements</string>
-    <string name="cc_more_games_tab_name">More games</string>
+  <!-- Customization center -->
+  <string name="cc_unlocks">unlocks\u0020</string>
+  <string name="cc_music_tab_name">Music</string>
+  <string name="cc_minigames_tab_name">Minigames</string>
+  <string name="cc_skins_tab_name">Skins</string>
+  <string name="cc_achievements_tab_name">Achievements</string>
+  <string name="cc_more_games_tab_name">More games</string>
 
-    <!-- Achievements center -->
+  <!-- Achievements center -->
 
-    <string name="cc_achievements_achievements_center_name">Achievements center</string>
-    <string name="cc_achievements_lucky_seven_name">Lucky seven</string>
-    <string name="cc_achievements_lucky_seven_description">Reach level 7</string>
-    <string name="cc_achievements_magin_ten_name">Magic 10</string>
-    <string name="cc_achievements_magin_ten_description">Reach level 10</string>
-    <string name="cc_achievements_good_start_name">Good start</string>
-    <string name="cc_achievements_good_start_description">Reach score of 5000</string>
-    <string name="cc_achievements_addict_name">Addict</string>
-    <string name="cc_achievements_addicts_description">Play at least 10 games</string>
-    <string name="cc_achievements_supporter_name">Supporter</string>
-    <string name="cc_achievements_supporter_description">Rate Multigame on Google Play</string>
-    <string name="cc_achievements_competitive_name">Competitive</string>
-    <string name="cc_achievements_competitive_description">Share your score on Facebook</string>
-    <string name="cc_achievements_champion_name">Champion</string>
-    <string name="cc_achievements_champion_description">Be in the hall of fame</string>
-    <string name="cc_achievements_pro_name">Pro</string>
-    <string name="cc_achievements_pro_description">Reach level 15</string>
-    <string name="cc_achievements_requirement_ending">\u0020in order to unlock this item</string>
+  <string name="cc_achievements_achievements_center_name">Achievements center</string>
+  <string name="cc_achievements_lucky_seven_name">Lucky seven</string>
+  <string name="cc_achievements_lucky_seven_description">Reach level 7</string>
+  <string name="cc_achievements_magin_ten_name">Magic 10</string>
+  <string name="cc_achievements_magin_ten_description">Reach level 10</string>
+  <string name="cc_achievements_good_start_name">Good start</string>
+  <string name="cc_achievements_good_start_description">Reach score of 5000</string>
+  <string name="cc_achievements_addict_name">Addict</string>
+  <string name="cc_achievements_addicts_description">Play at least 10 games</string>
+  <string name="cc_achievements_supporter_name">Supporter</string>
+  <string name="cc_achievements_supporter_description">Rate Multigame on Google Play</string>
+  <string name="cc_achievements_competitive_name">Competitive</string>
+  <string name="cc_achievements_competitive_description">Share your score on Facebook</string>
+  <string name="cc_achievements_champion_name">Champion</string>
+  <string name="cc_achievements_champion_description">Be in the hall of fame</string>
+  <string name="cc_achievements_pro_name">Pro</string>
+  <string name="cc_achievements_pro_description">Reach level 15</string>
+  <string name="cc_achievements_requirement_ending">\u0020in order to unlock this item</string>
 
-    <!-- Minigames center -->
+  <!-- Minigames center -->
 
-    <string name="cc_minigames_minigame_center_name">Minigames center</string>
-    <string name="cc_minigames_minigame_name">minigame</string>
-    <string name="cc_minigames_bouncer_name">Bouncer</string>
-    <string name="cc_minigames_invader_name">Invader</string>
+  <string name="cc_minigames_minigame_center_name">Minigames center</string>
+  <string name="cc_minigames_minigame_name">minigame</string>
+  <string name="cc_minigames_bouncer_name">Bouncer</string>
+  <string name="cc_minigames_invader_name">Invader</string>
 
-    <!-- Skins center -->
+  <!-- Skins center -->
 
-    <string name="cc_skins_skin_center_name">Skins center</string>
-    <string name="cc_skins_skin_name">skin</string>
-    <string name="cc_skins_girl_power_name">Girl Power</string>
-    <string name="cc_skins_summer_name">Summer</string>
-    <string name="cc_skins_blue_sky_name">Blue Sky</string>
-    <string name="cc_skin_unlock_message_1">"You must reach level 7 order to unlock this skin"</string>
-    <string name="cc_skin_unlock_message_2">"You must reach level 7 order to unlock this skin"</string>
+  <string name="cc_skins_skin_center_name">Skins center</string>
+  <string name="cc_skins_skin_name">skin</string>
+  <string name="cc_skins_girl_power_name">Girl Power</string>
+  <string name="cc_skins_summer_name">Summer</string>
+  <string name="cc_skins_blue_sky_name">Blue Sky</string>
+  <string name="cc_skin_unlock_message_1">"You must reach level 7 order to unlock this skin"</string>
+  <string name="cc_skin_unlock_message_2">"You must reach level 7 order to unlock this skin"</string>
 
-    <!-- Music center -->
+  <!-- Music center -->
 
-    <string name="cc_music_music_center_name">Music center</string>
-    <string name="cc_music_music_name">music</string>
-    <string name="cc_music_cyber_ops_name">Cyber Ops</string>
-    <string name="cc_music_cv_x_name">CV X</string>
-    <string name="cc_music_blam_name">Blam</string>
+  <string name="cc_music_music_center_name">Music center</string>
+  <string name="cc_music_music_name">music</string>
+  <string name="cc_music_cyber_ops_name">Cyber Ops</string>
+  <string name="cc_music_cv_x_name">CV X</string>
+  <string name="cc_music_blam_name">Blam</string>
 
-    <!-- Hall of fame -->
-    <string name="top_10_players">Top 10 players</string>
+  <!-- Hall of fame -->
+  <string name="top_10_players">Top 10 players</string>
 
-    <!-- Tutorial -->
+  <!-- Tutorial -->
 
 
-    <!-- Minigames -->
-    <string name="minigame">\u0020Minigame\u0020</string>
-    <string name="minigames_VBird"><![CDATA[Move the square by <strong><u>tilting</u></strong> your cell phone to the <strong><u>front</u></strong> or to the <strong><u>back</strong></u>. You must not hit any obstacle.]]></string>
-    <string name="minigames_HBalance"><![CDATA[<strong><u>Tilt</u></strong> your cell phone to the <strong><u>left and right</strong></u>. Try not to let the ball fall. Note that now you have to control <strong><u>both minigames at once!</strong></u>]]></string>
-    <string name="minigames_TCatcher"><![CDATA[The falling balls must not hit the ground. Change the catching circle by <strong><u>tapping</strong></u> nearby. Use preferably your <strong><u>left thumb</strong></u> or index finger.]]></string>
-    <string name="minigames_TGatherer"><![CDATA[Gather circles by <strong><u>tapping</strong></u> on them before the time passes. Use preferably your <strong><u>right thumb</strong></u> or index finger.]]></string>
-    <string name="minigames_TInvader"><![CDATA[Move the laser field by tapping on the screen. The enemies must not get to the center.]]></string>
-    <string name="minigames_VBouncer"><![CDATA[Move the platform by tilting your phone to the front or to the back. The ball must not touch the left side of the screen.]]></string>
+  <!-- Minigames -->
+  <string name="minigame">\u0020Minigame\u0020</string>
+  <string name="minigames_VBird"><![CDATA[Move the square by <strong><u>tilting</u></strong> your cell phone to the <strong><u>front</u></strong> or to the <strong><u>back</strong></u>. You must not hit any obstacle.]]></string>
+  <string name="minigames_HBalance"><![CDATA[<strong><u>Tilt</u></strong> your cell phone to the <strong><u>left and right</strong></u>. Try not to let the ball fall. Note that now you have to control <strong><u>both minigames at once!</strong></u>]]></string>
+  <string name="minigames_TCatcher"><![CDATA[The falling balls must not hit the ground. Change the catching circle by <strong><u>tapping</strong></u> nearby. Use preferably your <strong><u>left thumb</strong></u> or index finger.]]></string>
+  <string name="minigames_TGatherer"><![CDATA[Gather circles by <strong><u>tapping</strong></u> on them before the time passes. Use preferably your <strong><u>right thumb</strong></u> or index finger.]]></string>
+  <string name="minigames_TInvader"><![CDATA[Move the laser field by tapping on the screen. The enemies must not get to the center.]]></string>
+  <string name="minigames_VBouncer"><![CDATA[Move the platform by tilting your phone to the front or to the back. The ball must not touch the left side of the screen.]]></string>
 
-    <!-- Game -->
-    <string name="game_touch_start">Touch the screen to start the game!</string>
-    <string name="game_touch_resume">Touch the screen to resume the game!</string>
-    <string name="game_touch_save">You can save your progress anytime by using the \'back\' button.</string>
-    <string name="game_game_saved">Game saved</string>
+  <!-- Game -->
+  <string name="game_touch_start">Touch the screen to start the game!</string>
+  <string name="game_touch_resume">Touch the screen to resume the game!</string>
+  <string name="game_touch_save">You can save your progress anytime by using the \'back\' button.</string>
+  <string name="game_game_saved">Game saved</string>
 
-    <!-- Preferences -->
-    <string name="pref_title">Preferences</string>
-    <string name="pref_gameMode_Tutorial">Tutorial</string>
-    <string name="pref_gameMode_Classic">Classic</string>
-    <string name="finish_saved_game">Please finish your saved game first.</string>
-    <string name="pref_music">Music</string>
-    <string name="pref_sound">Sound</string>
-    <string name="autocalibration">Autocalibration</string>
-    <string name="autocalibration_subtitle">Set the default X,Y axis for rotation based on the position of cell phone at the beginning of each game</string>
-    <string name="pref_about">About…</string>
-    <string name="pref_game_mode">Game mode</string>
-    <string name="pref_rate">Rate on Google Play</string>
+  <!-- Preferences -->
+  <string name="pref_title">Preferences</string>
+  <string name="pref_gameMode_Tutorial">Tutorial</string>
+  <string name="pref_gameMode_Classic">Classic</string>
+  <string name="finish_saved_game">Please finish your saved game first.</string>
+  <string name="pref_music">Music</string>
+  <string name="pref_sound">Sound</string>
+  <string name="autocalibration">Autocalibration</string>
+  <string name="autocalibration_subtitle">Set the default X,Y axis for rotation based on the position of cell phone at the beginning of each game</string>
+  <string name="pref_about">About…</string>
+  <string name="pref_game_mode">Game mode</string>
+  <string name="pref_rate">Rate on Google Play</string>
 
-    <!-- Rate -->
-    <string name="rate">Rate</string>
-    <string name="rate_msg">Would you like to rate Multigame 5 stars on Google Play?</string>
-    <string name="button_hall_of_fame_multigame_fan">Multigame fan</string>
-    <string name="increase_music_volume">Increasing volume will improve your gameplay experience.</string>
-    <!-- facebook -->
+  <!-- Rate -->
+  <string name="rate">Rate</string>
+  <string name="rate_msg">Would you like to rate Multigame 5 stars on Google Play?</string>
+  <string name="button_hall_of_fame_multigame_fan">Multigame fan</string>
+  <string name="increase_music_volume">Increasing volume will improve your gameplay experience.</string>
+  <!-- facebook -->
 
-    <string name="com_facebook_dialogloginactivity_ok_button">OK</string>
-    <string name="com_facebook_loginview_log_out_button">Log out</string>
-    <string name="com_facebook_loginview_log_in_button">Log in with Facebook</string>
-    <string name="com_facebook_loginview_logged_in_as">Logged in as: %1$s</string>
-    <string name="com_facebook_loginview_logged_in_using_facebook">Logged in using Facebook</string>
-    <string name="com_facebook_loginview_log_out_action">Log out</string>
-    <string name="com_facebook_loginview_cancel_action">Cancel</string>
-    <string name="com_facebook_logo_content_description">Facebook Logo</string>
-    <string name="com_facebook_usersettingsfragment_log_in_button">Log in…</string>
-    <string name="com_facebook_usersettingsfragment_logged_in">Logged in</string>
-    <string name="com_facebook_usersettingsfragment_not_logged_in">Not logged in</string>
-    <string name="com_facebook_placepicker_subtitle_format">%1$s • %2$,d were here</string>
-    <string name="com_facebook_placepicker_subtitle_catetory_only_format">%1$s</string>
-    <string name="com_facebook_placepicker_subtitle_were_here_only_format">%1$,d were here</string>
-    <string name="com_facebook_picker_done_button_text">Done</string>
-    <string name="com_facebook_choose_friends">Choose Friends</string>
-    <string name="com_facebook_nearby">Nearby</string>
-    <string name="com_facebook_loading">Loading...</string>
-    <string name="com_facebook_internet_permission_error_title">AndroidManifest Error</string>
-    <string name="com_facebook_internet_permission_error_message">WebView login requires INTERNET permission</string>
-    <string name="com_facebook_requesterror_web_login">Your Facebook account is locked. Please log into www.facebook.com to continue.</string>
-    <string name="com_facebook_requesterror_relogin">Please log into this app again to reconnect your Facebook account.</string>
-    <string name="com_facebook_requesterror_password_changed">Your Facebook password has changed. Please log into this app again to reconnect your Facebook account.</string>
-    <string name="com_facebook_requesterror_reconnect">Please log into this app again to reconnect your Facebook account.</string>
-    <string name="com_facebook_requesterror_permissions">This app doesn’t have permission to do this. To change permissions, try logging into the app again.</string>
-    <string name="title_activity_leader_board">Multigame champions</string>
-    <string name="hello_world">Hello world!</string>
-    <string name="action_settings">Settings</string>
+  <string name="com_facebook_dialogloginactivity_ok_button">OK</string>
+  <string name="com_facebook_loginview_log_out_button">Log out</string>
+  <string name="com_facebook_loginview_log_in_button">Log in with Facebook</string>
+  <string name="com_facebook_loginview_logged_in_as">Logged in as: %1$s</string>
+  <string name="com_facebook_loginview_logged_in_using_facebook">Logged in using Facebook</string>
+  <string name="com_facebook_loginview_log_out_action">Log out</string>
+  <string name="com_facebook_loginview_cancel_action">Cancel</string>
+  <string name="com_facebook_logo_content_description">Facebook Logo</string>
+  <string name="com_facebook_usersettingsfragment_log_in_button">Log in…</string>
+  <string name="com_facebook_usersettingsfragment_logged_in">Logged in</string>
+  <string name="com_facebook_usersettingsfragment_not_logged_in">Not logged in</string>
+  <string name="com_facebook_placepicker_subtitle_format">%1$s • %2$,d were here</string>
+  <string name="com_facebook_placepicker_subtitle_catetory_only_format">%1$s</string>
+  <string name="com_facebook_placepicker_subtitle_were_here_only_format">%1$,d were here</string>
+  <string name="com_facebook_picker_done_button_text">Done</string>
+  <string name="com_facebook_choose_friends">Choose Friends</string>
+  <string name="com_facebook_nearby">Nearby</string>
+  <string name="com_facebook_loading">Loading...</string>
+  <string name="com_facebook_internet_permission_error_title">AndroidManifest Error</string>
+  <string name="com_facebook_internet_permission_error_message">WebView login requires INTERNET permission</string>
+  <string name="com_facebook_requesterror_web_login">Your Facebook account is locked. Please log into www.facebook.com to continue.</string>
+  <string name="com_facebook_requesterror_relogin">Please log into this app again to reconnect your Facebook account.</string>
+  <string name="com_facebook_requesterror_password_changed">Your Facebook password has changed. Please log into this app again to reconnect your Facebook account.</string>
+  <string name="com_facebook_requesterror_reconnect">Please log into this app again to reconnect your Facebook account.</string>
+  <string name="com_facebook_requesterror_permissions">This app doesn’t have permission to do this. To change permissions, try logging into the app again.</string>
+  <string name="title_activity_leader_board">Multigame champions</string>
+  <string name="hello_world">Hello world!</string>
+  <string name="action_settings">Settings</string>
 
 </resources>

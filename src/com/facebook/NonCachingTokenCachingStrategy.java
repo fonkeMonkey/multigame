@@ -18,23 +18,22 @@ package com.facebook;
 import android.os.Bundle;
 
 /**
- * Implements a trivial {@link TokenCachingStrategy} that does not actually
- * cache any tokens. It is intended for use when an access token may be used on
- * a temporary basis but should not be cached for future use (for instance, when
- * handling a deep link).
+ * Implements a trivial {@link TokenCachingStrategy} that does not actually cache any tokens. It is
+ * intended for use when an access token may be used on a temporary basis but should not be cached
+ * for future use (for instance, when handling a deep link).
  */
 public class NonCachingTokenCachingStrategy extends TokenCachingStrategy {
 
-    @Override
-    public Bundle load() {
-        return null;
-    }
+  @Override
+  public Bundle load() {
+    return null;
+  }
 
-    @Override
-    public void save(Bundle bundle) {
-    }
+  @Override
+  public void save(Bundle bundle) {
+  }
 
-    @Override
-    public void clear() {
-    }
+  @Override
+  public void clear() {
+  }
 }

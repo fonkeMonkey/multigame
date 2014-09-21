@@ -25,757 +25,770 @@ import android.view.animation.LinearInterpolator;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
+
 import com.facebook.Session;
 import com.google.analytics.tracking.android.EasyTracker;
 import sk.palistudios.multigame.R;
 import sk.palistudios.multigame.customization_center.achievements.AchievementsCenterListActivity;
 import sk.palistudios.multigame.customization_center.skins.SkinsCenterListActivity;
-import sk.palistudios.multigame.game.minigames.MinigamesManager;
 import sk.palistudios.multigame.game.minigames.IMiniGameHorizontal;
 import sk.palistudios.multigame.game.minigames.IMiniGameVertical;
+import sk.palistudios.multigame.game.minigames.MinigamesManager;
 import sk.palistudios.multigame.game.persistence.GameSaverLoader;
 import sk.palistudios.multigame.game.persistence.GameSharedPref;
 import sk.palistudios.multigame.game.time.GameTimeMaster;
-import sk.palistudios.multigame.game.view.*;
+import sk.palistudios.multigame.game.view.AFragment;
+import sk.palistudios.multigame.game.view.AFragmentView;
+import sk.palistudios.multigame.game.view.Fragment1;
+import sk.palistudios.multigame.game.view.Fragment2;
+import sk.palistudios.multigame.game.view.Fragment3;
+import sk.palistudios.multigame.game.view.Fragment4;
 import sk.palistudios.multigame.hall_of_fame.HofDatabaseCenter;
 import sk.palistudios.multigame.mainMenu.DebugSettings;
+import sk.palistudios.multigame.tools.Toaster;
 import sk.palistudios.multigame.tools.sound.MusicPlayer;
 import sk.palistudios.multigame.tools.sound.SoundEffectsCenter;
-import sk.palistudios.multigame.tools.Toaster;
 
 /**
  * @author Pali
  */
 public class GameActivity extends FragmentActivity implements SensorEventListener {
 
-    public static boolean isDialogPresent = false;
-    public static int dialogScore = -1;
-    public static int dialogType = -1;
-    public static boolean dialogIsWinner = false;
-    public static int sTutorialLastLevel = 0;
-    public static boolean sTutorialRestart = false;
-    private static boolean sIncreaseVolumeShown = false;
-    private static boolean sRaisedVolumeForTutorialAlready = false;
-    final private int GAME_UPDATES_PER_SECOND = 40;
-    final private int GAME_SKIP_FRAMES = 1000 / GAME_UPDATES_PER_SECOND;
-    final private int MAX_FRAMESKIP = 8;
-    public boolean gameStopped = true;
-    public Runnable mRunnableGameLoop;
-    Handler displayHandler;
-    Toast mToast;
-    MusicPlayer mMusicPlayer;
-    Handler mHandlerTutorial;
-    Runnable mRunnableTutorial;
-    Handler mGameLoopHandler;
-    private SensorManager sm = null;
-    private Sensor sensor = null;
-    private TextView scoreView = null;
-    private TextView difficultyView = null;
-    private AFragmentView mFragmentViews[];
-    private AFragment mFragments[];
-    private boolean mTutorialMode;
-    private boolean wasGameSaved;
-    private boolean wasActivityPaused = false;
-    private boolean wasGameLost = false;
-    private int mOrientation;
-    private boolean isDefaultCoordinatesSet = false;
-    private float DEFAULT_AXIS_X = 0f;
-    private float DEFAULT_AXIS_Y = 0f;
-    private LinearLayout gameBar;
-    private View gameScoreSeparatorDown;
-    private Runnable mRunnableTime;
-    private Handler mTimeHandler;
-    private View gameScoreSeparator;
-    private boolean mStartedMusicForTutorial = false;
-    private int frames = 0;
-    private IMiniGameVertical minigametoSendEvents1;
-    private IMiniGameHorizontal minigametoSendEvents2;
-    private int score = 0;
-    private int level = 1;
-    private boolean closedByButton = false;
+  public static boolean isDialogPresent = false;
+  public static int dialogScore = -1;
+  public static int dialogType = -1;
+  public static boolean dialogIsWinner = false;
+  public static int sTutorialLastLevel = 0;
+  public static boolean sTutorialRestart = false;
+  private static boolean sIncreaseVolumeShown = false;
+  private static boolean sRaisedVolumeForTutorialAlready = false;
+  final private int GAME_UPDATES_PER_SECOND = 40;
+  final private int GAME_SKIP_FRAMES = 1000 / GAME_UPDATES_PER_SECOND;
+  final private int MAX_FRAMESKIP = 8;
+  public boolean gameStopped = true;
+  public Runnable mRunnableGameLoop;
+  Handler displayHandler;
+  Toast mToast;
+  MusicPlayer mMusicPlayer;
+  Handler mHandlerTutorial;
+  Runnable mRunnableTutorial;
+  Handler mGameLoopHandler;
+  private SensorManager sm = null;
+  private Sensor sensor = null;
+  private TextView scoreView = null;
+  private TextView difficultyView = null;
+  private AFragmentView mFragmentViews[];
+  private AFragment mFragments[];
+  private boolean mTutorialMode;
+  private boolean wasGameSaved;
+  private boolean wasActivityPaused = false;
+  private boolean wasGameLost = false;
+  private int mOrientation;
+  private boolean isDefaultCoordinatesSet = false;
+  private float DEFAULT_AXIS_X = 0f;
+  private float DEFAULT_AXIS_Y = 0f;
+  private LinearLayout gameBar;
+  private View gameScoreSeparatorDown;
+  private Runnable mRunnableTime;
+  private Handler mTimeHandler;
+  private View gameScoreSeparator;
+  private boolean mStartedMusicForTutorial = false;
+  private int frames = 0;
+  private IMiniGameVertical minigametoSendEvents1;
+  private IMiniGameHorizontal minigametoSendEvents2;
+  private int score = 0;
+  private int level = 1;
+  private boolean closedByButton = false;
 
-    public static void flashScreen(GameActivity game) {
-        Animation animation = new AlphaAnimation(0, 1); // Change alpha
-        animation.setDuration(500); // duration - half a second
-        animation.setInterpolator(new LinearInterpolator());
-        animation.setRepeatCount(0);
-        LinearLayout gameLayout = (LinearLayout) game.findViewById(R.id.game);
-        gameLayout.startAnimation(animation);
-    }
+  public static void flashScreen(GameActivity game) {
+    Animation animation = new AlphaAnimation(0, 1); // Change alpha
+    animation.setDuration(500); // duration - half a second
+    animation.setInterpolator(new LinearInterpolator());
+    animation.setRepeatCount(0);
+    LinearLayout gameLayout = (LinearLayout) game.findViewById(R.id.game);
+    gameLayout.startAnimation(animation);
+  }
 
-    @Override
-    public void onCreate(Bundle icicle) {
-        super.onCreate(icicle);
-        overridePendingTransition(R.anim.fadein, R.anim.fadeout);
+  @Override
+  public void onCreate(Bundle icicle) {
+    super.onCreate(icicle);
+    overridePendingTransition(R.anim.fadein, R.anim.fadeout);
 
-        setVolumeControlStream(AudioManager.STREAM_MUSIC);
-        initVariables();
-        HofDatabaseCenter.initDB(this);
+    setVolumeControlStream(AudioManager.STREAM_MUSIC);
+    initVariables();
+    HofDatabaseCenter.initDB(this);
 
-        setContentView(R.layout.game);
+    setContentView(R.layout.game);
 
-        initGraphics();
+    initGraphics();
 
-        initMinigames(this);
+    initMinigames(this);
 
-    }
+  }
 
-    private void initVariables() {
-        wasGameSaved = GameSharedPref.isGameSaved();
+  private void initVariables() {
+    wasGameSaved = GameSharedPref.isGameSaved();
 
-        GameSharedPref.setMinigamesInitialized(false);
-        MinigamesManager.loadMinigamesObjects(this);
+    GameSharedPref.setMinigamesInitialized(false);
+    MinigamesManager.loadMinigamesObjects(this);
 
-        int musicID = getResources().getIdentifier(GameSharedPref.getMusicLoopChosen(), "raw", this.getPackageName());
+    int musicID = getResources().getIdentifier(GameSharedPref.getMusicLoopChosen(), "raw",
+        this.getPackageName());
 
-        mMusicPlayer = new MusicPlayer(musicID, this);
+    mMusicPlayer = new MusicPlayer(musicID, this);
 
-        //I need to have direct pointer because of speed
-        minigametoSendEvents1 = (IMiniGameVertical) MinigamesManager.getMinigamesObjects()[0];
-        minigametoSendEvents2 = (IMiniGameHorizontal) MinigamesManager.getMinigamesObjects()[1];
+    //I need to have direct pointer because of speed
+    minigametoSendEvents1 = (IMiniGameVertical) MinigamesManager.getMinigamesObjects()[0];
+    minigametoSendEvents2 = (IMiniGameHorizontal) MinigamesManager.getMinigamesObjects()[1];
 
-        resolveOrientation();
+    resolveOrientation();
 
+  }
 
-    }
-
-    public void initMinigames(GameActivity game) {
-        for (int i = 0; i < 4; i++) {
-            MinigamesManager.activateMinigame(game, i);
-            GameTimeMaster.registerLevelChangedObserver(MinigamesManager.getMinigamesObjects()[i]);
-
-        }
-
-        for (int i = 0; i < 4; i++) {
-            game.mFragmentViews[i].invalidate();
-        }
-    }
-
-    private void initGraphics() {
-        gameBar = (LinearLayout) findViewById(R.id.game_bar);
-        gameBar.setBackgroundColor(SkinsCenterListActivity.getCurrentSkin(this).getBarBgColor());
-        scoreView = (TextView) findViewById(R.id.game_score);
-        scoreView.setTextColor(SkinsCenterListActivity.getCurrentSkin(this).getBarLabelColor());
-        difficultyView = (TextView) findViewById(R.id.game_level);
-        difficultyView.setTextColor(SkinsCenterListActivity.getCurrentSkin(this).getBarLabelColor());
-        gameScoreSeparator = (View) findViewById(R.id.game_score_separator);
-        gameScoreSeparator.setBackgroundColor(SkinsCenterListActivity.getCurrentSkin(this).getBarSeparatorColor());
-        gameScoreSeparatorDown = (View) findViewById(R.id.game_score_separator_down);
-        gameScoreSeparatorDown.setBackgroundColor(SkinsCenterListActivity.getCurrentSkin(this).getBarSeparatorColorDown());
-
-        mFragments = new AFragment[4];
-        mFragments[0] = (Fragment1) getSupportFragmentManager().findFragmentById(R.id.fragment1);
-        mFragments[1] = (Fragment2) getSupportFragmentManager().findFragmentById(R.id.fragment2);
-        mFragments[2] = (Fragment3) getSupportFragmentManager().findFragmentById(R.id.fragment3);
-        mFragments[3] = (Fragment4) getSupportFragmentManager().findFragmentById(R.id.fragment4);
-
-        mFragmentViews = new AFragmentView[4];
-        mFragmentViews[0] = mFragments[0].getmView();
-        mFragmentViews[1] = mFragments[1].getmView();
-        mFragmentViews[2] = mFragments[2].getmView();
-        mFragmentViews[3] = mFragments[3].getmView();
-
-        mFragmentViews[0].setGameSaved(wasGameSaved);
-        mFragmentViews[1].setGameSaved(wasGameSaved);
-        mFragmentViews[2].setGameSaved(wasGameSaved);
-        mFragmentViews[3].setGameSaved(wasGameSaved);
-
-        if (mTutorialMode) {
-            setBarTextColors(scoreView, getString(R.string.score), "Tutorial");
-            setBarTextColors(difficultyView, "Level: ", "Tutorial");
-        } else {
-            setBarTextColors(scoreView, getString(R.string.score), String.valueOf(0));
-            setBarTextColors(difficultyView, "Level: ", String.valueOf(1));
-        }
-
+  public void initMinigames(GameActivity game) {
+    for (int i = 0; i < 4; i++) {
+      MinigamesManager.activateMinigame(game, i);
+      GameTimeMaster.registerLevelChangedObserver(MinigamesManager.getMinigamesObjects()[i]);
 
     }
 
-    @Override
-    public void onResume() {
-        getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
+    for (int i = 0; i < 4; i++) {
+      game.mFragmentViews[i].invalidate();
+    }
+  }
 
-        super.onResume();
-        SoundEffectsCenter.muteSystemSounds(this, true);
-        mTutorialMode = GameSharedPref.isTutorialModeActivated();
+  private void initGraphics() {
+    gameBar = (LinearLayout) findViewById(R.id.game_bar);
+    gameBar.setBackgroundColor(SkinsCenterListActivity.getCurrentSkin(this).getBarBgColor());
+    scoreView = (TextView) findViewById(R.id.game_score);
+    scoreView.setTextColor(SkinsCenterListActivity.getCurrentSkin(this).getBarLabelColor());
+    difficultyView = (TextView) findViewById(R.id.game_level);
+    difficultyView.setTextColor(SkinsCenterListActivity.getCurrentSkin(this).getBarLabelColor());
+    gameScoreSeparator = (View) findViewById(R.id.game_score_separator);
+    gameScoreSeparator.setBackgroundColor(SkinsCenterListActivity.getCurrentSkin(this)
+        .getBarSeparatorColor());
+    gameScoreSeparatorDown = (View) findViewById(R.id.game_score_separator_down);
+    gameScoreSeparatorDown.setBackgroundColor(SkinsCenterListActivity.getCurrentSkin(this)
+        .getBarSeparatorColorDown());
 
-        if (isDialogPresent == true) {
-            //MainMenu will handle it
-            isDialogPresent = false;
-            finish();
+    mFragments = new AFragment[4];
+    mFragments[0] = (Fragment1) getSupportFragmentManager().findFragmentById(R.id.fragment1);
+    mFragments[1] = (Fragment2) getSupportFragmentManager().findFragmentById(R.id.fragment2);
+    mFragments[2] = (Fragment3) getSupportFragmentManager().findFragmentById(R.id.fragment3);
+    mFragments[3] = (Fragment4) getSupportFragmentManager().findFragmentById(R.id.fragment4);
 
-        } else {
-            //register listener for accelerometer
-            sm = (SensorManager) getSystemService(SENSOR_SERVICE);
-            sensor = sm.getDefaultSensor(Sensor.TYPE_ACCELEROMETER);//SensorList(Sensor.TYPE_GYROSCOPE).get(0);
-            sm.registerListener(this, sensor, SensorManager.SENSOR_DELAY_NORMAL);
+    mFragmentViews = new AFragmentView[4];
+    mFragmentViews[0] = mFragments[0].getmView();
+    mFragmentViews[1] = mFragments[1].getmView();
+    mFragmentViews[2] = mFragments[2].getmView();
+    mFragmentViews[3] = mFragments[3].getmView();
 
-            if (mGameLoopHandler == null) {
-                mGameLoopHandler = new Handler();
+    mFragmentViews[0].setGameSaved(wasGameSaved);
+    mFragmentViews[1].setGameSaved(wasGameSaved);
+    mFragmentViews[2].setGameSaved(wasGameSaved);
+    mFragmentViews[3].setGameSaved(wasGameSaved);
+
+    if (mTutorialMode) {
+      setBarTextColors(scoreView, getString(R.string.score), "Tutorial");
+      setBarTextColors(difficultyView, "Level: ", "Tutorial");
+    } else {
+      setBarTextColors(scoreView, getString(R.string.score), String.valueOf(0));
+      setBarTextColors(difficultyView, "Level: ", String.valueOf(1));
+    }
+
+  }
+
+  @Override
+  public void onResume() {
+    getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
+
+    super.onResume();
+    SoundEffectsCenter.muteSystemSounds(this, true);
+    mTutorialMode = GameSharedPref.isTutorialModeActivated();
+
+    if (isDialogPresent == true) {
+      //MainMenu will handle it
+      isDialogPresent = false;
+      finish();
+
+    } else {
+      //register listener for accelerometer
+      sm = (SensorManager) getSystemService(SENSOR_SERVICE);
+      sensor = sm.getDefaultSensor(
+          Sensor.TYPE_ACCELEROMETER);//SensorList(Sensor.TYPE_GYROSCOPE).get(0);
+      sm.registerListener(this, sensor, SensorManager.SENSOR_DELAY_NORMAL);
+
+      if (mGameLoopHandler == null) {
+        mGameLoopHandler = new Handler();
+      }
+
+      if (mTimeHandler == null) {
+        mTimeHandler = new Handler();
+      }
+
+      if (mRunnableGameLoop == null) {
+
+        mRunnableGameLoop = new Runnable() {
+          int loops = 0;
+          long nextUpdateGame = -1;
+
+          public void run() {
+            if (!MinigamesManager.areAllMinigamesInitialized()) {
+              mGameLoopHandler.postDelayed(this, 25);
+              return;
+            }
+            if (mGameLoopHandler != null) {
+              if (nextUpdateGame == -1) {
+                nextUpdateGame = System.currentTimeMillis();
+              }
+              loops = 0;
+              while (System.currentTimeMillis() > nextUpdateGame && loops < MAX_FRAMESKIP) {
+                updateGame();
+                nextUpdateGame += GAME_SKIP_FRAMES;
+                loops++;
+              }
+
+              refreshDisplayGame();
+              if (mGameLoopHandler != null) {
+                mGameLoopHandler.post(this);
+              }
+            }
+          }
+        };
+      }
+
+      if (mRunnableTime == null) {
+        mRunnableTime = new Runnable() {
+          private int secondsPassed = 0;
+
+          public void run() {
+            secondsPassed++;
+            //one second passed
+            GameTimeMaster.onSecondPassed();
+
+            //increase level
+            if (secondsPassed % (DebugSettings.SECONDS_PER_LEVEL) == 0) {
+              level++;
+              GameTimeMaster.onLevelIncreased(GameActivity.this);
             }
 
-            if (mTimeHandler == null) {
-                mTimeHandler = new Handler();
-            }
-
-            if (mRunnableGameLoop == null) {
-
-                mRunnableGameLoop = new Runnable() {
-                    int loops = 0;
-                    long nextUpdateGame = -1;
-
-                    public void run() {
-                        if (!MinigamesManager.areAllMinigamesInitialized()) {
-                            mGameLoopHandler.postDelayed(this, 25);
-                            return;
-                        }
-                        if (mGameLoopHandler != null) {
-                            if (nextUpdateGame == -1) {
-                                nextUpdateGame = System.currentTimeMillis();
-                            }
-                            loops = 0;
-                            while (System.currentTimeMillis() > nextUpdateGame && loops < MAX_FRAMESKIP) {
-                                updateGame();
-                                nextUpdateGame += GAME_SKIP_FRAMES;
-                                loops++;
-                            }
-
-                            refreshDisplayGame();
-                            if (mGameLoopHandler != null) {
-                                mGameLoopHandler.post(this);
-                            }
-                        }
-                    }
-                };
-            }
-
-            if (mRunnableTime == null) {
-                mRunnableTime = new Runnable() {
-                    private int secondsPassed = 0;
-
-                    public void run() {
-                        secondsPassed++;
-                        //one second passed
-                        GameTimeMaster.onSecondPassed();
-
-                        //increase level
-                        if (secondsPassed % (DebugSettings.SECONDS_PER_LEVEL) == 0) {
-                            level++;
-                            GameTimeMaster.onLevelIncreased(GameActivity.this);
-                        }
-
-                        if (mTimeHandler != null) {
-                            mTimeHandler.postDelayed(this, 1000);
-                        }
-
-                    }
-                };
-            }
-            wasGameSaved = GameSharedPref.isGameSaved();
-
-
-            if (mTutorialMode) {
-                if (sTutorialLastLevel == 0) {
-                    if(SoundEffectsCenter.getCurrentVolume(this) == 0 && !sRaisedVolumeForTutorialAlready){
-                        SoundEffectsCenter.raiseCurrentVolume(this);
-                    }
-                    if (!sTutorialRestart) {
-                        GameDialogs.showWelcomeTutorialWindow(this);
-                    } else {
-                        sTutorialRestart = false;
-                        GameDialogs.showNextTutorialWindow(this, false);
-                    }
-                } else {
-                    if (!sTutorialRestart) {
-                        GameDialogs.showNextTutorialWindow(this, true);
-                    } else {
-                        sTutorialRestart = false;
-                        GameDialogs.showNextTutorialWindow(this, false);
-                    }
-                }
-
-            } else {
-                if (wasGameSaved) {
-                    mToast = Toaster.toastLong((String) getResources().getString(R.string.game_touch_resume), this);
-                    wasActivityPaused = false;
-                } else {
-                    boolean playingFirstTime = GameSharedPref.isPlayingGameFirstTime();
-                    MinigamesManager.setAllMinigamesDifficultyForTutorial();
-                    if (playingFirstTime) {
-                        Toaster.toastLong((String) getResources().getString(R.string.game_touch_save), this);
-                        mToast = Toaster.toastLong((String) getResources().getString(R.string.game_touch_start), this);
-                        if(SoundEffectsCenter.getCurrentVolume(this) == 0 && !sRaisedVolumeForTutorialAlready){
-                            SoundEffectsCenter.raiseCurrentVolume(this);
-                        }
-                        GameSharedPref.setPlayingGameFirstTimeFalse();
-                    } else {
-                        mToast = Toaster.toastLong((String) getResources().getString(R.string.game_touch_start), this);
-                        if(SoundEffectsCenter.getCurrentVolume(this) == 0 && !sIncreaseVolumeShown){
-                            Toaster.toastLong(getString(R.string.increase_music_volume), this);
-                            sIncreaseVolumeShown = true;
-                        }
-                    }
-                }
-            }
-        }
-    }
-
-    public void onStart() {
-        super.onStart();
-        EasyTracker.getInstance(this).activityStart(this);
-    }
-    public void startGame() {
-        if (mRunnableGameLoop != null) {
-
-            if (GameSharedPref.isMusicOn()) {
-                if (!wasActivityPaused) {
-                    mMusicPlayer.startMusic();
-                } else {
-                    mMusicPlayer.resumeMusic();
-                }
-            }
-            mRunnableGameLoop.run();
-            gameStopped = false;
-        }
-        if (mRunnableTime != null) {
-            mRunnableTime.run();
-        }
-
-    }
-
-    public void startGameTutorial() {
-        stopTutorialGameLoop();
-
-        final GameActivity game = this;
-        MinigamesManager.deactivateAllMiniGames(this);
-        for (int i = 0; i <= sTutorialLastLevel; i++) {
-            MinigamesManager.activateMinigame(game, i);
-        }
-        if (mMusicPlayer != null && GameSharedPref.isMusicOn()) {
-            if (!mStartedMusicForTutorial) {
-                mMusicPlayer.startMusic();
-                mStartedMusicForTutorial = true;
-            } else {
-                mMusicPlayer.resumeMusic();
-            }
-        }
-
-        MinigamesManager.setAllMinigamesDifficultyForTutorial();
-        gameStopped = false;
-        startTutorialGameLoop();
-        if (mRunnableTutorial == null) {
-
-            mRunnableTutorial = new Runnable() {
-                public void run() {
-                    mMusicPlayer.pauseMusic();
-                    if (mGameLoopHandler != null) {
-                        mGameLoopHandler.removeCallbacks(null);
-                    }
-                    if (mTimeHandler != null) {
-                        mTimeHandler.removeCallbacks(mRunnableTime);
-                    }
-
-                    if (sTutorialLastLevel != 3) {
-
-                        GameDialogs.showNextTutorialWindow(game, true);
-
-                    } else {
-                        GameDialogs.showTutorialWinnerWindow(game);
-                        sTutorialLastLevel = 0;
-                    }
-                }
-            };
-        }
-        if (mHandlerTutorial == null) {
-            mHandlerTutorial = new Handler();
-        }
-
-        mHandlerTutorial.postDelayed(mRunnableTutorial, DebugSettings.SECONDS_PER_LEVEL_TUTORIAL
-                * 1000);
-    }
-
-    public void startTutorialGameLoop() {
-        if (mRunnableGameLoop != null) {
-            mRunnableGameLoop.run();
-        }
-        if (mRunnableTime != null) {
-            mRunnableTime.run();
-        }
-    }
-
-    public void stopTutorialGameLoop() {
-        if (mGameLoopHandler != null) {
-            mGameLoopHandler.removeCallbacks(null);
-        }
-        if (mTimeHandler != null) {
-            mTimeHandler.removeCallbacks(null);
-        }
-    }
-
-    private void updateGame() {
-        for (int i = 0; i < 4; i++) {
-            if (MinigamesManager.currentlyActiveMinigames[i] == true) {
-                MinigamesManager.getMinigamesObjects()[i].updateMinigame();
-            }
-        }
-
-    }
-
-    private void refreshDisplayGame() {
-        score += level * DebugSettings.SCORE_COEFICIENT;
-
-        if (mTutorialMode) {
-            setBarTextColors(scoreView, getString(R.string.score), "Tutorial");
-            setBarTextColors(difficultyView, "Level: ", "Tutorial");
-        } else {
-            setBarTextColors(scoreView, getString(R.string.score), String.valueOf(score));
-            setBarTextColors(difficultyView, "Level: ", String.valueOf(level));
-        }
-
-
-        for (int i = 0; i < 4; i++) {
-            if (MinigamesManager.currentlyActiveMinigames[i] == true) {
-                mFragmentViews[i].invalidate();
-            }
-        }
-
-    }
-
-    private void setBarTextColors(TextView textView, String firstWord, String secondWord) {
-        Spannable firstPart = new SpannableString(firstWord);
-        int firstColor = SkinsCenterListActivity.getCurrentSkin(this).getBarLabelColor();
-        firstPart.setSpan(new ForegroundColorSpan(firstColor), 0, firstPart.length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
-        textView.setText(firstPart);
-
-        Spannable secondPart = new SpannableString(secondWord);
-        int secondColor = SkinsCenterListActivity.getCurrentSkin(this).getBarTextColor();
-        secondPart.setSpan(new ForegroundColorSpan(secondColor), 0, secondPart.length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
-        textView.append(secondPart);
-    }
-
-    @Override
-    public void onPause() {
-        super.onPause();
-        overridePendingTransition(R.anim.fadein, R.anim.fadeout);
-        getWindow().clearFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
-        if (mTutorialMode) {
-            GameDialogs.sLostGame = true;
-            stopTutorial();
-        } else {
-            if (mGameLoopHandler != null && mRunnableGameLoop != null) {
-                mGameLoopHandler.removeCallbacks(mRunnableGameLoop);
-            }
             if (mTimeHandler != null) {
-                mTimeHandler.removeCallbacks(mRunnableTime);
+              mTimeHandler.postDelayed(this, 1000);
             }
+
+          }
+        };
+      }
+      wasGameSaved = GameSharedPref.isGameSaved();
+
+      if (mTutorialMode) {
+        if (sTutorialLastLevel == 0) {
+          if (SoundEffectsCenter.getCurrentVolume(this) == 0 && !sRaisedVolumeForTutorialAlready) {
+            SoundEffectsCenter.raiseCurrentVolume(this);
+          }
+          if (!sTutorialRestart) {
+            GameDialogs.showWelcomeTutorialWindow(this);
+          } else {
+            sTutorialRestart = false;
+            GameDialogs.showNextTutorialWindow(this, false);
+          }
+        } else {
+          if (!sTutorialRestart) {
+            GameDialogs.showNextTutorialWindow(this, true);
+          } else {
+            sTutorialRestart = false;
+            GameDialogs.showNextTutorialWindow(this, false);
+          }
         }
 
-
-        if (!gameStopped && !closedByButton) {
-            if (!mTutorialMode) {
-                saveGame();
+      } else {
+        if (wasGameSaved) {
+          mToast = Toaster.toastLong((String) getResources().getString(R.string.game_touch_resume),
+              this);
+          wasActivityPaused = false;
+        } else {
+          boolean playingFirstTime = GameSharedPref.isPlayingGameFirstTime();
+          MinigamesManager.setAllMinigamesDifficultyForTutorial();
+          if (playingFirstTime) {
+            Toaster.toastLong((String) getResources().getString(R.string.game_touch_save), this);
+            mToast = Toaster.toastLong((String) getResources().getString(R.string.game_touch_start),
+                this);
+            if (SoundEffectsCenter.getCurrentVolume(this) == 0 &&
+                !sRaisedVolumeForTutorialAlready) {
+              SoundEffectsCenter.raiseCurrentVolume(this);
             }
+            GameSharedPref.setPlayingGameFirstTimeFalse();
+          } else {
+            mToast = Toaster.toastLong((String) getResources().getString(R.string.game_touch_start),
+                this);
+            if (SoundEffectsCenter.getCurrentVolume(this) == 0 && !sIncreaseVolumeShown) {
+              Toaster.toastLong(getString(R.string.increase_music_volume), this);
+              sIncreaseVolumeShown = true;
+            }
+          }
         }
+      }
+    }
+  }
 
-        closedByButton = false;
-        sm.unregisterListener(this);
-        mMusicPlayer.pauseMusic();
-        wasActivityPaused = true;
+  public void onStart() {
+    super.onStart();
+    EasyTracker.getInstance(this).activityStart(this);
+  }
+
+  public void startGame() {
+    if (mRunnableGameLoop != null) {
+
+      if (GameSharedPref.isMusicOn()) {
+        if (!wasActivityPaused) {
+          mMusicPlayer.startMusic();
+        } else {
+          mMusicPlayer.resumeMusic();
+        }
+      }
+      mRunnableGameLoop.run();
+      gameStopped = false;
+    }
+    if (mRunnableTime != null) {
+      mRunnableTime.run();
     }
 
-    public void onSensorChanged(SensorEvent event) {
+  }
 
-        if (event.sensor.getType() == Sensor.TYPE_ACCELEROMETER) {
+  public void startGameTutorial() {
+    stopTutorialGameLoop();
 
-            if (!gameStopped) {
-                if (!isDefaultCoordinatesSet && GameSharedPref.getAutoCalibrationEnabled()) {
-                    /* Na stojaka je to 10, opacny stojak - 10, rovina nula, ten gece nevie ale na ktoru stranu je otoceny,
-                    ide to z oboch stran od 10 do -10. akuratze ked sa tocis okolo 10 on to odcitava, takze ti to akoby pretecie.
-                    preto ja nastavim os ak je moc velka na 8.5 tam zvycajne sa uz tolko netocis aby ti to pretekalo cez 10
+    final GameActivity game = this;
+    MinigamesManager.deactivateAllMiniGames(this);
+    for (int i = 0; i <= sTutorialLastLevel; i++) {
+      MinigamesManager.activateMinigame(game, i);
+    }
+    if (mMusicPlayer != null && GameSharedPref.isMusicOn()) {
+      if (!mStartedMusicForTutorial) {
+        mMusicPlayer.startMusic();
+        mStartedMusicForTutorial = true;
+      } else {
+        mMusicPlayer.resumeMusic();
+      }
+    }
+
+    MinigamesManager.setAllMinigamesDifficultyForTutorial();
+    gameStopped = false;
+    startTutorialGameLoop();
+    if (mRunnableTutorial == null) {
+
+      mRunnableTutorial = new Runnable() {
+        public void run() {
+          mMusicPlayer.pauseMusic();
+          if (mGameLoopHandler != null) {
+            mGameLoopHandler.removeCallbacks(null);
+          }
+          if (mTimeHandler != null) {
+            mTimeHandler.removeCallbacks(mRunnableTime);
+          }
+
+          if (sTutorialLastLevel != 3) {
+
+            GameDialogs.showNextTutorialWindow(game, true);
+
+          } else {
+            GameDialogs.showTutorialWinnerWindow(game);
+            sTutorialLastLevel = 0;
+          }
+        }
+      };
+    }
+    if (mHandlerTutorial == null) {
+      mHandlerTutorial = new Handler();
+    }
+
+    mHandlerTutorial.postDelayed(mRunnableTutorial,
+        DebugSettings.SECONDS_PER_LEVEL_TUTORIAL * 1000);
+  }
+
+  public void startTutorialGameLoop() {
+    if (mRunnableGameLoop != null) {
+      mRunnableGameLoop.run();
+    }
+    if (mRunnableTime != null) {
+      mRunnableTime.run();
+    }
+  }
+
+  public void stopTutorialGameLoop() {
+    if (mGameLoopHandler != null) {
+      mGameLoopHandler.removeCallbacks(null);
+    }
+    if (mTimeHandler != null) {
+      mTimeHandler.removeCallbacks(null);
+    }
+  }
+
+  private void updateGame() {
+    for (int i = 0; i < 4; i++) {
+      if (MinigamesManager.currentlyActiveMinigames[i] == true) {
+        MinigamesManager.getMinigamesObjects()[i].updateMinigame();
+      }
+    }
+
+  }
+
+  private void refreshDisplayGame() {
+    score += level * DebugSettings.SCORE_COEFICIENT;
+
+    if (mTutorialMode) {
+      setBarTextColors(scoreView, getString(R.string.score), "Tutorial");
+      setBarTextColors(difficultyView, "Level: ", "Tutorial");
+    } else {
+      setBarTextColors(scoreView, getString(R.string.score), String.valueOf(score));
+      setBarTextColors(difficultyView, "Level: ", String.valueOf(level));
+    }
+
+    for (int i = 0; i < 4; i++) {
+      if (MinigamesManager.currentlyActiveMinigames[i] == true) {
+        mFragmentViews[i].invalidate();
+      }
+    }
+
+  }
+
+  private void setBarTextColors(TextView textView, String firstWord, String secondWord) {
+    Spannable firstPart = new SpannableString(firstWord);
+    int firstColor = SkinsCenterListActivity.getCurrentSkin(this).getBarLabelColor();
+    firstPart.setSpan(new ForegroundColorSpan(firstColor), 0, firstPart.length(),
+        Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+    textView.setText(firstPart);
+
+    Spannable secondPart = new SpannableString(secondWord);
+    int secondColor = SkinsCenterListActivity.getCurrentSkin(this).getBarTextColor();
+    secondPart.setSpan(new ForegroundColorSpan(secondColor), 0, secondPart.length(),
+        Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+    textView.append(secondPart);
+  }
+
+  @Override
+  public void onPause() {
+    super.onPause();
+    overridePendingTransition(R.anim.fadein, R.anim.fadeout);
+    getWindow().clearFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
+    if (mTutorialMode) {
+      GameDialogs.sLostGame = true;
+      stopTutorial();
+    } else {
+      if (mGameLoopHandler != null && mRunnableGameLoop != null) {
+        mGameLoopHandler.removeCallbacks(mRunnableGameLoop);
+      }
+      if (mTimeHandler != null) {
+        mTimeHandler.removeCallbacks(mRunnableTime);
+      }
+    }
+
+    if (!gameStopped && !closedByButton) {
+      if (!mTutorialMode) {
+        saveGame();
+      }
+    }
+
+    closedByButton = false;
+    sm.unregisterListener(this);
+    mMusicPlayer.pauseMusic();
+    wasActivityPaused = true;
+  }
+
+  public void onSensorChanged(SensorEvent event) {
+
+    if (event.sensor.getType() == Sensor.TYPE_ACCELEROMETER) {
+
+      if (!gameStopped) {
+        if (!isDefaultCoordinatesSet && GameSharedPref.getAutoCalibrationEnabled()) {
+                    /* Na stojaka je to 10, opacny stojak - 10, rovina nula,
+                    ten gece nevie ale na ktoru stranu je otoceny,
+                    ide to z oboch stran od 10 do -10. akuratze ked sa tocis okolo 10 on to
+                    odcitava, takze ti to akoby pretecie.
+                    preto ja nastavim os ak je moc velka na 8.5 tam zvycajne sa uz tolko netocis
+                    aby ti to pretekalo cez 10
                      */
-                    DEFAULT_AXIS_X = normaliseAxis(event.values[1]);
-                    DEFAULT_AXIS_Y = normaliseAxis(event.values[0]);
-                    isDefaultCoordinatesSet = true;
-                }
-
-                if (mOrientation == Configuration.ORIENTATION_LANDSCAPE) {
-
-                    if (MinigamesManager.isMiniGameActive(0)) {
-                        minigametoSendEvents1.onUserInteracted(event.values[1] - DEFAULT_AXIS_X);
-                    }
-
-                    if (MinigamesManager.isMiniGameActive(1)) {
-                        minigametoSendEvents2.onUserInteracted(-event.values[0] - DEFAULT_AXIS_Y);
-                    }
-
-                } else {
-                    if (MinigamesManager.isMiniGameActive(0)) {
-                        minigametoSendEvents1.onUserInteracted(event.values[0] - DEFAULT_AXIS_Y);
-                    }
-
-                    if (MinigamesManager.isMiniGameActive(1)) {
-                        minigametoSendEvents2.onUserInteracted(event.values[1] - DEFAULT_AXIS_X);
-                    }
-
-                }
-            }
-        }
-    }
-
-    private float normaliseAxis(float value) {
-        if (value > 8.5) {
-            return 8.5f;
-        }
-        if (value < -8.5) {
-            return -8.5f;
-        }
-        return value;
-    }
-
-    @Override
-    public boolean onTouchEvent(MotionEvent evt) {
-        if (!gameStopped) {
-            return true;
-        }
-        if (evt.getAction() == MotionEvent.ACTION_DOWN) {
-            if (mToast != null) {
-                mToast.cancel();
-                mToast = null;
-            }
-            startGame();
-        }
-        return true;
-    }
-
-    public void onAccuracyChanged(Sensor arg0, int arg1) {
-    }
-
-    /**
-     * hoňím si
-     */
-    public void onGameLost(int loser) {
-        wasGameLost = true;
-        GameSharedPref.setGameSaved(false);
-
-        if (gameStopped != true) {
-            gameStopped = true;
-
-            if (mTutorialMode) {
-                stopTutorial();
-
-                colorFragmentGray(loser);
-
-                GameDialogs.showTutorialLoserDialogWindow(this);
-                return;
-            }
-
-            stopCurrentGame();
-            colorFragmentGray(loser);
-
-            GameSharedPref.StatsGamesPlayedIncrease();
-
-            AchievementsCenterListActivity.checkAchievements(score, level, this);
-
-            HofDatabaseCenter.getHofDb().open();
-
-            boolean isInHallOfFame = HofDatabaseCenter.getHofDb().isInHallOfFame(score);
-            HofDatabaseCenter.getHofDb().close();
-
-            if (isInHallOfFame) {
-                GameDialogs.showWinnerDialogWindow(this);
-            } else {
-                GameDialogs.showLoserDialogWindow(this);
-            }
-
+          DEFAULT_AXIS_X = normaliseAxis(event.values[1]);
+          DEFAULT_AXIS_Y = normaliseAxis(event.values[0]);
+          isDefaultCoordinatesSet = true;
         }
 
+        if (mOrientation == Configuration.ORIENTATION_LANDSCAPE) {
 
-    }
+          if (MinigamesManager.isMiniGameActive(0)) {
+            minigametoSendEvents1.onUserInteracted(event.values[1] - DEFAULT_AXIS_X);
+          }
 
-    private void colorFragmentGray(int loser) {
+          if (MinigamesManager.isMiniGameActive(1)) {
+            minigametoSendEvents2.onUserInteracted(-event.values[0] - DEFAULT_AXIS_Y);
+          }
 
-        switch (loser) {
-
-            case 0:
-                mFragmentViews[0].setBackgroundGray();
-                break;
-            case 1:
-                mFragmentViews[1].setBackgroundGray();
-                break;
-            case 2:
-                mFragmentViews[2].setBackgroundGray();
-                break;
-            case 3:
-                mFragmentViews[3].setBackgroundGray();
-                break;
-        }
-
-    }
-
-    @Override
-    public void onBackPressed() {
-        super.onBackPressed();
-
-        if (mTutorialMode) {
-            GameDialogs.sLostGame = true;
-            stopTutorial();
         } else {
-            saveGame();
-        }
-        closedByButton = true;
-        finish();
-    }
+          if (MinigamesManager.isMiniGameActive(0)) {
+            minigametoSendEvents1.onUserInteracted(event.values[0] - DEFAULT_AXIS_Y);
+          }
 
-    @Override
-    public void onUserLeaveHint() {
-        super.onUserLeaveHint();
-
-        if (mTutorialMode) {
-            stopTutorial();
-        } else {
-            saveGame();
-        }
-        closedByButton = true;
-        finish();
-    }
-
-    @Override
-    public void onStop() {
-        super.onStop();
-        SoundEffectsCenter.muteSystemSounds(this, false);
-        if (mMusicPlayer != null) {
-            mMusicPlayer.stopMusic();
-        }
-        EasyTracker.getInstance(this).activityStop(this);
-    }
-
-    @Override
-    public void onDestroy() {
-        super.onDestroy();
-        if (mTutorialMode) {
-            GameDialogs.sLostGame = true;
-        }
-        mMusicPlayer = null;
-    }
-
-    public void stopCurrentGame() {
-        sm.unregisterListener(this);
-
-        if (mGameLoopHandler != null && mRunnableGameLoop != null) {
-            mGameLoopHandler.removeCallbacks(mRunnableGameLoop);
-            mRunnableGameLoop = null;
-            mGameLoopHandler = null;
-        }
-        if (mTimeHandler != null) {
-            mTimeHandler.removeCallbacks(mRunnableTime);
-        }
-        GameSharedPref.setMinigamesInitialized(false);
-        if (mMusicPlayer != null) {
-            mMusicPlayer.pauseMusic();
-        }
-    }
-
-    public void stopTutorial() {
-        sm.unregisterListener(this);
-        mMusicPlayer.stopMusic();
-
-        if (mGameLoopHandler != null) {
-            mGameLoopHandler.removeCallbacks(mRunnableGameLoop);
-            mGameLoopHandler = null;
-        }
-
-        if (mRunnableGameLoop != null) {
-            mRunnableGameLoop = null;
-        }
-
-        if (mTimeHandler != null) {
-            mTimeHandler.removeCallbacks(mRunnableTime);
-            mTimeHandler = null;
-        }
-
-        if (mHandlerTutorial != null) {
-            mHandlerTutorial.removeCallbacks(mRunnableTutorial);
-            mHandlerTutorial = null;
+          if (MinigamesManager.isMiniGameActive(1)) {
+            minigametoSendEvents2.onUserInteracted(event.values[1] - DEFAULT_AXIS_X);
+          }
 
         }
+      }
+    }
+  }
 
-        if (mRunnableTutorial != null) {
-            mRunnableTutorial = null;
-        }
+  private float normaliseAxis(float value) {
+    if (value > 8.5) {
+      return 8.5f;
+    }
+    if (value < -8.5) {
+      return -8.5f;
+    }
+    return value;
+  }
 
-        GameSharedPref.setMinigamesInitialized(false);
+  @Override
+  public boolean onTouchEvent(MotionEvent evt) {
+    if (!gameStopped) {
+      return true;
+    }
+    if (evt.getAction() == MotionEvent.ACTION_DOWN) {
+      if (mToast != null) {
+        mToast.cancel();
+        mToast = null;
+      }
+      startGame();
+    }
+    return true;
+  }
+
+  public void onAccuracyChanged(Sensor arg0, int arg1) {
+  }
+
+  /**
+   * hoňím si
+   */
+  public void onGameLost(int loser) {
+    wasGameLost = true;
+    GameSharedPref.setGameSaved(false);
+
+    if (gameStopped != true) {
+      gameStopped = true;
+
+      if (mTutorialMode) {
+        stopTutorial();
+
+        colorFragmentGray(loser);
+
+        GameDialogs.showTutorialLoserDialogWindow(this);
+        return;
+      }
+
+      stopCurrentGame();
+      colorFragmentGray(loser);
+
+      GameSharedPref.StatsGamesPlayedIncrease();
+
+      AchievementsCenterListActivity.checkAchievements(score, level, this);
+
+      HofDatabaseCenter.getHofDb().open();
+
+      boolean isInHallOfFame = HofDatabaseCenter.getHofDb().isInHallOfFame(score);
+      HofDatabaseCenter.getHofDb().close();
+
+      if (isInHallOfFame) {
+        GameDialogs.showWinnerDialogWindow(this);
+      } else {
+        GameDialogs.showLoserDialogWindow(this);
+      }
+
     }
 
-    public AFragmentView[] getmFragmentViews() {
-        return mFragmentViews;
+  }
+
+  private void colorFragmentGray(int loser) {
+
+    switch (loser) {
+
+      case 0:
+        mFragmentViews[0].setBackgroundGray();
+        break;
+      case 1:
+        mFragmentViews[1].setBackgroundGray();
+        break;
+      case 2:
+        mFragmentViews[2].setBackgroundGray();
+        break;
+      case 3:
+        mFragmentViews[3].setBackgroundGray();
+        break;
     }
 
-    public AFragment[] getmFragments() {
-        return mFragments;
+  }
+
+  @Override
+  public void onBackPressed() {
+    super.onBackPressed();
+
+    if (mTutorialMode) {
+      GameDialogs.sLostGame = true;
+      stopTutorial();
+    } else {
+      saveGame();
+    }
+    closedByButton = true;
+    finish();
+  }
+
+  @Override
+  public void onUserLeaveHint() {
+    super.onUserLeaveHint();
+
+    if (mTutorialMode) {
+      stopTutorial();
+    } else {
+      saveGame();
+    }
+    closedByButton = true;
+    finish();
+  }
+
+  @Override
+  public void onStop() {
+    super.onStop();
+    SoundEffectsCenter.muteSystemSounds(this, false);
+    if (mMusicPlayer != null) {
+      mMusicPlayer.stopMusic();
+    }
+    EasyTracker.getInstance(this).activityStop(this);
+  }
+
+  @Override
+  public void onDestroy() {
+    super.onDestroy();
+    if (mTutorialMode) {
+      GameDialogs.sLostGame = true;
+    }
+    mMusicPlayer = null;
+  }
+
+  public void stopCurrentGame() {
+    sm.unregisterListener(this);
+
+    if (mGameLoopHandler != null && mRunnableGameLoop != null) {
+      mGameLoopHandler.removeCallbacks(mRunnableGameLoop);
+      mRunnableGameLoop = null;
+      mGameLoopHandler = null;
+    }
+    if (mTimeHandler != null) {
+      mTimeHandler.removeCallbacks(mRunnableTime);
+    }
+    GameSharedPref.setMinigamesInitialized(false);
+    if (mMusicPlayer != null) {
+      mMusicPlayer.pauseMusic();
+    }
+  }
+
+  public void stopTutorial() {
+    sm.unregisterListener(this);
+    mMusicPlayer.stopMusic();
+
+    if (mGameLoopHandler != null) {
+      mGameLoopHandler.removeCallbacks(mRunnableGameLoop);
+      mGameLoopHandler = null;
     }
 
-    public int getScore() {
-        return score;
+    if (mRunnableGameLoop != null) {
+      mRunnableGameLoop = null;
     }
 
-    public int getLevel() {
-        return level;
+    if (mTimeHandler != null) {
+      mTimeHandler.removeCallbacks(mRunnableTime);
+      mTimeHandler = null;
     }
 
-    public void setGameDetails(int newScore, int newFrames, int newLevel) {
-        score = newScore;
-        frames = newFrames;
-        level = newLevel;
+    if (mHandlerTutorial != null) {
+      mHandlerTutorial.removeCallbacks(mRunnableTutorial);
+      mHandlerTutorial = null;
+
     }
 
-    public int getFrames() {
-        return frames;
+    if (mRunnableTutorial != null) {
+      mRunnableTutorial = null;
     }
 
-    public boolean isGameStopped() {
-        return gameStopped;
+    GameSharedPref.setMinigamesInitialized(false);
+  }
+
+  public AFragmentView[] getmFragmentViews() {
+    return mFragmentViews;
+  }
+
+  public AFragment[] getmFragments() {
+    return mFragments;
+  }
+
+  public int getScore() {
+    return score;
+  }
+
+  public int getLevel() {
+    return level;
+  }
+
+  public void setGameDetails(int newScore, int newFrames, int newLevel) {
+    score = newScore;
+    frames = newFrames;
+    level = newLevel;
+  }
+
+  public int getFrames() {
+    return frames;
+  }
+
+  public boolean isGameStopped() {
+    return gameStopped;
+  }
+
+  private void saveGame() throws NotFoundException {
+    if (!wasGameLost) {
+      GameSaverLoader.saveGame(this);
+      Toaster.toastShort((String) getResources().getString(R.string.game_game_saved), this);
+      stopCurrentGame();
+      GameSharedPref.setGameSaved(true);
+      finish();
+    } else {
+      GameSharedPref.setGameSaved(false);
     }
+  }
 
-    private void saveGame() throws NotFoundException {
-        if (!wasGameLost) {
-            GameSaverLoader.saveGame(this);
-            Toaster.toastShort((String) getResources().getString(R.string.game_game_saved), this);
-            stopCurrentGame();
-            GameSharedPref.setGameSaved(true);
-            finish();
-        } else {
-            GameSharedPref.setGameSaved(false);
-        }
+  @Override
+  protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+    super.onActivityResult(requestCode, resultCode, data);
+    Session.getActiveSession().onActivityResult(this, requestCode, resultCode, data);
+  }
+
+  private void resolveOrientation() {
+    WindowManager windowManager = (WindowManager) getSystemService(WINDOW_SERVICE);
+    Configuration config = getResources().getConfiguration();
+
+    if (Build.VERSION.SDK_INT < 8) {
+      mOrientation = config.orientation;
+    } else {
+      int rotation = windowManager.getDefaultDisplay().getRotation();
+
+      if (((rotation == Surface.ROTATION_0 || rotation == Surface.ROTATION_180) &&
+          config.orientation == Configuration.ORIENTATION_LANDSCAPE) ||
+          ((rotation == Surface.ROTATION_90 || rotation == Surface.ROTATION_270) &&
+              config.orientation == Configuration.ORIENTATION_PORTRAIT)) {
+        mOrientation = Configuration.ORIENTATION_LANDSCAPE;
+      } else {
+        mOrientation = Configuration.ORIENTATION_PORTRAIT;
+      }
     }
+  }
 
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-        Session.getActiveSession()
-                .onActivityResult(this, requestCode, resultCode, data);
-    }
-
-    private void resolveOrientation() {
-        WindowManager windowManager = (WindowManager) getSystemService(WINDOW_SERVICE);
-        Configuration config = getResources().getConfiguration();
-
-        if (Build.VERSION.SDK_INT < 8) {
-            mOrientation = config.orientation;
-        } else {
-            int rotation = windowManager.getDefaultDisplay().getRotation();
-
-            if (((rotation == Surface.ROTATION_0 || rotation == Surface.ROTATION_180)
-                    && config.orientation == Configuration.ORIENTATION_LANDSCAPE)
-                    || ((rotation == Surface.ROTATION_90 || rotation == Surface.ROTATION_270)
-                    && config.orientation == Configuration.ORIENTATION_PORTRAIT)) {
-                mOrientation = Configuration.ORIENTATION_LANDSCAPE;
-            } else {
-                mOrientation = Configuration.ORIENTATION_PORTRAIT;
-            }
-        }
-    }
-
-    public boolean isTutorial() {
-        return mTutorialMode;
-    }
+  public boolean isTutorial() {
+    return mTutorialMode;
+  }
 }

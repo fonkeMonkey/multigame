@@ -8,9 +8,9 @@ import android.util.AttributeSet;
 
 public class MoreGamesDialog extends Preference {
 
-    public MoreGamesDialog(Context context, AttributeSet attrs) {
-        super(context, attrs);
+  public MoreGamesDialog(Context context, AttributeSet attrs) {
+    super(context, attrs);
 
-//        AppFlood.showPanel((Activity)context, AppFlood.PANEL_TOP);
-    }
+    //        AppFlood.showPanel((Activity)context, AppFlood.PANEL_TOP);
+  }
 }

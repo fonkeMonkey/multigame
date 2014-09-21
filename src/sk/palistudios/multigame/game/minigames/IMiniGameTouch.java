@@ -5,5 +5,5 @@ package sk.palistudios.multigame.game.minigames;
  */
 public interface IMiniGameTouch {
 
-    void onUserInteracted(float x, float y);
+  void onUserInteracted(float x, float y);
 }

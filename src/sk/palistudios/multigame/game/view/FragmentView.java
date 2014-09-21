@@ -1,6 +1,7 @@
 package sk.palistudios.multigame.game.view;
 
 import android.content.Context;
+
 import sk.palistudios.multigame.game.minigames.AMiniGame;
 
 /**
@@ -8,15 +9,15 @@ import sk.palistudios.multigame.game.minigames.AMiniGame;
  */
 public class FragmentView extends AFragmentView {
 
-    int backgroundColor;
+  int backgroundColor;
 
-    public FragmentView(Context context, int color, AMiniGame minigame) {
-        super(context, color, minigame);
-        backgroundColor = color;
-    }
+  public FragmentView(Context context, int color, AMiniGame minigame) {
+    super(context, color, minigame);
+    backgroundColor = color;
+  }
 
-    @Override
-    public void setBackgroundColored() {
-        setBackgroundColor(backgroundColor);
-    }
+  @Override
+  public void setBackgroundColored() {
+    setBackgroundColor(backgroundColor);
+  }
 }

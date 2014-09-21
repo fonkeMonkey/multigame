@@ -1,39 +1,39 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-              android:layout_width="fill_parent"
-              android:layout_height="fill_parent"
-              android:orientation="vertical"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:orientation="vertical"
     >
-    <!--android:weightSum="7"-->
+  <!--android:weightSum="7"-->
 
-    <TextView
-        android:id="@+id/achievement_name"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:gravity="center"
-        android:textStyle="bold"
-        />
+  <TextView
+      android:id="@+id/achievement_name"
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"
+      android:gravity="center"
+      android:textStyle="bold"
+      />
 
-    <TextView
-        android:id="@+id/achievement_description"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:gravity="center"
-        />
+  <TextView
+      android:id="@+id/achievement_description"
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"
+      android:gravity="center"
+      />
 
-    <TextView
-        android:id="@+id/achievement_reward"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:gravity="center"
-        android:textStyle="italic"
-        />
-    <!--android:layout_weight="5"-->
+  <TextView
+      android:id="@+id/achievement_reward"
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"
+      android:gravity="center"
+      android:textStyle="italic"
+      />
+  <!--android:layout_weight="5"-->
 
-    <!--    <TextView android:id="@+id/mgc_status"
-    android:layout_width="0dp"
-    android:layout_height="wrap_content"
-    android:layout_weight="1"
-    android:gravity="right"
-    />-->
+  <!--    <TextView android:id="@+id/mgc_status"
+  android:layout_width="0dp"
+  android:layout_height="wrap_content"
+  android:layout_weight="1"
+  android:gravity="right"
+  />-->
 
 </LinearLayout> 

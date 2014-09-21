@@ -1,126 +1,126 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <!-- General -->
-    <string name="cancel">Cancelar</string>
-    <string name="internet_no_connection">La conexión a Internet no está disponible. Por favor inténtalo más tarde.</string>
+  <!-- General -->
+  <string name="cancel">Cancelar</string>
+  <string name="internet_no_connection">La conexión a Internet no está disponible. Por favor inténtalo más tarde.</string>
 
-    <!-- Main Menu -->
-    <string name="app_name">multiGame</string>
-    <string name="app_id">225517634276553</string>
-    <string name="edit_message">Introducir un mensaje</string>
-    <string name="button_send">Enviar</string>
-    <string name="menu_settings">Opciones</string>
-    <string name="title_activity_main">multiGame</string>
+  <!-- Main Menu -->
+  <string name="app_name">multiGame</string>
+  <string name="app_id">225517634276553</string>
+  <string name="edit_message">Introducir un mensaje</string>
+  <string name="button_send">Enviar</string>
+  <string name="menu_settings">Opciones</string>
+  <string name="title_activity_main">multiGame</string>
 
-    <string name="button_game">¡Comenzar el juego!</string>
-    <string name="button_resume">¡Reanudar la partida!</string>
-    <string name="button_tutorial">¡Iniciar el tutorial!</string>
-    <string name="button_resume_tutorial">¡Reanudar el tutorial!</string>
+  <string name="button_game">¡Comenzar el juego!</string>
+  <string name="button_resume">¡Reanudar la partida!</string>
+  <string name="button_tutorial">¡Iniciar el tutorial!</string>
+  <string name="button_resume_tutorial">¡Reanudar el tutorial!</string>
 
-    <string name="button_customization_center">Centro de Personalización</string>
-    <string name="button_hall_of_fame">Salón de la Fama</string>
-    <string name="button_preferences">Preferencias</string>
+  <string name="button_customization_center">Centro de Personalización</string>
+  <string name="button_hall_of_fame">Salón de la Fama</string>
+  <string name="button_preferences">Preferencias</string>
 
-    <!-- Game -->
-    <string name="score">Clasificación:\u0020</string>
+  <!-- Game -->
+  <string name="score">Clasificación:\u0020</string>
 
-    <string name="game_achievement_fulfilled_1">Retos superados: </string>
-    <string name="game_achievement_fulfilled_2">.\u0020 Nuevo\u0020</string>
-    <string name="game_achievement_fulfilled_3">\¡\u0020 en centro de personalización desbloqueado! </string>
-    <string name="game_achievement_adfree_fulfilled">Reto superado: versión sin publicidad</string>
-    <string name="game_winner">¡Felicidades! ¡Has llegado al Salón de la Fama! Por favor, introduce tu nombre y disfruta de la fama.</string>
-    <string name="game_ask_for_name">Por favor, proporcionanos tu nombre para el Salón de la Fama.</string>
-    <string name="game_loser">Lo sentimos, tu puntuación no es lo suficientemente buena para hacerte famoso y entrar en el Salón de la Fama. ¡Mejor suerte la próxima vez!</string>
-    <string name="game_share">Compartir</string>
-    <string name="game_share_no_connection">Querías compartir tu puntuación, pero parece que no hay una conexión a Internet disponible. ¿Quieres intentarlo de nuevo?</string>
-    <string name="game_retry">Reintentar</string>
+  <string name="game_achievement_fulfilled_1">Retos superados: </string>
+  <string name="game_achievement_fulfilled_2">.\u0020 Nuevo\u0020</string>
+  <string name="game_achievement_fulfilled_3">\¡\u0020 en centro de personalización desbloqueado! </string>
+  <string name="game_achievement_adfree_fulfilled">Reto superado: versión sin publicidad</string>
+  <string name="game_winner">¡Felicidades! ¡Has llegado al Salón de la Fama! Por favor, introduce tu nombre y disfruta de la fama.</string>
+  <string name="game_ask_for_name">Por favor, proporcionanos tu nombre para el Salón de la Fama.</string>
+  <string name="game_loser">Lo sentimos, tu puntuación no es lo suficientemente buena para hacerte famoso y entrar en el Salón de la Fama. ¡Mejor suerte la próxima vez!</string>
+  <string name="game_share">Compartir</string>
+  <string name="game_share_no_connection">Querías compartir tu puntuación, pero parece que no hay una conexión a Internet disponible. ¿Quieres intentarlo de nuevo?</string>
+  <string name="game_retry">Reintentar</string>
 
-    <string name="facebook_login_failed">Lo sentimos, falló el inicio de sesión en Facebook.</string>
-    <string name="facebook_label">¡Comprueba mis habilidades multitarea!</string>
-    <string name="facebook_description1">Acabo de conseguir unos increibles </string>
-    <string name="facebook_description2"> puntos en Multigame! ¿Puedes mejorarlo?</string>
+  <string name="facebook_login_failed">Lo sentimos, falló el inicio de sesión en Facebook.</string>
+  <string name="facebook_label">¡Comprueba mis habilidades multitarea!</string>
+  <string name="facebook_description1">Acabo de conseguir unos increibles </string>
+  <string name="facebook_description2"> puntos en Multigame! ¿Puedes mejorarlo?</string>
 
-    <!-- Tutorial -->
-    <string name="exit_tutorial">Has salido del tutorial.</string>
-    <string name="tutorial_welcome">¡Bienvenido al tutorial de Multigame! Nuevos minijuegos se añadirán para acostumbrarte a la multitarea. ¡Que te diviertas!</string>
-    <string name="tutorial_negative">Salir del tutorial</string>
-    <string name="tutorial_positive">¡Comencemos!</string>
-    <string name="tutorial_try">¡Pruébalo!</string>
-    <string name="tutorial_finished">Felicidades, has finalizado el tutorial y ahora puedes comenzar a jugar en serio! Si deseas volver al tutorial más tarde (quizá con minijuegos diferentes), puedes volver a activarlo desde el menú de preferencias.</string>
-    <string name="tutorial_failed">Buen intento, pero necesitas mejorar un poco. Inténtalo de nuevo.</string>
+  <!-- Tutorial -->
+  <string name="exit_tutorial">Has salido del tutorial.</string>
+  <string name="tutorial_welcome">¡Bienvenido al tutorial de Multigame! Nuevos minijuegos se añadirán para acostumbrarte a la multitarea. ¡Que te diviertas!</string>
+  <string name="tutorial_negative">Salir del tutorial</string>
+  <string name="tutorial_positive">¡Comencemos!</string>
+  <string name="tutorial_try">¡Pruébalo!</string>
+  <string name="tutorial_finished">Felicidades, has finalizado el tutorial y ahora puedes comenzar a jugar en serio! Si deseas volver al tutorial más tarde (quizá con minijuegos diferentes), puedes volver a activarlo desde el menú de preferencias.</string>
+  <string name="tutorial_failed">Buen intento, pero necesitas mejorar un poco. Inténtalo de nuevo.</string>
 
-    <!-- Customization center -->
-    <string name="cc_unlocks">desbloqueo\u0020</string>
+  <!-- Customization center -->
+  <string name="cc_unlocks">desbloqueo\u0020</string>
 
-    <string name="cc_music_tab_name">Música</string>
-    <string name="cc_minigames_tab_name">Minijuegos</string>
-    <string name="cc_skins_tab_name">Skins</string>
-    <string name="cc_achievements_tab_name">Retos</string>
-    <string name="cc_more_games_tab_name">Más juegos</string>
+  <string name="cc_music_tab_name">Música</string>
+  <string name="cc_minigames_tab_name">Minijuegos</string>
+  <string name="cc_skins_tab_name">Skins</string>
+  <string name="cc_achievements_tab_name">Retos</string>
+  <string name="cc_more_games_tab_name">Más juegos</string>
 
-    <!-- Achievements center -->
+  <!-- Achievements center -->
 
-    <string name="cc_achievements_achievements_center_name">Centro de logros</string>
+  <string name="cc_achievements_achievements_center_name">Centro de logros</string>
 
-    <string name="cc_achievements_lucky_seven_name">Lucky seven</string>
-    <string name="cc_achievements_lucky_seven_description">Alcanza el nivel 7</string>
+  <string name="cc_achievements_lucky_seven_name">Lucky seven</string>
+  <string name="cc_achievements_lucky_seven_description">Alcanza el nivel 7</string>
 
-    <string name="cc_achievements_magin_ten_name">Magic 10</string>
-    <string name="cc_achievements_magin_ten_description">Alcanza el nivel 10</string>
+  <string name="cc_achievements_magin_ten_name">Magic 10</string>
+  <string name="cc_achievements_magin_ten_description">Alcanza el nivel 10</string>
 
-    <string name="cc_achievements_good_start_name">Good start</string>
-    <string name="cc_achievements_good_start_description">Alcanza los 5000 puntos</string>
+  <string name="cc_achievements_good_start_name">Good start</string>
+  <string name="cc_achievements_good_start_description">Alcanza los 5000 puntos</string>
 
-    <string name="cc_achievements_addict_name">Addict</string>
-    <string name="cc_achievements_addicts_description">Juega al menos 10 juegos</string>
+  <string name="cc_achievements_addict_name">Addict</string>
+  <string name="cc_achievements_addicts_description">Juega al menos 10 juegos</string>
 
-    <string name="cc_achievements_supporter_name">Supporter</string>
-    <string name="cc_achievements_supporter_description">Puntúa Multigame en Google Play</string>
+  <string name="cc_achievements_supporter_name">Supporter</string>
+  <string name="cc_achievements_supporter_description">Puntúa Multigame en Google Play</string>
 
-    <string name="cc_achievements_competitive_name">Competitive</string>
-    <string name="cc_achievements_competitive_description">Comparte tu puntuación en Facebook</string>
+  <string name="cc_achievements_competitive_name">Competitive</string>
+  <string name="cc_achievements_competitive_description">Comparte tu puntuación en Facebook</string>
 
-    <string name="cc_achievements_champion_name">Campeón</string>
-    <string name="cc_achievements_champion_description">Sé ňen salón de la fama</string>
+  <string name="cc_achievements_champion_name">Campeón</string>
+  <string name="cc_achievements_champion_description">Sé ňen salón de la fama</string>
 
-    <string name="cc_achievements_pro_name">Pro</string>
-    <string name="cc_achievements_pro_description">Alcanza el nivel 15</string>
+  <string name="cc_achievements_pro_name">Pro</string>
+  <string name="cc_achievements_pro_description">Alcanza el nivel 15</string>
 
-    <string name="cc_achievements_requirement_ending">\u0020para desbloquear esta partida</string>
+  <string name="cc_achievements_requirement_ending">\u0020para desbloquear esta partida</string>
 
-    <!-- Minigames center -->
+  <!-- Minigames center -->
 
-    <string name="cc_minigames_minigame_center_name">Centro de minijuegos</string>
-    <string name="cc_minigames_minigame_name">minijuego</string>
+  <string name="cc_minigames_minigame_center_name">Centro de minijuegos</string>
+  <string name="cc_minigames_minigame_name">minijuego</string>
 
-    <string name="cc_minigames_bouncer_name">Bouncer</string>
-    <string name="cc_minigames_invader_name">Invader</string>
+  <string name="cc_minigames_bouncer_name">Bouncer</string>
+  <string name="cc_minigames_invader_name">Invader</string>
 
-    <!-- Skins center -->
+  <!-- Skins center -->
 
-    <string name="cc_skins_skin_center_name">Centro de skins</string>
-    <string name="cc_skins_skin_name">skin</string>
-    <string name="cc_skins_girl_power_name">Girl Power</string>
-    <string name="cc_skins_summer_name">Summer</string>
-    <string name="cc_skins_blue_sky_name">Blue Sky</string>
+  <string name="cc_skins_skin_center_name">Centro de skins</string>
+  <string name="cc_skins_skin_name">skin</string>
+  <string name="cc_skins_girl_power_name">Girl Power</string>
+  <string name="cc_skins_summer_name">Summer</string>
+  <string name="cc_skins_blue_sky_name">Blue Sky</string>
 
-    <string name="cc_skin_unlock_message_1">"Debes llegar al menos al nivel 7 para poder desbloquear este skin"</string>
-    <string name="cc_skin_unlock_message_2">"Debes llegar al menos al nivel 7 para poder desbloquear este skin"</string>
+  <string name="cc_skin_unlock_message_1">"Debes llegar al menos al nivel 7 para poder desbloquear este skin"</string>
+  <string name="cc_skin_unlock_message_2">"Debes llegar al menos al nivel 7 para poder desbloquear este skin"</string>
 
-    <!-- Music center -->
+  <!-- Music center -->
 
-    <string name="cc_music_music_center_name">Centro de música</string>
-    <string name="cc_music_music_name">música</string>
-    <string name="cc_music_cyber_ops_name">Cyber Ops</string>
-    <string name="cc_music_cv_x_name">CV X</string>
-    <string name="cc_music_blam_name">Blam</string>
+  <string name="cc_music_music_center_name">Centro de música</string>
+  <string name="cc_music_music_name">música</string>
+  <string name="cc_music_cyber_ops_name">Cyber Ops</string>
+  <string name="cc_music_cv_x_name">CV X</string>
+  <string name="cc_music_blam_name">Blam</string>
 
-    <!-- Hall of fame -->
-    <string name="top_10_players">Los 10 mejores jugadores</string>
+  <!-- Hall of fame -->
+  <string name="top_10_players">Los 10 mejores jugadores</string>
 
-    <!-- Minigames -->
-    <string name="minigame">\u0020Minijuego\u0020</string>
+  <!-- Minigames -->
+  <string name="minigame">\u0020Minijuego\u0020</string>
     
     <string name="minigames_VBird"><![CDATA[Mueve el cuadrado <strong><u>inclinando</u></strong> tu teléfono hacia <strong><u>delante</u></strong> o hacia <strong><u>atrás</strong></u>. No debes golpear ningún obstáculo.]]>
     </string>
@@ -135,61 +135,61 @@
     <string name="minigames_VBouncer"><![CDATA[Mueve la plataforma inclinando tu teléfono hacia delante o hacia atrás. La bola no debe tocar la parte izquierda de la pantalla.]]>
     </string>
 
-    <!-- Game -->
-    <string name="game_touch_start">¡Toca la pantalla para comenzar el juego!</string>
-    <string name="game_touch_resume">¡Toca la pantalla para reanudar el juego!</string>
-    <string name="game_touch_save">Puedes guardar tus progresos en cualquier momento usando el botón de volver.</string>
-    <string name="game_game_saved">Game saved</string>
+  <!-- Game -->
+  <string name="game_touch_start">¡Toca la pantalla para comenzar el juego!</string>
+  <string name="game_touch_resume">¡Toca la pantalla para reanudar el juego!</string>
+  <string name="game_touch_save">Puedes guardar tus progresos en cualquier momento usando el botón de volver.</string>
+  <string name="game_game_saved">Game saved</string>
 
-    <!-- Preferences -->
-    <string name="pref_title">Preferencias</string>
-    <string name="pref_gameMode_Tutorial">Tutorial</string>
-    <string name="pref_gameMode_Classic">Clásico</string>
-    <string name="finish_saved_game">Por favor, finaliza antes tu juego guardado.</string>
+  <!-- Preferences -->
+  <string name="pref_title">Preferencias</string>
+  <string name="pref_gameMode_Tutorial">Tutorial</string>
+  <string name="pref_gameMode_Classic">Clásico</string>
+  <string name="finish_saved_game">Por favor, finaliza antes tu juego guardado.</string>
 
-    <string name="pref_music">Música</string>
-    <string name="pref_sound">Sonido</string>
-    <string name="autocalibration">Autocalibración</string>
-    <string name="autocalibration_subtitle">Configurar por defecto el eje X,Y basándose en la posición del teléfono al comienzo de cada juego</string>
-    <string name="pref_about">Acerca de…</string>
-    <string name="pref_game_mode">Modo de Juego</string>
-    <string name="pref_rate">Puntuar en Google Play</string>
+  <string name="pref_music">Música</string>
+  <string name="pref_sound">Sonido</string>
+  <string name="autocalibration">Autocalibración</string>
+  <string name="autocalibration_subtitle">Configurar por defecto el eje X,Y basándose en la posición del teléfono al comienzo de cada juego</string>
+  <string name="pref_about">Acerca de…</string>
+  <string name="pref_game_mode">Modo de Juego</string>
+  <string name="pref_rate">Puntuar en Google Play</string>
 
-    <string name="button_hall_of_fame_multigame_fan">Fan de Multigame</string>
+  <string name="button_hall_of_fame_multigame_fan">Fan de Multigame</string>
 
 
-    <!-- Rate -->
-    <string name="rate">Puntuar</string>
-    <string name="rate_msg">¿Te gustaría puntuar Multigame con 5 estrellas en Google Play?</string>
+  <!-- Rate -->
+  <string name="rate">Puntuar</string>
+  <string name="rate_msg">¿Te gustaría puntuar Multigame con 5 estrellas en Google Play?</string>
 
-    <!-- facebook -->
+  <!-- facebook -->
 
-    <string name="com_facebook_dialogloginactivity_ok_button">OK</string>
-    <string name="com_facebook_loginview_log_out_button">Log out</string>
-    <string name="com_facebook_loginview_log_in_button">Log in with Facebook</string>
-    <string name="com_facebook_loginview_logged_in_as">Logged in as: %1$s</string>
-    <string name="com_facebook_loginview_logged_in_using_facebook">Logged in using Facebook</string>
-    <string name="com_facebook_loginview_log_out_action">Log out</string>
-    <string name="com_facebook_loginview_cancel_action">Cancel</string>
-    <string name="com_facebook_logo_content_description">Facebook Logo</string>
-    <string name="com_facebook_usersettingsfragment_log_in_button">Log in&#8230;</string>
-    <string name="com_facebook_usersettingsfragment_logged_in">Logged in</string>
-    <string name="com_facebook_usersettingsfragment_not_logged_in">Not logged in</string>
-    <string name="com_facebook_placepicker_subtitle_format">%1$s • %2$,d were here</string>
-    <string name="com_facebook_placepicker_subtitle_catetory_only_format">%1$s</string>
-    <string name="com_facebook_placepicker_subtitle_were_here_only_format">%1$,d were here</string>
-    <string name="com_facebook_picker_done_button_text">Done</string>
-    <string name="com_facebook_choose_friends">Choose Friends</string>
-    <string name="com_facebook_nearby">Nearby</string>
-    <string name="com_facebook_loading">Loading...</string>
-    <string name="com_facebook_internet_permission_error_title">AndroidManifest Error</string>
-    <string name="com_facebook_internet_permission_error_message">WebView login requires INTERNET permission</string>
-    <string name="com_facebook_requesterror_web_login">Your Facebook account is locked. Please log into www.facebook.com to continue.</string>
-    <string name="com_facebook_requesterror_relogin">Please log into this app again to reconnect your Facebook account.</string>
-    <string name="com_facebook_requesterror_password_changed">Your Facebook password has changed. Please log into this app again to reconnect your Facebook account.</string>
-    <string name="com_facebook_requesterror_reconnect">Please log into this app again to reconnect your Facebook account.</string>
-    <string name="com_facebook_requesterror_permissions">This app doesn’t have permission to do this. To change permissions, try logging into the app again.</string>
+  <string name="com_facebook_dialogloginactivity_ok_button">OK</string>
+  <string name="com_facebook_loginview_log_out_button">Log out</string>
+  <string name="com_facebook_loginview_log_in_button">Log in with Facebook</string>
+  <string name="com_facebook_loginview_logged_in_as">Logged in as: %1$s</string>
+  <string name="com_facebook_loginview_logged_in_using_facebook">Logged in using Facebook</string>
+  <string name="com_facebook_loginview_log_out_action">Log out</string>
+  <string name="com_facebook_loginview_cancel_action">Cancel</string>
+  <string name="com_facebook_logo_content_description">Facebook Logo</string>
+  <string name="com_facebook_usersettingsfragment_log_in_button">Log in&#8230;</string>
+  <string name="com_facebook_usersettingsfragment_logged_in">Logged in</string>
+  <string name="com_facebook_usersettingsfragment_not_logged_in">Not logged in</string>
+  <string name="com_facebook_placepicker_subtitle_format">%1$s • %2$,d were here</string>
+  <string name="com_facebook_placepicker_subtitle_catetory_only_format">%1$s</string>
+  <string name="com_facebook_placepicker_subtitle_were_here_only_format">%1$,d were here</string>
+  <string name="com_facebook_picker_done_button_text">Done</string>
+  <string name="com_facebook_choose_friends">Choose Friends</string>
+  <string name="com_facebook_nearby">Nearby</string>
+  <string name="com_facebook_loading">Loading...</string>
+  <string name="com_facebook_internet_permission_error_title">AndroidManifest Error</string>
+  <string name="com_facebook_internet_permission_error_message">WebView login requires INTERNET permission</string>
+  <string name="com_facebook_requesterror_web_login">Your Facebook account is locked. Please log into www.facebook.com to continue.</string>
+  <string name="com_facebook_requesterror_relogin">Please log into this app again to reconnect your Facebook account.</string>
+  <string name="com_facebook_requesterror_password_changed">Your Facebook password has changed. Please log into this app again to reconnect your Facebook account.</string>
+  <string name="com_facebook_requesterror_reconnect">Please log into this app again to reconnect your Facebook account.</string>
+  <string name="com_facebook_requesterror_permissions">This app doesn’t have permission to do this. To change permissions, try logging into the app again.</string>
 
-    <string name="increase_music_volume">El aumento de volumen va a mejorar su experiencia de juego.</string>
+  <string name="increase_music_volume">El aumento de volumen va a mejorar su experiencia de juego.</string>
 
 </resources>

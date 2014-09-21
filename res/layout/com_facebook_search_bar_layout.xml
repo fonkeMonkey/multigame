@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 
 <LinearLayout
-    android:id="@+id/com_facebook_search_bar_view"
     xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/com_facebook_search_bar_view"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:background="@color/com_facebook_picker_search_bar_background"
@@ -13,20 +13,20 @@
     android:paddingTop="0dp"
     >
 
-    <EditText
-        android:id="@+id/com_facebook_picker_search_text"
-        android:layout_width="match_parent"
-        android:layout_height="48dp"
-        android:layout_gravity="center"
-        android:layout_marginLeft="5dp"
-        android:background="@color/com_facebook_picker_search_bar_background"
-        android:drawableLeft="@drawable/com_facebook_picker_magnifier"
-        android:drawablePadding="5dp"
-        android:gravity="center_vertical"
-        android:imeOptions="actionDone"
-        android:singleLine="true"
-        android:textColor="@android:color/black"
-        android:textColorHint="@color/com_facebook_picker_search_bar_text"
-        android:textSize="16dp"
-        />
+  <EditText
+      android:id="@+id/com_facebook_picker_search_text"
+      android:layout_width="match_parent"
+      android:layout_height="48dp"
+      android:layout_gravity="center"
+      android:layout_marginLeft="5dp"
+      android:background="@color/com_facebook_picker_search_bar_background"
+      android:drawableLeft="@drawable/com_facebook_picker_magnifier"
+      android:drawablePadding="5dp"
+      android:gravity="center_vertical"
+      android:imeOptions="actionDone"
+      android:singleLine="true"
+      android:textColor="@android:color/black"
+      android:textColorHint="@color/com_facebook_picker_search_bar_text"
+      android:textSize="16dp"
+      />
 </LinearLayout>

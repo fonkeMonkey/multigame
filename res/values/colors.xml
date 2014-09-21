@@ -1,103 +1,99 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <!--    Game colors     -->
-    <color name="game_background_1">#FAFAFA</color>
-    <color name="game_background_2">#F5F5F5</color>
-    <color name="game_background_3">#EAEAEA</color>
-    <color name="game_background_4">#EFEFEF</color>
+  <!--    Game colors     -->
+  <color name="game_background_1">#FAFAFA</color>
+  <color name="game_background_2">#F5F5F5</color>
+  <color name="game_background_3">#EAEAEA</color>
+  <color name="game_background_4">#EFEFEF</color>
 
-    <color name="gameMain">#D7817B</color>
-    <color name="gameAlt">#263247</color>
-    <color name="gameAlt2">#B4BBC8</color>
-
-
+  <color name="gameMain">#D7817B</color>
+  <color name="gameAlt">#263247</color>
+  <color name="gameAlt2">#B4BBC8</color>
 
 
-    <!--    Kuba     -->
-    <color name="kubaMenu1">#D98179</color>
-    <color name="kubaMenu2">#7DC0C2</color>
-    <color name="kubaMenu3">#6CB1B3</color>
-    <color name="kubaMenu4">#5DA0A2</color>
+  <!--    Kuba     -->
+  <color name="kubaMenu1">#D98179</color>
+  <color name="kubaMenu2">#7DC0C2</color>
+  <color name="kubaMenu3">#6CB1B3</color>
+  <color name="kubaMenu4">#5DA0A2</color>
 
-    <color name="kubaHeader">#D98179</color>
-    <color name="kubaChosen">#7DC0C2</color>
+  <color name="kubaHeader">#D98179</color>
+  <color name="kubaChosen">#7DC0C2</color>
 
-    <color name="kuba_top_bar_bg">#7FC0C1</color>
-    <color name="kuba_top_bar_label">#468D8E</color>
-    <color name="kuba_top_bar_number">#FFFFFF</color>
-    <color name="kuba_top_bar_separator">#A2D9DA</color>
-    <color name="kuba_top_bar_separator_down">#67ACAD</color>
-
-
-
-    <!--    Summer     -->
-    <color name="summerMenu1">#FF8700</color> X
-    <color name="summerMenu2">#FFA540</color> x
-    <color name="summerMenu3">#FFBD73</color>
-    <color name="summerMenu4">#FFD773</color>
-
-    <color name="summerHeader">#FF8700</color>
-    <color name="summerChosen">#FFD773</color>
-
-    <color name="summer_top_bar_bg">#FFA540</color>
-    <color name="summer_top_bar_label">#BF7C30</color>
-    <color name="summer_top_bar_number">#FFFFFF</color>
-    <color name="summer_top_bar_separator">#FFBD73</color>
-    <color name="summer_top_bar_separator_down">#A65800</color>
+  <color name="kuba_top_bar_bg">#7FC0C1</color>
+  <color name="kuba_top_bar_label">#468D8E</color>
+  <color name="kuba_top_bar_number">#FFFFFF</color>
+  <color name="kuba_top_bar_separator">#A2D9DA</color>
+  <color name="kuba_top_bar_separator_down">#67ACAD</color>
 
 
-    <!--    Girl power     -->
-    <color name="pinkyMenu1">#710067</color>
-    <color name="pinkyMenu2">#AD009F</color>
-    <color name="pinkyMenu3">#D636C9</color>
-    <color name="pinkyMenu4">#D660CC</color>
+  <!--    Summer     -->
+  <color name="summerMenu1">#FF8700</color>
+  X
+  <color name="summerMenu2">#FFA540</color>
+  x
+  <color name="summerMenu3">#FFBD73</color>
+  <color name="summerMenu4">#FFD773</color>
 
-    <color name="pinkyHeader">#AD009F</color>
-    <color name="pinkyChosen">#D660CC</color>
+  <color name="summerHeader">#FF8700</color>
+  <color name="summerChosen">#FFD773</color>
 
-    <color name="pinky_top_bar_bg">#D660CC</color>
-    <color name="pinky_top_bar_label">#710067</color>
-    <color name="pinky_top_bar_number">#FFFFFF</color>
-    <color name="pinky_top_bar_separator">#AD009F</color>
-    <color name="pinky_top_bar_separator_down">#AD009F</color>
-
-
-    <!--    Blue sky     -->
-    <color name="blueSkyMenu1">#03406A</color>
-    <color name="blueSkyMenu2">#0A64A4</color>
-    <color name="blueSkyMenu3">#3E94D1</color>
-    <color name="blueSkyMenu4">#65A5D1</color>
-
-    <color name="blueSkyHeader">#0A64A4</color>
-    <color name="blueSkyChosen">#65A5D1</color>
-
-    <color name="blue_sky_top_bar_bg">#65A5D1</color>
-    <color name="blue_sky_top_bar_label">#03406A</color>
-    <color name="blue_sky_top_bar_number">#FFFFFF</color>
-    <color name="blue_sky_top_bar_separator">#3E94D1</color>
-    <color name="blue_sky_top_bar_separator_down">#0A64A4</color>
-
-    <color name="listview_inactive_item">#55cccccc</color>
+  <color name="summer_top_bar_bg">#FFA540</color>
+  <color name="summer_top_bar_label">#BF7C30</color>
+  <color name="summer_top_bar_number">#FFFFFF</color>
+  <color name="summer_top_bar_separator">#FFBD73</color>
+  <color name="summer_top_bar_separator_down">#A65800</color>
 
 
+  <!--    Girl power     -->
+  <color name="pinkyMenu1">#710067</color>
+  <color name="pinkyMenu2">#AD009F</color>
+  <color name="pinkyMenu3">#D636C9</color>
+  <color name="pinkyMenu4">#D660CC</color>
+
+  <color name="pinkyHeader">#AD009F</color>
+  <color name="pinkyChosen">#D660CC</color>
+
+  <color name="pinky_top_bar_bg">#D660CC</color>
+  <color name="pinky_top_bar_label">#710067</color>
+  <color name="pinky_top_bar_number">#FFFFFF</color>
+  <color name="pinky_top_bar_separator">#AD009F</color>
+  <color name="pinky_top_bar_separator_down">#AD009F</color>
 
 
+  <!--    Blue sky     -->
+  <color name="blueSkyMenu1">#03406A</color>
+  <color name="blueSkyMenu2">#0A64A4</color>
+  <color name="blueSkyMenu3">#3E94D1</color>
+  <color name="blueSkyMenu4">#65A5D1</color>
 
-    <dimen name="com_facebook_picker_place_image_size">64dp</dimen>
-    <color name="com_facebook_picker_search_bar_background">#f5f5f7</color>
-    <color name="com_facebook_picker_search_bar_text">#bcbdc2</color>
+  <color name="blueSkyHeader">#0A64A4</color>
+  <color name="blueSkyChosen">#65A5D1</color>
 
-    <!-- dialogs -->
-    <color name="dialog_title_text">#000000</color>
-    <color name="dialog_title_separator">#000000</color>
-    <color name="dialog_message_text">#000000</color>
-    <color name="dialog_button_text">#000000</color>
-    <color name="dialog_button_separator">#000000</color>
-    <color name="dialog_button_normal">#000000</color>
-    <color name="dialog_button_pressed">#000000</color>
-    <color name="dialog_button_focused">#000000</color>
-    <color name="dialog_background">#000000</color>
-    
+  <color name="blue_sky_top_bar_bg">#65A5D1</color>
+  <color name="blue_sky_top_bar_label">#03406A</color>
+  <color name="blue_sky_top_bar_number">#FFFFFF</color>
+  <color name="blue_sky_top_bar_separator">#3E94D1</color>
+  <color name="blue_sky_top_bar_separator_down">#0A64A4</color>
+
+  <color name="listview_inactive_item">#55cccccc</color>
+
+
+  <dimen name="com_facebook_picker_place_image_size">64dp</dimen>
+  <color name="com_facebook_picker_search_bar_background">#f5f5f7</color>
+  <color name="com_facebook_picker_search_bar_text">#bcbdc2</color>
+
+  <!-- dialogs -->
+  <color name="dialog_title_text">#000000</color>
+  <color name="dialog_title_separator">#000000</color>
+  <color name="dialog_message_text">#000000</color>
+  <color name="dialog_button_text">#000000</color>
+  <color name="dialog_button_separator">#000000</color>
+  <color name="dialog_button_normal">#000000</color>
+  <color name="dialog_button_pressed">#000000</color>
+  <color name="dialog_button_focused">#000000</color>
+  <color name="dialog_background">#000000</color>
+
 </resources>
 

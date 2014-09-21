@@ -16,47 +16,41 @@
 package com.facebook.android;
 
 /**
- * Encapsulation of Dialog Error.
- * <p/>
- * THIS CLASS SHOULD BE CONSIDERED DEPRECATED.
- * <p/>
- * All public members of this class are intentionally deprecated. New code
- * should instead use {@link com.facebook.FacebookException}
- * <p/>
- * Adding
+ * Encapsulation of Dialog Error. <p/> THIS CLASS SHOULD BE CONSIDERED DEPRECATED. <p/> All public
+ * members of this class are intentionally deprecated. New code should instead use {@link
+ * com.facebook.FacebookException} <p/> Adding
  *
- * @Deprecated to this class causes warnings in other deprecated classes that
- * reference this one. That is the only reason this entire class is not
- * deprecated.
+ * @Deprecated to this class causes warnings in other deprecated classes that reference this one.
+ * That is the only reason this entire class is not deprecated.
  * @devDocDeprecated
  */
 public class DialogError extends Throwable {
 
-    private static final long serialVersionUID = 1L;
-    /**
-     * The ErrorCode received by the WebView: see
-     * http://developer.android.com/reference/android/webkit/WebViewClient.html
-     */
-    private int mErrorCode;
-    /**
-     * The URL that the dialog was trying to load
-     */
-    private String mFailingUrl;
+  private static final long serialVersionUID = 1L;
+  /**
+   * The ErrorCode received by the WebView: see http://developer.android
+   * .com/reference/android/webkit/WebViewClient.html
+   */
+  private int mErrorCode;
+  /**
+   * The URL that the dialog was trying to load
+   */
+  private String mFailingUrl;
 
-    @Deprecated
-    public DialogError(String message, int errorCode, String failingUrl) {
-        super(message);
-        mErrorCode = errorCode;
-        mFailingUrl = failingUrl;
-    }
+  @Deprecated
+  public DialogError(String message, int errorCode, String failingUrl) {
+    super(message);
+    mErrorCode = errorCode;
+    mFailingUrl = failingUrl;
+  }
 
-    @Deprecated
-    public int getErrorCode() {
-        return mErrorCode;
-    }
+  @Deprecated
+  public int getErrorCode() {
+    return mErrorCode;
+  }
 
-    @Deprecated
-    public String getFailingUrl() {
-        return mFailingUrl;
-    }
+  @Deprecated
+  public String getFailingUrl() {
+    return mFailingUrl;
+  }
 }

@@ -5,7 +5,7 @@ package sk.palistudios.multigame.customization_center;
  */
 public interface IAdapter {
 
-    public void setColorChosen(int color4);
+  public void setColorChosen(int color4);
 
-    public void notifyDataSetChanged();
+  public void notifyDataSetChanged();
 }

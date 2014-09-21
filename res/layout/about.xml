@@ -15,83 +15,83 @@
     android:stretchColumns="*">
 
 
-    <TableRow>
+  <TableRow>
 
 
-        <ImageView
-            android:layout_width="75dp"
-            android:layout_height="75dp"
+    <ImageView
+        android:layout_width="75dp"
+        android:layout_height="75dp"
 
 
-            android:layout_gravity="left|center"
+        android:layout_gravity="left|center"
 
 
-            android:src="@drawable/logo"/>
+        android:src="@drawable/logo" />
 
-        <LinearLayout
-            android:orientation="vertical"
-            >
-            <!--android:layout_height="match_parent"-->
-            <!--android:layout_width="match_parent"-->
-            <TextView
-
-
-                android:id="@+id/about_text"
+    <LinearLayout
+        android:orientation="vertical"
+        >
+      <!--android:layout_height="match_parent"-->
+      <!--android:layout_width="match_parent"-->
+      <TextView
 
 
-                android:layout_width="fill_parent"
-                android:layout_height="fill_parent"
-                android:layout_gravity="center"
+          android:id="@+id/about_text"
 
 
-                android:gravity="center"
-
-                android:text="Multigame v 1.0\n©Pali Studios\n"
-                />
-            <!--android:text="@raw/info"/>-->
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:gravity="center"
-                android:text="Music by Deceased Superior Technician"
-                android:textSize="10sp"
-                />
-
-        </LinearLayout>
-    </TableRow>
+          android:layout_width="fill_parent"
+          android:layout_height="fill_parent"
+          android:layout_gravity="center"
 
 
-    <TableRow>
+          android:gravity="center"
+
+          android:text="Multigame v 1.0\n©Pali Studios\n"
+          />
+      <!--android:text="@raw/info"/>-->
+      <TextView
+          android:layout_width="wrap_content"
+          android:layout_height="wrap_content"
+          android:layout_gravity="center"
+          android:gravity="center"
+          android:text="Music by Deceased Superior Technician"
+          android:textSize="10sp"
+          />
+
+    </LinearLayout>
+  </TableRow>
 
 
-        <TextView
+  <TableRow>
 
 
-            android:id="@+id/legal_text"
+    <TextView
 
 
-            android:layout_width="fill_parent"
+        android:id="@+id/legal_text"
 
 
-            android:layout_height="wrap_content"
-            android:layout_margin="8dip"
-            android:layout_span="2"
+        android:layout_width="fill_parent"
 
 
-            android:text="All rights reserved."
+        android:layout_height="wrap_content"
+        android:layout_margin="8dip"
+        android:layout_span="2"
 
 
-            android:textColor="#cccccc"
+        android:text="All rights reserved."
 
 
-            android:textSize="10dip"
-
-            android:textStyle="italic"/>
-        <!--android:text="@raw/legal"/>-->
+        android:textColor="#cccccc"
 
 
-    </TableRow>
+        android:textSize="10dip"
+
+        android:textStyle="italic" />
+    <!--android:text="@raw/legal"/>-->
+
+
+  </TableRow>
 
 
 </TableLayout>

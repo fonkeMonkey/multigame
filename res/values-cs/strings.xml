@@ -1,130 +1,130 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <!-- General -->
-    <string name="cancel">Zrušit</string>
-    <string name="internet_no_connection">Připojení k internetu není dostupné. Zkus později prosím.</string>
+  <!-- General -->
+  <string name="cancel">Zrušit</string>
+  <string name="internet_no_connection">Připojení k internetu není dostupné. Zkus později prosím.</string>
 
 
-    <!-- Main Menu -->
-    <string name="app_name">Multigame</string>
-    <string name="app_id">225517634276553</string>
-    <string name="edit_message">Zadej zprávu</string>
-    <string name="button_send">Pošli</string>
-    <string name="menu_settings">Nastavení</string>
-    <string name="title_activity_main">Multigame</string>
+  <!-- Main Menu -->
+  <string name="app_name">Multigame</string>
+  <string name="app_id">225517634276553</string>
+  <string name="edit_message">Zadej zprávu</string>
+  <string name="button_send">Pošli</string>
+  <string name="menu_settings">Nastavení</string>
+  <string name="title_activity_main">Multigame</string>
 
-    <string name="button_game">Spusť hru!</string>
-    <string name="button_resume">Pokračuj ve hře!</string>
-    <string name="button_tutorial">Spusť tutoriál!</string>
-    <string name="button_resume_tutorial">Pokračuj v tutoriáli!</string>
+  <string name="button_game">Spusť hru!</string>
+  <string name="button_resume">Pokračuj ve hře!</string>
+  <string name="button_tutorial">Spusť tutoriál!</string>
+  <string name="button_resume_tutorial">Pokračuj v tutoriáli!</string>
 
-    <string name="button_customization_center">Přizpůsobení</string>
-    <string name="button_hall_of_fame">Síň slávy</string>
-    <string name="button_preferences">Nastavení</string>
-    <!-- Game -->
+  <string name="button_customization_center">Přizpůsobení</string>
+  <string name="button_hall_of_fame">Síň slávy</string>
+  <string name="button_preferences">Nastavení</string>
+  <!-- Game -->
 
-    <string name="score">Skóre:\u0020</string>
+  <string name="score">Skóre:\u0020</string>
 
-    <string name="game_achievement_fulfilled_1">Dosažený cíl :\u0020</string>
-    <string name="game_achievement_fulfilled_2">.\u0020 Nová\u0020</string>
-    <string name="game_achievement_fulfilled_3">\u0020v sekci přizpůsobení odemčená!</string>
-    <string name="game_winner">Blahopřejeme! Dokázal jsi se probojovat do síně slávy! Zadej své jméno a užívej jsi zaslouženou slávu.</string>
-    <string name="game_ask_for_name">Zadej své jméno do síně slávy.</string>
-    <string name="game_loser">Omlouváme se, ale tvoje skóre nebylo dostatečně dobré, aby jsi se dostal do síně slávy. Hodně štěstí při dalším pokusu!</string>
-    <string name="game_share">Sdílet</string>
-    <string name="game_share_no_connection">Chtěl jsi sdílet své skóre, ale vypadá to, že připojení k internetu není momentálně dostupné.. Zkusit znovu?</string>
-    <string name="game_retry">Zkus znovu</string>
+  <string name="game_achievement_fulfilled_1">Dosažený cíl :\u0020</string>
+  <string name="game_achievement_fulfilled_2">.\u0020 Nová\u0020</string>
+  <string name="game_achievement_fulfilled_3">\u0020v sekci přizpůsobení odemčená!</string>
+  <string name="game_winner">Blahopřejeme! Dokázal jsi se probojovat do síně slávy! Zadej své jméno a užívej jsi zaslouženou slávu.</string>
+  <string name="game_ask_for_name">Zadej své jméno do síně slávy.</string>
+  <string name="game_loser">Omlouváme se, ale tvoje skóre nebylo dostatečně dobré, aby jsi se dostal do síně slávy. Hodně štěstí při dalším pokusu!</string>
+  <string name="game_share">Sdílet</string>
+  <string name="game_share_no_connection">Chtěl jsi sdílet své skóre, ale vypadá to, že připojení k internetu není momentálně dostupné.. Zkusit znovu?</string>
+  <string name="game_retry">Zkus znovu</string>
 
-    <string name="facebook_login_failed">Omlouváme se, nepodařilo se připojit k facebooku.</string>
-    <string name="facebook_label">čekuj moje multitaskingové skilly!</string>
-    <string name="facebook_description1">Právě jsem dosáhl neuvěřitelných\u0020</string>
-    <string name="facebook_description2">\u0020bodů v Multigame! Dokážeš mě porazit?</string>
+  <string name="facebook_login_failed">Omlouváme se, nepodařilo se připojit k facebooku.</string>
+  <string name="facebook_label">čekuj moje multitaskingové skilly!</string>
+  <string name="facebook_description1">Právě jsem dosáhl neuvěřitelných\u0020</string>
+  <string name="facebook_description2">\u0020bodů v Multigame! Dokážeš mě porazit?</string>
 
-    <!-- Tutorial -->
-    <string name="exit_tutorial">Opustil jsi tutoriál.</string>
-    <string name="tutorial_welcome">Vítej v Multigame tutoriálu! Nové minihry budou přidávané, aby sis zvykl na multitasking. Hodně štěstí!</string>
-    <string name="tutorial_negative">Opustit tutoriál</string>
-    <string name="tutorial_positive">Začněme!</string>
-    <string name="tutorial_try">OK</string>
-    <string name="tutorial_finished">Blahopřejeme, podařilo se Ti ukončit tutoriál a můžeš nyní hrát normální hru! Pokud by jsi měl chuť jsi ještě zahrát tutoriál (možná s jinými minihrami), můžeš jej znovu aktivovat v nastavení.</string>
-    <string name="tutorial_failed">Dobrý pokus, ale bude to třeba ještě trochu vypilovat. Zkus ještě jednou.</string>
-
-
-    <!-- Minigames description -->
-
-    <!-- Customization center -->
-    <string name="cc_unlocks">Odemkne:\u0020</string>
-
-    <string name="cc_music_tab_name">Hudba</string>
-    <string name="cc_minigames_tab_name">Minihry</string>
-    <string name="cc_skins_tab_name">Témata</string>
-    <string name="cc_achievements_tab_name">Cíle</string>
-    <string name="cc_more_games_tab_name">Více her</string>
-
-    <!-- Úspěchy center -->
-
-    <string name="cc_achievements_achievements_center_name">Cíle</string>
-
-    <string name="cc_achievements_lucky_seven_name">Štastná sedmička</string>
-    <string name="cc_achievements_lucky_seven_description">Dosáhni 7. level</string>
-
-    <string name="cc_achievements_magin_ten_name">Magická desítka</string>
-    <string name="cc_achievements_magin_ten_description">Dosáhni 10. level</string>
-
-    <string name="cc_achievements_good_start_name">Dobrý začátek</string>
-    <string name="cc_achievements_good_start_description">Dosáhni skóre 5000</string>
-
-    <string name="cc_achievements_addict_name">Závislák</string>
-    <string name="cc_achievements_addicts_description">Zahraj jsi alespoň 10 her</string>
-
-    <string name="cc_achievements_supporter_name">Podporovatel</string>
-    <string name="cc_achievements_supporter_description">Ohodnoť Multigame na Google Play</string>
-
-    <string name="cc_achievements_competitive_name">Soutěživý</string>
-    <string name="cc_achievements_competitive_description">Sdílej své skóre na Facebooku</string>
-
-    <string name="cc_achievements_champion_name">Šampión</string>
-    <string name="cc_achievements_champion_description">Buď v síni slávy</string>
-
-    <string name="cc_achievements_pro_name">Profesionál</string>
-    <string name="cc_achievements_pro_description">Dosáhni 15. level</string>
-
-    <string name="cc_achievements_requirement_ending">, k odemčení této položky.</string>
-
-    <!-- Minigames center -->
-    <string name="minigame">\u0020Minihra\u0020</string>
-
-    <string name="cc_minigames_minigame_center_name">Minihry</string>
-    <string name="cc_minigames_minigame_name">minihra</string>
-
-    <string name="cc_minigames_bouncer_name">Bouncer</string>
-    <string name="cc_minigames_invader_name">Invader</string>
-
-    <!-- Skins center -->
-
-    <string name="cc_skins_skin_center_name">Témata</string>
-    <string name="cc_skins_skin_name">téma</string>
-    <string name="cc_skins_girl_power_name">Girl Power</string>
-    <string name="cc_skins_summer_name">Summer</string>
-    <string name="cc_skins_blue_sky_name">Blue Sky</string>
+  <!-- Tutorial -->
+  <string name="exit_tutorial">Opustil jsi tutoriál.</string>
+  <string name="tutorial_welcome">Vítej v Multigame tutoriálu! Nové minihry budou přidávané, aby sis zvykl na multitasking. Hodně štěstí!</string>
+  <string name="tutorial_negative">Opustit tutoriál</string>
+  <string name="tutorial_positive">Začněme!</string>
+  <string name="tutorial_try">OK</string>
+  <string name="tutorial_finished">Blahopřejeme, podařilo se Ti ukončit tutoriál a můžeš nyní hrát normální hru! Pokud by jsi měl chuť jsi ještě zahrát tutoriál (možná s jinými minihrami), můžeš jej znovu aktivovat v nastavení.</string>
+  <string name="tutorial_failed">Dobrý pokus, ale bude to třeba ještě trochu vypilovat. Zkus ještě jednou.</string>
 
 
-    <!-- Music center -->
+  <!-- Minigames description -->
 
-    <string name="cc_music_music_center_name">Hudba</string>
-    <string name="cc_music_music_name">hudba</string>
-    <string name="cc_music_cyber_ops_name">Cyber ​​Ops</string>
-    <string name="cc_music_cv_x_name">CV X</string>
-    <string name="cc_music_blam_name">Blam</string>
+  <!-- Customization center -->
+  <string name="cc_unlocks">Odemkne:\u0020</string>
 
-    <!-- Hall of fame -->
-    <string name="top_10_players">Top 10 hráčů</string>
+  <string name="cc_music_tab_name">Hudba</string>
+  <string name="cc_minigames_tab_name">Minihry</string>
+  <string name="cc_skins_tab_name">Témata</string>
+  <string name="cc_achievements_tab_name">Cíle</string>
+  <string name="cc_more_games_tab_name">Více her</string>
+
+  <!-- Úspěchy center -->
+
+  <string name="cc_achievements_achievements_center_name">Cíle</string>
+
+  <string name="cc_achievements_lucky_seven_name">Štastná sedmička</string>
+  <string name="cc_achievements_lucky_seven_description">Dosáhni 7. level</string>
+
+  <string name="cc_achievements_magin_ten_name">Magická desítka</string>
+  <string name="cc_achievements_magin_ten_description">Dosáhni 10. level</string>
+
+  <string name="cc_achievements_good_start_name">Dobrý začátek</string>
+  <string name="cc_achievements_good_start_description">Dosáhni skóre 5000</string>
+
+  <string name="cc_achievements_addict_name">Závislák</string>
+  <string name="cc_achievements_addicts_description">Zahraj jsi alespoň 10 her</string>
+
+  <string name="cc_achievements_supporter_name">Podporovatel</string>
+  <string name="cc_achievements_supporter_description">Ohodnoť Multigame na Google Play</string>
+
+  <string name="cc_achievements_competitive_name">Soutěživý</string>
+  <string name="cc_achievements_competitive_description">Sdílej své skóre na Facebooku</string>
+
+  <string name="cc_achievements_champion_name">Šampión</string>
+  <string name="cc_achievements_champion_description">Buď v síni slávy</string>
+
+  <string name="cc_achievements_pro_name">Profesionál</string>
+  <string name="cc_achievements_pro_description">Dosáhni 15. level</string>
+
+  <string name="cc_achievements_requirement_ending">, k odemčení této položky.</string>
+
+  <!-- Minigames center -->
+  <string name="minigame">\u0020Minihra\u0020</string>
+
+  <string name="cc_minigames_minigame_center_name">Minihry</string>
+  <string name="cc_minigames_minigame_name">minihra</string>
+
+  <string name="cc_minigames_bouncer_name">Bouncer</string>
+  <string name="cc_minigames_invader_name">Invader</string>
+
+  <!-- Skins center -->
+
+  <string name="cc_skins_skin_center_name">Témata</string>
+  <string name="cc_skins_skin_name">téma</string>
+  <string name="cc_skins_girl_power_name">Girl Power</string>
+  <string name="cc_skins_summer_name">Summer</string>
+  <string name="cc_skins_blue_sky_name">Blue Sky</string>
 
 
-    <!-- Tutorial -->
+  <!-- Music center -->
 
-    <!-- Minigames -->
+  <string name="cc_music_music_center_name">Hudba</string>
+  <string name="cc_music_music_name">hudba</string>
+  <string name="cc_music_cyber_ops_name">Cyber ​​Ops</string>
+  <string name="cc_music_cv_x_name">CV X</string>
+  <string name="cc_music_blam_name">Blam</string>
+
+  <!-- Hall of fame -->
+  <string name="top_10_players">Top 10 hráčů</string>
+
+
+  <!-- Tutorial -->
+
+  <!-- Minigames -->
     
     <string name="minigames_VBird"><![CDATA[Pohybuj čtverečkem <strong><u>nakláněním</u></strong> telefonu <strong><u>dopředu</u></strong> a <strong><u>dozadu</strong></u>. Musíš se vyhnout překážkám.]]>
     </string>
@@ -139,64 +139,64 @@
     <string name="minigames_VBouncer"><![CDATA[Pohybuj platformou nakláněním mobilu nahoru a dolů. Míček se nesmí dotknout levého kraje obrazovky.]]>
     </string>
 
-    <!-- Game -->
-    <string name="game_touch_start">Dotkni se obrazovky, aby jsi spustil hru!</string>
-    <string name="game_touch_resume">Dotkni se obrazovky, aby jsi pokračoval ve hře!</string>
-    <string name="game_touch_save">Můžeš uložit svou hru zmáčknutím \'back\' tlačítka na telefonu.</string>
-    <string name="game_game_saved">Hra uložena</string>
+  <!-- Game -->
+  <string name="game_touch_start">Dotkni se obrazovky, aby jsi spustil hru!</string>
+  <string name="game_touch_resume">Dotkni se obrazovky, aby jsi pokračoval ve hře!</string>
+  <string name="game_touch_save">Můžeš uložit svou hru zmáčknutím \'back\' tlačítka na telefonu.</string>
+  <string name="game_game_saved">Hra uložena</string>
 
 
-    <!-- Preferences -->
-    <string name="pref_title">Nastavení</string>
-    <string name="pref_gameMode_Tutorial">Tutorial</string>
-    <string name="pref_gameMode_Classic">Classic</string>
-    <string name="pref_about">O hře…</string>
-    <string name="finish_saved_game">Dokonči svou uloženou hru, prosím.</string>
+  <!-- Preferences -->
+  <string name="pref_title">Nastavení</string>
+  <string name="pref_gameMode_Tutorial">Tutorial</string>
+  <string name="pref_gameMode_Classic">Classic</string>
+  <string name="pref_about">O hře…</string>
+  <string name="finish_saved_game">Dokonči svou uloženou hru, prosím.</string>
 
-    <string name="pref_music">Hudba</string>
-    <string name="pref_sound">​​Zvuk</string>
-    <string name="autocalibration">Autokalibrace</string>
-    <string name="autocalibration_subtitle">Nastav osy X a Y pro rotaci na začátku hry podle natočení mobilu</string>
+  <string name="pref_music">Hudba</string>
+  <string name="pref_sound">​​Zvuk</string>
+  <string name="autocalibration">Autokalibrace</string>
+  <string name="autocalibration_subtitle">Nastav osy X a Y pro rotaci na začátku hry podle natočení mobilu</string>
 
-    <string name="pref_game_mode">Herní mod</string>
-    <string name="pref_rate">Ohodnoť na Google Play</string>
-
-
-    <!-- Rate -->
-    <string name="rate">Ohodnoť</string>
-    <string name="rate_msg">Chtěl bys ohodnotit Multigame 5 hvězdičkami na Google Play?</string>
-
-    <string name="button_hall_of_fame_multigame_fan">Fanoušek Multigame</string>
-
-    <!-- Facebook -->
-
-    <string name="com_facebook_dialogloginactivity_ok_button">OK</string>
-    <string name="com_facebook_loginview_log_out_button">Log out</string>
-    <string name="com_facebook_loginview_log_in_button">Log in with Facebook</string>
-    <string name="com_facebook_loginview_logged_in_as">Logged in as: %1$s</string>
-    <string name="com_facebook_loginview_logged_in_using_facebook">Logged in using Facebook</string>
-    <string name="com_facebook_loginview_log_out_action">Log out</string>
-    <string name="com_facebook_loginview_cancel_action">Cancel</string>
-    <string name="com_facebook_logo_content_description">Facebook Logo</string>
-    <string name="com_facebook_usersettingsfragment_log_in_button">Log in&#8230;</string>
-    <string name="com_facebook_usersettingsfragment_logged_in">Logged in</string>
-    <string name="com_facebook_usersettingsfragment_not_logged_in">Not logged in</string>
-    <string name="com_facebook_placepicker_subtitle_format">%1$s • %2$,d were here</string>
-    <string name="com_facebook_placepicker_subtitle_catetory_only_format">%1$s</string>
-    <string name="com_facebook_placepicker_subtitle_were_here_only_format">%1$,d were here</string>
-    <string name="com_facebook_picker_done_button_text">Done</string>
-    <string name="com_facebook_choose_friends">Choose Friends</string>
-    <string name="com_facebook_nearby">Nearby</string>
-    <string name="com_facebook_loading">Loading...</string>
-    <string name="com_facebook_internet_permission_error_title">AndroidManifest Error</string>
-    <string name="com_facebook_internet_permission_error_message">WebView login requires INTERNET permission</string>
-    <string name="com_facebook_requesterror_web_login">Your Facebook account is locked. Please log into www.facebook.com to continue.</string>
-    <string name="com_facebook_requesterror_relogin">Please log into this app again to reconnect your Facebook account.</string>
-    <string name="com_facebook_requesterror_password_changed">Your Facebook password has changed. Please log into this app again to reconnect your Facebook account.</string>
-    <string name="com_facebook_requesterror_reconnect">Please log into this app again to reconnect your Facebook account.</string>
-    <string name="com_facebook_requesterror_permissions">This app doesn’t have permission to do this. To change permissions, try logging into the app again.</string>
+  <string name="pref_game_mode">Herní mod</string>
+  <string name="pref_rate">Ohodnoť na Google Play</string>
 
 
-    <string name="increase_music_volume">Zvýšení hlasitosti zvuku zlepší tvůj herní zážitek.</string>
+  <!-- Rate -->
+  <string name="rate">Ohodnoť</string>
+  <string name="rate_msg">Chtěl bys ohodnotit Multigame 5 hvězdičkami na Google Play?</string>
+
+  <string name="button_hall_of_fame_multigame_fan">Fanoušek Multigame</string>
+
+  <!-- Facebook -->
+
+  <string name="com_facebook_dialogloginactivity_ok_button">OK</string>
+  <string name="com_facebook_loginview_log_out_button">Log out</string>
+  <string name="com_facebook_loginview_log_in_button">Log in with Facebook</string>
+  <string name="com_facebook_loginview_logged_in_as">Logged in as: %1$s</string>
+  <string name="com_facebook_loginview_logged_in_using_facebook">Logged in using Facebook</string>
+  <string name="com_facebook_loginview_log_out_action">Log out</string>
+  <string name="com_facebook_loginview_cancel_action">Cancel</string>
+  <string name="com_facebook_logo_content_description">Facebook Logo</string>
+  <string name="com_facebook_usersettingsfragment_log_in_button">Log in&#8230;</string>
+  <string name="com_facebook_usersettingsfragment_logged_in">Logged in</string>
+  <string name="com_facebook_usersettingsfragment_not_logged_in">Not logged in</string>
+  <string name="com_facebook_placepicker_subtitle_format">%1$s • %2$,d were here</string>
+  <string name="com_facebook_placepicker_subtitle_catetory_only_format">%1$s</string>
+  <string name="com_facebook_placepicker_subtitle_were_here_only_format">%1$,d were here</string>
+  <string name="com_facebook_picker_done_button_text">Done</string>
+  <string name="com_facebook_choose_friends">Choose Friends</string>
+  <string name="com_facebook_nearby">Nearby</string>
+  <string name="com_facebook_loading">Loading...</string>
+  <string name="com_facebook_internet_permission_error_title">AndroidManifest Error</string>
+  <string name="com_facebook_internet_permission_error_message">WebView login requires INTERNET permission</string>
+  <string name="com_facebook_requesterror_web_login">Your Facebook account is locked. Please log into www.facebook.com to continue.</string>
+  <string name="com_facebook_requesterror_relogin">Please log into this app again to reconnect your Facebook account.</string>
+  <string name="com_facebook_requesterror_password_changed">Your Facebook password has changed. Please log into this app again to reconnect your Facebook account.</string>
+  <string name="com_facebook_requesterror_reconnect">Please log into this app again to reconnect your Facebook account.</string>
+  <string name="com_facebook_requesterror_permissions">This app doesn’t have permission to do this. To change permissions, try logging into the app again.</string>
+
+
+  <string name="increase_music_volume">Zvýšení hlasitosti zvuku zlepší tvůj herní zážitek.</string>
 
 </resources>

@@ -16,8 +16,8 @@
 -->
 
 <TextView
-    android:id="@+id/com_facebook_picker_list_section_header"
     xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/com_facebook_picker_list_section_header"
     android:layout_width="fill_parent"
     android:layout_height="wrap_content"
     android:background="@drawable/com_facebook_list_section_header_background"
@@ -31,4 +31,4 @@
     android:shadowRadius="1"
     android:textColor="#68768a"
     android:textSize="17sp"
-    android:textStyle="bold"/>
+    android:textStyle="bold" />

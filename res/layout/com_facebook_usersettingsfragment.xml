@@ -22,39 +22,39 @@
     android:layout_height="fill_parent"
     android:background="@drawable/com_facebook_usersettingsfragment_background_gradient">
 
-    <LinearLayout
+  <LinearLayout
+      android:layout_width="fill_parent"
+      android:layout_height="fill_parent"
+      android:orientation="vertical">
+
+    <ImageView
+        android:id="@+id/com_facebook_usersettingsfragment_logo_image"
+        android:layout_width="193dp"
+        android:layout_height="44dp"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="35dp"
+        android:contentDescription="@string/com_facebook_logo_content_description"
+        android:src="@drawable/com_facebook_logo" />
+
+    <TextView
+        android:id="@+id/com_facebook_usersettingsfragment_profile_name"
         android:layout_width="fill_parent"
-        android:layout_height="fill_parent"
-        android:orientation="vertical">
+        android:layout_height="100dp"
+        android:layout_marginTop="35dp"
+        android:gravity="center"
+        android:lines="1"
+        android:textSize="16sp"
+        android:textStyle="bold" />
 
-        <ImageView
-            android:id="@+id/com_facebook_usersettingsfragment_logo_image"
-            android:layout_width="193dp"
-            android:layout_height="44dp"
-            android:layout_gravity="center_horizontal"
-            android:layout_marginTop="35dp"
-            android:contentDescription="@string/com_facebook_logo_content_description"
-            android:src="@drawable/com_facebook_logo"/>
+    <com.facebook.widget.LoginButton
+        android:id="@+id/com_facebook_usersettingsfragment_login_button"
+        style="@style/com_facebook_loginview_silver_style"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginBottom="35dp"
+        android:layout_marginTop="35dp"
+        loginView:login_text="@string/com_facebook_usersettingsfragment_log_in_button" />
 
-        <TextView
-            android:id="@+id/com_facebook_usersettingsfragment_profile_name"
-            android:layout_width="fill_parent"
-            android:layout_height="100dp"
-            android:layout_marginTop="35dp"
-            android:gravity="center"
-            android:lines="1"
-            android:textSize="16sp"
-            android:textStyle="bold"/>
-
-        <com.facebook.widget.LoginButton
-            android:id="@+id/com_facebook_usersettingsfragment_login_button"
-            style="@style/com_facebook_loginview_silver_style"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center_horizontal"
-            android:layout_marginBottom="35dp"
-            android:layout_marginTop="35dp"
-            loginView:login_text="@string/com_facebook_usersettingsfragment_log_in_button"/>
-
-    </LinearLayout>
+  </LinearLayout>
 </ScrollView>

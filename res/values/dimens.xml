@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <dimen name="main_menutext_size">18sp</dimen>
-    <dimen name="main_menutext_size_bigger">20sp</dimen>
-    <dimen name="slogan_size">18dp</dimen>
-    <dimen name="Multigame_label_size">26sp</dimen>
-    <dimen name="margin_small">5dp</dimen>
-    <dimen name="margin_smaller">2dp</dimen>
-    <dimen name="customization_font_size">25sp</dimen>
+  <dimen name="main_menutext_size">18sp</dimen>
+  <dimen name="main_menutext_size_bigger">20sp</dimen>
+  <dimen name="slogan_size">18dp</dimen>
+  <dimen name="Multigame_label_size">26sp</dimen>
+  <dimen name="margin_small">5dp</dimen>
+  <dimen name="margin_smaller">2dp</dimen>
+  <dimen name="customization_font_size">25sp</dimen>
 </resources>
