@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<resources xmlns:android="http://schemas.android.com/apk/res/android">
+  <integer name="ga_sessionTimeout">300</integer>
+
+  <!-- Enable automatic Activity measurement -->
+  <bool name="ga_autoActivityTracking">true</bool>
+
+  <!--Enable automatic exception tracking-->
+  <bool name="ga_reportUncaughtExceptions">true</bool>
+
+  <!-- The screen names that will appear in reports -->
+  <screenName name="sk.palistudios.multigame.game.GameActivity">
+    GameActivity
+  </screenName>
+  <screenName name="sk.palistudios.multigame.mainMenu.MainMenuActivity">
+    MainMenu
+  </screenName>
+
+  <!-- The screen names that will appear in reports -->
+  <screenName name="sk.palistudios.multigame.hall_of_fame.HallOfFameActivity">
+    HallOfFame
+  </screenName>
+
+  <!-- The screen names that will appear in reports -->
+  <screenName name="sk.palistudios.multigame.customization_center.CustomizationCenterActivity">
+    CustomizationCenter
+  </screenName>
+
+  <!--  The following value should be replaced with correct property id. -->
+  <string name="ga_trackingId">UA-45110333-1</string>
+
+</resources>

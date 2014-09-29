@@ -6,7 +6,6 @@ package sk.palistudios.multigame;
 
 import android.app.Activity;
 
-import com.google.analytics.tracking.android.EasyTracker;
 import sk.palistudios.multigame.tools.sound.SoundEffectsCenter;
 
 /**
@@ -17,7 +16,6 @@ public abstract class BaseActivity extends Activity {
   @Override
   protected void onStart() {
     super.onStart();
-    EasyTracker.getInstance(this).activityStart(this);
   }
 
   @Override
@@ -30,7 +28,6 @@ public abstract class BaseActivity extends Activity {
   protected void onStop() {
     super.onStop();
     SoundEffectsCenter.muteSystemSounds(this, false);
-    EasyTracker.getInstance(this).activityStop(this);
   }
 
 }

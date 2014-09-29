@@ -11,6 +11,9 @@ import android.os.Build;
 import android.text.Html;
 import android.widget.EditText;
 
+import com.google.android.gms.analytics.HitBuilders;
+import com.google.android.gms.analytics.Tracker;
+import sk.palistudios.multigame.MgApplication;
 import sk.palistudios.multigame.R;
 import sk.palistudios.multigame.customization_center.mgc.MinigamesCenterListActivity;
 import sk.palistudios.multigame.game.minigames.MinigamesManager;
@@ -36,13 +39,7 @@ public class GameDialogs {
         switch (which) {
           case DialogInterface.BUTTON_POSITIVE:
             showNextTutorialWindow(game, true);
-            //                        SoundEffectsCenter.playForwardSound(game);
             break;
-          //          case DialogInterface.BUTTON_NEGATIVE:
-          //            game.stopTutorial();
-          //            game.finish();
-          //
-          //            break;
         }
       }
     };
@@ -232,6 +229,9 @@ public class GameDialogs {
   }
 
   public static void showWinnerDialogWindow(final GameActivity game) {
+    Tracker t = ((MgApplication)(game.getApplication())).getTracker();
+    t.setScreenName("Winner");
+    t.send(new HitBuilders.AppViewBuilder().build());
 
     final EditText userNameEditText = new EditText(game);
     userNameEditText.setSingleLine();

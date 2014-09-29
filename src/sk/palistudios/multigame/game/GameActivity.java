@@ -27,7 +27,6 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.facebook.Session;
-import com.google.analytics.tracking.android.EasyTracker;
 import sk.palistudios.multigame.R;
 import sk.palistudios.multigame.customization_center.achievements.AchievementsCenterListActivity;
 import sk.palistudios.multigame.customization_center.skins.SkinsCenterListActivity;
@@ -333,7 +332,6 @@ public class GameActivity extends FragmentActivity implements SensorEventListene
 
   public void onStart() {
     super.onStart();
-    EasyTracker.getInstance(this).activityStart(this);
   }
 
   public void startGame() {
@@ -660,7 +658,6 @@ public class GameActivity extends FragmentActivity implements SensorEventListene
     if (mMusicPlayer != null) {
       mMusicPlayer.stopMusic();
     }
-    EasyTracker.getInstance(this).activityStop(this);
   }
 
   @Override
