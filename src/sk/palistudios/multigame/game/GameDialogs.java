@@ -14,6 +14,7 @@ import android.widget.EditText;
 import com.google.android.gms.analytics.HitBuilders;
 import com.google.android.gms.analytics.Tracker;
 import sk.palistudios.multigame.MgApplication;
+import sk.palistudios.multigame.MgTracker;
 import sk.palistudios.multigame.R;
 import sk.palistudios.multigame.customization_center.mgc.MinigamesCenterListActivity;
 import sk.palistudios.multigame.game.minigames.MinigamesManager;
@@ -62,6 +63,7 @@ public class GameDialogs {
   }
 
   public static void showNextTutorialWindow(final GameActivity game, boolean showPopup) {
+    MgTracker.trackTutorialWindowShown(GameActivity.sTutorialLastLevel);
     MinigamesManager.deactivateAllMiniGames(game);
     if (!GameDialogs.sLostGame) {
       GameActivity.sTutorialLastLevel++;
@@ -75,6 +77,7 @@ public class GameDialogs {
           switch (which) {
             case DialogInterface.BUTTON_POSITIVE:
               game.startGameTutorial();
+              MgTracker.trackTutorialLevelStarted(GameActivity.sTutorialLastLevel);
               break;
             //            case DialogInterface.BUTTON_NEGATIVE:
             //              game.stopTutorial();
@@ -159,19 +162,11 @@ public class GameDialogs {
       public void onClick(DialogInterface dialog, int which) {
         switch (which) {
           case DialogInterface.BUTTON_POSITIVE:
-            //                        SoundEffectsCenter.playForwardSound(game);
             sLostGame = true;
-            //                        Game.sTutorialLastLevel--;
-            //                        showNextTutorialWindow(game, false);
             game.stopTutorial();
             GameActivity.sTutorialRestart = true;
             restartGame(game);
             break;
-          //                    case DialogInterface.BUTTON_NEGATIVE:
-          //                        Intent intent = new Intent(game.getApplicationContext(),
-          // MainMenu.class);
-          //                        game.startActivity(intent);
-          //                        break;
         }
       }
     };
@@ -229,7 +224,7 @@ public class GameDialogs {
   }
 
   public static void showWinnerDialogWindow(final GameActivity game) {
-    Tracker t = ((MgApplication)(game.getApplication())).getTracker();
+    Tracker t = MgTracker.getTracker(game);
     t.setScreenName("Winner");
     t.send(new HitBuilders.AppViewBuilder().build());
 
