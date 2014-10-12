@@ -6,12 +6,14 @@ import android.content.Intent;
 import android.graphics.PorterDuff.Mode;
 import android.media.AudioManager;
 import android.os.Bundle;
+import android.view.KeyEvent;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
 
 import com.facebook.Session;
 import sk.palistudios.multigame.BaseActivity;
+import sk.palistudios.multigame.MgTracker;
 import sk.palistudios.multigame.R;
 import sk.palistudios.multigame.customization_center.skins.SkinsCenterListActivity;
 import sk.palistudios.multigame.game.GameActivity;
@@ -80,6 +82,13 @@ public class MainMenuActivity extends BaseActivity {
   @Override
   protected void onResume() {
     super.onResume();
+
+    /* Track tutorial exited. */
+    if (GameDialogs.sTutorialRestartWindowsShownPerSession != 0) {
+      MgTracker.trackTutorialRestartWindowsShownPerSession(
+          GameDialogs.sTutorialRestartWindowsShownPerSession, false);
+      GameDialogs.sTutorialRestartWindowsShownPerSession = 0;
+    }
 
     setStartGameButtonName();
 
@@ -217,8 +226,31 @@ public class MainMenuActivity extends BaseActivity {
   }
 
   @Override
+  public boolean onKeyDown(int keyCode, KeyEvent event) {
+    if ((keyCode == KeyEvent.KEYCODE_BACK)) {
+      if (GameActivity.sGamesPerSession != 0) {
+        MgTracker.trackGamesPerSession(GameActivity.sGamesPerSession);
+        GameActivity.sGamesPerSession = 0;
+      }
+    }
+    return super.onKeyDown(keyCode, event);
+  }
+
+  @Override
   protected void onDestroy() {
     super.onDestroy();
+
+    if (GameActivity.sGamesPerSession != 0) {
+      MgTracker.trackGamesPerSession(GameActivity.sGamesPerSession);
+      GameActivity.sGamesPerSession = 0;
+    }
+
+    /* Track tutorial exited. */
+    if (GameDialogs.sTutorialRestartWindowsShownPerSession != 0) {
+      MgTracker.trackTutorialRestartWindowsShownPerSession(
+          GameDialogs.sTutorialRestartWindowsShownPerSession, false);
+      GameDialogs.sTutorialRestartWindowsShownPerSession = 0;
+    }
 
     SoundEffectsCenter.releaseMediaPlayer();
     sMainMenuInstance = null;

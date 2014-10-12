@@ -13,6 +13,7 @@ import android.widget.AdapterView;
 import android.widget.TextView;
 
 import sk.palistudios.multigame.BaseListActivity;
+import sk.palistudios.multigame.MgTracker;
 import sk.palistudios.multigame.R;
 import sk.palistudios.multigame.customization_center.CustomizationCenterActivity;
 import sk.palistudios.multigame.game.persistence.GameSharedPref;
@@ -155,16 +156,20 @@ public class SkinsCenterListActivity extends BaseListActivity {
 
         switch (position) {
           case 1:
+            MgTracker.trackSkinChanged(GameSharedPref.getChosenSkin(), "kuba");
             GameSharedPref.setSkinChosen("kuba");
             break;
           case 2:
+            MgTracker.trackSkinChanged(GameSharedPref.getChosenSkin(), "summer");
             GameSharedPref.setSkinChosen("summer");
             break;
           case 3:
+            MgTracker.trackSkinChanged(GameSharedPref.getChosenSkin(), "girl_power");
             GameSharedPref.setSkinChosen("girl_power");
             break;
 
           case 4:
+            MgTracker.trackSkinChanged(GameSharedPref.getChosenSkin(), "blue_sky");
             GameSharedPref.setSkinChosen("blue_sky");
             break;
 

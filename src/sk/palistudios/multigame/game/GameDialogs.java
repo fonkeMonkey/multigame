@@ -1,7 +1,6 @@
 package sk.palistudios.multigame.game;
 
-// @author Pali
-
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Context;
@@ -13,7 +12,6 @@ import android.widget.EditText;
 
 import com.google.android.gms.analytics.HitBuilders;
 import com.google.android.gms.analytics.Tracker;
-import sk.palistudios.multigame.MgApplication;
 import sk.palistudios.multigame.MgTracker;
 import sk.palistudios.multigame.R;
 import sk.palistudios.multigame.customization_center.mgc.MinigamesCenterListActivity;
@@ -31,6 +29,7 @@ public class GameDialogs {
 
   public final static int ASK_USER_TO_CONNECT = 1;
   public static boolean sLostGame = true;
+  public static int sTutorialRestartWindowsShownPerSession = 0;
 
   public static void showWelcomeTutorialWindow(final GameActivity game) {
 
@@ -55,19 +54,17 @@ public class GameDialogs {
       }
     });
     builder.setTitle(game.getString(R.string.tutorial_welcome_title));
-    builder.setMessage(game.getString(R.string.tutorial_welcome))
-        //        .setNegativeButton(game.getString(R.string.tutorial_negative),
-        // dialogClickListener)
-        .setPositiveButton(Html.fromHtml("<b>" + game.getString(R.string.tutorial_positive) +
+    builder.setMessage(game.getString(R.string.tutorial_welcome)).setPositiveButton(Html.fromHtml(
+        "<b>" + game.getString(R.string.tutorial_positive) +
             "</b>"), dialogClickListener).show().setCanceledOnTouchOutside(false);
   }
 
   public static void showNextTutorialWindow(final GameActivity game, boolean showPopup) {
-    MgTracker.trackTutorialWindowShown(GameActivity.sTutorialLastLevel);
     MinigamesManager.deactivateAllMiniGames(game);
     if (!GameDialogs.sLostGame) {
       GameActivity.sTutorialLastLevel++;
     }
+    MgTracker.trackTutorialWindowShown(GameActivity.sTutorialLastLevel);
     sLostGame = false;
 
     if (showPopup) {
@@ -79,10 +76,6 @@ public class GameDialogs {
               game.startGameTutorial();
               MgTracker.trackTutorialLevelStarted(GameActivity.sTutorialLastLevel);
               break;
-            //            case DialogInterface.BUTTON_NEGATIVE:
-            //              game.stopTutorial();
-            //              game.finish();
-            //              break;
           }
         }
       };
@@ -125,16 +118,18 @@ public class GameDialogs {
               game);
       builder.setTitle(Html.fromHtml(title));
       builder.setMessage(Html.fromHtml(message)).setPositiveButton(Html.fromHtml(
-          "<b>" + game.getString(R.string.tutorial_try) + "</b>"), dialogClickListener)
-          //          .setNegativeButton(game.getString(R.string.tutorial_negative),
-          // dialogClickListener)
-          .show().setCanceledOnTouchOutside(false);
+          "<b>" + game.getString(R.string.tutorial_try) + "</b>"), dialogClickListener).show()
+          .setCanceledOnTouchOutside(false);
     } else {
       game.startGameTutorial();
     }
   }
 
   public static void showTutorialWinnerWindow(final GameActivity game) {
+    MgTracker.trackTutorialWindowShown(MgTracker.LABEL_TUTORIAL_WINNER);
+    MgTracker.trackTutorialRestartWindowsShownPerSession(sTutorialRestartWindowsShownPerSession,
+        true);
+    sTutorialRestartWindowsShownPerSession = 0;
     DialogInterface.OnClickListener dialogClickListener = new DialogInterface.OnClickListener() {
       @Override
       public void onClick(DialogInterface dialog, int which) {
@@ -157,11 +152,14 @@ public class GameDialogs {
   }
 
   public static void showTutorialLoserDialogWindow(final GameActivity game) {
+    MgTracker.trackTutorialRestartWindowsShown();
+    sTutorialRestartWindowsShownPerSession++;
     DialogInterface.OnClickListener dialogClickListener = new DialogInterface.OnClickListener() {
       @Override
       public void onClick(DialogInterface dialog, int which) {
         switch (which) {
           case DialogInterface.BUTTON_POSITIVE:
+            MgTracker.trackTutorialRestarted(GameActivity.sTutorialLastLevel);
             sLostGame = true;
             game.stopTutorial();
             GameActivity.sTutorialRestart = true;
@@ -173,18 +171,13 @@ public class GameDialogs {
     game.mMusicPlayer.stopMusic();
 
     AlertDialog.Builder builder = new AlertDialog.Builder(game);
-    builder.setCancelable(false).setTitle(game.getString(
-        R.string.tutorial_failed_title)).setMessage(game.getString(
-        R.string.tutorial_failed)).setPositiveButton(Html.fromHtml("<b>OK</b>"),
-        dialogClickListener)
-        //                //.setNegativeButton(game.getString(R.string.tutorial_negative),
-        // dialogClickListener)
-        .show();
+    builder.setCancelable(false).setTitle(game.getString(R.string.tutorial_failed_title))
+        .setMessage(game.getString(R.string.tutorial_failed)).setPositiveButton(Html.fromHtml(
+        "<b>OK</b>"), dialogClickListener).show();
 
   }
 
   public static void showLoserDialogWindow(final GameActivity game) {
-    //        final Activity mainMenu = MainMenu.getInstance();
     if (DebugSettings.alwaysWinner) {
       showWinnerDialogWindow(game);
       return;
@@ -196,10 +189,12 @@ public class GameDialogs {
       public void onClick(DialogInterface dialog, int which) {
         switch (which) {
           case DialogInterface.BUTTON_POSITIVE:
+            MgTracker.trackGameLoserRetryButtonPushed();
             restartGame(game);
             break;
 
           case DialogInterface.BUTTON_NEUTRAL:
+            MgTracker.trackGameLoserShareButtonPushed();
             if (InternetChecker.isNetworkAvailable(game)) {
 
               FacebookSharer.shareScoreToFacebook(score, false);
@@ -210,6 +205,7 @@ public class GameDialogs {
             break;
 
           case DialogInterface.BUTTON_NEGATIVE:
+            MgTracker.trackGameLoserOkButtonPushed();
             getBackToMainMenu(game);
             break;
         }
@@ -244,6 +240,7 @@ public class GameDialogs {
         Intent intent;
         switch (which) {
           case DialogInterface.BUTTON_POSITIVE:
+            MgTracker.trackGameWinnerOkButtonPushed();
             String playerName = userNameEditText.getText().toString();
             GameSharedPref.setLastHofName(playerName);
 
@@ -254,9 +251,11 @@ public class GameDialogs {
 
             break;
           case DialogInterface.BUTTON_NEGATIVE:
+            MgTracker.trackGameWinnerRetryButtonPushed();
             restartGame(game);
             break;
           case DialogInterface.BUTTON_NEUTRAL:
+            MgTracker.trackGameWinnerShareButtonPushed();
             if (InternetChecker.isNetworkAvailable(game)) {
               MainMenuActivity.setOfferHighScore(game.getScore());
               FacebookSharer.shareScoreToFacebook(score, true);
@@ -293,9 +292,7 @@ public class GameDialogs {
             }
 
             HofDatabaseCenter db = HofDatabaseCenter.getHofDb();
-            //                        db.open();
             db.writeIntoHallOfFame(new HofItem(playerName, score));
-            //                        game.hofDb.close();
             intent = new Intent(act, HallOfFameActivity.class);
             act.startActivity(intent);
             break;
@@ -309,8 +306,6 @@ public class GameDialogs {
         R.string.game_ask_for_name)).setPositiveButton(Html.fromHtml("<b>" + "OK" + "</b>"),
         dialogClickListener).setNegativeButton(act.getString(R.string.cancel), dialogClickListener)
         .show();
-    //        AlertDialog dialog = builder.create();
-    //        dialog.show();
   }
 
   public static void askUserToConnect(final Activity act, final boolean isWinner, final int score) {
@@ -326,7 +321,6 @@ public class GameDialogs {
                 MainMenuActivity.setOfferHighScore(score);
               }
               FacebookSharer.shareScoreToFacebook(score, isWinner);
-              //                            game.hasDialogShown = false;
             } else {
               askUserToConnect(act, isWinner, score);
             }
@@ -360,6 +354,7 @@ public class GameDialogs {
     act.startActivity(intent);
   }
 
+  @SuppressLint("NewApi")
   private static void restartGame(GameActivity game) {
     int apiVersion = Build.VERSION.SDK_INT;
     if (apiVersion >= 11) {

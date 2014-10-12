@@ -10,6 +10,7 @@ import android.widget.AdapterView;
 import android.widget.TextView;
 
 import sk.palistudios.multigame.BaseListActivity;
+import sk.palistudios.multigame.MgTracker;
 import sk.palistudios.multigame.R;
 import sk.palistudios.multigame.customization_center.CustomizationCenterActivity;
 import sk.palistudios.multigame.customization_center.skins.SkinsCenterListActivity;
@@ -70,23 +71,19 @@ public class MusicCenterListActivity extends BaseListActivity {
         }
 
         switch (position) {
-          //                    case 1:
-          //                        GameSharedPref.setMusicLoopChosen("abdessamie_beat");
-          //                        break;
-          //
-          //                    case 2:
-          //                        GameSharedPref.setMusicLoopChosen("jungle");
-          //                        break;
 
           case 1:
+            MgTracker.trackMusicChanged(GameSharedPref.getMusicLoopChosen(), "dst_blam");
             GameSharedPref.setMusicLoopChosen("dst_blam");
             break;
 
           case 2:
+            MgTracker.trackMusicChanged(GameSharedPref.getMusicLoopChosen(), "dst_cv_x");
             GameSharedPref.setMusicLoopChosen("dst_cv_x");
             break;
 
           case 3:
+            MgTracker.trackMusicChanged(GameSharedPref.getMusicLoopChosen(), "dst_cyberops");
             GameSharedPref.setMusicLoopChosen("dst_cyberops");
             break;
 

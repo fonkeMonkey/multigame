@@ -2,7 +2,6 @@ package sk.palistudios.multigame.game.persistence;
 
 // @author Pali
 
-import android.app.Activity;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.content.pm.PackageInfo;
@@ -12,124 +11,109 @@ public class GameSharedPref {
 
   private static final String KUBA_SKIN_SET_ALREADY = "kuba_skin_set_already";
   private static final String LAST_SEEN_VERSION = "last_seen_version";
-  private static SharedPreferences sharedPref;
-  private static SharedPreferences.Editor editor;
+  private static SharedPreferences mSharedPreferences;
+  private static SharedPreferences.Editor mEditor;
   private static boolean runAlready = false;
   public boolean isGameSaved;
 
-  public static void initSharedPref(Activity activity) {
-
-    sharedPref = activity.getSharedPreferences("Game", 0);
-    editor = sharedPref.edit();
-
-    //        if (!runAlready) {
-    //            debug();
-    //        }
-
+  public static void initSharedPref(Context context) {
+    mSharedPreferences = context.getSharedPreferences("Game", 0);
+    mEditor = mSharedPreferences.edit();
   }
-
-  //    private static void debug() {
-  //        setGameSaved(false);
-  //        runAlready = true;
-  //        editor.putBoolean("isMinigame1Active", true);
-  //        editor.putBoolean("isMinigame2Active", false);
-  //        editor.putBoolean("isMinigame3Active", true);
-  //        editor.putBoolean("isMinigame4Active", false);
-  //    }
   public static boolean isGameSaved() {
-    return sharedPref.getBoolean("gameSaved", false);
+    return mSharedPreferences.getBoolean("gameSaved", false);
   }
 
   public static void setGameSaved(boolean status) {
-    editor.putBoolean("gameSaved", status);
-    editor.commit();
+    mEditor.putBoolean("gameSaved", status);
+    mEditor.commit();
   }
 
   public static boolean isMinigamesResolved() {
-    return sharedPref.getBoolean("minigamesResolved", false);
+    return mSharedPreferences.getBoolean("minigamesResolved", false);
   }
 
   public static String[] getChosenMinigamesNames() {
     String[] result = new String[4];
 
-    result[0] = sharedPref.getString("MinigameV", null);
-    result[1] = sharedPref.getString("MinigameH", null);
-    result[2] = sharedPref.getString("MinigameT1", null);
-    result[3] = sharedPref.getString("MinigameT2", null);
+    result[0] = mSharedPreferences.getString("MinigameV", null);
+    result[1] = mSharedPreferences.getString("MinigameH", null);
+    result[2] = mSharedPreferences.getString("MinigameT1", null);
+    result[3] = mSharedPreferences.getString("MinigameT2", null);
 
     return result;
   }
 
   public static void setChosenMinigamesNames(String[] miniGamesNames) {
-    editor.putString("MinigameV", miniGamesNames[0]);
-    editor.putString("MinigameH", miniGamesNames[1]);
-    editor.putString("MinigameT1", miniGamesNames[2]);
-    editor.putString("MinigameT2", miniGamesNames[3]);
-    editor.putBoolean("minigamesResolved", true);
-    editor.commit();
+    mEditor.putString("MinigameV", miniGamesNames[0]);
+    mEditor.putString("MinigameH", miniGamesNames[1]);
+    mEditor.putString("MinigameT1", miniGamesNames[2]);
+    mEditor.putString("MinigameT2", miniGamesNames[3]);
+    mEditor.putBoolean("minigamesResolved", true);
+    mEditor.commit();
   }
 
   //    public static boolean setGameMode(String gameMode) {
-  //        boolean isNoviceModeActive = sharedPref.getBoolean("noviceModeActive", true);
+  //        boolean isNoviceModeActive = mSharedPreferences.getBoolean("noviceModeActive", true);
   //
   //        if (isNoviceModeActive) {
-  //            editor.putBoolean("noviceModeActive", false);
+  //            mEditor.putBoolean("noviceModeActive", false);
   //        } else {
-  //            editor.putBoolean("noviceModeActive", true);
+  //            mEditor.putBoolean("noviceModeActive", true);
   //        }
-  //        editor.commit();
-  //        return sharedPref.getBoolean("noviceModeActive", true);
+  //        mEditor.commit();
+  //        return mSharedPreferences.getBoolean("noviceModeActive", true);
   //    }
   public static void saveGameDetails(final int scoreToSave, final int levelToSave,
       final int framesToSave, final boolean[] activeMinigames) {
-    GameSharedPref.editor.putInt("score", scoreToSave);
-    GameSharedPref.editor.putInt("level", levelToSave);
-    GameSharedPref.editor.putInt("frames", framesToSave);
-    GameSharedPref.editor.putBoolean("savedMinigame1Active", activeMinigames[0]);
-    GameSharedPref.editor.putBoolean("savedMinigame2Active", activeMinigames[1]);
-    GameSharedPref.editor.putBoolean("savedMinigame3Active", activeMinigames[2]);
-    GameSharedPref.editor.putBoolean("savedMinigame4Active", activeMinigames[3]);
+    GameSharedPref.mEditor.putInt("score", scoreToSave);
+    GameSharedPref.mEditor.putInt("level", levelToSave);
+    GameSharedPref.mEditor.putInt("frames", framesToSave);
+    GameSharedPref.mEditor.putBoolean("savedMinigame1Active", activeMinigames[0]);
+    GameSharedPref.mEditor.putBoolean("savedMinigame2Active", activeMinigames[1]);
+    GameSharedPref.mEditor.putBoolean("savedMinigame3Active", activeMinigames[2]);
+    GameSharedPref.mEditor.putBoolean("savedMinigame4Active", activeMinigames[3]);
 
-    GameSharedPref.editor.commit();
+    GameSharedPref.mEditor.commit();
   }
 
   public static int[] loadGameDetails() {
     int[] details = new int[3];
-    details[0] = GameSharedPref.sharedPref.getInt("frames", 0);
-    details[1] = GameSharedPref.sharedPref.getInt("score", 0);
-    details[2] = GameSharedPref.sharedPref.getInt("level", 1);
+    details[0] = GameSharedPref.mSharedPreferences.getInt("frames", 0);
+    details[1] = GameSharedPref.mSharedPreferences.getInt("score", 0);
+    details[2] = GameSharedPref.mSharedPreferences.getInt("level", 1);
 
     return details;
   }
 
   public static boolean[] loadMinigamesActivity() {
     boolean[] activeMinigames = new boolean[4];
-    activeMinigames[0] = GameSharedPref.sharedPref.getBoolean("savedMinigame1Active", false);
-    activeMinigames[1] = GameSharedPref.sharedPref.getBoolean("savedMinigame2Active", false);
-    activeMinigames[2] = GameSharedPref.sharedPref.getBoolean("savedMinigame3Active", false);
-    activeMinigames[3] = GameSharedPref.sharedPref.getBoolean("savedMinigame4Active", false);
+    activeMinigames[0] = GameSharedPref.mSharedPreferences.getBoolean("savedMinigame1Active", false);
+    activeMinigames[1] = GameSharedPref.mSharedPreferences.getBoolean("savedMinigame2Active", false);
+    activeMinigames[2] = GameSharedPref.mSharedPreferences.getBoolean("savedMinigame3Active", false);
+    activeMinigames[3] = GameSharedPref.mSharedPreferences.getBoolean("savedMinigame4Active", false);
     return activeMinigames;
   }
 
   public static boolean isTutorialModeActivated() {
-    return (sharedPref.getString("game_mode", "Tutorial").compareTo("Tutorial") == 0);
+    return (mSharedPreferences.getString("game_mode", "Tutorial").compareTo("Tutorial") == 0);
   }
 
   public static boolean isMinigamesNamesInicialized() {
-    return sharedPref.getBoolean("inicialized", false);
+    return mSharedPreferences.getBoolean("inicialized", false);
   }
 
   public static boolean isMinigameChosen(String minigameName) {
-    if (sharedPref.getString("MinigameV", null).compareTo(minigameName) == 0) {
+    if (mSharedPreferences.getString("MinigameV", null).compareTo(minigameName) == 0) {
       return true;
     }
-    if (sharedPref.getString("MinigameH", null).compareTo(minigameName) == 0) {
+    if (mSharedPreferences.getString("MinigameH", null).compareTo(minigameName) == 0) {
       return true;
     }
-    if (sharedPref.getString("MinigameT1", null).compareTo(minigameName) == 0) {
+    if (mSharedPreferences.getString("MinigameT1", null).compareTo(minigameName) == 0) {
       return true;
     }
-    if (sharedPref.getString("MinigameT2", null).compareTo(minigameName) == 0) {
+    if (mSharedPreferences.getString("MinigameT2", null).compareTo(minigameName) == 0) {
       return true;
     }
     return false;
@@ -143,21 +127,21 @@ public class GameSharedPref {
   }
 
   public static String getMusicLoopChosen() {
-    return sharedPref.getString("musicLoopChosen", "dst_blam");
+    return mSharedPreferences.getString("musicLoopChosen", "dst_blam");
   }
 
   public static void setMusicLoopChosen(String musicChosen) {
-    editor.putString("musicLoopChosen", musicChosen);
-    editor.commit();
+    mEditor.putString("musicLoopChosen", musicChosen);
+    mEditor.commit();
   }
 
   public static void setSkinChosen(String skinChosen) {
-    editor.putString("skinChosen", skinChosen);
-    editor.commit();
+    mEditor.putString("skinChosen", skinChosen);
+    mEditor.commit();
   }
 
   public static String getChosenSkin() {
-    return sharedPref.getString("skinChosen", "kuba");
+    return mSharedPreferences.getString("skinChosen", "kuba");
   }
 
   public static boolean isSkinChosen(String currentSkinName) {
@@ -168,33 +152,33 @@ public class GameSharedPref {
   }
 
   public static void unlockInitialItems() {
-    editor.putBoolean("HBalance_locked", false);
-    editor.putBoolean("VBird_locked", false);
-    editor.putBoolean("TGatherer_locked", false);
-    editor.putBoolean("TCatcher_locked", false);
-    //        editor.putBoolean("summer_locked", false);
-    editor.putBoolean("kuba_locked", false);
-    editor.putBoolean("dst_blam_locked", false);
+    mEditor.putBoolean("HBalance_locked", false);
+    mEditor.putBoolean("VBird_locked", false);
+    mEditor.putBoolean("TGatherer_locked", false);
+    mEditor.putBoolean("TCatcher_locked", false);
+    //        mEditor.putBoolean("summer_locked", false);
+    mEditor.putBoolean("kuba_locked", false);
+    mEditor.putBoolean("dst_blam_locked", false);
 
-    editor.commit();
+    mEditor.commit();
   }
 
   public static boolean isItemLocked(String computerName) {
-    return sharedPref.getBoolean(computerName + "_locked", true);
+    return mSharedPreferences.getBoolean(computerName + "_locked", true);
   }
 
   public static void lockItem(String itemName) {
-    editor.putBoolean(itemName + "_locked", true);
-    editor.commit();
+    mEditor.putBoolean(itemName + "_locked", true);
+    mEditor.commit();
   }
 
   public static void unlockItem(String itemName) {
-    editor.putBoolean(itemName + "_locked", false);
-    editor.commit();
+    mEditor.putBoolean(itemName + "_locked", false);
+    mEditor.commit();
   }
 
   public static boolean isAchievementFulfilled(String achievementName) {
-    return sharedPref.getBoolean(achievementName, false);
+    return mSharedPreferences.getBoolean(achievementName, false);
 
   }
 
@@ -205,46 +189,46 @@ public class GameSharedPref {
   }
 
   private static void setAchievementFulfilled(String achievementName) {
-    editor.putBoolean(achievementName, true);
-    editor.commit();
+    mEditor.putBoolean(achievementName, true);
+    mEditor.commit();
   }
 
   public static boolean isMusicOn() {
-    return sharedPref.getBoolean("music_on", true);
+    return mSharedPreferences.getBoolean("music_on", true);
   }
 
   public static void setMusicOn(boolean music_on) {
-    editor.putBoolean("music_on", music_on);
-    editor.commit();
+    mEditor.putBoolean("music_on", music_on);
+    mEditor.commit();
   }
 
   public static boolean isSoundOn() {
-    return sharedPref.getBoolean("sound_on", true);
+    return mSharedPreferences.getBoolean("sound_on", true);
   }
 
   public static void setSoundOn(boolean sound_on) {
-    editor.putBoolean("sound_on", sound_on);
-    editor.commit();
+    mEditor.putBoolean("sound_on", sound_on);
+    mEditor.commit();
   }
 
   public static String getGameMode() {
-    return sharedPref.getString("game_mode", "Tutorial");
+    return mSharedPreferences.getString("game_mode", "Tutorial");
   }
 
   public static void setGameMode(String game_mode) {
-    editor.putString("game_mode", game_mode);
-    editor.commit();
+    mEditor.putString("game_mode", game_mode);
+    mEditor.commit();
 
   }
 
   public static void clear() {
-    editor.clear();
-    editor.commit();
+    mEditor.clear();
+    mEditor.commit();
   }
 
   public static void onTutorialCompleted() {
-    editor.putBoolean("tutorialCompleted", true);
-    editor.commit();
+    mEditor.putBoolean("tutorialCompleted", true);
+    mEditor.commit();
     GameSharedPref.setGameMode("Classic");
     //        ActivityUI.runOnUiThread(new Runnable() {
     //            @Override
@@ -255,123 +239,123 @@ public class GameSharedPref {
   }
 
   public static boolean isTutorialCompleted() {
-    return sharedPref.getBoolean("tutorialCompleted", false);
+    return mSharedPreferences.getBoolean("tutorialCompleted", false);
   }
 
   public static void increaseTimesMultigameRun() {
     int timesOld = getTimesMultigameRun();
 
-    editor.putInt("timesAppRun", timesOld + 1);
-    editor.commit();
+    mEditor.putInt("timesAppRun", timesOld + 1);
+    mEditor.commit();
 
   }
 
   public static int getTimesMultigameRun() {
-    return sharedPref.getInt("timesAppRun", 0);
+    return mSharedPreferences.getInt("timesAppRun", 0);
   }
 
   public static boolean isPremium() {
-    return sharedPref.getBoolean("premium", false);
+    return mSharedPreferences.getBoolean("premium", false);
   }
 
   public static void upgradedToPremium() {
-    editor.putBoolean("premium", true);
-    editor.commit();
+    mEditor.putBoolean("premium", true);
+    mEditor.commit();
   }
 
   public static void setAdShownAlready(boolean b) {
-    editor.putBoolean("ad_shown", b);
-    editor.commit();
+    mEditor.putBoolean("ad_shown", b);
+    mEditor.commit();
   }
 
   public static boolean hasAdBeenShownAlready() {
-    return sharedPref.getBoolean("ad_shown", false);
+    return mSharedPreferences.getBoolean("ad_shown", false);
   }
 
   public static boolean getAutoCalibrationEnabled() {
-    return sharedPref.getBoolean("autocalibration", true);
+    return mSharedPreferences.getBoolean("autocalibration", true);
   }
 
   public static void setAutocalibration(boolean b) {
-    editor.putBoolean("autocalibration", b);
-    editor.commit();
+    mEditor.putBoolean("autocalibration", b);
+    mEditor.commit();
   }
 
   public static String getLastHofName() {
-    return sharedPref.getString("last_hof_name", "");
+    return mSharedPreferences.getString("last_hof_name", "");
   }
 
   public static void setLastHofName(String name) {
-    editor.putString("last_hof_name", name);
-    editor.commit();
+    mEditor.putString("last_hof_name", name);
+    mEditor.commit();
   }
 
   public static boolean getDbInitialized() {
-    return sharedPref.getBoolean("db_initialized", false);
+    return mSharedPreferences.getBoolean("db_initialized", false);
   }
 
   public static void setDbInitialized(boolean b) {
-    editor.putBoolean("db_initialized", b);
-    editor.commit();
+    mEditor.putBoolean("db_initialized", b);
+    mEditor.commit();
   }
 
   public static boolean isMinigamesInitialized() {
-    return sharedPref.getBoolean("minigamesInitialized", false);
+    return mSharedPreferences.getBoolean("minigamesInitialized", false);
   }
 
   public static void setMinigamesInitialized(boolean status) {
-    editor.putBoolean("minigamesInitialized", status);
-    editor.commit();
+    mEditor.putBoolean("minigamesInitialized", status);
+    mEditor.commit();
   }
 
   public static void SetChosenMinigamesNames(String[] newActiveMinigamesNames) {
-    editor.putString("MinigameV", newActiveMinigamesNames[0]);
-    editor.putString("MinigameH", newActiveMinigamesNames[1]);
-    editor.putString("MinigameT1", newActiveMinigamesNames[2]);
-    editor.putString("MinigameT2", newActiveMinigamesNames[3]);
-    editor.putBoolean("inicialized", true);
-    editor.commit();
+    mEditor.putString("MinigameV", newActiveMinigamesNames[0]);
+    mEditor.putString("MinigameH", newActiveMinigamesNames[1]);
+    mEditor.putString("MinigameT1", newActiveMinigamesNames[2]);
+    mEditor.putString("MinigameT2", newActiveMinigamesNames[3]);
+    mEditor.putBoolean("inicialized", true);
+    mEditor.commit();
   }
 
   public static void initializeAllMinigamesInfo(String[] allMinigames) {
-    editor.putInt("AllMinigamesCount", allMinigames.length);
+    mEditor.putInt("AllMinigamesCount", allMinigames.length);
     StringBuilder minigameKey = new StringBuilder();
     int rank = 1;
 
     for (String minigame : allMinigames) {
       minigameKey.append("AllMinigames").append(rank).append("Name");
-      editor.putString(minigameKey.toString(), minigame);
+      mEditor.putString(minigameKey.toString(), minigame);
       minigameKey.setLength(0);
 
       boolean isMinigameChosen = isMinigameChosen(minigame);
       minigameKey.append("AllMinigames").append(rank).append("Chosen");
-      editor.putBoolean(minigameKey.toString(), isMinigameChosen);
+      mEditor.putBoolean(minigameKey.toString(), isMinigameChosen);
       minigameKey.setLength(0);
 
       minigameKey.append("AllMinigames").append(rank).append("Type");
-      editor.putString(minigameKey.toString(), String.valueOf(minigame.charAt(0)));
+      mEditor.putString(minigameKey.toString(), String.valueOf(minigame.charAt(0)));
       minigameKey.setLength(0);
 
       rank++;
     }
 
-    editor.commit();
+    mEditor.commit();
   }
 
   //    public static void initializeMusicInfo(String[] allMusicLoopsPCNames,
   // String[] allMusicLoopsHumanNames) {
-  //        editor.putInt("AllMusicLoopsCount", allMusicLoopsPCNames.length);
+  //        mEditor.putInt("AllMusicLoopsCount", allMusicLoopsPCNames.length);
   //        StringBuilder minigameKey = new StringBuilder();
   //        int rank = 1;
   //
   //        for (String musicLoop : allMusicLoopsPCNames) {
   //            minigameKey.append("AllMusicLoops").append(rank).append("PCName");
-  //            editor.putString(minigameKey.toString(), musicLoop);
+  //            mEditor.putString(minigameKey.toString(), musicLoop);
   //            minigameKey.setLength(0);
   //
   //            boolean isSoundChosen = isMusicLoopChosen(musicLoop);
   //            minigameKey.append("AllMusicLoops").append(rank).append("Chosen");
-  //            editor.putBoolean(minigameKey.toString(), isSoundChosen);
+  //            mEditor.putBoolean(minigameKey.toString(), isSoundChosen);
   //            minigameKey.setLength(0);
   //
   //            rank++;
@@ -380,91 +364,91 @@ public class GameSharedPref {
   //        rank = 1;
   //        for (String musicLoop : allMusicLoopsHumanNames) {
   //            minigameKey.append("AllMusicLoops").append(rank).append("HumanName");
-  //            editor.putString(minigameKey.toString(), musicLoop);
+  //            mEditor.putString(minigameKey.toString(), musicLoop);
   //            minigameKey.setLength(0);
   //            rank++;
   //        }
   //
-  //        editor.commit();
+  //        mEditor.commit();
   //    }
   public static String[] getAllMinigamesNames() {
-    int numberOfMinigames = sharedPref.getInt("AllMinigamesCount", -1);
+    int numberOfMinigames = mSharedPreferences.getInt("AllMinigamesCount", -1);
     String[] allMinigamesNames = new String[numberOfMinigames];
 
     for (int i = 1; i <= numberOfMinigames; i++) {
-      allMinigamesNames[i - 1] = sharedPref.getString("AllMinigames" + i + "Name", null);
+      allMinigamesNames[i - 1] = mSharedPreferences.getString("AllMinigames" + i + "Name", null);
     }
 
     return allMinigamesNames;
   }
 
   public static String[] getAllMinigamesTypes() {
-    int numberOfMinigames = sharedPref.getInt("AllMinigamesCount", -1);
+    int numberOfMinigames = mSharedPreferences.getInt("AllMinigamesCount", -1);
     String[] allMinigamesTypes = new String[numberOfMinigames];
 
     for (int i = 1; i <= numberOfMinigames; i++) {
-      allMinigamesTypes[i] = sharedPref.getString("AllMinigames" + i + "Type", null);
+      allMinigamesTypes[i] = mSharedPreferences.getString("AllMinigames" + i + "Type", null);
     }
 
     return allMinigamesTypes;
   }
 
   //    public static String[] getAllMusicLoopsPCNames() {
-  //        int numberOfMusicFiles = sharedPref.getInt("AllMusicLoopsCount", -1);
+  //        int numberOfMusicFiles = mSharedPreferences.getInt("AllMusicLoopsCount", -1);
   //        String[] allMusicNames = new String[numberOfMusicFiles];
   //
   //        for (int i = 1; i <= numberOfMusicFiles; i++) {
-  //            allMusicNames[i - 1] = sharedPref.getString("AllMusicLoops" + i + "PCName", null);
+  //            allMusicNames[i - 1] = mSharedPreferences.getString("AllMusicLoops" + i + "PCName", null);
   //        }
   //
   //        return allMusicNames;
   //    }
   //
   //    public static String[] getAllMusicLoopsHumanNames() {
-  //        int numberOfMusicFiles = sharedPref.getInt("AllMusicLoopsCount", -1);
+  //        int numberOfMusicFiles = mSharedPreferences.getInt("AllMusicLoopsCount", -1);
   //        String[] allMusicNames = new String[numberOfMusicFiles];
   //
   //        for (int i = 1; i <= numberOfMusicFiles; i++) {
-  //            allMusicNames[i - 1] = sharedPref.getString("AllMusicLoops" + i + "HumanName",
+  //            allMusicNames[i - 1] = mSharedPreferences.getString("AllMusicLoops" + i + "HumanName",
   // null);
   //        }
   //
   //        return allMusicNames;
   //    }
   public static boolean isAppRunningForFirstTime() {
-    return sharedPref.getBoolean("firstTime", true);
+    return mSharedPreferences.getBoolean("firstTime", true);
   }
 
   public static void setAppRunningForFirstTime(boolean status) {
-    editor.putBoolean("firstTime", status);
-    editor.commit();
+    mEditor.putBoolean("firstTime", status);
+    mEditor.commit();
   }
 
   public static boolean isPlayingGameFirstTime() {
-    return sharedPref.getBoolean("firstTimePlayingGame", true);
+    return mSharedPreferences.getBoolean("firstTimePlayingGame", true);
   }
 
   public static void setPlayingGameFirstTimeFalse() {
-    editor.putBoolean("firstTimePlayingGame", false);
-    editor.commit();
+    mEditor.putBoolean("firstTimePlayingGame", false);
+    mEditor.commit();
   }
 
   public static int getStatsGamesPlayed() {
-    return sharedPref.getInt("st_games_played", 0);
+    return mSharedPreferences.getInt("st_games_played", 0);
   }
 
   public static void StatsGamesPlayedIncrease() {
-    editor.putInt("st_games_played", getStatsGamesPlayed() + 1);
-    editor.commit();
+    mEditor.putInt("st_games_played", getStatsGamesPlayed() + 1);
+    mEditor.commit();
   }
 
   public static boolean getKubaSkinSetAlready() {
-    return sharedPref.getBoolean(KUBA_SKIN_SET_ALREADY, false);
+    return mSharedPreferences.getBoolean(KUBA_SKIN_SET_ALREADY, false);
   }
 
   public static void setKubaSkinSetAlready() {
-    editor.putBoolean(KUBA_SKIN_SET_ALREADY, true);
-    editor.commit();
+    mEditor.putBoolean(KUBA_SKIN_SET_ALREADY, true);
+    mEditor.commit();
   }
 
   public static boolean isUpdateOrFreshInstall(Context context) {
@@ -492,7 +476,7 @@ public class GameSharedPref {
   }
 
   private static int getLastSeenVersion() {
-    return sharedPref.getInt(LAST_SEEN_VERSION, 0);
+    return mSharedPreferences.getInt(LAST_SEEN_VERSION, 0);
   }
 
   public static void setLastSeenVersion(Context context) {
@@ -503,8 +487,8 @@ public class GameSharedPref {
     } catch (PackageManager.NameNotFoundException e) {
       e.printStackTrace();
     }
-    editor.putInt(LAST_SEEN_VERSION, version);
-    editor.commit();
+    mEditor.putInt(LAST_SEEN_VERSION, version);
+    mEditor.commit();
   }
 
 }

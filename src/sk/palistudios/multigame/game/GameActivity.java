@@ -27,6 +27,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.facebook.Session;
+import sk.palistudios.multigame.MgTracker;
 import sk.palistudios.multigame.R;
 import sk.palistudios.multigame.customization_center.achievements.AchievementsCenterListActivity;
 import sk.palistudios.multigame.customization_center.skins.SkinsCenterListActivity;
@@ -53,14 +54,17 @@ import sk.palistudios.multigame.tools.sound.SoundEffectsCenter;
  */
 public class GameActivity extends FragmentActivity implements SensorEventListener {
 
-  public static boolean isDialogPresent = false;
   public static int dialogScore = -1;
   public static int dialogType = -1;
-  public static boolean dialogIsWinner = false;
   public static int sTutorialLastLevel = 0;
+  public static int sGamesPerSession = 0;
+  public static boolean isDialogPresent = false;
   public static boolean sTutorialRestart = false;
+  public static boolean dialogIsWinner = false;
+
   private static boolean sIncreaseVolumeShown = false;
   private static boolean sRaisedVolumeForTutorialAlready = false;
+
   final private int GAME_UPDATES_PER_SECOND = 40;
   final private int GAME_SKIP_FRAMES = 1000 / GAME_UPDATES_PER_SECOND;
   final private int MAX_FRAMESKIP = 8;
@@ -95,9 +99,10 @@ public class GameActivity extends FragmentActivity implements SensorEventListene
   private int frames = 0;
   private IMiniGameVertical minigametoSendEvents1;
   private IMiniGameHorizontal minigametoSendEvents2;
-  private int score = 0;
-  private int level = 1;
+  private int mScore = 0;
+  private int mLevel = 1;
   private boolean closedByButton = false;
+  private long mTimeGameStarted;
 
   public static void flashScreen(GameActivity game) {
     Animation animation = new AlphaAnimation(0, 1); // Change alpha
@@ -267,7 +272,7 @@ public class GameActivity extends FragmentActivity implements SensorEventListene
 
             //increase level
             if (secondsPassed % (DebugSettings.SECONDS_PER_LEVEL) == 0) {
-              level++;
+              mLevel++;
               GameTimeMaster.onLevelIncreased(GameActivity.this);
             }
 
@@ -330,11 +335,10 @@ public class GameActivity extends FragmentActivity implements SensorEventListene
     }
   }
 
-  public void onStart() {
-    super.onStart();
-  }
-
   public void startGame() {
+    MgTracker.trackGameStarted();
+    mTimeGameStarted = System.currentTimeMillis();
+    sGamesPerSession++;
     if (mRunnableGameLoop != null) {
 
       if (GameSharedPref.isMusicOn()) {
@@ -432,14 +436,14 @@ public class GameActivity extends FragmentActivity implements SensorEventListene
   }
 
   private void refreshDisplayGame() {
-    score += level * DebugSettings.SCORE_COEFICIENT;
+    mScore += mLevel * DebugSettings.SCORE_COEFICIENT;
 
     if (mTutorialMode) {
       setBarTextColors(scoreView, getString(R.string.score), "Tutorial");
       setBarTextColors(difficultyView, "Level: ", "Tutorial");
     } else {
-      setBarTextColors(scoreView, getString(R.string.score), String.valueOf(score));
-      setBarTextColors(difficultyView, "Level: ", String.valueOf(level));
+      setBarTextColors(scoreView, getString(R.string.score), String.valueOf(mScore));
+      setBarTextColors(difficultyView, "Level: ", String.valueOf(mLevel));
     }
 
     for (int i = 0; i < 4; i++) {
@@ -569,6 +573,10 @@ public class GameActivity extends FragmentActivity implements SensorEventListene
   public void onGameLost(int loser) {
     wasGameLost = true;
     GameSharedPref.setGameSaved(false);
+    if(!isTutorial()){
+      MgTracker.trackGameFinished((System.currentTimeMillis() - mTimeGameStarted)/1000, mLevel,
+          mScore);
+    }
 
     if (gameStopped != true) {
       gameStopped = true;
@@ -587,11 +595,11 @@ public class GameActivity extends FragmentActivity implements SensorEventListene
 
       GameSharedPref.StatsGamesPlayedIncrease();
 
-      AchievementsCenterListActivity.checkAchievements(score, level, this);
+      AchievementsCenterListActivity.checkAchievements(mScore, mLevel, this);
 
       HofDatabaseCenter.getHofDb().open();
 
-      boolean isInHallOfFame = HofDatabaseCenter.getHofDb().isInHallOfFame(score);
+      boolean isInHallOfFame = HofDatabaseCenter.getHofDb().isInHallOfFame(mScore);
       HofDatabaseCenter.getHofDb().close();
 
       if (isInHallOfFame) {
@@ -726,17 +734,17 @@ public class GameActivity extends FragmentActivity implements SensorEventListene
   }
 
   public int getScore() {
-    return score;
+    return mScore;
   }
 
   public int getLevel() {
-    return level;
+    return mLevel;
   }
 
   public void setGameDetails(int newScore, int newFrames, int newLevel) {
-    score = newScore;
+    mScore = newScore;
     frames = newFrames;
-    level = newLevel;
+    mLevel = newLevel;
   }
 
   public int getFrames() {

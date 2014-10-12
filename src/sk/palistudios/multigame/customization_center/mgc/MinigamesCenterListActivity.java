@@ -10,6 +10,7 @@ import android.widget.AdapterView;
 import android.widget.TextView;
 
 import sk.palistudios.multigame.BaseListActivity;
+import sk.palistudios.multigame.MgTracker;
 import sk.palistudios.multigame.R;
 import sk.palistudios.multigame.customization_center.CustomizationCenterActivity;
 import sk.palistudios.multigame.customization_center.skins.SkinsCenterListActivity;
@@ -75,10 +76,12 @@ public class MinigamesCenterListActivity extends BaseListActivity {
 
         switch (position) {
           case 1:
+            MgTracker.trackMinigameChanged("Balance");
             tmpChosenMinigames[1] = "HBalance";
             minigamesAdapter.activateItem(SYMBOL_MINIGAME_HORIZONTAL, position);
             break;
           case 2:
+            MgTracker.trackMinigameChanged("Catcher");
             minigameToChange = minigamesAdapter.activateItem(SYMBOL_MINIGAME_TOUCH, position);
 
             if ("TGatherer".equals(minigameToChange)) {
@@ -93,7 +96,7 @@ public class MinigamesCenterListActivity extends BaseListActivity {
 
             break;
           case 3:
-            //                        tmpChosenMinigames[2] = "TGatherer";
+            MgTracker.trackMinigameChanged("Gatherer");
             minigameToChange = minigamesAdapter.activateItem(SYMBOL_MINIGAME_TOUCH, position);
 
             if ("TCatcher".equals(minigameToChange)) {
@@ -108,7 +111,7 @@ public class MinigamesCenterListActivity extends BaseListActivity {
 
             break;
           case 4:
-            //                        tmpChosenMinigames[3] = "TInvader";
+            MgTracker.trackMinigameChanged("Invader");
             minigameToChange = minigamesAdapter.activateItem(SYMBOL_MINIGAME_TOUCH, position);
 
             if ("TCatcher".equals(minigameToChange)) {
@@ -120,16 +123,14 @@ public class MinigamesCenterListActivity extends BaseListActivity {
               tmpChosenMinigames[2] = "TInvader";
               tmpChosenMinigames[3] = "TCatcher";
             }
-
-            //                        minigamesAdapter.activateItem(SYMBOL_MINIGAME_TOUCH,
-            // position);
-            //                        ;
             break;
           case 5:
+            MgTracker.trackMinigameChanged("Bird");
             tmpChosenMinigames[0] = "VBird";
             minigamesAdapter.activateItem(SYMBOL_MINIGAME_VERTICAL, position);
             break;
           case 6:
+            MgTracker.trackMinigameChanged("Bouncer");
             tmpChosenMinigames[0] = "VBouncer";
             minigamesAdapter.activateItem(SYMBOL_MINIGAME_VERTICAL, position);
             ;
@@ -138,7 +139,6 @@ public class MinigamesCenterListActivity extends BaseListActivity {
         }
         GameSharedPref.SetChosenMinigamesNames(tmpChosenMinigames);
         minigamesAdapter.notifyDataSetChanged();
-        //                MinigamesManager.changeChosenMinigamesNames(tmpActiveMinigames);
 
       }
     });
