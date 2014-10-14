@@ -30,7 +30,6 @@ public abstract class AFragmentView extends SurfaceView {
     setBackgroundColor(color);
 
     mMiniGame = minigame;
-
   }
 
   @Override

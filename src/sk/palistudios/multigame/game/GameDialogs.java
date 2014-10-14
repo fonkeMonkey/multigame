@@ -244,7 +244,7 @@ public class GameDialogs {
             String playerName = userNameEditText.getText().toString();
             GameSharedPref.setLastHofName(playerName);
 
-            HofDatabaseCenter db = HofDatabaseCenter.getHofDb();
+            HofDatabaseCenter db = HofDatabaseCenter.getsHofDb();
             db.writeIntoHallOfFame(new HofItem(playerName, game.getScore()));
             intent = new Intent(act, HallOfFameActivity.class);
             game.startActivity(intent);
@@ -291,7 +291,7 @@ public class GameDialogs {
               playerName = act.getString(R.string.button_hall_of_fame_multigame_fan);
             }
 
-            HofDatabaseCenter db = HofDatabaseCenter.getHofDb();
+            HofDatabaseCenter db = HofDatabaseCenter.getsHofDb();
             db.writeIntoHallOfFame(new HofItem(playerName, score));
             intent = new Intent(act, HallOfFameActivity.class);
             act.startActivity(intent);

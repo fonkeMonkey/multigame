@@ -79,8 +79,8 @@ public class GameActivity extends FragmentActivity implements SensorEventListene
   Handler mGameLoopHandler;
   private SensorManager sm = null;
   private Sensor sensor = null;
-  private TextView scoreView = null;
-  private TextView difficultyView = null;
+  private TextView mScoreView = null;
+  private TextView mDifficultyView = null;
   private AFragmentView mFragmentViews[];
   private AFragment mFragments[];
   private boolean mTutorialMode;
@@ -105,6 +105,10 @@ public class GameActivity extends FragmentActivity implements SensorEventListene
   private boolean closedByButton = false;
   private long mTimeGameStarted;
   private boolean mLoseTracked = false;
+  int mBarLabelColor;
+  int mBarTextColor;
+  private SpannableString mDifficultySpannable;
+  private SpannableString mScoreSpannable;
 
   public static void flashScreen(GameActivity game) {
     Animation animation = new AlphaAnimation(0, 1); // Change alpha
@@ -119,17 +123,15 @@ public class GameActivity extends FragmentActivity implements SensorEventListene
   public void onCreate(Bundle icicle) {
     super.onCreate(icicle);
     overridePendingTransition(R.anim.fadein, R.anim.fadeout);
-
     setVolumeControlStream(AudioManager.STREAM_MUSIC);
-    initVariables();
     HofDatabaseCenter.initDB(this);
 
+    initVariables();
     setContentView(R.layout.game);
 
+    mTutorialMode = GameSharedPref.isTutorialModeActivated();
     initGraphics();
-
     initMinigames(this);
-
   }
 
   private void initVariables() {
@@ -166,10 +168,10 @@ public class GameActivity extends FragmentActivity implements SensorEventListene
   private void initGraphics() {
     gameBar = (LinearLayout) findViewById(R.id.game_bar);
     gameBar.setBackgroundColor(SkinsCenterListActivity.getCurrentSkin(this).getBarBgColor());
-    scoreView = (TextView) findViewById(R.id.game_score);
-    scoreView.setTextColor(SkinsCenterListActivity.getCurrentSkin(this).getBarLabelColor());
-    difficultyView = (TextView) findViewById(R.id.game_level);
-    difficultyView.setTextColor(SkinsCenterListActivity.getCurrentSkin(this).getBarLabelColor());
+    mScoreView = (TextView) findViewById(R.id.game_score);
+    mScoreView.setTextColor(SkinsCenterListActivity.getCurrentSkin(this).getBarLabelColor());
+    mDifficultyView = (TextView) findViewById(R.id.game_level);
+    mDifficultyView.setTextColor(SkinsCenterListActivity.getCurrentSkin(this).getBarLabelColor());
     gameScoreSeparator = (View) findViewById(R.id.game_score_separator);
     gameScoreSeparator.setBackgroundColor(SkinsCenterListActivity.getCurrentSkin(this)
         .getBarSeparatorColor());
@@ -194,14 +196,18 @@ public class GameActivity extends FragmentActivity implements SensorEventListene
     mFragmentViews[2].setGameSaved(wasGameSaved);
     mFragmentViews[3].setGameSaved(wasGameSaved);
 
-    if (mTutorialMode) {
-      setBarTextColors(scoreView, getString(R.string.score), "Tutorial");
-      setBarTextColors(difficultyView, "Level: ", "Tutorial");
-    } else {
-      setBarTextColors(scoreView, getString(R.string.score), String.valueOf(0));
-      setBarTextColors(difficultyView, "Level: ", String.valueOf(1));
-    }
+    mBarLabelColor = SkinsCenterListActivity.getCurrentSkin(this).getBarLabelColor();
+    mBarTextColor = SkinsCenterListActivity.getCurrentSkin(this).getBarTextColor();
+    mScoreSpannable = new SpannableString(getString(R.string.score));
+    mDifficultySpannable = new SpannableString("Level: ");
 
+    if (mTutorialMode) {
+      redrawScoreView("Tutorial");
+      redrawDifficultyView("Tutorial");
+    } else {
+      redrawScoreView(String.valueOf(0));
+      redrawDifficultyView(String.valueOf(1));
+    }
   }
 
   @Override
@@ -210,7 +216,7 @@ public class GameActivity extends FragmentActivity implements SensorEventListene
 
     super.onResume();
     SoundEffectsCenter.muteSystemSounds(this, true);
-    mTutorialMode = GameSharedPref.isTutorialModeActivated();
+
 
     if (isDialogPresent == true) {
       //MainMenu will handle it
@@ -276,6 +282,7 @@ public class GameActivity extends FragmentActivity implements SensorEventListene
             if (secondsPassed % (DebugSettings.SECONDS_PER_LEVEL) == 0) {
               mLevel++;
               GameTimeMaster.onLevelIncreased(GameActivity.this);
+              redrawDifficultyView(String.valueOf(mLevel));
             }
 
             if (mTimeHandler != null) {
@@ -437,15 +444,17 @@ public class GameActivity extends FragmentActivity implements SensorEventListene
 
   }
 
+
+
   private void refreshDisplayGame() {
     mScore += mLevel * DebugSettings.SCORE_COEFICIENT;
 
     if (mTutorialMode) {
-      setBarTextColors(scoreView, getString(R.string.score), "Tutorial");
-      setBarTextColors(difficultyView, "Level: ", "Tutorial");
+//      redrawBarView(mScoreView, getString(R.string.score), "Tutorial");
+//      redrawBarView(mDifficultyView, "Level: ", "Tutorial");
     } else {
-      setBarTextColors(scoreView, getString(R.string.score), String.valueOf(mScore));
-      setBarTextColors(difficultyView, "Level: ", String.valueOf(mLevel));
+      redrawScoreView(String.valueOf(mScore));
+//      redrawDifficultyView(String.valueOf(mLevel));
     }
 
     for (int i = 0; i < 4; i++) {
@@ -456,18 +465,26 @@ public class GameActivity extends FragmentActivity implements SensorEventListene
 
   }
 
-  private void setBarTextColors(TextView textView, String firstWord, String secondWord) {
-    Spannable firstPart = new SpannableString(firstWord);
-    int firstColor = SkinsCenterListActivity.getCurrentSkin(this).getBarLabelColor();
-    firstPart.setSpan(new ForegroundColorSpan(firstColor), 0, firstPart.length(),
+  private void redrawScoreView(String score) {
+    mScoreSpannable.setSpan(new ForegroundColorSpan(mBarLabelColor), 0, mScoreSpannable.length(),
         Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
-    textView.setText(firstPart);
+    mScoreView.setText(mScoreSpannable);
 
-    Spannable secondPart = new SpannableString(secondWord);
-    int secondColor = SkinsCenterListActivity.getCurrentSkin(this).getBarTextColor();
-    secondPart.setSpan(new ForegroundColorSpan(secondColor), 0, secondPart.length(),
+    Spannable secondPart = new SpannableString(score);
+    secondPart.setSpan(new ForegroundColorSpan(mBarTextColor), 0, secondPart.length(),
         Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
-    textView.append(secondPart);
+    mScoreView.append(secondPart);
+  }
+
+  private void redrawDifficultyView(String difficulty) {
+    mDifficultySpannable.setSpan(new ForegroundColorSpan(mBarLabelColor), 0, mDifficultySpannable.length(),
+        Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+    mDifficultyView.setText(mDifficultySpannable);
+
+    Spannable secondPart = new SpannableString(difficulty);
+    secondPart.setSpan(new ForegroundColorSpan(mBarTextColor), 0, secondPart.length(),
+        Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+    mDifficultyView.append(secondPart);
   }
 
   @Override
@@ -601,10 +618,9 @@ public class GameActivity extends FragmentActivity implements SensorEventListene
 
       AchievementsCenterListActivity.checkAchievements(mScore, mLevel, this);
 
-      HofDatabaseCenter.getHofDb().open();
-
-      boolean isInHallOfFame = HofDatabaseCenter.getHofDb().isInHallOfFame(mScore);
-      HofDatabaseCenter.getHofDb().close();
+      HofDatabaseCenter.getsHofDb().open();
+      boolean isInHallOfFame = HofDatabaseCenter.getsHofDb().isInHallOfFame(mScore);
+      HofDatabaseCenter.getsHofDb().close();
 
       if (isInHallOfFame) {
         GameDialogs.showWinnerDialogWindow(this);

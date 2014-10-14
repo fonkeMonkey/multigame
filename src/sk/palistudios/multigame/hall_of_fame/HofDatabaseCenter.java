@@ -13,8 +13,6 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.util.Log;
 
-import sk.palistudios.multigame.game.GameActivity;
-
 public class HofDatabaseCenter extends SQLiteOpenHelper {
 
   private static final int DATABASE_VERSION = 3;
@@ -23,23 +21,25 @@ public class HofDatabaseCenter extends SQLiteOpenHelper {
       "CREATE TABLE " + TABLE_NAME + "(ID INTEGER primary key autoincrement, " +
           "NAME TEXT NOT NULL, " + "SCORE INTEGER NOT NULL " + ");";
   private static final String DATABASE_NAME = "HallOfFame";
-  private static HofDatabaseCenter hofDb = null;
+  private static HofDatabaseCenter sHofDb = null;
   private SQLiteDatabase database;
 
   public HofDatabaseCenter(Context context) {
     super(context, "HallOfFame", null, DATABASE_VERSION);
   }
 
-  public static void initDB(GameActivity game) {
-    hofDb = new HofDatabaseCenter(game);
+  public static void initDB(Context context) {
+    if (sHofDb == null) {
+      sHofDb = new HofDatabaseCenter(context);
+    }
   }
   //
   //    public boolean isEmpty() {
   //        if(database.g)
   //    }
 
-  public static HofDatabaseCenter getHofDb() {
-    return hofDb;
+  public static HofDatabaseCenter getsHofDb() {
+    return sHofDb;
   }
 
   @Override
