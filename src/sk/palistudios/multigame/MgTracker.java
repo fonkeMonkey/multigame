@@ -31,6 +31,7 @@ public class MgTracker {
   private static final String ACTION_GAME_FINISHED_TIME_PLAYED = "action_game_finished_time_played";
   private static final String ACTION_GAME_FINISHED_LEVEL = "action_game_finished_level";
   private static final String ACTION_GAME_FINISHED_SCORE = "action_game_finished_score";
+  private static final String ACTION_GAME_FINISHED_MINIGAME_LOST = "action_game_finished_minigame_lost";
   private static final String ACTION_GAMES_PER_SESSION = "action_games_per_session";
   private static final String ACTION_GAME_WINNER_BUTTON_PUSHED = "action_game_winner_button_pushed";
   private static final String ACTION_GAME_LOSER_BUTTON_PUSHED = "action_game_loser_button_pushed";
@@ -99,7 +100,7 @@ public class MgTracker {
     sGameFinishedTracked = false;
   }
 
-  public static void trackGameFinished(long timePlayed, int level, int score) {
+  public static void trackGameFinished(long timePlayed, int level, int score, String gameLost) {
     if (sGameFinishedTracked != true) {
       sGameFinishedTracked = true;
       sTracker.send(new HitBuilders.EventBuilder().setCategory(CATEGORY_GAME_CLASSIC).setAction(
@@ -108,6 +109,8 @@ public class MgTracker {
           ACTION_GAME_FINISHED_LEVEL).setValue(level).build());
       sTracker.send(new HitBuilders.EventBuilder().setCategory(CATEGORY_GAME_CLASSIC).setAction(
           ACTION_GAME_FINISHED_SCORE).setValue(score).build());
+      sTracker.send(new HitBuilders.EventBuilder().setCategory(CATEGORY_GAME_CLASSIC).setAction(
+          ACTION_GAME_FINISHED_MINIGAME_LOST).setLabel(gameLost).build());
     }
   }
 

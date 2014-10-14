@@ -7,6 +7,7 @@ import android.graphics.PorterDuff.Mode;
 import android.media.AudioManager;
 import android.os.Bundle;
 import android.view.KeyEvent;
+import android.view.MotionEvent;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
@@ -35,6 +36,7 @@ public class MainMenuActivity extends BaseActivity {
   private Button buttonHof;
   private Button buttonPreferences;
   private ImageView logo;
+  private int mClicksOnLogo = 0;
 
   public static MainMenuActivity getInstance() {
     return sMainMenuInstance;
@@ -71,6 +73,20 @@ public class MainMenuActivity extends BaseActivity {
     buttonCc = (Button) findViewById(R.id.mainMenu_button_MGC);
     buttonHof = (Button) findViewById(R.id.mainMenu_button_HOF);
     buttonPreferences = (Button) findViewById(R.id.mainMenu_button_preferences);
+
+    findViewById(R.id.logo).setOnTouchListener(new View.OnTouchListener() {
+      @Override
+      public boolean onTouch(View v, MotionEvent event) {
+        mClicksOnLogo++;
+        if (mClicksOnLogo == 7) {
+          Toaster.toastShort("Tutorial completed, you cheater ;)",
+              MainMenuActivity.this.getApplicationContext());
+          GameSharedPref.onTutorialCompleted();
+          setStartGameButtonName();
+        }
+        return false;
+      }
+    });
 
   }
 

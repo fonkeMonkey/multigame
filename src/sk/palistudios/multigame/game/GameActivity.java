@@ -15,6 +15,7 @@ import android.support.v4.app.FragmentActivity;
 import android.text.Spannable;
 import android.text.SpannableString;
 import android.text.style.ForegroundColorSpan;
+import android.util.Log;
 import android.view.MotionEvent;
 import android.view.Surface;
 import android.view.View;
@@ -103,6 +104,7 @@ public class GameActivity extends FragmentActivity implements SensorEventListene
   private int mLevel = 1;
   private boolean closedByButton = false;
   private long mTimeGameStarted;
+  private boolean mLoseTracked = false;
 
   public static void flashScreen(GameActivity game) {
     Animation animation = new AlphaAnimation(0, 1); // Change alpha
@@ -573,9 +575,11 @@ public class GameActivity extends FragmentActivity implements SensorEventListene
   public void onGameLost(int loser) {
     wasGameLost = true;
     GameSharedPref.setGameSaved(false);
-    if(!isTutorial()){
+    if(!isTutorial() && !mLoseTracked){
       MgTracker.trackGameFinished((System.currentTimeMillis() - mTimeGameStarted)/1000, mLevel,
-          mScore);
+          mScore, MinigamesManager.getMinigamesObjects()[loser].getName());
+      Log.d("Minigame lost:", MinigamesManager.getMinigamesObjects()[loser].getName());
+      mLoseTracked = true;
     }
 
     if (gameStopped != true) {
