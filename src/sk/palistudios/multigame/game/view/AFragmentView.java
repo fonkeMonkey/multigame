@@ -56,9 +56,8 @@ public abstract class AFragmentView extends SurfaceView {
   protected void onDraw(Canvas canvas) {
     super.onDraw(canvas);
     if (!isMinigameInitialized) {
-
+      isMinigameInitialized = true;
       init(canvas);
-
     }
     mMiniGame.drawMinigame(canvas);
   }
@@ -70,8 +69,6 @@ public abstract class AFragmentView extends SurfaceView {
     mBitmap = Bitmap.createBitmap(width, height, Bitmap.Config.ARGB_8888);
     mMiniGame.initMinigame(mBitmap, wasGameSaved);
     GameSharedPref.setMinigamesInitialized(true);
-    //        MinigamesManager.setMinigamesInitialized(true, Game.getActiveGame());
-    isMinigameInitialized = true;
   }
 
   public void setBackgroundGray() {
