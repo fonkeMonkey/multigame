@@ -71,7 +71,7 @@ public class MgTracker {
 
   public static void trackTutorialWindowShown(int levelNo) {
     sTracker.send(new HitBuilders.EventBuilder().setCategory(CATEGORY_GAME_TUTORIAL).setAction(
-        ACTION_TUTORIAL_LEVEL_STARTED).setLabel(String.valueOf(levelNo)).build());
+        ACTION_TUTORIAL_WINDOW_SHOWN).setLabel(String.valueOf(levelNo)).build());
     Log.d("tutorial window, number :", String.valueOf(levelNo));
   }
 
@@ -91,7 +91,7 @@ public class MgTracker {
 
   public static void trackTutorialRestarted(int sTutorialLastLevel) {
     sTracker.send(new HitBuilders.EventBuilder().setCategory(CATEGORY_GAME_TUTORIAL).setAction(
-        ACTION_TUTORIAL_RESTARTED).setValue(sTutorialLastLevel).build());
+        ACTION_TUTORIAL_RESTARTED).setLabel(String.valueOf(sTutorialLastLevel)).build());
   }
 
   public static void trackGameStarted() {
@@ -106,9 +106,9 @@ public class MgTracker {
       sTracker.send(new HitBuilders.EventBuilder().setCategory(CATEGORY_GAME_CLASSIC).setAction(
           ACTION_GAME_FINISHED_TIME_PLAYED).setValue(timePlayed).build());
       sTracker.send(new HitBuilders.EventBuilder().setCategory(CATEGORY_GAME_CLASSIC).setAction(
-          ACTION_GAME_FINISHED_LEVEL).setValue(level).build());
+          ACTION_GAME_FINISHED_LEVEL).setLabel(String.valueOf(level)).build());
       sTracker.send(new HitBuilders.EventBuilder().setCategory(CATEGORY_GAME_CLASSIC).setAction(
-          ACTION_GAME_FINISHED_SCORE).setValue(score).build());
+          ACTION_GAME_FINISHED_SCORE).setLabel("score").setValue(score).build());
       sTracker.send(new HitBuilders.EventBuilder().setCategory(CATEGORY_GAME_CLASSIC).setAction(
           ACTION_GAME_FINISHED_MINIGAME_LOST).setLabel(gameLost).build());
     }
@@ -116,7 +116,7 @@ public class MgTracker {
 
   public static void trackGamesPerSession(int times) {
     sTracker.send(new HitBuilders.EventBuilder().setCategory(CATEGORY_GAME_CLASSIC).setAction(
-        ACTION_GAMES_PER_SESSION).setValue(times).build());
+        ACTION_GAMES_PER_SESSION).setLabel(String.valueOf(times)).build());
     Log.d("Games per session", String.valueOf(times));
   }
 

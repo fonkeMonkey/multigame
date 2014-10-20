@@ -232,16 +232,6 @@ public class MainMenuActivity extends BaseActivity {
   }
 
   @Override
-  public void onStart() {
-    super.onStart();
-  }
-
-  @Override
-  public void onStop() {
-    super.onStop();
-  }
-
-  @Override
   public boolean onKeyDown(int keyCode, KeyEvent event) {
     if ((keyCode == KeyEvent.KEYCODE_BACK)) {
       if (GameActivity.sGamesPerSession != 0) {
