@@ -66,7 +66,7 @@ public class ApplicationInitializer {
     }
 
     if (DebugSettings.unlockAllItems) {
-      unlockItemsAll();
+      GameSharedPref.unlockItemsAll();
     }
 
     if (DebugSettings.tutorialCompleted) {
@@ -133,21 +133,6 @@ public class ApplicationInitializer {
 
   private static void initCustomizationItems() {
     GameSharedPref.unlockInitialItems();
-  }
-
-  private static void unlockItemsAll() {
-    GameSharedPref.unlockItem("HBalance");
-    GameSharedPref.unlockItem("VBird");
-    GameSharedPref.unlockItem("VBouncer");
-    GameSharedPref.unlockItem("TGatherer");
-    GameSharedPref.unlockItem("TCatcher");
-    GameSharedPref.unlockItem("TInvader");
-    GameSharedPref.unlockItem("summer");
-    GameSharedPref.unlockItem("girl_power");
-    GameSharedPref.unlockItem("blue_sky");
-    GameSharedPref.unlockItem("dst_cyberops");
-    GameSharedPref.unlockItem("dst_blam");
-    GameSharedPref.unlockItem("dst_cv_x");
   }
 
   private static void clearDatabase(Context context) {

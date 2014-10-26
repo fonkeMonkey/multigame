@@ -12,11 +12,13 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import sk.palistudios.multigame.R;
 import sk.palistudios.multigame.customization_center.skins.SkinItem;
 import sk.palistudios.multigame.customization_center.skins.SkinsCenterListActivity;
 import sk.palistudios.multigame.tools.GraphicUnitsConvertor;
+import sk.palistudios.multigame.tools.Toaster;
 
 public class HofArrayAdapter extends ArrayAdapter<HofItem> {
 

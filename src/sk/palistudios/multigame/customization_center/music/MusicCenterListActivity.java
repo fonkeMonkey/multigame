@@ -139,11 +139,7 @@ public class MusicCenterListActivity extends BaseListActivity {
     return musicArrayAdapter;
   }
 
-  @Override
-  public void onBackPressed() {
-    super.onBackPressed();
-    SoundEffectsCenter.playBackSound(this);
-  }
+
 
   @Override
   public void onStart() {

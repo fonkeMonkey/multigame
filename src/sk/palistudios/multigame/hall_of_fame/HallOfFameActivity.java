@@ -35,12 +35,7 @@ public class HallOfFameActivity extends BaseListActivity {
     }
 
     setVolumeControlStream(AudioManager.STREAM_MUSIC);
-
-    //        if(!GameSharedPref.isAchievementFulfilled("pro") && DebugSettings.adsActivated){
     setContentView(R.layout.list_layout);
-    //        }else{
-    //            setContentView(R.layout.list_layout_adfree);
-    //        }
 
     hofDb = new HofDatabaseCenter(this);
     hofDb.open();
@@ -76,27 +71,5 @@ public class HallOfFameActivity extends BaseListActivity {
   protected void onPause() {
     super.onPause();
     overridePendingTransition(R.anim.fadein, R.anim.fadeout);
-  }
-
-  @Override
-  public void onBackPressed() {
-    super.onBackPressed();
-    SoundEffectsCenter.playBackSound(this);
-  }
-
-  @Override
-  public void onUserLeaveHint() {
-    super.onUserLeaveHint();
-    finish();
-  }
-
-  @Override
-  public void onStart() {
-    super.onStart();
-  }
-
-  @Override
-  public void onStop() {
-    super.onStop();
   }
 }

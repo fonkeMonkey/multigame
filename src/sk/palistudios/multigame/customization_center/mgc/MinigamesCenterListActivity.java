@@ -145,12 +145,6 @@ public class MinigamesCenterListActivity extends BaseListActivity {
 
   }
 
-  @Override
-  public void onBackPressed() {
-    super.onBackPressed();
-    SoundEffectsCenter.playBackSound(this);
-  }
-
   public void initAdapter() {
 
     ArrayList<MgcItem> items = new ArrayList<MgcItem>();

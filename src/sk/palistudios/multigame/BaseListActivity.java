@@ -29,5 +29,11 @@ public abstract class BaseListActivity extends ListActivity {
     super.onStop();
     SoundEffectsCenter.muteSystemSounds(this, false);
   }
+
+  @Override
+  public void onBackPressed() {
+    super.onBackPressed();
+    SoundEffectsCenter.playBackSound(this);
+  }
 }
 

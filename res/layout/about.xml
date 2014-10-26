@@ -19,6 +19,7 @@
 
 
     <ImageView
+        android:id="@+id/about_logo"
         android:layout_width="75dp"
         android:layout_height="75dp"
 
@@ -31,8 +32,6 @@
     <LinearLayout
         android:orientation="vertical"
         >
-      <!--android:layout_height="match_parent"-->
-      <!--android:layout_width="match_parent"-->
       <TextView
 
 
@@ -48,7 +47,6 @@
 
           android:text="Multigame v 1.0\n©Pali Studios\n"
           />
-      <!--android:text="@raw/info"/>-->
       <TextView
           android:layout_width="wrap_content"
           android:layout_height="wrap_content"

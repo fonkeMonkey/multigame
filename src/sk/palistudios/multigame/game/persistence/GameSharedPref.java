@@ -491,4 +491,18 @@ public class GameSharedPref {
     mEditor.commit();
   }
 
+  public static void unlockItemsAll() {
+    unlockItem("HBalance");
+    unlockItem("VBird");
+    unlockItem("VBouncer");
+    unlockItem("TGatherer");
+    unlockItem("TCatcher");
+    unlockItem("TInvader");
+    unlockItem("summer");
+    unlockItem("girl_power");
+    unlockItem("blue_sky");
+    unlockItem("dst_cyberops");
+    unlockItem("dst_blam");
+    unlockItem("dst_cv_x");
+  }
 }
