@@ -71,12 +71,11 @@ public class GameActivity extends FragmentActivity implements SensorEventListene
   final private int MAX_FRAMESKIP = 8;
   public boolean gameStopped = true;
   public Runnable mRunnableGameLoop;
-  Handler displayHandler;
-  Toast mToast;
-  MusicPlayer mMusicPlayer;
-  Handler mHandlerTutorial;
-  Runnable mRunnableTutorial;
-  Handler mGameLoopHandler;
+  private Toast mToast;
+  private MusicPlayer mMusicPlayer;
+  private Handler mHandlerTutorial;
+  private Runnable mRunnableTutorial;
+  private Handler mGameLoopHandler;
   private SensorManager sm = null;
   private Sensor sensor = null;
   private TextView mScoreView = null;
@@ -216,7 +215,6 @@ public class GameActivity extends FragmentActivity implements SensorEventListene
 
     super.onResume();
     SoundEffectsCenter.muteSystemSounds(this, true);
-
 
     if (isDialogPresent == true) {
       //MainMenu will handle it
@@ -444,17 +442,11 @@ public class GameActivity extends FragmentActivity implements SensorEventListene
 
   }
 
-
-
   private void refreshDisplayGame() {
     mScore += mLevel * DebugSettings.SCORE_COEFICIENT;
 
-    if (mTutorialMode) {
-//      redrawBarView(mScoreView, getString(R.string.score), "Tutorial");
-//      redrawBarView(mDifficultyView, "Level: ", "Tutorial");
-    } else {
-      redrawScoreView(String.valueOf(mScore));
-//      redrawDifficultyView(String.valueOf(mLevel));
+    if (!mTutorialMode) {
+     redrawScoreView(String.valueOf(mScore));
     }
 
     for (int i = 0; i < 4; i++) {
@@ -477,8 +469,8 @@ public class GameActivity extends FragmentActivity implements SensorEventListene
   }
 
   private void redrawDifficultyView(String difficulty) {
-    mDifficultySpannable.setSpan(new ForegroundColorSpan(mBarLabelColor), 0, mDifficultySpannable.length(),
-        Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+    mDifficultySpannable.setSpan(new ForegroundColorSpan(mBarLabelColor), 0,
+        mDifficultySpannable.length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
     mDifficultyView.setText(mDifficultySpannable);
 
     Spannable secondPart = new SpannableString(difficulty);
@@ -592,8 +584,8 @@ public class GameActivity extends FragmentActivity implements SensorEventListene
   public void onGameLost(int loser) {
     wasGameLost = true;
     GameSharedPref.setGameSaved(false);
-    if(!isTutorial() && !mLoseTracked){
-      MgTracker.trackGameFinished((System.currentTimeMillis() - mTimeGameStarted)/1000, mLevel,
+    if (!isTutorial() && !mLoseTracked) {
+      MgTracker.trackGameFinished((System.currentTimeMillis() - mTimeGameStarted) / 1000, mLevel,
           mScore, MinigamesManager.getMinigamesObjects()[loser].getName());
       Log.d("Minigame lost:", MinigamesManager.getMinigamesObjects()[loser].getName());
       mLoseTracked = true;
@@ -815,5 +807,11 @@ public class GameActivity extends FragmentActivity implements SensorEventListene
 
   public boolean isTutorial() {
     return mTutorialMode;
+  }
+
+  public void stopMusic() {
+    if (mMusicPlayer != null) {
+      mMusicPlayer.stopMusic();
+    }
   }
 }

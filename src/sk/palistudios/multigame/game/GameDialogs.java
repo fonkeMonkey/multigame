@@ -168,7 +168,7 @@ public class GameDialogs {
         }
       }
     };
-    game.mMusicPlayer.stopMusic();
+    game.stopMusic();
 
     AlertDialog.Builder builder = new AlertDialog.Builder(game);
     builder.setCancelable(false).setTitle(game.getString(R.string.tutorial_failed_title))
