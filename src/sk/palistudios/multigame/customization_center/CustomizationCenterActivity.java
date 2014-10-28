@@ -165,6 +165,12 @@ public class CustomizationCenterActivity extends TabActivity {
   }
 
   @Override
+  public void onStop() {
+    super.onStop();
+    SoundEffectsCenter.muteSystemSounds(this, false);
+  }
+
+  @Override
   protected void onDestroy() {
     super.onDestroy();
     headers.clear();
@@ -174,7 +180,7 @@ public class CustomizationCenterActivity extends TabActivity {
   @Override
   public void onBackPressed() {
     super.onBackPressed();
-    SoundEffectsCenter.playBackSound(this);
+//    SoundEffectsCenter.playBackSound(this);
   }
 
   @Override
@@ -183,14 +189,4 @@ public class CustomizationCenterActivity extends TabActivity {
     finish();
   }
 
-  @Override
-  public void onStart() {
-    super.onStart();
-  }
-
-  @Override
-  public void onStop() {
-    super.onStop();
-    SoundEffectsCenter.muteSystemSounds(this, false);
-  }
 }

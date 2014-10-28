@@ -18,11 +18,11 @@ public class SoundEffectsCenter {
 
   /* Field to control the volume of the app sounds. */
   private static final float VOLUME_COEFICIENT = 0.3f;
+  public static MediaPlayer mp_forward_old;
   public static MediaPlayer mp_forward;
-  public static MediaPlayer mp_back;
   public static MediaPlayer mp_tab;
   public static AudioManager mAudioManager;
-  private static boolean isInitialized = false;
+  private static boolean sIsInitialized = false;
   private static int mDesiredMusicVolume;
 
   public static void init(Context context) {
@@ -30,17 +30,17 @@ public class SoundEffectsCenter {
     //TODO virdzek  * mDesiredMusicVolume nejak to ešte napasovať možno (alebo to robí
     // automaticky ten stream?
 
-    mp_forward = MediaPlayer.create(context, R.raw.button_forward);
+    mp_forward_old = MediaPlayer.create(context, R.raw.button_forward);
+    mp_forward_old.setAudioStreamType(AudioManager.STREAM_MUSIC);
+    mp_forward_old.setVolume(soundVolume, soundVolume);
+    mp_forward = MediaPlayer.create(context, R.raw.button_back);
     mp_forward.setAudioStreamType(AudioManager.STREAM_MUSIC);
     mp_forward.setVolume(soundVolume, soundVolume);
-    mp_back = MediaPlayer.create(context, R.raw.button_back);
-    mp_back.setAudioStreamType(AudioManager.STREAM_MUSIC);
-    mp_back.setVolume(soundVolume, soundVolume);
     mp_tab = MediaPlayer.create(context, R.raw.button_tab);
     mp_tab.setAudioStreamType(AudioManager.STREAM_MUSIC);
     mp_tab.setVolume(soundVolume, soundVolume);
 
-    isInitialized = true;
+    sIsInitialized = true;
   }
 
   public static void muteSystemSounds(Context context, boolean status) {
@@ -51,7 +51,7 @@ public class SoundEffectsCenter {
   }
 
   public static void playForwardSound(Context context) {
-    if (!isInitialized) {
+    if (!sIsInitialized) {
       init(context);
     }
     if (GameSharedPref.isSoundOn()) {
@@ -60,17 +60,17 @@ public class SoundEffectsCenter {
   }
 
   public static void playBackSound(Context context) {
-    if (!isInitialized) {
+    if (!sIsInitialized) {
       init(context);
     }
 
     if (GameSharedPref.isSoundOn()) {
-      mp_back.start();
+      mp_forward.start();
     }
   }
 
   public static void playTabSound(Context context) {
-    if (!isInitialized) {
+    if (!sIsInitialized) {
       init(context);
     }
 
@@ -80,19 +80,19 @@ public class SoundEffectsCenter {
   }
 
   public static void releaseMediaPlayer() {
+    if (mp_forward_old != null) {
+      mp_forward_old.release();
+      mp_forward_old = null;
+    }
     if (mp_forward != null) {
       mp_forward.release();
       mp_forward = null;
-    }
-    if (mp_back != null) {
-      mp_back.release();
-      mp_back = null;
     }
     if (mp_tab != null) {
       mp_tab.release();
       mp_tab = null;
     }
-    isInitialized = false;
+    sIsInitialized = false;
   }
 
   public static void setVolumeBasedOnRingVolume(Context context) {

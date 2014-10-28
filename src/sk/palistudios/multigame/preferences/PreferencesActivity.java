@@ -103,8 +103,6 @@ public class PreferencesActivity extends PreferenceActivity {
   protected void onResume() {
     super.onResume();
     SoundEffectsCenter.muteSystemSounds(this, true);
-    //        boolean music_on = GameSharedPref.isMusicOn();
-    //        boolean sound_on = GameSharedPref.isSoundOn();
     String game_mode = GameSharedPref.getGameMode();
 
     boolean isTutorialCompleted =
@@ -119,10 +117,6 @@ public class PreferencesActivity extends PreferenceActivity {
         preferenceGameMode.setValueIndex(1);
         preferenceGameMode.setSummary("Classic");
       }
-      //            if (listPreference.getValue() == null) {
-      // to ensure we don't get a null value
-      // set first value by default
-      //            }
       preferenceGameMode.setOnPreferenceChangeListener(new OnPreferenceChangeListener() {
         @Override
         public boolean onPreferenceChange(Preference preference, Object newValue) {
@@ -132,8 +126,6 @@ public class PreferencesActivity extends PreferenceActivity {
           }
           preference.setSummary(newValue.toString());
           GameSharedPref.setGameMode(newValue.toString());
-          //                    editor.putString("game_mode", newValue.toString());
-          //                    editor.commit();
           return true;
         }
       });
@@ -191,7 +183,7 @@ public class PreferencesActivity extends PreferenceActivity {
   @Override
   public void onBackPressed() {
     super.onBackPressed();
-    SoundEffectsCenter.playBackSound(this);
+//    SoundEffectsCenter.playBackSound(this);
   }
 
   private void saveSettings() {

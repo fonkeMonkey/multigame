@@ -138,7 +138,6 @@ public class AchievementsCenterListActivity extends BaseListActivity {
   @Override
   public void onBackPressed() {
     super.onBackPressed();
-    SoundEffectsCenter.playBackSound(this);
   }
 
   @Override

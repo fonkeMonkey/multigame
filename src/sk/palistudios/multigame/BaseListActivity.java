@@ -33,7 +33,7 @@ public abstract class BaseListActivity extends ListActivity {
   @Override
   public void onBackPressed() {
     super.onBackPressed();
-    SoundEffectsCenter.playBackSound(this);
+//    SoundEffectsCenter.playBackSound(this);
   }
 }
 

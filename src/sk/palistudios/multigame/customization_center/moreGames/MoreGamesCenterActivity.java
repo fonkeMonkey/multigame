@@ -29,7 +29,6 @@ public class MoreGamesCenterActivity extends ActivityGroup {
   @Override
   public void onBackPressed() {
     super.onBackPressed();
-    SoundEffectsCenter.playBackSound(this);
   }
 
   private class myActivity extends Activity {

@@ -1,5 +1,6 @@
 package sk.palistudios.multigame.game;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.content.res.Configuration;
 import android.content.res.Resources.NotFoundException;
@@ -28,6 +29,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.facebook.Session;
+import sk.palistudios.multigame.BaseActivity;
 import sk.palistudios.multigame.MgTracker;
 import sk.palistudios.multigame.R;
 import sk.palistudios.multigame.customization_center.achievements.AchievementsCenterListActivity;
@@ -48,7 +50,7 @@ import sk.palistudios.multigame.tools.sound.SoundEffectsCenter;
 /**
  * @author Pali
  */
-public class GameActivity extends FragmentActivity implements SensorEventListener {
+public class GameActivity extends BaseActivity implements SensorEventListener {
 
   public static int dialogScore = -1;
   public static int dialogType = -1;
@@ -202,7 +204,6 @@ public class GameActivity extends FragmentActivity implements SensorEventListene
     getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
 
     super.onResume();
-    SoundEffectsCenter.muteSystemSounds(this, true);
 
     if (isDialogPresent == true) {
       //MainMenu will handle it
@@ -665,7 +666,6 @@ public class GameActivity extends FragmentActivity implements SensorEventListene
   @Override
   public void onStop() {
     super.onStop();
-    SoundEffectsCenter.muteSystemSounds(this, false);
     if (mMusicPlayer != null) {
       mMusicPlayer.stopMusic();
     }
