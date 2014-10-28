@@ -11,7 +11,7 @@ import android.graphics.Paint;
 import sk.palistudios.multigame.R;
 import sk.palistudios.multigame.game.GameActivity;
 import sk.palistudios.multigame.game.persistence.PaintSerializable;
-import sk.palistudios.multigame.game.time.GameTimeMaster;
+import sk.palistudios.multigame.game.time.GameTimeManager;
 import sk.palistudios.multigame.game.time.ITimeObserver;
 import sk.palistudios.multigame.mainMenu.DebugSettings;
 import sk.palistudios.multigame.tools.RandomGenerator;
@@ -151,14 +151,13 @@ public class MiniGameTGatherer extends AMiniGame implements IMiniGameTouch, ITim
   @Override
   public void onMinigameActivated() {
     super.onMinigameActivated();
-    GameTimeMaster.registerTimeObserver(this);
-
+    GameTimeManager.registerSecondsObserver(this);
   }
 
   @Override
   public void onMinigameDeactivated() {
     super.onMinigameDeactivated();
-    GameTimeMaster.unregisterTimeObserver(this);
+    GameTimeManager.unregisterSecondsObserver(this);
   }
 
   private boolean colidesWithOtherCircles(CircleToTouch circleNew) {

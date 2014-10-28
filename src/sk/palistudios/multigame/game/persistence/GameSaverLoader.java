@@ -26,9 +26,9 @@ public class GameSaverLoader {
     final int scoreToSave = game.getScore();
     final int levelToSave = game.getLevel();
     final int framesToSave = game.getFrames();
-    final boolean[] activeMinigames = MinigamesManager.getCurrentlyActiveMinigames();
+    final boolean[] activeMinigames = MinigamesManager.getmMinigamesActivityFlags();
     GameSharedPref.saveGameDetails(scoreToSave, levelToSave, framesToSave, activeMinigames);
-    for (AMiniGame minigame : MinigamesManager.getMinigamesObjects()) {
+    for (AMiniGame minigame : MinigamesManager.getMinigames()) {
       minigame.saveMinigame();
     }
   }
@@ -40,14 +40,14 @@ public class GameSaverLoader {
       int[] gameDetails = GameSharedPref.loadGameDetails();
       game.setGameDetails(gameDetails[1], gameDetails[0], gameDetails[2]);
       boolean[] activityFlags = GameSharedPref.loadMinigamesActivity();
-      MinigamesManager.setCurrentlyActiveMinigames(activityFlags);
+      MinigamesManager.setmMinigamesActivityFlags(activityFlags);
 
-      MinigamesManager.getMinigamesObjects()[0] = loadMinigameFromFile("MG_V", game);
-      MinigamesManager.getMinigamesObjects()[1] = loadMinigameFromFile("MG_H", game);
-      MinigamesManager.getMinigamesObjects()[2] = loadMinigameFromFile("MG_T1", game);
-      MinigamesManager.getMinigamesObjects()[3] = loadMinigameFromFile("MG_T2", game);
+      MinigamesManager.getMinigames()[0] = loadMinigameFromFile("MG_V", game);
+      MinigamesManager.getMinigames()[1] = loadMinigameFromFile("MG_H", game);
+      MinigamesManager.getMinigames()[2] = loadMinigameFromFile("MG_T1", game);
+      MinigamesManager.getMinigames()[3] = loadMinigameFromFile("MG_T2", game);
 
-      for (AMiniGame minigame : MinigamesManager.getMinigamesObjects()) {
+      for (AMiniGame minigame : MinigamesManager.getMinigames()) {
         minigame.mGame = game;
         minigame.onMinigameLoaded();
       }

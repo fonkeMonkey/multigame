@@ -67,7 +67,7 @@ public class PreferencesActivity extends PreferenceActivity {
     if (isTutorialCompleted) {
       addPreferencesFromResource(R.xml.preferences);
 
-    } else { //diferent layout withou possibility of changing game mode
+    } else { //diferent layout withou possibility of changing game_layout mode
       addPreferencesFromResource(R.xml.preferences_tutorial);
     }
 

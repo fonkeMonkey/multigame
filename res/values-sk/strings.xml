@@ -168,7 +168,7 @@
   <string name="autocalibration_subtitle">Nastav osy X a Y pre rotáciu na začiatku hry podľa natočenia mobilu</string>
   <string name="pref_game_mode">Herný mod</string>
   <string name="pref_rate">Ohodnoť na Google Play</string>
-  <!--<string name="finish_saved_game">Please finish your saved game first.</string>-->
+  <!--<string name="finish_saved_game">Please finish your saved game_layout first.</string>-->
 
 
   <!-- Rate -->

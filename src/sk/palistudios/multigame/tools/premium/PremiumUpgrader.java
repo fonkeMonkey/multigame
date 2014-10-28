@@ -145,7 +145,7 @@ public class PremiumUpgrader {
   //            // sku, you probably should check...
   //            if (result.isSuccess()) {
   //                // successfully consumed, so we apply the effects of the item in our
-  //                // game world's logic, which in our case means filling the gas tank a bit
+  //                // game_layout world's logic, which in our case means filling the gas tank a bit
   ////                Log.d(TAG, "Consumption successful. Provisioning.");
   //                alert("You filled 1/4 tank. Your tank is now " + String.valueOf(mTank) + "/4
   // full!");

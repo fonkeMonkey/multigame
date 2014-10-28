@@ -111,10 +111,10 @@ public class GameDialogs {
       }
       String title = symbol + game.getString(R.string.minigame) +
           (GameActivity.sTutorialLastLevel + 1) + ": " +
-          MinigamesManager.getMinigamesObjects()[GameActivity.sTutorialLastLevel].getName();
+          MinigamesManager.getMinigames()[GameActivity.sTutorialLastLevel].getName();
 
       String message =
-          MinigamesManager.getMinigamesObjects()[GameActivity.sTutorialLastLevel].getDescription(
+          MinigamesManager.getMinigames()[GameActivity.sTutorialLastLevel].getDescription(
               game);
       builder.setTitle(Html.fromHtml(title));
       builder.setMessage(Html.fromHtml(message)).setPositiveButton(Html.fromHtml(

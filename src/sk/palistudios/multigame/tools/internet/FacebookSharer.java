@@ -48,7 +48,7 @@ public class FacebookSharer {
 
         //                //Asi už mám permissiony
         //                if (state == SessionState.OPENED_TOKEN_UPDATED) {
-        //                    publishStoryNew(game);
+        //                    publishStoryNew(game_layout);
         //                    return;
         //                }
       }

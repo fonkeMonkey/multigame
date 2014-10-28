@@ -13,8 +13,6 @@ public class GameSharedPref {
   private static final String LAST_SEEN_VERSION = "last_seen_version";
   private static SharedPreferences mSharedPreferences;
   private static SharedPreferences.Editor mEditor;
-  private static boolean runAlready = false;
-  public boolean isGameSaved;
 
   public static void initSharedPref(Context context) {
     mSharedPreferences = context.getSharedPreferences("Game", 0);

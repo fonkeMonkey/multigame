@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
-    android:id="@+id/game"
+    android:id="@+id/game_container"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
     android:orientation="vertical"
@@ -67,18 +67,14 @@
         android:layout_weight="1"
         >
 
-      <fragment
-          android:id="@+id/fragment1"
-          android:name="sk.palistudios.multigame.game.view.Fragment1"
-          class="sk.palistudios.multigame.game.view.Fragment1"
+      <sk.palistudios.multigame.game.view.GameCanvasView
+          android:id="@+id/canvas1"
           android:layout_width="fill_parent"
           android:layout_height="fill_parent"
           android:layout_weight="1" />
 
-      <fragment
-          android:id="@+id/fragment2"
-          android:name="sk.palistudios.multigame.game.view.Fragment2"
-          class="sk.palistudios.multigame.game.view.Fragment2"
+      <sk.palistudios.multigame.game.view.GameCanvasView
+          android:id="@+id/canvas2"
           android:layout_width="fill_parent"
           android:layout_height="fill_parent"
           android:layout_weight="1" />
@@ -90,18 +86,14 @@
         android:layout_height="fill_parent"
         android:layout_weight="1">
 
-      <fragment
-          android:id="@+id/fragment3"
-          android:name="sk.palistudios.multigame.game.view.Fragment3"
-          class="sk.palistudios.multigame.game.view.Fragment3"
+      <sk.palistudios.multigame.game.view.GameCanvasViewTouch
+          android:id="@+id/canvas3"
           android:layout_width="fill_parent"
           android:layout_height="fill_parent"
           android:layout_weight="1" />
 
-      <fragment
-          android:id="@+id/fragment4"
-          android:name="sk.palistudios.multigame.game.view.Fragment4"
-          class="sk.palistudios.multigame.game.view.Fragment4"
+      <sk.palistudios.multigame.game.view.GameCanvasView
+          android:id="@+id/canvas4"
           android:layout_width="fill_parent"
           android:layout_height="fill_parent"
           android:layout_weight="1" />

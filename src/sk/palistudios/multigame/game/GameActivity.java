@@ -37,13 +37,8 @@ import sk.palistudios.multigame.game.minigames.IMiniGameVertical;
 import sk.palistudios.multigame.game.minigames.MinigamesManager;
 import sk.palistudios.multigame.game.persistence.GameSaverLoader;
 import sk.palistudios.multigame.game.persistence.GameSharedPref;
-import sk.palistudios.multigame.game.time.GameTimeMaster;
-import sk.palistudios.multigame.game.view.AFragment;
-import sk.palistudios.multigame.game.view.AFragmentView;
-import sk.palistudios.multigame.game.view.Fragment1;
-import sk.palistudios.multigame.game.view.Fragment2;
-import sk.palistudios.multigame.game.view.Fragment3;
-import sk.palistudios.multigame.game.view.Fragment4;
+import sk.palistudios.multigame.game.time.GameTimeManager;
+import sk.palistudios.multigame.game.view.BaseGameCanvasView;
 import sk.palistudios.multigame.hall_of_fame.HofDatabaseCenter;
 import sk.palistudios.multigame.mainMenu.DebugSettings;
 import sk.palistudios.multigame.tools.Toaster;
@@ -80,8 +75,7 @@ public class GameActivity extends FragmentActivity implements SensorEventListene
   private Sensor sensor = null;
   private TextView mScoreView = null;
   private TextView mDifficultyView = null;
-  private AFragmentView mFragmentViews[];
-  private AFragment mFragments[];
+  private BaseGameCanvasView mCanvases[];
   private boolean mTutorialMode;
   private boolean wasGameSaved;
   private boolean wasActivityPaused = false;
@@ -114,7 +108,7 @@ public class GameActivity extends FragmentActivity implements SensorEventListene
     animation.setDuration(500); // duration - half a second
     animation.setInterpolator(new LinearInterpolator());
     animation.setRepeatCount(0);
-    LinearLayout gameLayout = (LinearLayout) game.findViewById(R.id.game);
+    LinearLayout gameLayout = (LinearLayout) game.findViewById(R.id.game_container);
     gameLayout.startAnimation(animation);
   }
 
@@ -126,7 +120,7 @@ public class GameActivity extends FragmentActivity implements SensorEventListene
     HofDatabaseCenter.initDB(this);
 
     initVariables();
-    setContentView(R.layout.game);
+    setContentView(R.layout.game_layout);
 
     mTutorialMode = GameSharedPref.isTutorialModeActivated();
     initGraphics();
@@ -137,7 +131,7 @@ public class GameActivity extends FragmentActivity implements SensorEventListene
     wasGameSaved = GameSharedPref.isGameSaved();
 
     GameSharedPref.setMinigamesInitialized(false);
-    MinigamesManager.loadMinigamesObjects(this);
+    MinigamesManager.loadMinigames(this);
 
     int musicID = getResources().getIdentifier(GameSharedPref.getMusicLoopChosen(), "raw",
         this.getPackageName());
@@ -145,8 +139,8 @@ public class GameActivity extends FragmentActivity implements SensorEventListene
     mMusicPlayer = new MusicPlayer(musicID, this);
 
     //I need to have direct pointer because of speed
-    minigametoSendEvents1 = (IMiniGameVertical) MinigamesManager.getMinigamesObjects()[0];
-    minigametoSendEvents2 = (IMiniGameHorizontal) MinigamesManager.getMinigamesObjects()[1];
+    minigametoSendEvents1 = (IMiniGameVertical) MinigamesManager.getMinigames()[0];
+    minigametoSendEvents2 = (IMiniGameHorizontal) MinigamesManager.getMinigames()[1];
 
     resolveOrientation();
 
@@ -155,12 +149,12 @@ public class GameActivity extends FragmentActivity implements SensorEventListene
   public void initMinigames(GameActivity game) {
     for (int i = 0; i < 4; i++) {
       MinigamesManager.activateMinigame(game, i);
-      GameTimeMaster.registerLevelChangedObserver(MinigamesManager.getMinigamesObjects()[i]);
-
+      GameTimeManager.registerLevelChangedObserver(MinigamesManager.getMinigames()[i]);
+      mCanvases[i].attachMinigame(MinigamesManager.getMinigames()[i], i);
     }
 
     for (int i = 0; i < 4; i++) {
-      game.mFragmentViews[i].invalidate();
+      game.mCanvases[i].invalidate();
     }
   }
 
@@ -178,22 +172,16 @@ public class GameActivity extends FragmentActivity implements SensorEventListene
     gameScoreSeparatorDown.setBackgroundColor(SkinsCenterListActivity.getCurrentSkin(this)
         .getBarSeparatorColorDown());
 
-    mFragments = new AFragment[4];
-    mFragments[0] = (Fragment1) getSupportFragmentManager().findFragmentById(R.id.fragment1);
-    mFragments[1] = (Fragment2) getSupportFragmentManager().findFragmentById(R.id.fragment2);
-    mFragments[2] = (Fragment3) getSupportFragmentManager().findFragmentById(R.id.fragment3);
-    mFragments[3] = (Fragment4) getSupportFragmentManager().findFragmentById(R.id.fragment4);
+    mCanvases = new BaseGameCanvasView[4];
+    mCanvases[0] = (BaseGameCanvasView) findViewById(R.id.canvas1);
+    mCanvases[1] = (BaseGameCanvasView) findViewById(R.id.canvas2);
+    mCanvases[2] = (BaseGameCanvasView) findViewById(R.id.canvas3);
+    mCanvases[3] = (BaseGameCanvasView) findViewById(R.id.canvas4);
 
-    mFragmentViews = new AFragmentView[4];
-    mFragmentViews[0] = mFragments[0].getmView();
-    mFragmentViews[1] = mFragments[1].getmView();
-    mFragmentViews[2] = mFragments[2].getmView();
-    mFragmentViews[3] = mFragments[3].getmView();
-
-    mFragmentViews[0].setGameSaved(wasGameSaved);
-    mFragmentViews[1].setGameSaved(wasGameSaved);
-    mFragmentViews[2].setGameSaved(wasGameSaved);
-    mFragmentViews[3].setGameSaved(wasGameSaved);
+    mCanvases[0].setGameSaved(wasGameSaved);
+    mCanvases[1].setGameSaved(wasGameSaved);
+    mCanvases[2].setGameSaved(wasGameSaved);
+    mCanvases[3].setGameSaved(wasGameSaved);
 
     mBarLabelColor = SkinsCenterListActivity.getCurrentSkin(this).getBarLabelColor();
     mBarTextColor = SkinsCenterListActivity.getCurrentSkin(this).getBarTextColor();
@@ -243,7 +231,7 @@ public class GameActivity extends FragmentActivity implements SensorEventListene
           long nextUpdateGame = -1;
 
           public void run() {
-            if (!MinigamesManager.areAllMinigamesInitialized()) {
+            if (!MinigamesManager.isAllMinigamesInitialized()) {
               mGameLoopHandler.postDelayed(this, 25);
               return;
             }
@@ -274,12 +262,12 @@ public class GameActivity extends FragmentActivity implements SensorEventListene
           public void run() {
             secondsPassed++;
             //one second passed
-            GameTimeMaster.onSecondPassed();
+            GameTimeManager.onSecondPassed();
 
             //increase level
             if (secondsPassed % (DebugSettings.SECONDS_PER_LEVEL) == 0) {
               mLevel++;
-              GameTimeMaster.onLevelIncreased(GameActivity.this);
+              GameTimeManager.onLevelIncreased(GameActivity.this);
               redrawDifficultyView(String.valueOf(mLevel));
             }
 
@@ -317,6 +305,9 @@ public class GameActivity extends FragmentActivity implements SensorEventListene
           mToast = Toaster.toastLong((String) getResources().getString(R.string.game_touch_resume),
               this);
           wasActivityPaused = false;
+          redrawScoreView(String.valueOf(mScore));
+          redrawDifficultyView(String.valueOf(mLevel));
+          GameSharedPref.setGameSaved(false);
         } else {
           boolean playingFirstTime = GameSharedPref.isPlayingGameFirstTime();
           MinigamesManager.setAllMinigamesDifficultyForTutorial();
@@ -435,8 +426,8 @@ public class GameActivity extends FragmentActivity implements SensorEventListene
 
   private void updateGame() {
     for (int i = 0; i < 4; i++) {
-      if (MinigamesManager.currentlyActiveMinigames[i] == true) {
-        MinigamesManager.getMinigamesObjects()[i].updateMinigame();
+      if (MinigamesManager.getmMinigamesActivityFlags()[i] == true) {
+        MinigamesManager.getMinigames()[i].updateMinigame();
       }
     }
 
@@ -450,8 +441,8 @@ public class GameActivity extends FragmentActivity implements SensorEventListene
     }
 
     for (int i = 0; i < 4; i++) {
-      if (MinigamesManager.currentlyActiveMinigames[i] == true) {
-        mFragmentViews[i].invalidate();
+      if (MinigamesManager.getmMinigamesActivityFlags()[i] == true) {
+        mCanvases[i].invalidate();
       }
     }
 
@@ -586,8 +577,8 @@ public class GameActivity extends FragmentActivity implements SensorEventListene
     GameSharedPref.setGameSaved(false);
     if (!isTutorial() && !mLoseTracked) {
       MgTracker.trackGameFinished((System.currentTimeMillis() - mTimeGameStarted) / 1000, mLevel,
-          mScore, MinigamesManager.getMinigamesObjects()[loser].getName());
-      Log.d("Minigame lost:", MinigamesManager.getMinigamesObjects()[loser].getName());
+          mScore, MinigamesManager.getMinigames()[loser].getName());
+      Log.d("Minigame lost:", MinigamesManager.getMinigames()[loser].getName());
       mLoseTracked = true;
     }
 
@@ -629,16 +620,16 @@ public class GameActivity extends FragmentActivity implements SensorEventListene
     switch (loser) {
 
       case 0:
-        mFragmentViews[0].setBackgroundGray();
+        mCanvases[0].setBackgroundGray();
         break;
       case 1:
-        mFragmentViews[1].setBackgroundGray();
+        mCanvases[1].setBackgroundGray();
         break;
       case 2:
-        mFragmentViews[2].setBackgroundGray();
+        mCanvases[2].setBackgroundGray();
         break;
       case 3:
-        mFragmentViews[3].setBackgroundGray();
+        mCanvases[3].setBackgroundGray();
         break;
     }
 
@@ -737,12 +728,8 @@ public class GameActivity extends FragmentActivity implements SensorEventListene
     GameSharedPref.setMinigamesInitialized(false);
   }
 
-  public AFragmentView[] getmFragmentViews() {
-    return mFragmentViews;
-  }
-
-  public AFragment[] getmFragments() {
-    return mFragments;
+  public BaseGameCanvasView[] getCanvases() {
+    return mCanvases;
   }
 
   public int getScore() {

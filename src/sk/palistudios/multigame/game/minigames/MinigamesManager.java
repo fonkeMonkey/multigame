@@ -2,142 +2,118 @@ package sk.palistudios.multigame.game.minigames;
 
 // @author Pali
 
-import java.lang.reflect.Constructor;
-
-import android.util.Log;
-
 import sk.palistudios.multigame.game.GameActivity;
 import sk.palistudios.multigame.game.persistence.GameSaverLoader;
 import sk.palistudios.multigame.game.persistence.GameSharedPref;
-import sk.palistudios.multigame.game.time.GameTimeMaster;
+import sk.palistudios.multigame.game.time.GameTimeManager;
 
 public class MinigamesManager {
 
-  public static boolean[] currentlyActiveMinigames = new boolean[4];
-  private static AMiniGame[] chosenMinigamesObjects = new AMiniGame[4];
+  //TODO tuto by sa mali centralnejsie robit tie veci a nie volat zvonku activateMinigame po jednom
+  //
+
+  private static AMiniGame[] mMinigames = new AMiniGame[4];
+  private static boolean[] mMinigamesActivityFlags = new boolean[4];
+
+  public static void loadMinigames(GameActivity game) {
+    boolean isGameSaved = GameSharedPref.isGameSaved();
+    boolean isTutorialActive = GameSharedPref.isTutorialModeActivated();
+
+    //if it was saved it will be loaded by GameSaverLoader.load()
+    if (!isGameSaved || isTutorialActive) {
+      String[] activeMinigameNames = GameSharedPref.getChosenMinigamesNames();
+      for (int i = 0; i < activeMinigameNames.length; i++) {
+        mMinigames[i] = loadMinigame(game, activeMinigameNames[i], i);
+      }
+    } else {
+      GameSaverLoader.loadGame(game);
+    }
+  }
+
+  private static AMiniGame loadMinigame(GameActivity game, String activeMinigameName,
+      int position) {
+    if (activeMinigameName.equals("VBird")) {
+      return new MiniGameVBird("MG_V", position, game);
+    } else if (activeMinigameName.equals("VBouncer")) {
+      return new MiniGameVBouncer("MG_V", position, game);
+
+    } else if (activeMinigameName.equals("HBalance")) {
+      return new MiniGameHBalance("MG_H", position, game);
+
+    } else if (activeMinigameName.equals("TCatcher")) {
+
+      return new MiniGameTCatcher(resolveTouchType(position), position, game);
+
+    } else if (activeMinigameName.equals("TGatherer")) {
+      return new MiniGameTGatherer(resolveTouchType(position), position, game);
+
+    } else if (activeMinigameName.equals("TInvader")) {
+      return new MiniGameTInvader(resolveTouchType(position), position, game);
+
+    }
+    throw new RuntimeException("Bad game name!");
+  }
+
+  private static String resolveTouchType(int position) {
+    if(position == 2) return "MG_T1";
+    if(position == 3) return "MG_T2";
+    throw new RuntimeException("Touch game not on a touch position!");
+  }
 
   protected static void activateAllMiniGames(GameActivity game) {
     for (int i = 0; i < 4; i++) {
       activateMinigame(game, i);
     }
-
   }
 
   public static void deactivateAllMiniGames(GameActivity game) {
-
     for (int i = 0; i < 4; i++) {
       deactivateMinigame(game, i);
     }
   }
 
   public static void activateMinigame(GameActivity game, int number) {
-    currentlyActiveMinigames[number] = true;
-    game.getmFragmentViews()[number].setBackgroundColored();
-
-    AMiniGame minigame = MinigamesManager.getMinigamesObjects()[number];
-
-    minigame.onMinigameActivated();
-
+    mMinigamesActivityFlags[number] = true;
+    mMinigames[number].onMinigameActivated();
+    game.getCanvases()[number].setBackgroundColored();
   }
 
   public static void deactivateMinigame(GameActivity game, int number) {
-    currentlyActiveMinigames[number] = false;
-    game.getmFragmentViews()[number].setBackgroundGray();
-
-    AMiniGame minigame = MinigamesManager.getMinigamesObjects()[number];
-
-    minigame.onMinigameDeactivated();
-    GameTimeMaster.unregisterLevelChangedObserver(minigame);
-
-  }
-
-  public static void loadMinigamesObjects(GameActivity game) {
-    boolean isGameSaved = GameSharedPref.isGameSaved();
-    boolean isTutorialActive = GameSharedPref.isTutorialModeActivated();
-
-    //if it was saved it will be loaded by GameSaverLoader.load()
-    if (!isGameSaved || isTutorialActive) {
-      try {
-        for (int i = 0; i < 4; i++) {
-          StringBuilder className = new StringBuilder(
-              "sk.palistudios.multigame.game.minigames.MiniGame");
-          className.append(GameSharedPref.getChosenMinigamesNames()[i]);
-          Class<?> clazz = Class.forName(className.toString());
-          Constructor<?> ctor = clazz.getConstructor(String.class, Integer.class,
-              GameActivity.class);
-          Object object = null;
-          switch (i) {
-            case 0:
-              object = ctor.newInstance(new Object[]{"MG_V", 0, game});
-              break;
-            case 1:
-              object = ctor.newInstance(new Object[]{"MG_H", 1, game});
-              break;
-            case 2:
-              object = ctor.newInstance(new Object[]{"MG_T1", 2, game});
-              break;
-            case 3:
-              object = ctor.newInstance(new Object[]{"MG_T2", 3, game});
-              break;
-          }
-          chosenMinigamesObjects[i] = (AMiniGame) object;
-        }
-      } catch (Exception e) {
-        Log.e("Game", e.getLocalizedMessage());
-      }
-    } else {
-      GameSaverLoader.loadGame(game);
-      GameSharedPref.setGameSaved(false);
-      //            game.getEditor().putBoolean("gameSaved", false);
-    }
+    mMinigamesActivityFlags[number] = false;
+    mMinigames[number].onMinigameDeactivated();
+    game.getCanvases()[number].setBackgroundGray();
   }
 
   public static boolean isMiniGameActive(int number) {
-    return currentlyActiveMinigames[number];
+    return mMinigamesActivityFlags[number];
   }
 
-  public static boolean[] getCurrentlyActiveMinigames() {
-    return currentlyActiveMinigames;
+  public static boolean[] getmMinigamesActivityFlags() {
+    return mMinigamesActivityFlags;
   }
 
-  public static void setCurrentlyActiveMinigames(boolean[] flags) {
-    System.arraycopy(flags, 0, currentlyActiveMinigames, 0, 4);
+  public static void setmMinigamesActivityFlags(boolean[] flags) {
+    System.arraycopy(flags, 0, mMinigamesActivityFlags, 0, 4);
   }
 
-  public static AMiniGame[] getMinigamesObjects() {
-    return chosenMinigamesObjects;
-  }
-
-  public static MinigameInfoObject[] getMinigamesInfoObjects() {
-    String[] minigamesNames = GameSharedPref.getAllMinigamesNames();
-    String[] minigamesTypes = GameSharedPref.getAllMinigamesTypes();
-    int numberOfMinigames = minigamesNames.length;
-
-    MinigameInfoObject[] minigameInfoObjects = new MinigameInfoObject[numberOfMinigames];
-
-    for (int i = 0; i < numberOfMinigames; i++) {
-      minigameInfoObjects[i] = new MinigameInfoObject(minigamesNames[i], minigamesTypes[i],
-          GameSharedPref.isMinigameChosen(minigamesNames[i]));
-    }
-
-    return minigameInfoObjects;
-
+  public static AMiniGame[] getMinigames() {
+    return mMinigames;
   }
 
   public static void setAllMinigamesDifficultyForTutorial() {
-    for (AMiniGame mg : chosenMinigamesObjects) {
+    for (AMiniGame mg : mMinigames) {
       mg.setForTutorial();
     }
   }
 
   public static void setAllMinigamesDifficultyForClassicGame() {
-    for (AMiniGame mg : chosenMinigamesObjects) {
+    for (AMiniGame mg : mMinigames) {
       mg.setForClassicGame();
     }
   }
 
-  public static boolean areAllMinigamesInitialized() {
-    for (AMiniGame mg : chosenMinigamesObjects) {
+  public static boolean isAllMinigamesInitialized() {
+    for (AMiniGame mg : mMinigames) {
       if (!mg.isMinigameInitilized()) {
         return false;
       }

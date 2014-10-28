@@ -35,8 +35,6 @@ public abstract class AMiniGame implements Serializable, ITimeObserver {
     mPosition = position;
     mGame = game;
     this.colorMain = mGame.getResources().getColor(R.color.gameMain);
-    //        this.colorMain = SkinsCenterListActivity.getCurrentSkin(game).getColorMain();
-    //        this.colorAlt = SkinsCenterListActivity.getCurrentSkin(game).getColorAlt();
     this.colorAlt = mGame.getResources().getColor(R.color.gameAlt);
     this.colorAlt2 = mGame.getResources().getColor(R.color.gameAlt2);
   }
