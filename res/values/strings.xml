@@ -16,7 +16,7 @@
   <string name="button_resume">Resume the game!</string>
   <string name="button_tutorial">Start the tutorial!</string>
   <string name="button_resume_tutorial">Resume the tutorial!</string>
-  <string name="button_customization_center">Customization Center</string>
+  <string name="button_customization_center">Customize</string>
   <string name="button_hall_of_fame">Hall of Fame</string>
   <string name="button_preferences">Preferences</string>
   <!-- Game -->
@@ -62,7 +62,7 @@
 
   <!-- Achievements center -->
 
-  <string name="cc_achievements_achievements_center_name">Achievements center</string>
+  <string name="cc_achievements_achievements_center_name">Achievements</string>
   <string name="cc_achievements_lucky_seven_name">Lucky seven</string>
   <string name="cc_achievements_lucky_seven_description">Reach level 7</string>
   <string name="cc_achievements_magin_ten_name">Magic 10</string>
@@ -83,14 +83,14 @@
 
   <!-- Minigames center -->
 
-  <string name="cc_minigames_minigame_center_name">Minigames center</string>
+  <string name="cc_minigames_minigame_center_name">Minigames</string>
   <string name="cc_minigames_minigame_name">minigame</string>
   <string name="cc_minigames_bouncer_name">Bouncer</string>
   <string name="cc_minigames_invader_name">Invader</string>
 
   <!-- Skins center -->
 
-  <string name="cc_skins_skin_center_name">Skins center</string>
+  <string name="cc_skins_skin_center_name">Skinsr</string>
   <string name="cc_skins_skin_name">skin</string>
   <string name="cc_skins_girl_power_name">Girl Power</string>
   <string name="cc_skins_summer_name">Summer</string>
@@ -100,7 +100,7 @@
 
   <!-- Music center -->
 
-  <string name="cc_music_music_center_name">Music center</string>
+  <string name="cc_music_music_center_name">Music</string>
   <string name="cc_music_music_name">music</string>
   <string name="cc_music_cyber_ops_name">Cyber Ops</string>
   <string name="cc_music_cv_x_name">CV X</string>
