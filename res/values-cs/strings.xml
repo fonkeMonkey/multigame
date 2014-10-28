@@ -26,9 +26,9 @@
 
   <string name="score">Skóre:\u0020</string>
 
-  <string name="game_achievement_fulfilled_1">Dosažený cíl :\u0020</string>
-  <string name="game_achievement_fulfilled_2">.\u0020 Nová\u0020</string>
-  <string name="game_achievement_fulfilled_3">\u0020v sekci přizpůsobení odemčená!</string>
+  <string name="game_achievement_fulfilled_1">Dosažený cíl:\u0020</string>
+  <string name="game_achievement_fulfilled_2">.\u0020Nová\u0020</string>
+  <string name="game_achievement_fulfilled_3">\u0020odemčená!</string>
   <string name="game_winner_title">Blahopřejeme!</string>
   <string name="game_winner">Dokázal jsi se probojovat do síně slávy! Zadej své jméno a užívej jsi zaslouženou slávu.</string>
   <string name="game_ask_for_name">Zadej své jméno do síně slávy.</string>

@@ -22,9 +22,9 @@
   <!-- Game -->
 
   <string name="score">Score:\u0020</string>
-  <string name="game_achievement_fulfilled_1">Achievement fulfilled: </string>
-  <string name="game_achievement_fulfilled_2">.\u0020 New\u0020</string>
-  <string name="game_achievement_fulfilled_3">\u0020 in customization center unlocked! </string>
+  <string name="game_achievement_fulfilled_1">Achievement fulfilled:\u0020</string>
+  <string name="game_achievement_fulfilled_2">.\u0020New\u0020</string>
+  <string name="game_achievement_fulfilled_3">\u0020unlocked!</string>
   <string name="game_achievement_adfree_fulfilled">Achievement fulfilled: Ad-free version</string>
   <string name="game_winner_title">Congratulations!</string>
   <string name="game_winner">You have made it to the Hall of fame! Please provide your name and enjoy the fame.</string>

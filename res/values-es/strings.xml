@@ -25,9 +25,9 @@
   <!-- Game -->
   <string name="score">Clasificación:\u0020</string>
 
-  <string name="game_achievement_fulfilled_1">Retos superados: </string>
-  <string name="game_achievement_fulfilled_2">.\u0020 Nuevo\u0020</string>
-  <string name="game_achievement_fulfilled_3">\¡\u0020 en centro de personalización desbloqueado! </string>
+  <string name="game_achievement_fulfilled_1">Retos superados:\u0020</string>
+  <string name="game_achievement_fulfilled_2">.\u0020¡Nuevo\u0020</string>
+  <string name="game_achievement_fulfilled_3">\\u0020desbloqueado!</string>
   <string name="game_achievement_adfree_fulfilled">Reto superado: versión sin publicidad</string>
   <string name="game_winner_title">¡Felicidades!</string>
   <string name="game_winner">¡Has llegado al Salón de la Fama! Por favor, introduce tu nombre y disfruta de la fama.</string>
