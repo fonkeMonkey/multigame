@@ -80,8 +80,6 @@
             android:theme="@style/Multigame_style_other"
             >
         </activity>
-
-
         <!-- TABS -->
 
         <activity

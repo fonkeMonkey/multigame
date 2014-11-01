@@ -120,10 +120,7 @@ public class PreferencesActivity extends PreferenceActivity {
       preferenceGameMode.setOnPreferenceChangeListener(new OnPreferenceChangeListener() {
         @Override
         public boolean onPreferenceChange(Preference preference, Object newValue) {
-          if (newValue.toString().equals("Tutorial") && GameSharedPref.isGameSaved()) {
-            Toaster.toastLong(getString(R.string.finish_saved_game), PreferencesActivity.this);
-            return true;
-          }
+          GameSharedPref.setGameSaved(false);
           preference.setSummary(newValue.toString());
           GameSharedPref.setGameMode(newValue.toString());
           return true;
