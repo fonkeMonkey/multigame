@@ -266,7 +266,7 @@ public class GameActivity extends BaseActivity implements SensorEventListener {
             GameTimeManager.onSecondPassed();
 
             //increase level
-            if (secondsPassed % (DebugSettings.SECONDS_PER_LEVEL) == 0) {
+            if (secondsPassed % (DebugSettings.SECONDS_PER_LEVEL) == 0 && !isTutorial()) {
               mLevel++;
               GameTimeManager.onLevelIncreased(GameActivity.this);
               redrawDifficultyView(String.valueOf(mLevel));
