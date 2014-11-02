@@ -92,7 +92,7 @@
           android:layout_height="fill_parent"
           android:layout_weight="1" />
 
-      <sk.palistudios.multigame.game.view.GameCanvasView
+      <sk.palistudios.multigame.game.view.GameCanvasViewTouch
           android:id="@+id/canvas4"
           android:layout_width="fill_parent"
           android:layout_height="fill_parent"
