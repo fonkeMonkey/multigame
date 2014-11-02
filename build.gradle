@@ -47,10 +47,10 @@ android {
 android {
     signingConfigs {
         release {
-//            storeFile file("..\\kluc.txt")
-//            storePassword System.console().readLine("\n\$ Enter keystore password: ")
+//            storeFile file(".//!etc//kluc.zip")
+//            storePassword "..."//System.console().readLine("\n\$ Enter keystore password: ")
 //            keyAlias "multigame"
-//            keyPassword System.console().readLine("\n\$ Enter mg password: ")
+//            keyPassword "..." //System.console().readLine("\n\$ Enter mg password: ")
         }
     }
     buildTypes {
