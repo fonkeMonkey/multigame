@@ -213,13 +213,15 @@ public class MiniGameTInvader extends AMiniGame implements IMiniGameTouch {
     return false;
   }
 
+  PaintSerializable mPaintDkGray = new PaintSerializable(Color.DKGRAY);
+  PaintSerializable mPaintGray = new PaintSerializable(Color.GRAY);
   private void changeColor(Enemy enemy) {
     switch (enemy.damageToTake) {
       case 2:
-        enemy.mPaintSer = new PaintSerializable(Color.DKGRAY);
+        enemy.mPaintSer = mPaintDkGray;
         break;
       case 1:
-        enemy.mPaintSer = new PaintSerializable(Color.GRAY);
+        enemy.mPaintSer = mPaintGray;
         break;
     }
   }

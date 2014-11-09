@@ -30,15 +30,11 @@ public class MiniGameHBalance extends AMiniGame implements IMiniGameHorizontal {
   int splitHeight;
   float movementSensitivity;
   int leanRatio;
-  PointSerializable newPBarLeftEdge = null;
-  PointSerializable newPBarRightEdge = null;
   int barLength;
   int barLeftEdgeX;
   int barRightEdgeX;
   PointSerializable pointBarLeftEdge;
   PointSerializable pointBarRightEdge;
-  int newBarLeftEdge;
-  int newBarRightEdge;
   float lean;
   PointSerializable pBallCenter;
   float momentalBallSpeed;
@@ -131,6 +127,10 @@ public class MiniGameHBalance extends AMiniGame implements IMiniGameHorizontal {
     overEdgeToLose = mBallSize / 3 * 2;
 
     isMinigameInitialized = true;
+
+    pVector = new PointSerializable(pointBarRightEdge.mPoint.x - pointBarLeftEdge.mPoint.x,
+        pointBarRightEdge.mPoint.y - pointBarLeftEdge.mPoint.y);
+    normalVector = new PointSerializable(pVector.mPoint.y,-pVector.mPoint.x);
   }
 
   public void drawMinigame(Canvas mCanvas) {
@@ -154,11 +154,14 @@ public class MiniGameHBalance extends AMiniGame implements IMiniGameHorizontal {
     }
   }
 
+  PointSerializable pVector;
+  PointSerializable normalVector;
   int findOnLine(PointSerializable pBarLeftEdge, PointSerializable pBarRightEdge, int xAxisBall) {
-    PointSerializable pVector = new PointSerializable(
-        pBarRightEdge.mPoint.x - pBarLeftEdge.mPoint.x,
-        pBarRightEdge.mPoint.y - pBarLeftEdge.mPoint.y);
-    PointSerializable normalVector = new PointSerializable(pVector.mPoint.y, -pVector.mPoint.x);
+    pVector.mPoint.x =
+        pBarRightEdge.mPoint.x - pBarLeftEdge.mPoint.x;
+    pVector.mPoint.y = pBarRightEdge.mPoint.y - pBarLeftEdge.mPoint.y;
+    normalVector.mPoint.x = pVector.mPoint.y;
+    normalVector.mPoint.y = -pVector.mPoint.x;
 
     int c = -(normalVector.mPoint.x * pBarLeftEdge.mPoint.x +
         normalVector.mPoint.y * pBarLeftEdge.mPoint.y);

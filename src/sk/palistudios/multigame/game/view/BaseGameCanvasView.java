@@ -16,7 +16,7 @@ import sk.palistudios.multigame.game.minigames.AMiniGame;
 import sk.palistudios.multigame.game.minigames.MinigamesManager;
 import sk.palistudios.multigame.game.persistence.GameSharedPref;
 
-abstract public class BaseGameCanvasView extends SurfaceView {
+abstract public class BaseGameCanvasView extends View {
   protected AMiniGame mMiniGame;
   private Bitmap mBitmap;
   private int mPosition = -1;
