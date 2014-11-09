@@ -1,6 +1,5 @@
 package sk.palistudios.multigame.game;
 
-import android.app.Activity;
 import android.content.Intent;
 import android.content.res.Configuration;
 import android.content.res.Resources.NotFoundException;
@@ -12,7 +11,6 @@ import android.media.AudioManager;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
-import android.support.v4.app.FragmentActivity;
 import android.text.Spannable;
 import android.text.SpannableString;
 import android.text.style.ForegroundColorSpan;
@@ -189,6 +187,8 @@ public class GameActivity extends BaseActivity implements SensorEventListener {
     mBarTextColor = SkinsCenterListActivity.getCurrentSkin(this).getBarTextColor();
     mScoreSpannable = new SpannableString(getString(R.string.score));
     mDifficultySpannable = new SpannableString("Level: ");
+    mLeftSpanFgColor = new ForegroundColorSpan(mBarLabelColor);
+    mRightSpanFgColor = new ForegroundColorSpan(mBarTextColor);
 
     if (mTutorialMode) {
       redrawScoreView("Tutorial");
@@ -449,24 +449,27 @@ public class GameActivity extends BaseActivity implements SensorEventListener {
 
   }
 
+  ForegroundColorSpan mLeftSpanFgColor;
+  ForegroundColorSpan mRightSpanFgColor;
   private void redrawScoreView(String score) {
-    mScoreSpannable.setSpan(new ForegroundColorSpan(mBarLabelColor), 0, mScoreSpannable.length(),
+    mScoreSpannable.setSpan(mLeftSpanFgColor, 0, mScoreSpannable.length(),
         Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
     mScoreView.setText(mScoreSpannable);
 
     Spannable secondPart = new SpannableString(score);
-    secondPart.setSpan(new ForegroundColorSpan(mBarTextColor), 0, secondPart.length(),
+    secondPart.setSpan(mRightSpanFgColor, 0, score.length(),
         Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+
     mScoreView.append(secondPart);
   }
 
   private void redrawDifficultyView(String difficulty) {
-    mDifficultySpannable.setSpan(new ForegroundColorSpan(mBarLabelColor), 0,
+    mDifficultySpannable.setSpan(mLeftSpanFgColor, 0,
         mDifficultySpannable.length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
     mDifficultyView.setText(mDifficultySpannable);
 
     Spannable secondPart = new SpannableString(difficulty);
-    secondPart.setSpan(new ForegroundColorSpan(mBarTextColor), 0, secondPart.length(),
+    secondPart.setSpan(mRightSpanFgColor, 0, difficulty.length(),
         Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
     mDifficultyView.append(secondPart);
   }
