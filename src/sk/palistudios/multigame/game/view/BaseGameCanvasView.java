@@ -64,14 +64,6 @@ abstract public class BaseGameCanvasView extends View {
   }
 
   @Override
-  protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
-    super.onMeasure(widthMeasureSpec, heightMeasureSpec);
-    mHeight = View.MeasureSpec.getSize(heightMeasureSpec);
-    mWidth = View.MeasureSpec.getSize(widthMeasureSpec);
-    setMeasuredDimension(mWidth, mHeight);
-  }
-
-  @Override
   protected void onDraw(Canvas canvas) {
     super.onDraw(canvas);
     if (!mIsMinigameInitialized) {
