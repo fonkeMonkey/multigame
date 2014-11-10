@@ -42,7 +42,7 @@ public class MiniGameVBird extends AMiniGame implements IMiniGameVertical {
 
   public MiniGameVBird(String fileName, Integer position, GameActivity game) {
     super(fileName, position, game);
-    type = Typ.Vertical;
+    type = Type.Vertical;
   }
 
   public void updateMinigame() {

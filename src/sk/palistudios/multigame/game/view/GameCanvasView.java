@@ -20,4 +20,9 @@ public class GameCanvasView extends BaseGameCanvasView {
   public GameCanvasView(Context context, AttributeSet attrs, int defStyle){
     super(context, attrs, defStyle);
   }
+
+  @Override
+  public void detachMinigame() {
+    mMiniGame = null;
+  }
 }

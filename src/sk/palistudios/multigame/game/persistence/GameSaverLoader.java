@@ -39,7 +39,7 @@ public class GameSaverLoader {
     try {
       int[] gameDetails = GameSharedPref.loadGameDetails();
       game.setGameDetails(gameDetails[1], gameDetails[0], gameDetails[2]);
-      boolean[] activityFlags = GameSharedPref.loadMinigamesActivity();
+      boolean[] activityFlags = GameSharedPref.getMinigamesActivityFlags();
       MinigamesManager.setmMinigamesActivityFlags(activityFlags);
 
       MinigamesManager.getMinigames()[0] = loadMinigameFromFile("MG_V", game);

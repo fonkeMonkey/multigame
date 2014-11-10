@@ -84,7 +84,7 @@ public class GameSharedPref {
     return details;
   }
 
-  public static boolean[] loadMinigamesActivity() {
+  public static boolean[] getMinigamesActivityFlags() {
     boolean[] activeMinigames = new boolean[4];
     activeMinigames[0] = GameSharedPref.mSharedPreferences.getBoolean("savedMinigame1Active", false);
     activeMinigames[1] = GameSharedPref.mSharedPreferences.getBoolean("savedMinigame2Active", false);

@@ -37,7 +37,7 @@ public class MiniGameVBouncer extends AMiniGame implements IMiniGameVertical {
 
   public MiniGameVBouncer(String fileName, Integer position, GameActivity game) {
     super(fileName, position, game);
-    type = Typ.Vertical;
+    type = Type.Vertical;
   }
 
   public void updateMinigame() {

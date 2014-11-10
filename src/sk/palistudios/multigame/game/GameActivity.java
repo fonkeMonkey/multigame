@@ -98,19 +98,10 @@ public class GameActivity extends BaseActivity implements SensorEventListener {
   private boolean closedByButton = false;
   private long mTimeGameStarted;
   private boolean mLoseTracked = false;
-  int mBarLabelColor;
-  int mBarTextColor;
+  private int mBarLabelColor;
+  private int mBarTextColor;
   private SpannableString mDifficultySpannable;
   private SpannableString mScoreSpannable;
-
-  public static void flashScreen(GameActivity game) {
-    Animation animation = new AlphaAnimation(0, 1); // Change alpha
-    animation.setDuration(500); // duration - half a second
-    animation.setInterpolator(new LinearInterpolator());
-    animation.setRepeatCount(0);
-    LinearLayout gameLayout = (LinearLayout) game.findViewById(R.id.game_container);
-    gameLayout.startAnimation(animation);
-  }
 
   @Override
   public void onCreate(Bundle icicle) {
@@ -124,7 +115,7 @@ public class GameActivity extends BaseActivity implements SensorEventListener {
 
     mTutorialMode = GameSharedPref.isTutorialModeActivated();
     initGraphics();
-    initMinigames(this);
+    initMinigames();
   }
 
   private void initVariables() {
@@ -134,9 +125,9 @@ public class GameActivity extends BaseActivity implements SensorEventListener {
     MinigamesManager.loadMinigames(this);
 
     int musicID = getResources().getIdentifier(GameSharedPref.getMusicLoopChosen(), "raw",
-        this.getPackageName());
+        getPackageName());
 
-    mMusicPlayer = new MusicPlayer(musicID, this);
+    mMusicPlayer = new MusicPlayer(musicID, getApplicationContext());
 
     //I need to have direct pointer because of speed
     minigametoSendEvents1 = (IMiniGameVertical) MinigamesManager.getMinigames()[0];
@@ -146,30 +137,30 @@ public class GameActivity extends BaseActivity implements SensorEventListener {
 
   }
 
-  public void initMinigames(GameActivity game) {
+  public void initMinigames() {
     for (int i = 0; i < 4; i++) {
-      MinigamesManager.activateMinigame(game, i);
+      MinigamesManager.activateMinigame(this, i);
       GameTimeManager.registerLevelChangedObserver(MinigamesManager.getMinigames()[i]);
       mCanvases[i].attachMinigame(MinigamesManager.getMinigames()[i], i);
     }
 
     for (int i = 0; i < 4; i++) {
-      game.mCanvases[i].invalidate();
+      mCanvases[i].invalidate();
     }
   }
 
   private void initGraphics() {
     gameBar = (LinearLayout) findViewById(R.id.game_bar);
-    gameBar.setBackgroundColor(SkinsCenterListActivity.getCurrentSkin(this).getBarBgColor());
+    gameBar.setBackgroundColor(SkinsCenterListActivity.getCurrentSkin(getApplicationContext()).getBarBgColor());
     mScoreView = (TextView) findViewById(R.id.game_score);
-    mScoreView.setTextColor(SkinsCenterListActivity.getCurrentSkin(this).getBarLabelColor());
+    mScoreView.setTextColor(SkinsCenterListActivity.getCurrentSkin(getApplicationContext()).getBarLabelColor());
     mDifficultyView = (TextView) findViewById(R.id.game_level);
-    mDifficultyView.setTextColor(SkinsCenterListActivity.getCurrentSkin(this).getBarLabelColor());
+    mDifficultyView.setTextColor(SkinsCenterListActivity.getCurrentSkin(getApplicationContext()).getBarLabelColor());
     gameScoreSeparator = (View) findViewById(R.id.game_score_separator);
-    gameScoreSeparator.setBackgroundColor(SkinsCenterListActivity.getCurrentSkin(this)
+    gameScoreSeparator.setBackgroundColor(SkinsCenterListActivity.getCurrentSkin(getApplicationContext())
         .getBarSeparatorColor());
     gameScoreSeparatorDown = (View) findViewById(R.id.game_score_separator_down);
-    gameScoreSeparatorDown.setBackgroundColor(SkinsCenterListActivity.getCurrentSkin(this)
+    gameScoreSeparatorDown.setBackgroundColor(SkinsCenterListActivity.getCurrentSkin(getApplicationContext())
         .getBarSeparatorColorDown());
 
     mCanvases = new BaseGameCanvasView[4];
@@ -183,8 +174,8 @@ public class GameActivity extends BaseActivity implements SensorEventListener {
     mCanvases[2].setGameSaved(wasGameSaved);
     mCanvases[3].setGameSaved(wasGameSaved);
 
-    mBarLabelColor = SkinsCenterListActivity.getCurrentSkin(this).getBarLabelColor();
-    mBarTextColor = SkinsCenterListActivity.getCurrentSkin(this).getBarTextColor();
+    mBarLabelColor = SkinsCenterListActivity.getCurrentSkin(getApplicationContext()).getBarLabelColor();
+    mBarTextColor = SkinsCenterListActivity.getCurrentSkin(getApplicationContext()).getBarTextColor();
     mScoreSpannable = new SpannableString(getString(R.string.score));
     mDifficultySpannable = new SpannableString("Level: ");
     mLeftSpanFgColor = new ForegroundColorSpan(mBarLabelColor);
@@ -283,8 +274,8 @@ public class GameActivity extends BaseActivity implements SensorEventListener {
 
       if (mTutorialMode) {
         if (sTutorialLastLevel == 0) {
-          if (SoundEffectsCenter.getCurrentVolume(this) == 0 && !sRaisedVolumeForTutorialAlready) {
-            SoundEffectsCenter.raiseCurrentVolume(this);
+          if (SoundEffectsCenter.getCurrentVolume(getApplicationContext()) == 0 && !sRaisedVolumeForTutorialAlready) {
+            SoundEffectsCenter.raiseCurrentVolume(getApplicationContext());
           }
           if (!sTutorialRestart) {
             GameDialogs.showWelcomeTutorialWindow(this);
@@ -303,8 +294,8 @@ public class GameActivity extends BaseActivity implements SensorEventListener {
 
       } else {
         if (wasGameSaved) {
-          mToast = Toaster.toastLong((String) getResources().getString(R.string.game_touch_resume),
-              this);
+          mToast = Toaster.toastLong(getResources().getString(R.string.game_touch_resume),
+              getApplicationContext());
           wasActivityPaused = false;
           redrawScoreView(String.valueOf(mScore));
           redrawDifficultyView(String.valueOf(mLevel));
@@ -313,19 +304,19 @@ public class GameActivity extends BaseActivity implements SensorEventListener {
           boolean playingFirstTime = GameSharedPref.isPlayingGameFirstTime();
           MinigamesManager.setAllMinigamesDifficultyForTutorial();
           if (playingFirstTime) {
-            Toaster.toastLong((String) getResources().getString(R.string.game_touch_save), this);
-            mToast = Toaster.toastLong((String) getResources().getString(R.string.game_touch_start),
-                this);
-            if (SoundEffectsCenter.getCurrentVolume(this) == 0 &&
+            Toaster.toastLong(getResources().getString(R.string.game_touch_save), getApplicationContext());
+            mToast = Toaster.toastLong( getResources().getString(R.string.game_touch_start),
+                getApplicationContext());
+            if (SoundEffectsCenter.getCurrentVolume(getApplicationContext()) == 0 &&
                 !sRaisedVolumeForTutorialAlready) {
-              SoundEffectsCenter.raiseCurrentVolume(this);
+              SoundEffectsCenter.raiseCurrentVolume(getApplicationContext());
             }
             GameSharedPref.setPlayingGameFirstTimeFalse();
           } else {
-            mToast = Toaster.toastLong((String) getResources().getString(R.string.game_touch_start),
-                this);
-            if (SoundEffectsCenter.getCurrentVolume(this) == 0 && !sIncreaseVolumeShown) {
-              Toaster.toastLong(getString(R.string.increase_music_volume), this);
+            mToast = Toaster.toastLong( getResources().getString(R.string.game_touch_start),
+                getApplicationContext());
+            if (SoundEffectsCenter.getCurrentVolume(getApplicationContext()) == 0 && !sIncreaseVolumeShown) {
+              Toaster.toastLong(getString(R.string.increase_music_volume), getApplicationContext());
               sIncreaseVolumeShown = true;
             }
           }
@@ -359,10 +350,9 @@ public class GameActivity extends BaseActivity implements SensorEventListener {
   public void startGameTutorial() {
     stopTutorialGameLoop();
 
-    final GameActivity game = this;
     MinigamesManager.deactivateAllMiniGames(this);
     for (int i = 0; i <= sTutorialLastLevel; i++) {
-      MinigamesManager.activateMinigame(game, i);
+      MinigamesManager.activateMinigame(this, i);
     }
     if (mMusicPlayer != null && GameSharedPref.isMusicOn()) {
       if (!mStartedMusicForTutorial) {
@@ -390,10 +380,10 @@ public class GameActivity extends BaseActivity implements SensorEventListener {
 
           if (sTutorialLastLevel != 3) {
 
-            GameDialogs.showNextTutorialWindow(game, true);
+            GameDialogs.showNextTutorialWindow(GameActivity.this, true);
 
           } else {
-            GameDialogs.showTutorialWinnerWindow(game);
+            GameDialogs.showTutorialWinnerWindow(GameActivity.this);
             sTutorialLastLevel = 0;
           }
         }
@@ -432,6 +422,15 @@ public class GameActivity extends BaseActivity implements SensorEventListener {
       }
     }
 
+  }
+
+  public void flashScreen() {
+    Animation animation = new AlphaAnimation(0, 1); // Change alpha
+    animation.setDuration(500); // duration - half a second
+    animation.setInterpolator(new LinearInterpolator());
+    animation.setRepeatCount(0);
+    LinearLayout gameLayout = (LinearLayout) findViewById(R.id.game_container);
+    gameLayout.startAnimation(animation);
   }
 
   private void refreshDisplayGame() {
@@ -603,7 +602,7 @@ public class GameActivity extends BaseActivity implements SensorEventListener {
 
       GameSharedPref.StatsGamesPlayedIncrease();
 
-      AchievementsCenterListActivity.checkAchievements(mScore, mLevel, this);
+      AchievementsCenterListActivity.checkAchievements(mScore, mLevel, getApplicationContext());
 
       HofDatabaseCenter.getsHofDb().open();
       boolean isInHallOfFame = HofDatabaseCenter.getsHofDb().isInHallOfFame(mScore);
@@ -650,7 +649,6 @@ public class GameActivity extends BaseActivity implements SensorEventListener {
       saveGame();
     }
     closedByButton = true;
-    finish();
   }
 
   @Override
@@ -663,7 +661,6 @@ public class GameActivity extends BaseActivity implements SensorEventListener {
       saveGame();
     }
     closedByButton = true;
-    finish();
   }
 
   @Override
@@ -681,6 +678,11 @@ public class GameActivity extends BaseActivity implements SensorEventListener {
       GameDialogs.sLostGame = true;
     }
     mMusicPlayer = null;
+    for(BaseGameCanvasView canvas : mCanvases){
+      canvas.detachMinigame();
+    }
+    mCanvases = null;
+    MinigamesManager.detachGameRefFromMinigames();
   }
 
   public void stopCurrentGame() {
@@ -760,7 +762,7 @@ public class GameActivity extends BaseActivity implements SensorEventListener {
   private void saveGame() throws NotFoundException {
     if (!wasGameLost) {
       GameSaverLoader.saveGame(this);
-      Toaster.toastShort((String) getResources().getString(R.string.game_game_saved), this);
+      Toaster.toastShort(getResources().getString(R.string.game_game_saved), getApplicationContext());
       stopCurrentGame();
       GameSharedPref.setGameSaved(true);
       finish();

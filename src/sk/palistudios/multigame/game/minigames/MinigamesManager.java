@@ -84,6 +84,12 @@ public class MinigamesManager {
     game.getCanvases()[number].setBackgroundGray();
   }
 
+  public static void detachGameRefFromMinigames(){
+    for(AMiniGame mg : mMinigames){
+      mg.mGame = null;
+    }
+  }
+
   public static boolean isMiniGameActive(int number) {
     return mMinigamesActivityFlags[number];
   }

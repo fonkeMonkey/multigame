@@ -28,7 +28,7 @@ public class FacebookSharer {
 
   public static void shareScoreToFacebook(final int score, final boolean isWinner) {
     final MainMenuActivity mainMenu = MainMenuActivity.getInstance();
-    MainMenuActivity.setMainMenuFacebook(mainMenu);
+//    MainMenuActivity.setMainMenuFacebook(mainMenu);
 
     Session.openActiveSession(mainMenu, true, new Session.StatusCallback() {
       public void call(Session session, SessionState state, Exception exception) {

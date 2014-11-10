@@ -47,8 +47,8 @@
 
         <activity
             android:name="sk.palistudios.multigame.mainMenu.MainMenuActivity"
-            android:label="MultiGame"
             android:launchMode="singleTask"
+            android:label="MultiGame"
             android:theme="@style/Multigame_style_other"
 
             >

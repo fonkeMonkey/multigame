@@ -43,7 +43,7 @@ public class MiniGameTInvader extends AMiniGame implements IMiniGameTouch {
 
   public MiniGameTInvader(String fileName, Integer position, GameActivity game) {
     super(fileName, position, game);
-    type = Typ.Touch;
+    type = Type.Touch;
   }
 
   public void updateMinigame() {

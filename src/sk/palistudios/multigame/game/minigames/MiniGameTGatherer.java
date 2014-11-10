@@ -38,7 +38,7 @@ public class MiniGameTGatherer extends AMiniGame implements IMiniGameTouch, ITim
 
   public MiniGameTGatherer(String fileName, Integer position, GameActivity game) {
     super(fileName, position, game);
-    type = Typ.Touch;
+    type = Type.Touch;
 
   }
 

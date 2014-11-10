@@ -25,12 +25,12 @@ public class AchievementsCenterListActivity extends BaseListActivity {
   public static ArrayList<AchievementItem> achievements = new ArrayList<AchievementItem>();
   private static AchievementsArrayAdapter achievementsAdapter;
 
-  public static void checkAchievements(int score, int level, Activity act) {
+  public static void checkAchievements(int score, int level, Context context) {
 
-    initAchievements(act);
+    initAchievements(context);
 
     for (AchievementItem ach : achievements) {
-      ach.checkAchievementFullfiled(score, level, act);
+      ach.checkAchievementFullfiled(score, level, context);
     }
 
   }

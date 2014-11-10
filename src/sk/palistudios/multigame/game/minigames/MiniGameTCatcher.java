@@ -38,7 +38,7 @@ public class MiniGameTCatcher extends AMiniGame implements IMiniGameTouch {
 
   public MiniGameTCatcher(String fileName, Integer position, GameActivity game) {
     super(fileName, position, game);
-    type = Typ.Touch;
+    type = Type.Touch;
   }
 
   public void updateMinigame() {

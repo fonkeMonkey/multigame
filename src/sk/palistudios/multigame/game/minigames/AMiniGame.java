@@ -16,7 +16,7 @@ import sk.palistudios.multigame.game.time.ITimeObserver;
 public abstract class AMiniGame implements Serializable, ITimeObserver {
 
   protected final int colorAlt2;
-  public Typ type;
+  public Type type;
   public Integer mPosition;
   public transient GameActivity mGame;
   protected int mHeight;
@@ -26,6 +26,14 @@ public abstract class AMiniGame implements Serializable, ITimeObserver {
   String mFileName;
   boolean isMinigameInitialized;
   private boolean active = false;
+
+
+  public enum Type {
+    Horizontal,
+    Vertical,
+    Touch
+  }
+
 
   /**
    * @param game
@@ -86,10 +94,4 @@ public abstract class AMiniGame implements Serializable, ITimeObserver {
     return isMinigameInitialized;
   }
 
-  public enum Typ {
-
-    Horizontal,
-    Vertical,
-    Touch
-  }
 }

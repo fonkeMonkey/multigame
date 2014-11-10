@@ -48,7 +48,7 @@ public class MiniGameHBalance extends AMiniGame implements IMiniGameHorizontal {
 
   public MiniGameHBalance(String fileName, Integer position, GameActivity game) {
     super(fileName, position, game);
-    type = Typ.Horizontal;
+    type = Type.Horizontal;
   }
 
   public void updateMinigame() {

@@ -53,4 +53,10 @@ public class GameCanvasViewTouch extends BaseGameCanvasView {
     });
 
   }
+
+  @Override
+  public void detachMinigame(){
+    mGame = null;
+    mMiniGame = null;
+  }
 }

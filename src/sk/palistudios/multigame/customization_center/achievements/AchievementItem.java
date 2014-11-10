@@ -3,6 +3,7 @@ package sk.palistudios.multigame.customization_center.achievements;
 // @author Pali
 
 import android.app.Activity;
+import android.content.Context;
 
 import sk.palistudios.multigame.R;
 import sk.palistudios.multigame.customization_center.AbstractItem;
@@ -34,7 +35,7 @@ public class AchievementItem extends AbstractItem {
     return description;
   }
 
-  public void checkAchievementFullfiled(int score, int level, Activity act) {
+  public void checkAchievementFullfiled(int score, int level, Context context) {
     if (!GameSharedPref.isAchievementFulfilled(getComputerName())) {
       if (whatToFulfill.compareTo("SHARE") == 0 || whatToFulfill.compareTo("RATE") == 0) {
         return;
@@ -43,10 +44,10 @@ public class AchievementItem extends AbstractItem {
       if (whatToFulfill.compareTo("SCORE") == 0) {
         if (score >= minimumToFulfill) {
           GameSharedPref.achievementFulfilled(getComputerName(), correspondingItem);
-          Toaster.toastLong(act.getResources().getString(R.string.game_achievement_fulfilled_1) +
-              description + act.getResources().getString(R.string.game_achievement_fulfilled_2) +
-              correspondingType + act.getResources().getString(
-              R.string.game_achievement_fulfilled_3), act);
+          Toaster.toastLong(context.getResources().getString(R.string.game_achievement_fulfilled_1) +
+              description + context.getResources().getString(R.string.game_achievement_fulfilled_2) +
+              correspondingType + context.getResources().getString(
+              R.string.game_achievement_fulfilled_3), context);
         }
       }
 
@@ -54,13 +55,13 @@ public class AchievementItem extends AbstractItem {
         if (level >= minimumToFulfill) {
           GameSharedPref.achievementFulfilled(getComputerName(), correspondingItem);
           if (minimumToFulfill == 15) {
-            Toaster.toastLong(act.getResources().getString(
-                R.string.game_achievement_adfree_fulfilled), act);
+            Toaster.toastLong(context.getResources().getString(
+                R.string.game_achievement_adfree_fulfilled), context);
           } else {
-            Toaster.toastLong(act.getResources().getString(R.string.game_achievement_fulfilled_1) +
-                description + act.getResources().getString(R.string.game_achievement_fulfilled_2) +
-                correspondingType + act.getResources().getString(
-                R.string.game_achievement_fulfilled_3), act);
+            Toaster.toastLong(context.getResources().getString(R.string.game_achievement_fulfilled_1) +
+                description + context.getResources().getString(R.string.game_achievement_fulfilled_2) +
+                correspondingType + context.getResources().getString(
+                R.string.game_achievement_fulfilled_3), context);
           }
         }
       }
@@ -68,10 +69,10 @@ public class AchievementItem extends AbstractItem {
       if (whatToFulfill.compareTo("GAMES") == 0) {
         if (GameSharedPref.getStatsGamesPlayed() >= minimumToFulfill) {
           GameSharedPref.achievementFulfilled(getComputerName(), correspondingItem);
-          Toaster.toastLong(act.getResources().getString(R.string.game_achievement_fulfilled_1) +
-              description + act.getResources().getString(R.string.game_achievement_fulfilled_2) +
-              correspondingType + act.getResources().getString(
-              R.string.game_achievement_fulfilled_3), act);
+          Toaster.toastLong(context.getResources().getString(R.string.game_achievement_fulfilled_1) +
+              description + context.getResources().getString(R.string.game_achievement_fulfilled_2) +
+              correspondingType + context.getResources().getString(
+              R.string.game_achievement_fulfilled_3), context);
         }
       }
     }

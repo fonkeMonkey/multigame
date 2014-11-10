@@ -27,9 +27,8 @@ public class GameTimeManager {
     }
 
     if (!game.isTutorial()) {
-      GameActivity.flashScreen(game);
+      game.flashScreen();
     }
-
   }
 
   public static void registerSecondsObserver(ITimeObserver to) {

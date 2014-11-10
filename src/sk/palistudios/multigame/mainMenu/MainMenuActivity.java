@@ -26,11 +26,10 @@ import sk.palistudios.multigame.tools.sound.SoundEffectsCenter;
 public class MainMenuActivity extends BaseActivity {
 
   public static boolean isThereADialogToShow = false;
-  private static boolean mShowHighScoreStatus;
-  private static int mShowHighScoreScore;
-  private static MainMenuActivity mainMenuFacebook;
+  private static boolean sShowHighScoreStatus;
+  private static int sShowHighScoreScore;
   private static MainMenuActivity sMainMenuInstance;
-  private static boolean mFacebookShared = false;
+  private static boolean sFacebookShared = false;
   private Button buttonStart;
   private Button buttonCc;
   private Button buttonHof;
@@ -43,16 +42,16 @@ public class MainMenuActivity extends BaseActivity {
   }
 
   public static void setOfferHighScore(int score) {
-    mShowHighScoreStatus = true;
-    mShowHighScoreScore = score;
+    sShowHighScoreStatus = true;
+    sShowHighScoreScore = score;
   }
 
-  public static void setMainMenuFacebook(MainMenuActivity mainMenu) {
-    mainMenuFacebook = mainMenu;
-  }
+//  public static void setMainMenuFacebook(MainMenuActivity mainMenu) {
+//    mainMenuFacebook = mainMenu;
+//  }
 
   public static void setWallPostAchievementDone() {
-    mFacebookShared = true;
+    sFacebookShared = true;
   }
 
   @Override
@@ -111,9 +110,10 @@ public class MainMenuActivity extends BaseActivity {
     logo.setImageResource(SkinsCenterListActivity.getCurrentSkin(this).getLogoID());
     setMainMenuColors();
 
-    if (mShowHighScoreStatus) {
-      GameDialogs.showWinnerDialogAfterShareWindow(getInstance(), mShowHighScoreScore);
-      mShowHighScoreStatus = false;
+    if (sShowHighScoreStatus) {
+      GameDialogs.showWinnerDialogAfterShareWindow(this, sShowHighScoreScore);
+      sShowHighScoreStatus = false;
+
     }
     if (isThereADialogToShow) {
       //only works now for the ask to connect dialog
@@ -121,14 +121,14 @@ public class MainMenuActivity extends BaseActivity {
       isThereADialogToShow = false;
     }
 
-    if (mFacebookShared) {
+    if (sFacebookShared) {
       GameSharedPref.achievementFulfilled("competitive", "blue_sky");
       Toaster.toastLong(getResources().getString(R.string.game_achievement_fulfilled_1) +
           "Competitive" + getResources().getString(R.string.game_achievement_fulfilled_2) + "skin" +
           this.getResources().getString(R.string.game_achievement_fulfilled_3), this);
     }
-    mShowHighScoreStatus = false;
-    mFacebookShared = false;
+    sShowHighScoreStatus = false;
+    sFacebookShared = false;
 
     GameActivity.sTutorialRestart = false;
   }
@@ -267,5 +267,6 @@ public class MainMenuActivity extends BaseActivity {
 
     super.onActivityResult(requestCode, resultCode, data);
     Session.getActiveSession().onActivityResult(getInstance(), requestCode, resultCode, data);
+    sMainMenuInstance = null;
   }
 }

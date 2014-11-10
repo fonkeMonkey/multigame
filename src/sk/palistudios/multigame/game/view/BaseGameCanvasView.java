@@ -90,6 +90,8 @@ abstract public class BaseGameCanvasView extends View {
     GameSharedPref.setMinigamesInitialized(true);
   }
 
+  public abstract void detachMinigame();
+
   public void setBackgroundGray() {
     setBackgroundColor(Color.GRAY);
   }
