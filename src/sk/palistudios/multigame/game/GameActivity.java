@@ -136,7 +136,7 @@ public class GameActivity extends BaseActivity implements SensorEventListener {
     }
   };
 
-  final private int GAME_UPDATES_PER_SECOND = 40;
+  final private int GAME_UPDATES_PER_SECOND = 60;
   final private int UPDATE_INTERVAL_IN_MILLIS = 1000 / GAME_UPDATES_PER_SECOND;
   final private int MAX_FRAMESKIP = 8;
   public boolean gameStopped = true;
