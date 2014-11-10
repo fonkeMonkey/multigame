@@ -61,16 +61,87 @@ public class GameActivity extends BaseActivity implements SensorEventListener {
   private static boolean sIncreaseVolumeShown = false;
   private static boolean sRaisedVolumeForTutorialAlready = false;
 
+  private Handler mTutorialHandler = new Handler();
+  private Handler mGameLoopHandler = new Handler();
+  private Handler mTimeHandler = new Handler();
+  private Runnable mRunnableGameLoop = new Runnable() {
+    int loops = 0;
+    long nextUpdateGame = -1;
+
+    public void run() {
+      if (!MinigamesManager.isAllMinigamesInitialized()) {
+        mGameLoopHandler.postDelayed(this, 25);
+        return;
+      }
+      if (mGameLoopHandler != null) {
+        if (nextUpdateGame == -1) {
+          nextUpdateGame = System.currentTimeMillis();
+        }
+        loops = 0;
+        while (System.currentTimeMillis() > nextUpdateGame && loops < MAX_FRAMESKIP) {
+          updateGame();
+          nextUpdateGame += UPDATE_INTERVAL_IN_MILLIS;
+          loops++;
+        }
+
+        refreshDisplayGame();
+        if (mGameLoopHandler != null) {
+          mGameLoopHandler.post(this);
+        }
+      }
+    }
+  };;
+  private Runnable mRunnableTutorial = new Runnable() {
+    public void run() {
+      mMusicPlayer.pauseMusic();
+//      if (mGameLoopHandler != null) {
+//        mGameLoopHandler.removeCallbacks(null);
+//      }
+//      if (mTimeHandler != null) {
+//        mTimeHandler.removeCallbacks(mRunnableTime);
+//      }
+
+      if (sTutorialLastLevel != 3) {
+        GameDialogs.showNextTutorialWindow(GameActivity.this, true);
+      } else {
+        GameDialogs.showTutorialWinnerWindow(GameActivity.this);
+        sTutorialLastLevel = 0;
+      }
+    }
+  };
+  private Runnable mRunnableTime = new Runnable() {
+    int milisecondsPassed = 0;
+    int scoreUpdatesPerSeconds = 40;
+    int refreshInterval = 1000 / scoreUpdatesPerSeconds;
+
+    public void run() {
+      mScore += mLevel * DebugSettings.SCORE_COEFICIENT;
+      if (mTimeHandler != null) {
+        mTimeHandler.postDelayed(this, refreshInterval);
+      }
+      milisecondsPassed += refreshInterval;
+
+      //one second passed
+      if (milisecondsPassed % 1000 == 0) {
+        GameTimeManager.onSecondPassed();
+      }
+
+      //increase level
+      if (milisecondsPassed % (DebugSettings.SECONDS_PER_LEVEL * 1000) == 0 && !isTutorial()) {
+        mLevel++;
+        GameTimeManager.onLevelIncreased(GameActivity.this);
+        redrawDifficultyView(String.valueOf(mLevel));
+      }
+
+    }
+  };
+
   final private int GAME_UPDATES_PER_SECOND = 40;
-  final private int GAME_SKIP_FRAMES = 1000 / GAME_UPDATES_PER_SECOND;
+  final private int UPDATE_INTERVAL_IN_MILLIS = 1000 / GAME_UPDATES_PER_SECOND;
   final private int MAX_FRAMESKIP = 8;
   public boolean gameStopped = true;
-  public Runnable mRunnableGameLoop;
   private Toast mToast;
   private MusicPlayer mMusicPlayer;
-  private Handler mHandlerTutorial;
-  private Runnable mRunnableTutorial;
-  private Handler mGameLoopHandler;
   private SensorManager sm = null;
   private Sensor sensor = null;
   private TextView mScoreView = null;
@@ -86,8 +157,6 @@ public class GameActivity extends BaseActivity implements SensorEventListener {
   private float DEFAULT_AXIS_Y = 0f;
   private LinearLayout gameBar;
   private View gameScoreSeparatorDown;
-  private Runnable mRunnableTime;
-  private Handler mTimeHandler;
   private View gameScoreSeparator;
   private boolean mStartedMusicForTutorial = false;
   private int frames = 0;
@@ -121,7 +190,6 @@ public class GameActivity extends BaseActivity implements SensorEventListener {
   private void initVariables() {
     wasGameSaved = GameSharedPref.isGameSaved();
 
-    GameSharedPref.setMinigamesInitialized(false);
     MinigamesManager.loadMinigames(this);
 
     int musicID = getResources().getIdentifier(GameSharedPref.getMusicLoopChosen(), "raw",
@@ -208,68 +276,6 @@ public class GameActivity extends BaseActivity implements SensorEventListener {
           Sensor.TYPE_ACCELEROMETER);//SensorList(Sensor.TYPE_GYROSCOPE).get(0);
       sm.registerListener(this, sensor, SensorManager.SENSOR_DELAY_NORMAL);
 
-      if (mGameLoopHandler == null) {
-        mGameLoopHandler = new Handler();
-      }
-
-      if (mTimeHandler == null) {
-        mTimeHandler = new Handler();
-      }
-
-      if (mRunnableGameLoop == null) {
-
-        mRunnableGameLoop = new Runnable() {
-          int loops = 0;
-          long nextUpdateGame = -1;
-
-          public void run() {
-            if (!MinigamesManager.isAllMinigamesInitialized()) {
-              mGameLoopHandler.postDelayed(this, 25);
-              return;
-            }
-            if (mGameLoopHandler != null) {
-              if (nextUpdateGame == -1) {
-                nextUpdateGame = System.currentTimeMillis();
-              }
-              loops = 0;
-              while (System.currentTimeMillis() > nextUpdateGame && loops < MAX_FRAMESKIP) {
-                updateGame();
-                nextUpdateGame += GAME_SKIP_FRAMES;
-                loops++;
-              }
-
-              refreshDisplayGame();
-              if (mGameLoopHandler != null) {
-                mGameLoopHandler.post(this);
-              }
-            }
-          }
-        };
-      }
-
-      if (mRunnableTime == null) {
-        mRunnableTime = new Runnable() {
-          private int secondsPassed = 0;
-
-          public void run() {
-            secondsPassed++;
-            //one second passed
-            GameTimeManager.onSecondPassed();
-
-            //increase level
-            if (secondsPassed % (DebugSettings.SECONDS_PER_LEVEL) == 0 && !isTutorial()) {
-              mLevel++;
-              GameTimeManager.onLevelIncreased(GameActivity.this);
-              redrawDifficultyView(String.valueOf(mLevel));
-            }
-
-            if (mTimeHandler != null) {
-              mTimeHandler.postDelayed(this, 1000);
-            }
-
-          }
-        };
-      }
       wasGameSaved = GameSharedPref.isGameSaved();
 
       if (mTutorialMode) {
@@ -330,7 +336,6 @@ public class GameActivity extends BaseActivity implements SensorEventListener {
     mTimeGameStarted = System.currentTimeMillis();
     sGamesPerSession++;
     if (mRunnableGameLoop != null) {
-
       if (GameSharedPref.isMusicOn()) {
         if (!wasActivityPaused) {
           mMusicPlayer.startMusic();
@@ -366,35 +371,9 @@ public class GameActivity extends BaseActivity implements SensorEventListener {
     MinigamesManager.setAllMinigamesDifficultyForTutorial();
     gameStopped = false;
     startTutorialGameLoop();
-    if (mRunnableTutorial == null) {
 
-      mRunnableTutorial = new Runnable() {
-        public void run() {
-          mMusicPlayer.pauseMusic();
-          if (mGameLoopHandler != null) {
-            mGameLoopHandler.removeCallbacks(null);
-          }
-          if (mTimeHandler != null) {
-            mTimeHandler.removeCallbacks(mRunnableTime);
-          }
-
-          if (sTutorialLastLevel != 3) {
-
-            GameDialogs.showNextTutorialWindow(GameActivity.this, true);
-
-          } else {
-            GameDialogs.showTutorialWinnerWindow(GameActivity.this);
-            sTutorialLastLevel = 0;
-          }
-        }
-      };
-    }
-    if (mHandlerTutorial == null) {
-      mHandlerTutorial = new Handler();
-    }
-
-    mHandlerTutorial.postDelayed(mRunnableTutorial,
-        DebugSettings.SECONDS_PER_LEVEL_TUTORIAL * 1000);
+    mTutorialHandler.postDelayed(mRunnableTutorial, DebugSettings.SECONDS_PER_LEVEL_TUTORIAL *
+        1000);
   }
 
   public void startTutorialGameLoop() {
@@ -434,8 +413,6 @@ public class GameActivity extends BaseActivity implements SensorEventListener {
   }
 
   private void refreshDisplayGame() {
-    mScore += mLevel * DebugSettings.SCORE_COEFICIENT;
-
     if (!mTutorialMode) {
      redrawScoreView(String.valueOf(mScore));
     }
@@ -671,19 +648,7 @@ public class GameActivity extends BaseActivity implements SensorEventListener {
     }
   }
 
-  @Override
-  public void onDestroy() {
-    super.onDestroy();
-    if (mTutorialMode) {
-      GameDialogs.sLostGame = true;
-    }
-    mMusicPlayer = null;
-    for(BaseGameCanvasView canvas : mCanvases){
-      canvas.detachMinigame();
-    }
-    mCanvases = null;
-    MinigamesManager.detachGameRefFromMinigames();
-  }
+
 
   public void stopCurrentGame() {
     sm.unregisterListener(this);
@@ -696,7 +661,6 @@ public class GameActivity extends BaseActivity implements SensorEventListener {
     if (mTimeHandler != null) {
       mTimeHandler.removeCallbacks(mRunnableTime);
     }
-    GameSharedPref.setMinigamesInitialized(false);
     if (mMusicPlayer != null) {
       mMusicPlayer.pauseMusic();
     }
@@ -720,17 +684,15 @@ public class GameActivity extends BaseActivity implements SensorEventListener {
       mTimeHandler = null;
     }
 
-    if (mHandlerTutorial != null) {
-      mHandlerTutorial.removeCallbacks(mRunnableTutorial);
-      mHandlerTutorial = null;
-
+    if (mTutorialHandler != null) {
+      mTutorialHandler.removeCallbacks(mRunnableTutorial);
+      mTutorialHandler = null;
     }
 
     if (mRunnableTutorial != null) {
       mRunnableTutorial = null;
     }
 
-    GameSharedPref.setMinigamesInitialized(false);
   }
 
   public BaseGameCanvasView[] getCanvases() {
@@ -805,5 +767,39 @@ public class GameActivity extends BaseActivity implements SensorEventListener {
     if (mMusicPlayer != null) {
       mMusicPlayer.stopMusic();
     }
+  }
+
+  @Override
+  public void onDestroy() {
+    super.onDestroy();
+    if (mTutorialMode) {
+      GameDialogs.sLostGame = true;
+    }
+    mMusicPlayer = null;
+    for(BaseGameCanvasView canvas : mCanvases){
+      canvas.detachMinigame();
+    }
+    mCanvases = null;
+    MinigamesManager.detachGameRefFromMinigames();
+
+    destroyThreadsSafely();
+  }
+
+  private void destroyThreadsSafely() {
+    if(mGameLoopHandler != null && mRunnableGameLoop != null){
+      mGameLoopHandler.removeCallbacks(mRunnableGameLoop);
+    }
+
+    if(mTimeHandler != null && mRunnableTime != null){
+      mTimeHandler.removeCallbacks(mRunnableTime);
+    }
+
+    if(mTutorialHandler != null && mRunnableTutorial != null){
+      mTutorialHandler.removeCallbacks(mRunnableTutorial);
+    }
+
+    mTutorialHandler =null;
+    mGameLoopHandler=null;
+    mTimeHandler=null;
   }
 }

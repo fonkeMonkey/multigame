@@ -62,7 +62,6 @@ public class GameSaverLoader {
         game.startActivity(intent);
       }
     }
-    GameSharedPref.setMinigamesInitialized(true);
   }
 
   public static AMiniGame loadMinigameFromFile(String mFileName, GameActivity game)

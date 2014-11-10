@@ -31,8 +31,8 @@ public class MiniGameTInvader extends AMiniGame implements IMiniGameTouch {
   private ArrayList<Enemy> enemies = new ArrayList<Enemy>();
   private int maximumDifficulty;
   private int difficultyStep;
-  private int minimumStepsToInvade;
-  private int stepsToInvadestep;
+//  private int minimumStepsToInvade;
+//  private int stepsToInvadestep;
   //difficulty
   private int framesToCreateEnemy = 160;
   private int framesToGo = 60;
@@ -89,8 +89,8 @@ public class MiniGameTInvader extends AMiniGame implements IMiniGameTouch {
     maximumDifficulty = 1;
     //        difficultyStep = 8;
 
-    minimumStepsToInvade = 50;
-    stepsToInvadestep = 5;
+//    minimumStepsToInvade = 50;
+//    stepsToInvadestep = 5;
 
     isMinigameInitialized = true;
 

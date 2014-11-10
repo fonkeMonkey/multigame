@@ -133,11 +133,11 @@ public class MiniGameHBalance extends AMiniGame implements IMiniGameHorizontal {
     normalVector = new PointSerializable(pVector.mPoint.y,-pVector.mPoint.x);
   }
 
-  public void drawMinigame(Canvas mCanvas) {
+  public void drawMinigame(Canvas canvas) {
 
-    mCanvas.drawLine(pointBarLeftEdge.mPoint.x, pointBarLeftEdge.mPoint.y,
+    canvas.drawLine(pointBarLeftEdge.mPoint.x, pointBarLeftEdge.mPoint.y,
         pointBarRightEdge.mPoint.x, pointBarRightEdge.mPoint.y, mPaintBarColor.mPaint);
-    mCanvas.drawCircle(pBallCenter.mPoint.x, pBallCenter.mPoint.y, mBallSize,
+    canvas.drawCircle(pBallCenter.mPoint.x, pBallCenter.mPoint.y, mBallSize,
         mPaintBallColor.mPaint);
   }
 

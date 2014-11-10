@@ -19,7 +19,6 @@ import sk.palistudios.multigame.game.persistence.GameSharedPref;
 abstract public class BaseGameCanvasView extends View {
   protected AMiniGame mMiniGame;
   private Bitmap mBitmap;
-  private int mPosition = -1;
   private int mBackgroundColor;
 
   private int mHeight;
@@ -42,7 +41,7 @@ abstract public class BaseGameCanvasView extends View {
 
   public void attachMinigame(AMiniGame minigame, int position){
     mMiniGame = minigame;
-    mPosition = position;
+//    int mPosition = position;
 
     switch (position){
       case 0 : mBackgroundColor = getResources().getColor(R.color.game_background_1); break;
@@ -79,7 +78,7 @@ abstract public class BaseGameCanvasView extends View {
     int height = rect.height();
     mBitmap = Bitmap.createBitmap(width, height, Bitmap.Config.ARGB_8888);
     mMiniGame.initMinigame(mBitmap, wasGameSaved);
-    GameSharedPref.setMinigamesInitialized(true);
+//    GameSharedPref.setMinigamesInitialized(true);
   }
 
   public abstract void detachMinigame();

@@ -248,6 +248,7 @@ public class GameDialogs {
             db.writeIntoHallOfFame(new HofItem(playerName, game.getScore()));
             intent = new Intent(act, HallOfFameActivity.class);
             game.startActivity(intent);
+            game.finish();
 
             break;
           case DialogInterface.BUTTON_NEGATIVE:

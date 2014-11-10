@@ -297,14 +297,14 @@ public class GameSharedPref {
     mEditor.commit();
   }
 
-  public static boolean isMinigamesInitialized() {
-    return mSharedPreferences.getBoolean("minigamesInitialized", false);
-  }
+//  public static boolean isMinigamesInitialized() {
+//    return mSharedPreferences.getBoolean("minigamesInitialized", false);
+//  }
 
-  public static void setMinigamesInitialized(boolean status) {
-    mEditor.putBoolean("minigamesInitialized", status);
-    mEditor.commit();
-  }
+//  public static void setMinigamesInitialized(boolean status) {
+//    mEditor.putBoolean("minigamesInitialized", status);
+//    mEditor.commit();
+//  }
 
   public static void SetChosenMinigamesNames(String[] newActiveMinigamesNames) {
     mEditor.putString("MinigameV", newActiveMinigamesNames[0]);
