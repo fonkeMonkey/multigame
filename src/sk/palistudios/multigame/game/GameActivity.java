@@ -65,7 +65,7 @@ public class GameActivity extends BaseActivity implements SensorEventListener {
   private Handler mGameLoopHandler = new Handler();
   private Handler mTimeHandler = new Handler();
   private Runnable mRunnableGameLoop = new Runnable() {
-    int loops = 0;
+    int updates_per_refresh = 0;
     long nextUpdateGame = -1;
 
     public void run() {
@@ -77,11 +77,12 @@ public class GameActivity extends BaseActivity implements SensorEventListener {
         if (nextUpdateGame == -1) {
           nextUpdateGame = System.currentTimeMillis();
         }
-        loops = 0;
-        while (System.currentTimeMillis() > nextUpdateGame && loops < MAX_FRAMESKIP) {
+        updates_per_refresh = 0;
+        while (System.currentTimeMillis() > nextUpdateGame && updates_per_refresh < MAX_FRAMESKIP) {
           updateGame();
+          mScore += mLevel * DebugSettings.SCORE_COEFICIENT;
           nextUpdateGame += UPDATE_INTERVAL_IN_MILLIS;
-          loops++;
+          updates_per_refresh++;
         }
 
         refreshDisplayGame();
@@ -94,12 +95,6 @@ public class GameActivity extends BaseActivity implements SensorEventListener {
   private Runnable mRunnableTutorial = new Runnable() {
     public void run() {
       mMusicPlayer.pauseMusic();
-//      if (mGameLoopHandler != null) {
-//        mGameLoopHandler.removeCallbacks(null);
-//      }
-//      if (mTimeHandler != null) {
-//        mTimeHandler.removeCallbacks(mRunnableTime);
-//      }
 
       if (sTutorialLastLevel != 3) {
         GameDialogs.showNextTutorialWindow(GameActivity.this, true);
@@ -111,11 +106,11 @@ public class GameActivity extends BaseActivity implements SensorEventListener {
   };
   private Runnable mRunnableTime = new Runnable() {
     int milisecondsPassed = 0;
-    int scoreUpdatesPerSeconds = 40;
+    int scoreUpdatesPerSeconds = 1;
     int refreshInterval = 1000 / scoreUpdatesPerSeconds;
 
     public void run() {
-      mScore += mLevel * DebugSettings.SCORE_COEFICIENT;
+
       if (mTimeHandler != null) {
         mTimeHandler.postDelayed(this, refreshInterval);
       }
@@ -136,9 +131,10 @@ public class GameActivity extends BaseActivity implements SensorEventListener {
     }
   };
 
-  final private int GAME_UPDATES_PER_SECOND = 60;
+  final private int GAME_UPDATES_PER_SECOND = 60;//Cell phones have seldom more fps per seconds,
+  // although some have 120 now
   final private int UPDATE_INTERVAL_IN_MILLIS = 1000 / GAME_UPDATES_PER_SECOND;
-  final private int MAX_FRAMESKIP = 8;
+  final private int MAX_FRAMESKIP = 4;
   public boolean gameStopped = true;
   private Toast mToast;
   private MusicPlayer mMusicPlayer;
