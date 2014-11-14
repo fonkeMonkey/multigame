@@ -184,7 +184,7 @@ public class MiniGameVBird extends AMiniGame implements IMiniGameVertical {
 
   @Override
   public void onDifficultyIncreased() {
-    difficultyStep = (framesWithoutObstacle / 100) * DebugSettings.globalDifficultyCoeficient;
+    difficultyStep = (framesWithoutObstacle / 100) * DebugSettings.globalDifficultyIncreaseCoeficient;
 
     if (difficultyStep < 1) {
       difficultyStep = 1;

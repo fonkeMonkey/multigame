@@ -12,7 +12,7 @@ public class DebugSettings {
   public static final int SCORE_COEFICIENT = 1;//1
   public static final int SECONDS_PER_LEVEL_TUTORIAL = 10;//10
   /* Čím väčšia číslo, tým ťahšie. */
-  public static final int globalDifficultyCoeficient = 7;
+  public static final int globalDifficultyIncreaseCoeficient = 7;
   public static boolean adsActivated = false;
   /* DEBUG */
   public static boolean debugInit = false;

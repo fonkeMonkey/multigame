@@ -127,7 +127,7 @@ public class MiniGameTGatherer extends AMiniGame implements IMiniGameTouch, ITim
 
   @Override
   public void onDifficultyIncreased() {
-    difficultyStep = (framesToGenerateCircle / 100) * DebugSettings.globalDifficultyCoeficient;
+    difficultyStep = (framesToGenerateCircle / 100) * DebugSettings.globalDifficultyIncreaseCoeficient;
 
     if (difficultyStep < 1) {
       difficultyStep = 1;

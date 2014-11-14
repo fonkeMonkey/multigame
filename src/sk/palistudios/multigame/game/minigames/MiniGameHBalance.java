@@ -175,7 +175,7 @@ public class MiniGameHBalance extends AMiniGame implements IMiniGameHorizontal {
     barWidth = pointBarRightEdge.mPoint.x - pointBarLeftEdge.mPoint.x;
 
     difficultyStep = ((pointBarRightEdge.mPoint.x - pointBarLeftEdge.mPoint.x) / 100) *
-        (DebugSettings.globalDifficultyCoeficient / 2);//because I trim from both sides
+        (DebugSettings.globalDifficultyIncreaseCoeficient / 2);//because I trim from both sides
 
     if (difficultyStep < 1) {
       difficultyStep = 1;

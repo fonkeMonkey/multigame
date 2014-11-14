@@ -228,7 +228,7 @@ public class MiniGameTInvader extends AMiniGame implements IMiniGameTouch {
 
   @Override
   public void onDifficultyIncreased() {
-    difficultyStep = (framesToCreateEnemy / 100) * DebugSettings.globalDifficultyCoeficient;
+    difficultyStep = (framesToCreateEnemy / 100) * DebugSettings.globalDifficultyIncreaseCoeficient;
 
     if (difficultyStep < 1) {
       difficultyStep = 1;

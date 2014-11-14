@@ -139,7 +139,7 @@ public class MiniGameTCatcher extends AMiniGame implements IMiniGameTouch {
 
   @Override
   public void onDifficultyIncreased() {
-    difficultyStep = (framesToGenerateNewBall / 100) * DebugSettings.globalDifficultyCoeficient;
+    difficultyStep = (framesToGenerateNewBall / 100) * DebugSettings.globalDifficultyIncreaseCoeficient;
 
     if (difficultyStep < 1) {
       difficultyStep = 1;

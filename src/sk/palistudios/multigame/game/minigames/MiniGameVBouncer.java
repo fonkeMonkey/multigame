@@ -170,8 +170,8 @@ public class MiniGameVBouncer extends AMiniGame implements IMiniGameVertical {
 
   @Override
   public void onDifficultyIncreased() {
-    difficultyStepX = (Math.abs(velocityX) / 100) * DebugSettings.globalDifficultyCoeficient;
-    difficultyStepY = (Math.abs(velocityY) / 100) * DebugSettings.globalDifficultyCoeficient;
+    difficultyStepX = (Math.abs(velocityX) / 100) * DebugSettings.globalDifficultyIncreaseCoeficient;
+    difficultyStepY = (Math.abs(velocityY) / 100) * DebugSettings.globalDifficultyIncreaseCoeficient;
 
     if (Math.abs(velocityX) < maxDifficulty - difficultyStepX) {
       if (velocityX > 0) {
