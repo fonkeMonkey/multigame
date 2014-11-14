@@ -5,7 +5,6 @@ package sk.palistudios.multigame.game.minigames;
 import sk.palistudios.multigame.game.GameActivity;
 import sk.palistudios.multigame.game.persistence.GameSaverLoader;
 import sk.palistudios.multigame.game.persistence.GameSharedPref;
-import sk.palistudios.multigame.game.time.GameTimeManager;
 
 public class MinigamesManager {
 
@@ -120,7 +119,7 @@ public class MinigamesManager {
 
   public static boolean isAllMinigamesInitialized() {
     for (AMiniGame mg : mMinigames) {
-      if (!mg.isMinigameInitilized()) {
+      if (!mg.isMinigameInitialized()) {
         return false;
       }
     }

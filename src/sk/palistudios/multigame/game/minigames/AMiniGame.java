@@ -90,7 +90,7 @@ public abstract class AMiniGame implements Serializable, ITimeObserver {
 
   public abstract void setForClassicGame();
 
-  public boolean isMinigameInitilized() {
+  public boolean isMinigameInitialized() {
     return isMinigameInitialized;
   }
 

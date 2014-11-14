@@ -73,22 +73,24 @@ public class GameActivity extends BaseActivity implements SensorEventListener {
         mGameLoopHandler.postDelayed(this, 25);
         return;
       }
-      if (mGameLoopHandler != null) {
-        if (nextUpdateGame == -1) {
-          nextUpdateGame = System.currentTimeMillis();
-        }
-        updates_per_refresh = 0;
-        while (System.currentTimeMillis() > nextUpdateGame && updates_per_refresh < MAX_FRAMESKIP) {
-          updateGame();
-          mScore += mLevel * DebugSettings.SCORE_COEFICIENT;
-          nextUpdateGame += UPDATE_INTERVAL_IN_MILLIS;
-          updates_per_refresh++;
-        }
+      if (nextUpdateGame == -1) {
+        nextUpdateGame = System.currentTimeMillis();
+      }
+      updates_per_refresh = 0;
+      while (System.currentTimeMillis() > nextUpdateGame && updates_per_refresh < MAX_FRAMESKIP) {
+        updateGame();
+        mScore += mLevel * DebugSettings.SCORE_COEFICIENT;
+        nextUpdateGame += UPDATE_INTERVAL_IN_MILLIS;
+        updates_per_refresh++;
+      }
+      refreshDisplayGame();
 
-        refreshDisplayGame();
-        if (mGameLoopHandler != null) {
-          mGameLoopHandler.post(this);
-        }
+      if (mGameLoopHandler != null) {
+      //TODO optimalizuj aby sa toto nevolalo furt dokola (kára batterku a môže spôsobavať na
+      // shit devicoch, že ostatné loopy sa nebudú tak často dostavať k slovu,
+      // so what ostatné stačí za sekund a tutorial ani nehovorím
+        //anyway je to useless prekreslovať neupdatované polia, tu by malo byť nejaký presný čas.
+        mGameLoopHandler.post(this);
       }
     }
   };;
