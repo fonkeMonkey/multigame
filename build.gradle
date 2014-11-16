@@ -6,12 +6,12 @@ buildscript {
     }
 
     dependencies {
-        classpath 'com.android.tools.build:gradle:0.14.2'
+        classpath 'com.android.tools.build:gradle:0.12.2'
     }
 }
 
 task wrapper(type: Wrapper) {
-    gradleVersion = '2.1'
+    gradleVersion = '1.10'
 }
 
 repositories {
@@ -27,6 +27,7 @@ dependencies {
 
 android {
     compileSdkVersion 21
+
     sourceSets {
         main {
             manifest.srcFile 'AndroidManifest.xml'
@@ -40,9 +41,7 @@ android {
 
         instrumentTest.setRoot('tests')
     }
-    defaultConfig {}
-    productFlavors {
-    }
+
 }
 
 android {
@@ -56,16 +55,10 @@ android {
     }
     buildTypes {
         release {
-//            runProguard true
-            minifyEnabled true
-//            shrinkResources true
+            runProguard true
             proguardFile getDefaultProguardFile('proguard-android.txt')
             proguardFile 'proguard.cfg'
             signingConfig signingConfigs.release
-        }
-        debug{
-//            minifyEnabled true
-//            shrinkResources true
         }
     }
 }
@@ -77,8 +70,8 @@ android {
 }
 
 android {
+    buildToolsVersion "21.0.1"
     compileSdkVersion 21
-    buildToolsVersion '21.0.1'
 
     sourceSets {
         main {
