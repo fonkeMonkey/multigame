@@ -34,7 +34,7 @@ public class MiniGameTInvader extends AMiniGame implements IMiniGameTouch {
 //  private int minimumStepsToInvade;
 //  private int stepsToInvadestep;
   //difficulty
-  private int framesToCreateEnemy = 160;
+  private int framesToCreateEnemy = (int) (160 / DebugSettings.GLOBAL_DIFFICULTY_COEFFICIENT);
   private int framesToGo = 60;
   private int mCenterCircleSize;
   private int mSmallCircleSize;
@@ -44,19 +44,6 @@ public class MiniGameTInvader extends AMiniGame implements IMiniGameTouch {
   public MiniGameTInvader(String fileName, Integer position, GameActivity game) {
     super(fileName, position, game);
     type = Type.Touch;
-  }
-
-  public void updateMinigame() {
-    //mCanvas = canvas;
-
-    if (framesToGo == 0) {
-      createEnemy();
-      framesToGo = framesToCreateEnemy;
-    }
-
-    framesToGo--;
-    moveObjects();
-    //        drawMinigame(canvas);
   }
 
   public void initMinigame(Bitmap mBitmap, boolean wasGameSaved) {
@@ -84,7 +71,7 @@ public class MiniGameTInvader extends AMiniGame implements IMiniGameTouch {
     mSmallCircleSize = mWidth / 60;
 
     //difficulty
-    stepsToInvade = 100;
+    stepsToInvade = (int) (100 / DebugSettings.GLOBAL_DIFFICULTY_COEFFICIENT);
 
     maximumDifficulty = 1;
     //        difficultyStep = 8;
@@ -96,29 +83,15 @@ public class MiniGameTInvader extends AMiniGame implements IMiniGameTouch {
 
   }
 
-  public void onUserInteracted(float x, float y) {
+  public void updateMinigame() {
 
-    if (x > 0 && x < mWidth) {
-      if (y > 0 && y < mHeight) {
-        mPointSmallerCircle.mPoint.x = Math.round(x);
-        mPointSmallerCircle.mPoint.y = Math.round(y);
-        setRectangleCoordinates(mPointMiddleOfScreen, mPointSmallerCircle);
-      }
+    if (framesToGo == 0) {
+      createEnemy();
+      framesToGo = framesToCreateEnemy;
     }
 
-  }
-
-  public void drawMinigame(Canvas mCanvas) {
-    mCanvas.drawCircle(mPointMiddleOfScreen.mPoint.x, mPointMiddleOfScreen.mPoint.y,
-        mCenterCircleSize, mPaintMiddleCircle.mPaint);
-    mCanvas.drawCircle(mPointSmallerCircle.mPoint.x, mPointSmallerCircle.mPoint.y, mSmallCircleSize,
-        mPaintSmallCircle.mPaint);
-    mCanvas.drawRect(rectLeft, rectTop, rectRight, rectDown, mPaintLaser.mPaint);
-
-    for (Enemy enemy : enemies) {
-      mCanvas.drawCircle(enemy.x, enemy.y, mSmallCircleSize, enemy.mPaintSer.mPaint);
-    }
-
+    framesToGo--;
+    moveObjects();
   }
 
   private void createEnemy() {
@@ -167,6 +140,33 @@ public class MiniGameTInvader extends AMiniGame implements IMiniGameTouch {
 
     }
   }
+
+  public void onUserInteracted(float x, float y) {
+
+    if (x > 0 && x < mWidth) {
+      if (y > 0 && y < mHeight) {
+        mPointSmallerCircle.mPoint.x = Math.round(x);
+        mPointSmallerCircle.mPoint.y = Math.round(y);
+        setRectangleCoordinates(mPointMiddleOfScreen, mPointSmallerCircle);
+      }
+    }
+
+  }
+
+  public void drawMinigame(Canvas mCanvas) {
+    mCanvas.drawCircle(mPointMiddleOfScreen.mPoint.x, mPointMiddleOfScreen.mPoint.y,
+        mCenterCircleSize, mPaintMiddleCircle.mPaint);
+    mCanvas.drawCircle(mPointSmallerCircle.mPoint.x, mPointSmallerCircle.mPoint.y, mSmallCircleSize,
+        mPaintSmallCircle.mPaint);
+    mCanvas.drawRect(rectLeft, rectTop, rectRight, rectDown, mPaintLaser.mPaint);
+
+    for (Enemy enemy : enemies) {
+      mCanvas.drawCircle(enemy.x, enemy.y, mSmallCircleSize, enemy.mPaintSer.mPaint);
+    }
+
+  }
+
+
 
   private void moveObjects() {
     for (Enemy enemy : enemies) {
@@ -228,7 +228,7 @@ public class MiniGameTInvader extends AMiniGame implements IMiniGameTouch {
 
   @Override
   public void onDifficultyIncreased() {
-    difficultyStep = (framesToCreateEnemy / 100) * DebugSettings.globalDifficultyIncreaseCoeficient;
+    difficultyStep = (framesToCreateEnemy / 100) * DebugSettings.GLOBAL_DIFFICULTY_INCREASE_COEFFICIENT;
 
     if (difficultyStep < 1) {
       difficultyStep = 1;

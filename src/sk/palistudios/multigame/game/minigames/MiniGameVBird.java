@@ -33,7 +33,7 @@ public class MiniGameVBird extends AMiniGame implements IMiniGameVertical {
   private int mBirdSize;
   private int mObstacleWidth;
   private int mObstacleHeight;
-  private int framesWithoutObstacle;
+  private int framesWithoutObstacle = (int) (160 / DebugSettings.GLOBAL_DIFFICULTY_COEFFICIENT);
   private float movementStep;
   private int difficultyStep;
   private int maxDifficulty;
@@ -75,7 +75,6 @@ public class MiniGameVBird extends AMiniGame implements IMiniGameVertical {
       birdRight = mWidth / 20 + mBirdSize;
       mBirdTop = mWidth / 20;
       mBirdBottom = mWidth / 20 + mBirdSize;
-      framesWithoutObstacle = 160;
       framesToGo = 100;
 
       //difficulty
@@ -85,7 +84,7 @@ public class MiniGameVBird extends AMiniGame implements IMiniGameVertical {
 
     movementThreshold = 0.25f;
     movementSensitivity = (float) mHeight / 150;
-    movementStep = (float) mWidth / 400;
+    movementStep = ((float) mWidth / 400) * DebugSettings.GLOBAL_DIFFICULTY_COEFFICIENT;
 
     isMinigameInitialized = true;
 
@@ -184,7 +183,7 @@ public class MiniGameVBird extends AMiniGame implements IMiniGameVertical {
 
   @Override
   public void onDifficultyIncreased() {
-    difficultyStep = (framesWithoutObstacle / 100) * DebugSettings.globalDifficultyIncreaseCoeficient;
+    difficultyStep = (framesWithoutObstacle / 100) * DebugSettings.GLOBAL_DIFFICULTY_INCREASE_COEFFICIENT;
 
     if (difficultyStep < 1) {
       difficultyStep = 1;

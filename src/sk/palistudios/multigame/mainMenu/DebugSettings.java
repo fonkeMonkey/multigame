@@ -9,10 +9,12 @@ public class DebugSettings {
 
   /* GAME */
   public static final int SECONDS_PER_LEVEL = 15;//15
-  public static final int SCORE_COEFICIENT = 1;//1
+  public static final int SCORE_COEFFICIENT = 1;//1
   public static final int SECONDS_PER_LEVEL_TUTORIAL = 10;//10
-  /* Čím väčšia číslo, tým ťahšie. */
-  public static final int globalDifficultyIncreaseCoeficient = 7;
+  /* Čím väčšia čísla, tým ťahšie. */
+  public static final float GLOBAL_DIFFICULTY_COEFFICIENT = 0.6f;
+  public static final int GLOBAL_DIFFICULTY_INCREASE_COEFFICIENT = 7;
+
   public static boolean adsActivated = false;
   /* DEBUG */
   public static boolean debugInit = false;

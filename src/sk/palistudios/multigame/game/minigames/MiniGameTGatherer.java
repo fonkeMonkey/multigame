@@ -33,21 +33,12 @@ public class MiniGameTGatherer extends AMiniGame implements IMiniGameTouch, ITim
   private int difficultyStep;
   private int touchX;
   private int touchY;
-  private int framesToGenerateCircle = 160;
+  private int framesToGenerateCircle = (int) (160 / DebugSettings.GLOBAL_DIFFICULTY_COEFFICIENT);
   private int framesToGo = 20;
 
   public MiniGameTGatherer(String fileName, Integer position, GameActivity game) {
     super(fileName, position, game);
     type = Type.Touch;
-
-  }
-
-  public void updateMinigame() {
-    if (gameLost) {
-      mGame.onGameLost(mPosition);
-    }
-
-    generateNewObjects();
 
   }
 
@@ -69,6 +60,15 @@ public class MiniGameTGatherer extends AMiniGame implements IMiniGameTouch, ITim
     isMinigameInitialized = true;
   }
 
+
+  public void updateMinigame() {
+    if (gameLost) {
+      mGame.onGameLost(mPosition);
+    }
+    generateNewObjects();
+  }
+
+
   public void onUserInteracted(float x, float y) {
 
     touchX = Math.round(x);
@@ -86,16 +86,6 @@ public class MiniGameTGatherer extends AMiniGame implements IMiniGameTouch, ITim
         }
       }
     }
-
-  }
-
-  public void drawMinigame(Canvas mCanvas) {
-
-    for (CircleToTouch obj : mCircles) {
-      mCanvas.drawCircle(obj.x, obj.y, mCircleSize, mPaintCircleColor.mPaint);
-      mCanvas.drawText(String.valueOf(obj.duration), obj.x - textAlign, obj.y + textAlign,
-          mPaintNumberColor.mPaint);
-    }
   }
 
   private void generateNewObjects() {
@@ -111,8 +101,18 @@ public class MiniGameTGatherer extends AMiniGame implements IMiniGameTouch, ITim
       }
     }
     framesToGo--;
-
   }
+
+  public void drawMinigame(Canvas mCanvas) {
+
+    for (CircleToTouch obj : mCircles) {
+      mCanvas.drawCircle(obj.x, obj.y, mCircleSize, mPaintCircleColor.mPaint);
+      mCanvas.drawText(String.valueOf(obj.duration), obj.x - textAlign, obj.y + textAlign,
+          mPaintNumberColor.mPaint);
+    }
+  }
+
+
 
   @Override
   public void onTimeChanged() {
@@ -127,7 +127,7 @@ public class MiniGameTGatherer extends AMiniGame implements IMiniGameTouch, ITim
 
   @Override
   public void onDifficultyIncreased() {
-    difficultyStep = (framesToGenerateCircle / 100) * DebugSettings.globalDifficultyIncreaseCoeficient;
+    difficultyStep = (framesToGenerateCircle / 100) * DebugSettings.GLOBAL_DIFFICULTY_INCREASE_COEFFICIENT;
 
     if (difficultyStep < 1) {
       difficultyStep = 1;

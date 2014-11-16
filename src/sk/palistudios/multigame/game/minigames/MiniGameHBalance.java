@@ -17,7 +17,7 @@ import sk.palistudios.multigame.tools.RandomGenerator;
  */
 public class MiniGameHBalance extends AMiniGame implements IMiniGameHorizontal {
 
-  int framestoRandom = 60;
+  int framestoRandomLeverMovement = (int) (60 / DebugSettings.GLOBAL_DIFFICULTY_COEFFICIENT);
   float maxSpeed;
   float maxLean;
   float difficultyStep;
@@ -49,46 +49,6 @@ public class MiniGameHBalance extends AMiniGame implements IMiniGameHorizontal {
   public MiniGameHBalance(String fileName, Integer position, GameActivity game) {
     super(fileName, position, game);
     type = Type.Horizontal;
-  }
-
-  public void updateMinigame() {
-
-    //for random movement of the bar
-    if (framestoRandom == 0) {
-      onUserInteracted(RandomGenerator.getInstance().generateFloat(-0.5f, 0.5f));
-      framestoRandom = DIF_FRAMES_TO_RANDOM;
-    }
-    framestoRandom--;
-
-    //BAR
-    pointBarLeftEdge.mPoint.y = Math.round(splitHeight - lean);
-    pointBarRightEdge.mPoint.y = Math.round(splitHeight + lean);
-
-    speedDelta = lean / leanRatio;
-    //        Log.i("Max speed: " + String.valueOf(maxSpeed));
-    //        Log.i("Speed delta: " + String.valueOf(speedDelta));
-    //BALL
-    if (momentalBallSpeed + speedDelta >= -maxSpeed && momentalBallSpeed + speedDelta <= maxSpeed) {
-      momentalBallSpeed += speedDelta;
-    } else {
-      if (momentalBallSpeed + speedDelta >= maxSpeed) {
-        momentalBallSpeed = maxSpeed;
-      } else {
-        momentalBallSpeed = -maxSpeed;
-      }
-    }
-
-    //        Log.i("Momental ball speed: " + String.valueOf(momentalBallSpeed));
-
-    ballXAxis += momentalBallSpeed;
-    //        Log.i("X axis: " + String.valueOf(ballXAxis));
-    pBallCenter.mPoint.x = Math.round(ballXAxis);
-    pBallCenter.mPoint.y = findOnLine(pointBarLeftEdge, pointBarRightEdge, pBallCenter.mPoint.x) -
-        mBallSize;
-    if (pBallCenter.mPoint.x + overEdgeToLose < pointBarLeftEdge.mPoint.x ||
-        pBallCenter.mPoint.x - overEdgeToLose > pointBarRightEdge.mPoint.x) {
-      mGame.onGameLost(mPosition);
-    }
   }
 
   public void initMinigame(Bitmap mBitmap, boolean wasGameSaved) {
@@ -133,6 +93,62 @@ public class MiniGameHBalance extends AMiniGame implements IMiniGameHorizontal {
     normalVector = new PointSerializable(pVector.mPoint.y,-pVector.mPoint.x);
   }
 
+  public void updateMinigame() {
+
+    //for random movement of the bar
+    if (framestoRandomLeverMovement == 0) {
+      onUserInteracted(RandomGenerator.getInstance().generateFloat(-0.5f, 0.5f));
+      framestoRandomLeverMovement = DIF_FRAMES_TO_RANDOM;
+    }
+    framestoRandomLeverMovement--;
+
+    //BAR
+    pointBarLeftEdge.mPoint.y = Math.round(splitHeight - lean);
+    pointBarRightEdge.mPoint.y = Math.round(splitHeight + lean);
+
+    speedDelta = lean / leanRatio;
+    //        Log.i("Max speed: " + String.valueOf(maxSpeed));
+    //        Log.i("Speed delta: " + String.valueOf(speedDelta));
+    //BALL
+    if (momentalBallSpeed + speedDelta >= -maxSpeed && momentalBallSpeed + speedDelta <= maxSpeed) {
+      momentalBallSpeed += speedDelta;
+    } else {
+      if (momentalBallSpeed + speedDelta >= maxSpeed) {
+        momentalBallSpeed = maxSpeed;
+      } else {
+        momentalBallSpeed = -maxSpeed;
+      }
+    }
+
+    //        Log.i("Momental ball speed: " + String.valueOf(momentalBallSpeed));
+
+    ballXAxis += momentalBallSpeed;
+    //        Log.i("X axis: " + String.valueOf(ballXAxis));
+    pBallCenter.mPoint.x = Math.round(ballXAxis);
+    pBallCenter.mPoint.y = findOnLine(pointBarLeftEdge, pointBarRightEdge, pBallCenter.mPoint.x) -
+        mBallSize;
+    if (pBallCenter.mPoint.x + overEdgeToLose < pointBarLeftEdge.mPoint.x ||
+        pBallCenter.mPoint.x - overEdgeToLose > pointBarRightEdge.mPoint.x) {
+      mGame.onGameLost(mPosition);
+    }
+  }
+
+  PointSerializable pVector;
+  PointSerializable normalVector;
+  int findOnLine(PointSerializable pBarLeftEdge, PointSerializable pBarRightEdge, int xAxisBall) {
+    pVector.mPoint.x =
+        pBarRightEdge.mPoint.x - pBarLeftEdge.mPoint.x;
+    pVector.mPoint.y = pBarRightEdge.mPoint.y - pBarLeftEdge.mPoint.y;
+    normalVector.mPoint.x = pVector.mPoint.y;
+    normalVector.mPoint.y = -pVector.mPoint.x;
+
+    int c = -(normalVector.mPoint.x * pBarLeftEdge.mPoint.x +
+        normalVector.mPoint.y * pBarLeftEdge.mPoint.y);
+
+    return ((-c - (normalVector.mPoint.x * xAxisBall)) / normalVector.mPoint.y);
+
+  }
+
   public void drawMinigame(Canvas canvas) {
 
     canvas.drawLine(pointBarLeftEdge.mPoint.x, pointBarLeftEdge.mPoint.y,
@@ -154,28 +170,14 @@ public class MiniGameHBalance extends AMiniGame implements IMiniGameHorizontal {
     }
   }
 
-  PointSerializable pVector;
-  PointSerializable normalVector;
-  int findOnLine(PointSerializable pBarLeftEdge, PointSerializable pBarRightEdge, int xAxisBall) {
-    pVector.mPoint.x =
-        pBarRightEdge.mPoint.x - pBarLeftEdge.mPoint.x;
-    pVector.mPoint.y = pBarRightEdge.mPoint.y - pBarLeftEdge.mPoint.y;
-    normalVector.mPoint.x = pVector.mPoint.y;
-    normalVector.mPoint.y = -pVector.mPoint.x;
 
-    int c = -(normalVector.mPoint.x * pBarLeftEdge.mPoint.x +
-        normalVector.mPoint.y * pBarLeftEdge.mPoint.y);
-
-    return ((-c - (normalVector.mPoint.x * xAxisBall)) / normalVector.mPoint.y);
-
-  }
 
   @Override
   public void onDifficultyIncreased() {
     barWidth = pointBarRightEdge.mPoint.x - pointBarLeftEdge.mPoint.x;
 
     difficultyStep = ((pointBarRightEdge.mPoint.x - pointBarLeftEdge.mPoint.x) / 100) *
-        (DebugSettings.globalDifficultyIncreaseCoeficient / 2);//because I trim from both sides
+        (DebugSettings.GLOBAL_DIFFICULTY_INCREASE_COEFFICIENT / 2);//because I trim from both sides
 
     if (difficultyStep < 1) {
       difficultyStep = 1;
@@ -206,14 +208,14 @@ public class MiniGameHBalance extends AMiniGame implements IMiniGameHorizontal {
 
   @Override
   public void setForTutorial() {
-    framestoRandom = (int) (framestoRandom * 1.4);
+    framestoRandomLeverMovement = (int) (framestoRandomLeverMovement * 1.4);
     //        maxLean /= 2;
     //        maxSpeed /= 1.6;
   }
 
   @Override
   public void setForClassicGame() {
-    framestoRandom = (int) (framestoRandom * 1.3);
+    framestoRandomLeverMovement = (int) (framestoRandomLeverMovement * 1.3);
     //        maxLean /= 2;
     //        maxSpeed /= 1.6;
     //        maxSpeed /= 0;

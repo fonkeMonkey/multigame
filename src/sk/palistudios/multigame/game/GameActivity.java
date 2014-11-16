@@ -79,7 +79,7 @@ public class GameActivity extends BaseActivity implements SensorEventListener {
       updates_per_refresh = 0;
       while (System.currentTimeMillis() > nextUpdateGame && updates_per_refresh < MAX_FRAMESKIP) {
         updateGame();
-        mScore += mLevel * DebugSettings.SCORE_COEFICIENT;
+        mScore += mLevel * DebugSettings.SCORE_COEFFICIENT;
         nextUpdateGame += UPDATE_INTERVAL_IN_MILLIS;
         updates_per_refresh++;
       }

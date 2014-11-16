@@ -7,6 +7,7 @@ import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.Paint;
+import android.provider.Settings;
 
 import sk.palistudios.multigame.R;
 import sk.palistudios.multigame.game.GameActivity;
@@ -33,18 +34,12 @@ public class MiniGameTCatcher extends AMiniGame implements IMiniGameTouch {
   private int fallingHeight;
   private int maxDifficulty;
   private int difficultyStep;
-  private int framesToGenerateNewBall = 160;
+  private int framesToGenerateNewBall = (int) (160 / DebugSettings.GLOBAL_DIFFICULTY_COEFFICIENT);
   private int framesToGo = 30;
 
   public MiniGameTCatcher(String fileName, Integer position, GameActivity game) {
     super(fileName, position, game);
     type = Type.Touch;
-  }
-
-  public void updateMinigame() {
-    generateFallingBalls();
-    moveObjects();
-
   }
 
   public void initMinigame(Bitmap mBitmap, boolean wasGameSaved) {
@@ -55,7 +50,8 @@ public class MiniGameTCatcher extends AMiniGame implements IMiniGameTouch {
     columnWidth = (mWidth) / numberOfColumns;
     mBallSize = mWidth / 40;
     catchingBallsHeight = mHeight - (mHeight / 15) - mBallSize;
-    fallingStep = (float) (mHeight - fallingHeight) / 180;
+    fallingStep = ((float) (mHeight - fallingHeight) / 180) * DebugSettings
+        .GLOBAL_DIFFICULTY_COEFFICIENT;
 
     mPaintFallingBalls = new PaintSerializable(colorMain, Paint.Style.FILL);
     mPaintCatchingBallActive = new PaintSerializable(colorAlt, Paint.Style.FILL);
@@ -69,6 +65,12 @@ public class MiniGameTCatcher extends AMiniGame implements IMiniGameTouch {
 
     countCatchingBallsPosition();
     isMinigameInitialized = true;
+  }
+
+  public void updateMinigame() {
+    generateFallingBalls();
+    moveObjects();
+
   }
 
   private void generateFallingBalls() {
@@ -139,7 +141,7 @@ public class MiniGameTCatcher extends AMiniGame implements IMiniGameTouch {
 
   @Override
   public void onDifficultyIncreased() {
-    difficultyStep = (framesToGenerateNewBall / 100) * DebugSettings.globalDifficultyIncreaseCoeficient;
+    difficultyStep = (framesToGenerateNewBall / 100) * DebugSettings.GLOBAL_DIFFICULTY_INCREASE_COEFFICIENT;
 
     if (difficultyStep < 1) {
       difficultyStep = 1;

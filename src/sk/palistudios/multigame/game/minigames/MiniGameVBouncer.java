@@ -40,12 +40,6 @@ public class MiniGameVBouncer extends AMiniGame implements IMiniGameVertical {
     type = Type.Vertical;
   }
 
-  public void updateMinigame() {
-    moveBall();
-    moveBar();
-
-  }
-
   public void initMinigame(Bitmap mBitmap, boolean wasGameSaved) {
 
     mHeight = mBitmap.getHeight();
@@ -60,7 +54,7 @@ public class MiniGameVBouncer extends AMiniGame implements IMiniGameVertical {
       barBottom = mHeight / 2 + barHeight / 2;
 
       mPointBall = new PointSerializable(30, 30);
-      velocityX = (float) mWidth / 200;
+      velocityX = ((float) mWidth / 200) * DebugSettings.GLOBAL_DIFFICULTY_COEFFICIENT;
       velocityY = RandomGenerator.getInstance().generateFloat(1, 1.2f);
 
       //difficulty
@@ -81,25 +75,10 @@ public class MiniGameVBouncer extends AMiniGame implements IMiniGameVertical {
     isMinigameInitialized = true;
   }
 
-  public void drawMinigame(Canvas mCanvas) {
-    mCanvas.drawCircle(mPointBall.mPoint.x, mPointBall.mPoint.y, ballSize, mPaintBall.mPaint);
-    mCanvas.drawRect(barLeft, barTop, barRight, barBottom, mPaintBar.mPaint);
+  public void updateMinigame() {
+    moveBall();
+    moveBar();
   }
-
-  public void onUserInteracted(float movement) {
-
-    if (mWidth == 0 || mHeight == 0) {
-      return;
-    }
-
-    movement *= movementSensitivity;
-
-    actualMovement = movement;
-
-  }
-  //in order to escape deadlock, when ball is bouncing back and forth on the edge
-  //    private int framesFromLastVerticalHit = -1;
-  //    private int framesFromLastHorizontalHit = -1;
 
   private void moveBall() {
 
@@ -168,10 +147,32 @@ public class MiniGameVBouncer extends AMiniGame implements IMiniGameVertical {
     }
   }
 
+  public void drawMinigame(Canvas mCanvas) {
+    mCanvas.drawCircle(mPointBall.mPoint.x, mPointBall.mPoint.y, ballSize, mPaintBall.mPaint);
+    mCanvas.drawRect(barLeft, barTop, barRight, barBottom, mPaintBar.mPaint);
+  }
+
+  public void onUserInteracted(float movement) {
+
+    if (mWidth == 0 || mHeight == 0) {
+      return;
+    }
+
+    movement *= movementSensitivity;
+
+    actualMovement = movement;
+
+  }
+  //in order to escape deadlock, when ball is bouncing back and forth on the edge
+  //    private int framesFromLastVerticalHit = -1;
+  //    private int framesFromLastHorizontalHit = -1;
+
+
+
   @Override
   public void onDifficultyIncreased() {
-    difficultyStepX = (Math.abs(velocityX) / 100) * DebugSettings.globalDifficultyIncreaseCoeficient;
-    difficultyStepY = (Math.abs(velocityY) / 100) * DebugSettings.globalDifficultyIncreaseCoeficient;
+    difficultyStepX = (Math.abs(velocityX) / 100) * DebugSettings.GLOBAL_DIFFICULTY_INCREASE_COEFFICIENT;
+    difficultyStepY = (Math.abs(velocityY) / 100) * DebugSettings.GLOBAL_DIFFICULTY_INCREASE_COEFFICIENT;
 
     if (Math.abs(velocityX) < maxDifficulty - difficultyStepX) {
       if (velocityX > 0) {
