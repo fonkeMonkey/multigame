@@ -112,11 +112,10 @@ public class GameActivity extends BaseActivity implements SensorEventListener {
   };
   private Runnable mRunnableTime = new Runnable() {
     int milisecondsPassed = 0;
-    int scoreUpdatesPerSeconds = 1;
-    int refreshInterval = 1000 / scoreUpdatesPerSeconds;
+    int updatesPerSeconds = 1;
+    int refreshInterval = 1000 / updatesPerSeconds;
 
     public void run() {
-
       if (mTimeHandler != null) {
         mTimeHandler.postDelayed(this, refreshInterval);
       }
@@ -310,7 +309,6 @@ public class GameActivity extends BaseActivity implements SensorEventListener {
           GameSharedPref.setGameSaved(false);
         } else {
           boolean playingFirstTime = GameSharedPref.isPlayingGameFirstTime();
-          MinigamesManager.setAllMinigamesDifficultyForTutorial();
           if (playingFirstTime) {
             Toaster.toastLong(getResources().getString(R.string.game_touch_save), getApplicationContext());
             mToast = Toaster.toastLong( getResources().getString(R.string.game_touch_start),
@@ -361,6 +359,8 @@ public class GameActivity extends BaseActivity implements SensorEventListener {
     for (int i = 0; i <= sTutorialLastLevel; i++) {
       MinigamesManager.activateMinigame(this, i);
     }
+
+
     if (mMusicPlayer != null && GameSharedPref.isMusicOn()) {
       if (!mStartedMusicForTutorial) {
         mMusicPlayer.startMusic();
@@ -370,7 +370,6 @@ public class GameActivity extends BaseActivity implements SensorEventListener {
       }
     }
 
-    MinigamesManager.setAllMinigamesDifficultyForTutorial();
     gameStopped = false;
     startTutorialGameLoop();
 
@@ -802,5 +801,6 @@ public class GameActivity extends BaseActivity implements SensorEventListener {
     mTutorialHandler =null;
     mGameLoopHandler=null;
     mTimeHandler=null;
+    GameTimeManager.clearTimeObservers();
   }
 }

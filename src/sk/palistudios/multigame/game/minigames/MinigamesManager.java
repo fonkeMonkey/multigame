@@ -105,18 +105,6 @@ public class MinigamesManager {
     return mMinigames;
   }
 
-  public static void setAllMinigamesDifficultyForTutorial() {
-    for (BaseMiniGame mg : mMinigames) {
-      mg.setDifficultyForTutorial();
-    }
-  }
-
-  public static void setAllMinigamesDifficultyForClassicGame() {
-    for (BaseMiniGame mg : mMinigames) {
-      mg.setDifficultyForClassicGame();
-    }
-  }
-
   public static boolean isAllMinigamesInitialized() {
     for (BaseMiniGame mg : mMinigames) {
       if (!mg.isMinigameInitialized()) {

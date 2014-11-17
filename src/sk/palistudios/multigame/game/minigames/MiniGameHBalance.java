@@ -18,8 +18,10 @@ import sk.palistudios.multigame.tools.RandomGenerator;
 public class MiniGameHBalance extends BaseMiniGame implements
     GameActivity.userInteractedHorizontalListener {
   //DIFFICULTY
-  private int framestoRandomLeverMovement =
+  private int framesToGo =
       (int) (60 / DebugSettings.GLOBAL_DIFFICULTY_COEFFICIENT);
+  private int mFramesToRandomLeverageMovement =
+      (int) (180 / DebugSettings.GLOBAL_DIFFICULTY_COEFFICIENT);
   private float maxSpeed;
   private float maxLean;
   private float maxDifficulty;
@@ -47,6 +49,10 @@ public class MiniGameHBalance extends BaseMiniGame implements
   }
 
   public void initMinigame(Bitmap mBitmap, boolean wasGameSaved) {
+    if (mGame.isTutorial()) {
+      mFramesToRandomLeverageMovement /= DebugSettings.GLOBAL_DIFFICULTY_TUTORIAL_COEFFICIENT;
+    }
+
     mHeight = mBitmap.getHeight();
     mWidth = mBitmap.getWidth();
 
@@ -56,7 +62,6 @@ public class MiniGameHBalance extends BaseMiniGame implements
     maxLean = mWidth / 20;
     leanRatio = 150;
     movementSensitivity = maxLean / 5;
-    setDifficultyForClassicGame();
 
     if (!wasGameSaved) {
       int barLength = mWidth / 2;
@@ -72,6 +77,7 @@ public class MiniGameHBalance extends BaseMiniGame implements
       maxDifficulty = DIF_SHORTEST_BAR;
       //because in onDifficultyIncreased you decrease from both sides
     }
+
     mPaintBallColor = new PaintSerializable(colorMain, Paint.Style.FILL);
     mPaintBarColor = new PaintSerializable(colorAlt, Paint.Style.STROKE);
 
@@ -87,14 +93,12 @@ public class MiniGameHBalance extends BaseMiniGame implements
   }
 
   public void updateMinigame() {
-
     //for random movement of the bar
-    if (framestoRandomLeverMovement == 0) {
+    if (framesToGo == 0) {
       onUserInteractedHorizontal(RandomGenerator.getInstance().generateFloat(-0.5f, 0.5f));
-      int DIF_FRAMES_TO_RANDOM = 160;
-      framestoRandomLeverMovement = DIF_FRAMES_TO_RANDOM;
+      framesToGo = mFramesToRandomLeverageMovement;
     }
-    framestoRandomLeverMovement--;
+    framesToGo--;
 
     //BAR
     pointBarLeftEdge.mPoint.y = Math.round(splitHeight - lean);
@@ -188,21 +192,5 @@ public class MiniGameHBalance extends BaseMiniGame implements
 
   public String getName() {
     return "Balance";
-  }
-
-  @Override
-  public void setDifficultyForTutorial() {
-    framestoRandomLeverMovement = (int) (framestoRandomLeverMovement * 1.4);
-    //        maxLean /= 2;
-    //        maxSpeed /= 1.6;
-  }
-
-  @Override
-  public void setDifficultyForClassicGame() {
-    framestoRandomLeverMovement = (int) (framestoRandomLeverMovement * 1.3);
-    //        maxLean /= 2;
-    //        maxSpeed /= 1.6;
-    //        maxSpeed /= 0;
-
   }
 }

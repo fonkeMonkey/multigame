@@ -11,9 +11,9 @@ import android.graphics.Canvas;
 import sk.palistudios.multigame.R;
 import sk.palistudios.multigame.game.GameActivity;
 import sk.palistudios.multigame.game.persistence.GameSaverLoader;
-import sk.palistudios.multigame.game.time.ITimeObserver;
+import sk.palistudios.multigame.game.time.ISecondsObserver;
 
-abstract public class BaseMiniGame implements Serializable, ITimeObserver {
+abstract public class BaseMiniGame implements Serializable, ISecondsObserver {
   protected final int colorAlt2;
   public Type type;
   public Integer mPosition;
@@ -49,8 +49,6 @@ abstract public class BaseMiniGame implements Serializable, ITimeObserver {
   public abstract String getDescription(Context context);
 
   public abstract void onDifficultyIncreased();
-  public abstract void setDifficultyForTutorial();
-  public abstract void setDifficultyForClassicGame();
 
   public void onMinigameSaved(){}
   public void onMinigameLoaded(){}
@@ -59,7 +57,7 @@ abstract public class BaseMiniGame implements Serializable, ITimeObserver {
     onMinigameSaved();
   }
 
-  public void onTimeChanged(){}
+  public void onSecondPassed(){}
 
   public void onMinigameActivated() {
     active = true;
