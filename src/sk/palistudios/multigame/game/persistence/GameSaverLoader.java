@@ -16,7 +16,7 @@ import android.content.Context;
 import android.content.Intent;
 
 import sk.palistudios.multigame.game.GameActivity;
-import sk.palistudios.multigame.game.minigames.AMiniGame;
+import sk.palistudios.multigame.game.minigames.BaseMiniGame;
 import sk.palistudios.multigame.game.minigames.MinigamesManager;
 
 public class GameSaverLoader {
@@ -28,7 +28,7 @@ public class GameSaverLoader {
     final int framesToSave = game.getFrames();
     final boolean[] activeMinigames = MinigamesManager.getmMinigamesActivityFlags();
     GameSharedPref.saveGameDetails(scoreToSave, levelToSave, framesToSave, activeMinigames);
-    for (AMiniGame minigame : MinigamesManager.getMinigames()) {
+    for (BaseMiniGame minigame : MinigamesManager.getMinigames()) {
       minigame.saveMinigame();
     }
   }
@@ -47,7 +47,7 @@ public class GameSaverLoader {
       MinigamesManager.getMinigames()[2] = loadMinigameFromFile("MG_T1", game);
       MinigamesManager.getMinigames()[3] = loadMinigameFromFile("MG_T2", game);
 
-      for (AMiniGame minigame : MinigamesManager.getMinigames()) {
+      for (BaseMiniGame minigame : MinigamesManager.getMinigames()) {
         minigame.mGame = game;
         minigame.onMinigameLoaded();
       }
@@ -64,37 +64,37 @@ public class GameSaverLoader {
     }
   }
 
-  public static AMiniGame loadMinigameFromFile(String mFileName, GameActivity game)
+  public static BaseMiniGame loadMinigameFromFile(String mFileName, GameActivity game)
       throws NotSerializableException {
     Context mContext = game;
     FileInputStream fis = null;
-    AMiniGame minigame = null;
+    BaseMiniGame minigame = null;
     try {
       fis = mContext.openFileInput(mFileName);
       ObjectInputStream is = new ObjectInputStream(fis);
-      minigame = (AMiniGame) is.readObject();
+      minigame = (BaseMiniGame) is.readObject();
       is.close();
     } catch (OptionalDataException ex) {
-      Logger.getLogger(AMiniGame.class.getName()).log(Level.SEVERE,
+      Logger.getLogger(BaseMiniGame.class.getName()).log(Level.SEVERE,
           "LoadGame OptionalDataException", ex);
     } catch (ClassNotFoundException ex) {
-      Logger.getLogger(AMiniGame.class.getName()).log(Level.SEVERE,
+      Logger.getLogger(BaseMiniGame.class.getName()).log(Level.SEVERE,
           "LoadGame ClassNotFoundException", ex);
     } catch (NotSerializableException ex) {
-      Logger.getLogger(AMiniGame.class.getName()).log(Level.SEVERE, "Not serializable", ex);
+      Logger.getLogger(BaseMiniGame.class.getName()).log(Level.SEVERE, "Not serializable", ex);
     } catch (Exception ex) {
-      Logger.getLogger(AMiniGame.class.getName()).log(Level.SEVERE, "Loadgame IO exception", ex);
+      Logger.getLogger(BaseMiniGame.class.getName()).log(Level.SEVERE, "Loadgame IO exception", ex);
     } finally {
       try {
         fis.close();
       } catch (IOException ex) {
-        Logger.getLogger(AMiniGame.class.getName()).log(Level.SEVERE, "Loadgame IO exception", ex);
+        Logger.getLogger(BaseMiniGame.class.getName()).log(Level.SEVERE, "Loadgame IO exception", ex);
       }
     }
     return minigame;
   }
 
-  public static void SaveMinigametoFile(String mFileName, AMiniGame miniGame,
+  public static void SaveMinigametoFile(String mFileName, BaseMiniGame miniGame,
       GameActivity context) {
     FileOutputStream fos = null;
     try {
@@ -103,13 +103,13 @@ public class GameSaverLoader {
       os.writeObject(miniGame);
       os.close();
     } catch (Exception ex) {
-      Logger.getLogger(AMiniGame.class.getName()).log(Level.SEVERE,
+      Logger.getLogger(BaseMiniGame.class.getName()).log(Level.SEVERE,
           "File IO Exception: " + mFileName, ex);
     } finally {
       try {
         fos.close();
       } catch (Exception ex) {
-        Logger.getLogger(AMiniGame.class.getName()).log(Level.SEVERE,
+        Logger.getLogger(BaseMiniGame.class.getName()).log(Level.SEVERE,
             "File IO Exception: " + mFileName, ex);
       }
     }

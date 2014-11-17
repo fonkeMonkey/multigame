@@ -17,14 +17,21 @@ import sk.palistudios.multigame.tools.RandomGenerator;
 /**
  * @author Pali
  */
-public class MiniGameVBird extends AMiniGame implements IMiniGameVertical {
+public class MiniGameVBird extends BaseMiniGame implements
+    GameActivity.userInteractedVerticalListener {
+  //Difficulty
+  private int framesWithoutObstacle = (int) (160 / DebugSettings.GLOBAL_DIFFICULTY_COEFFICIENT);
+  private float movementStep;
+  private int maxDifficulty;
+  private float actualMovement = 0;
+  private int framesToGo;
 
-  private final static RandomGenerator mRG = RandomGenerator.getInstance();
-  PaintSerializable mPaintBird = null;
-  PaintSerializable mPaintObstacle = null;
-  //    private int mBlur;
-  float movementSensitivity;
-  private ArrayList<Obstacle> mObstacles = new ArrayList<Obstacle>();
+  //Graphics
+  private final RandomGenerator mRG = RandomGenerator.getInstance();
+  private PaintSerializable mPaintBird = null;
+  private PaintSerializable mPaintObstacle = null;
+  private float movementSensitivity;
+  private final ArrayList<Obstacle> mObstacles = new ArrayList<Obstacle>();
   private float movementThreshold;
   private int birdLeft;
   private int birdRight;
@@ -33,12 +40,6 @@ public class MiniGameVBird extends AMiniGame implements IMiniGameVertical {
   private int mBirdSize;
   private int mObstacleWidth;
   private int mObstacleHeight;
-  private int framesWithoutObstacle = (int) (160 / DebugSettings.GLOBAL_DIFFICULTY_COEFFICIENT);
-  private float movementStep;
-  private int difficultyStep;
-  private int maxDifficulty;
-  private float actualMovement = 0;
-  private int framesToGo;
 
   public MiniGameVBird(String fileName, Integer position, GameActivity game) {
     super(fileName, position, game);
@@ -49,11 +50,9 @@ public class MiniGameVBird extends AMiniGame implements IMiniGameVertical {
     generateObstacles();
     moveField();
     moveBird();
-
   }
 
   public void initMinigame(Bitmap mBitmap, boolean wasGameSaved) {
-
     mHeight = mBitmap.getHeight();
     mWidth = mBitmap.getWidth();
 
@@ -62,13 +61,8 @@ public class MiniGameVBird extends AMiniGame implements IMiniGameVertical {
     mPaintBird = new PaintSerializable(colorMain, Paint.Style.FILL);
 
     mBirdSize = mHeight / 9;
-    //        mBlur = mBirdSize / 20;
     mObstacleWidth = mWidth / 20;
     mObstacleHeight = (int) (mHeight / (2.5));
-
-    //        for (int i = 0; i < mBlurMemory.length; i++) {
-    //            mBlurMemory[i] = -1;
-    //        }
 
     if (!wasGameSaved) {
       birdLeft = mWidth / 20;
@@ -78,8 +72,7 @@ public class MiniGameVBird extends AMiniGame implements IMiniGameVertical {
       framesToGo = 100;
 
       //difficulty
-      maxDifficulty = (int) (mBirdSize * 1.5);/// movementStep);
-      //            difficultyStep = (framesWithoutObstacle - maxDifficulty) / 20;
+      maxDifficulty = (int) (mBirdSize * 1.5);
     }
 
     movementThreshold = 0.25f;
@@ -87,53 +80,30 @@ public class MiniGameVBird extends AMiniGame implements IMiniGameVertical {
     movementStep = ((float) mWidth / 400) * DebugSettings.GLOBAL_DIFFICULTY_COEFFICIENT;
 
     isMinigameInitialized = true;
-
   }
 
-  public void onUserInteracted(float movement) {
+  public void onUserInteractedVertical(float verticalMovement) {
     if (mWidth == 0 || mHeight == 0) {
       return;
     }
 
-    if (movement > -movementThreshold && movement < movementThreshold) {
+    if (verticalMovement > -movementThreshold && verticalMovement < movementThreshold) {
       return;
     }
 
-    movement *= movementSensitivity;
-    actualMovement = movement;
+    verticalMovement *= movementSensitivity;
+    actualMovement = verticalMovement;
   }
 
   public void drawMinigame(Canvas mCanvas) {
-
     for (Obstacle obst : mObstacles) {
       mCanvas.drawRect(obst.left, obst.top, obst.right, obst.bottom, mPaintObstacle.mPaint);
     }
-
-    //        for (int i = mBlurMemory.length - 1; i > 0; i--) {
-    ////            mPaintBird.mPaint.setAlpha((int)(255 /( 2 * Math.pow(2,i))));
-    //            mPaintBird.mPaint.setAlpha(255 /(i + 2));
-    ////            mPaintBird.mPaint.setAlpha((int)((255 / (blurMemorySize + 1)) *
-    // (blurMemorySize - i)));
-    ////            mCanvas.drawRect(birdLeft - mBlur * i, mBlurMemory[i], birdRight,
-    // mBlurMemory[i] + mBirdSize, mPaintBird.mPaint);
-    //            mCanvas.drawRect(birdLeft - mBlur * i, mBirdTop, birdRight, mBirdBottom,
-    // mPaintBird.mPaint);
-    //        }
     mPaintBird.mPaint.setAlpha(255);
     mCanvas.drawRect(birdLeft, mBirdTop, birdRight, mBirdBottom, mPaintBird.mPaint);
-
-    //        /* blur */
-    //        mPaintBird.mPaint.setAlpha(255 / 4);
-    //        mCanvas.drawRect(birdLeft - mBlur * 2, mBirdTopBefore2, birdRight,
-    // mBirdTopBefore2 + mBirdSize, mPaintBird.mPaint);
-    //        mPaintBird.mPaint.setAlpha(255 / 2);
-    //        mCanvas.drawRect(birdLeft - mBlur, mBirdTopBefore1, birdRight,
-    // mBirdTopBefore1 + mBirdSize, mPaintBird.mPaint);
-
   }
 
   private void generateObstacles() {
-
     if (framesToGo == 0) {
       float bottom = mRG.generateInt(mObstacleHeight, mHeight);
       Obstacle obj = new Obstacle(mWidth - 5 - mObstacleWidth, bottom - mObstacleHeight, mWidth - 5,
@@ -143,7 +113,6 @@ public class MiniGameVBird extends AMiniGame implements IMiniGameVertical {
     } else {
       framesToGo--;
     }
-
   }
 
   private void moveField() {
@@ -152,18 +121,12 @@ public class MiniGameVBird extends AMiniGame implements IMiniGameVertical {
         obst.move();
       } else {
         mObstacles.remove(obst);
-        obst = null;
         return;
-
       }
     }
-
   }
-  //    private int blurMemorySize = 10;
-  //    private int[] mBlurMemory = new int[blurMemorySize];
 
   private void moveBird() {
-
     //      checking the edges
     if (mBirdTop + actualMovement > mHeight - mBirdSize) {
       mBirdTop = mHeight - mBirdSize;
@@ -173,7 +136,7 @@ public class MiniGameVBird extends AMiniGame implements IMiniGameVertical {
 
     if (mBirdTop + actualMovement < 0) {
       mBirdTop = 0;
-      mBirdBottom = 0 + mBirdSize;
+      mBirdBottom = mBirdSize;
       return;
     }
 
@@ -183,7 +146,8 @@ public class MiniGameVBird extends AMiniGame implements IMiniGameVertical {
 
   @Override
   public void onDifficultyIncreased() {
-    difficultyStep = (framesWithoutObstacle / 100) * DebugSettings.GLOBAL_DIFFICULTY_INCREASE_COEFFICIENT;
+    int difficultyStep =
+        (framesWithoutObstacle / 100) * DebugSettings.GLOBAL_DIFFICULTY_INCREASE_COEFFICIENT;
 
     if (difficultyStep < 1) {
       difficultyStep = 1;
@@ -204,32 +168,27 @@ public class MiniGameVBird extends AMiniGame implements IMiniGameVertical {
   }
 
   private boolean isCollision(float top, float bottom, int birdTop, int birdBottom) {
-
     if (birdTop < bottom && birdTop > top) {
       return true;
     }
-    if (birdBottom < bottom && birdBottom > top) {
-      return true;
-    }
-    return false;
+    return birdBottom < bottom && birdBottom > top;
   }
 
   @Override
-  public void setForTutorial() {
+  public void setDifficultyForTutorial() {
     framesWithoutObstacle = (int) (framesWithoutObstacle * 1.2);
   }
 
   @Override
-  public void setForClassicGame() {
+  public void setDifficultyForClassicGame() {
     framesWithoutObstacle = (int) (framesWithoutObstacle * 1.1);
   }
 
   private class Obstacle implements Serializable {
-
     float left;
-    float top;
+    final float top;
     float right;
-    float bottom;
+    final float bottom;
 
     public Obstacle(float left, float top, float right, float bottom) {
       this.left = left;
@@ -239,14 +198,10 @@ public class MiniGameVBird extends AMiniGame implements IMiniGameVertical {
     }
 
     private boolean isOutOfBounds() {
-      if (right - 1 >= 0) {
-        return false;
-      }
-      return true;
+      return right - 1 < 0;
     }
 
     private void move() {
-
       //if collision
       if ((birdRight >= left - 1 && birdRight <= right - 1) ||
           (birdLeft >= left - 1 && birdLeft <= right - 1)) {
@@ -258,7 +213,6 @@ public class MiniGameVBird extends AMiniGame implements IMiniGameVertical {
       }
       left -= movementStep;
       right -= movementStep;
-
     }
   }
 }

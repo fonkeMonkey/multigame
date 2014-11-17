@@ -13,37 +13,38 @@ import sk.palistudios.multigame.game.GameActivity;
 import sk.palistudios.multigame.game.persistence.PaintSerializable;
 import sk.palistudios.multigame.game.time.GameTimeManager;
 import sk.palistudios.multigame.game.time.ITimeObserver;
+import sk.palistudios.multigame.game.view.GameCanvasViewTouch;
 import sk.palistudios.multigame.mainMenu.DebugSettings;
 import sk.palistudios.multigame.tools.RandomGenerator;
 
 /**
  * @author Pali
  */
-public class MiniGameTGatherer extends AMiniGame implements IMiniGameTouch, ITimeObserver {
-
-  private static final RandomGenerator mRg = RandomGenerator.getInstance();
-  boolean gameLost = false;
-  PaintSerializable mPaintCircleColor = null;
-  PaintSerializable mPaintNumberColor = null;
-  private ArrayList<CircleToTouch> mCircles = new ArrayList<CircleToTouch>();
-  private int mCircleSize;
+public class MiniGameTGatherer extends BaseMiniGame implements
+    GameCanvasViewTouch.userInteractedTouchListener,
+    ITimeObserver {
+  //DIFFICULTY
+  public static final int CIRCLE_DURATION = 9;
   private int touchingDistance;
-  private int textAlign;
   private int maximumDifficulty;
-  private int difficultyStep;
-  private int touchX;
-  private int touchY;
   private int framesToGenerateCircle = (int) (160 / DebugSettings.GLOBAL_DIFFICULTY_COEFFICIENT);
   private int framesToGo = 20;
+
+  //GRAPHICS
+  private final RandomGenerator mRg = RandomGenerator.getInstance();
+  private boolean gameLost = false;
+  private PaintSerializable mPaintCircleColor = null;
+  private PaintSerializable mPaintNumberColor = null;
+  private final ArrayList<CircleToTouch> mCircles = new ArrayList<CircleToTouch>();
+  private int mCircleSize;
+  private int textAlign;
 
   public MiniGameTGatherer(String fileName, Integer position, GameActivity game) {
     super(fileName, position, game);
     type = Type.Touch;
-
   }
 
   public void initMinigame(Bitmap mBitmap, boolean wasGameSaved) {
-
     mHeight = mBitmap.getHeight();
     mWidth = mBitmap.getWidth();
 
@@ -56,7 +57,6 @@ public class MiniGameTGatherer extends AMiniGame implements IMiniGameTouch, ITim
     touchingDistance = (int) (mCircleSize * 1.5);
     //difficulty
     maximumDifficulty = 1;
-    //        difficultyStep = 8;
     isMinigameInitialized = true;
   }
 
@@ -71,19 +71,16 @@ public class MiniGameTGatherer extends AMiniGame implements IMiniGameTouch, ITim
   }
 
 
-  public void onUserInteracted(float x, float y) {
-
-    touchX = Math.round(x);
-    touchY = Math.round(y);
+  public void onUserInteractedTouch(float x, float y) {
+    int touchX = Math.round(x);
+    int touchY = Math.round(y);
 
     for (CircleToTouch obj : mCircles) {
       if ((touchX < obj.x && touchX > obj.x - touchingDistance) ||
           (touchX > obj.x && touchX < obj.x + touchingDistance)) {
         if ((touchY < obj.y && touchY > obj.y - touchingDistance) ||
             (touchY > obj.y && touchY < obj.y + touchingDistance)) {
-
           mCircles.remove(obj);
-          obj = null;
           break;
         }
       }
@@ -91,11 +88,10 @@ public class MiniGameTGatherer extends AMiniGame implements IMiniGameTouch, ITim
   }
 
   private void generateNewObjects() {
-
     if (framesToGo == 0) {
-      CircleToTouch circle = new CircleToTouch(mRg.generateInt(0 + (mCircleSize),
-          mWidth - (mCircleSize)), mRg.generateInt(0 + (mCircleSize), mHeight - (mCircleSize)), 9);
-      if (!colidesWithOtherCircles(circle)) {
+      CircleToTouch circle = new CircleToTouch(mRg.generateInt((mCircleSize),
+          mWidth - (mCircleSize)), mRg.generateInt((mCircleSize), mHeight - (mCircleSize)));
+      if (!collidesWithOtherCircles(circle)) {
         mCircles.add(circle);
         framesToGo = framesToGenerateCircle;
       } else {
@@ -106,7 +102,6 @@ public class MiniGameTGatherer extends AMiniGame implements IMiniGameTouch, ITim
   }
 
   public void drawMinigame(Canvas mCanvas) {
-
     for (CircleToTouch obj : mCircles) {
       mCanvas.drawCircle(obj.x, obj.y, mCircleSize, mPaintCircleColor.mPaint);
       mCanvas.drawText(String.valueOf(obj.duration), obj.x - textAlign, obj.y + textAlign,
@@ -129,7 +124,8 @@ public class MiniGameTGatherer extends AMiniGame implements IMiniGameTouch, ITim
 
   @Override
   public void onDifficultyIncreased() {
-    difficultyStep = (framesToGenerateCircle / 100) * DebugSettings.GLOBAL_DIFFICULTY_INCREASE_COEFFICIENT;
+    int difficultyStep =
+        (framesToGenerateCircle / 100) * DebugSettings.GLOBAL_DIFFICULTY_INCREASE_COEFFICIENT;
 
     if (difficultyStep < 1) {
       difficultyStep = 1;
@@ -143,7 +139,6 @@ public class MiniGameTGatherer extends AMiniGame implements IMiniGameTouch, ITim
   @Override
   public String getDescription(Context context) {
     return context.getString(R.string.minigames_TGatherer);
-    //        return null;
   }
 
   public String getName() {
@@ -162,7 +157,7 @@ public class MiniGameTGatherer extends AMiniGame implements IMiniGameTouch, ITim
     GameTimeManager.unregisterSecondsObserver(this);
   }
 
-  private boolean colidesWithOtherCircles(CircleToTouch circleNew) {
+  private boolean collidesWithOtherCircles(CircleToTouch circleNew) {
     for (CircleToTouch circleOld : mCircles) {
       if (circleNew.x > circleOld.x - 2 * mCircleSize &&
           circleNew.x < circleOld.x + 2 * mCircleSize) {
@@ -176,26 +171,24 @@ public class MiniGameTGatherer extends AMiniGame implements IMiniGameTouch, ITim
   }
 
   @Override
-  public void setForTutorial() {
+  public void setDifficultyForTutorial() {
     framesToGenerateCircle *= 1.3;
   }
 
   @Override
-  public void setForClassicGame() {
+  public void setDifficultyForClassicGame() {
     framesToGenerateCircle *= 1.2;
   }
 
   private class CircleToTouch implements Serializable {
-
-    private int x;
-    private int y;
+    private final int x;
+    private final int y;
     private int duration;
 
-    public CircleToTouch(int x, int y, int duration) {
-
+    public CircleToTouch(int x, int y) {
       this.x = x;
       this.y = y;
-      this.duration = duration;
+      this.duration = CIRCLE_DURATION;
     }
 
     public void decreaseDuration() {

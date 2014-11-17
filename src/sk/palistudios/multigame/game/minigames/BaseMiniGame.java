@@ -13,8 +13,7 @@ import sk.palistudios.multigame.game.GameActivity;
 import sk.palistudios.multigame.game.persistence.GameSaverLoader;
 import sk.palistudios.multigame.game.time.ITimeObserver;
 
-public abstract class AMiniGame implements Serializable, ITimeObserver {
-
+abstract public class BaseMiniGame implements Serializable, ITimeObserver {
   protected final int colorAlt2;
   public Type type;
   public Integer mPosition;
@@ -27,18 +26,13 @@ public abstract class AMiniGame implements Serializable, ITimeObserver {
   boolean isMinigameInitialized;
   private boolean active = false;
 
-
   public enum Type {
     Horizontal,
     Vertical,
     Touch
   }
 
-
-  /**
-   * @param game
-   */
-  public AMiniGame(String fileName, int position, GameActivity game) {
+  public BaseMiniGame(String fileName, int position, GameActivity game) {
     mFileName = fileName;
     mPosition = position;
     mGame = game;
@@ -47,37 +41,29 @@ public abstract class AMiniGame implements Serializable, ITimeObserver {
     this.colorAlt2 = mGame.getResources().getColor(R.color.gameAlt2);
   }
 
-  public abstract void updateMinigame();
-
-  public abstract String getName();
-
-  public abstract void onDifficultyIncreased();
-
   public abstract void initMinigame(Bitmap mBitmap, boolean wasGameSaved);
-
+  public abstract void updateMinigame();
   public abstract void drawMinigame(Canvas canvas);
 
+  public abstract String getName();
+  public abstract String getDescription(Context context);
+
+  public abstract void onDifficultyIncreased();
+  public abstract void setDifficultyForTutorial();
+  public abstract void setDifficultyForClassicGame();
+
+  public void onMinigameSaved(){}
+  public void onMinigameLoaded(){}
   public void saveMinigame() {
     GameSaverLoader.SaveMinigametoFile(mFileName, this, mGame);
     onMinigameSaved();
   }
 
-  public void onMinigameSaved() {
-  }
-
-  public void onMinigameLoaded() {
-  }
-
-  public void onTimeChanged() {
-  }
-
-  public abstract String getDescription(Context context);
+  public void onTimeChanged(){}
 
   public void onMinigameActivated() {
     active = true;
-
   }
-
   public void onMinigameDeactivated() {
     active = false;
   }
@@ -86,12 +72,7 @@ public abstract class AMiniGame implements Serializable, ITimeObserver {
     return active;
   }
 
-  public abstract void setForTutorial();
-
-  public abstract void setForClassicGame();
-
   public boolean isMinigameInitialized() {
     return isMinigameInitialized;
   }
-
 }

@@ -13,33 +13,35 @@ import sk.palistudios.multigame.R;
 import sk.palistudios.multigame.game.GameActivity;
 import sk.palistudios.multigame.game.persistence.PaintSerializable;
 import sk.palistudios.multigame.game.persistence.PointSerializable;
+import sk.palistudios.multigame.game.view.GameCanvasViewTouch;
 import sk.palistudios.multigame.mainMenu.DebugSettings;
 import sk.palistudios.multigame.tools.RandomGenerator;
 
 /**
  * @author Pali
  */
-public class MiniGameTInvader extends AMiniGame implements IMiniGameTouch {
-
-  final static RandomGenerator mRandomGenerator = RandomGenerator.getInstance();
-  PointSerializable mPointMiddleOfScreen = null;
-  PointSerializable mPointSmallerCircle = null;
-  PaintSerializable mPaintMiddleCircle = null;
-  PaintSerializable mPaintSmallCircle = null;
-  PaintSerializable mPaintLaser = null;
-  PaintSerializable mPaintEnemy = null;
-  private ArrayList<Enemy> enemies = new ArrayList<Enemy>();
+public class MiniGameTInvader extends BaseMiniGame implements
+    GameCanvasViewTouch.userInteractedTouchListener {
+  //Difficulty
   private int maximumDifficulty;
-  private int difficultyStep;
-//  private int minimumStepsToInvade;
-//  private int stepsToInvadestep;
-  //difficulty
   private int framesToCreateEnemy = (int) (160 / DebugSettings.GLOBAL_DIFFICULTY_COEFFICIENT);
   private int framesToGo = 60;
+  private int stepsToInvade;
+
+  //Graphics
+  private final RandomGenerator mRandomGenerator = RandomGenerator.getInstance();
+  private PaintSerializable mPaintMiddleCircle = null;
+  private PaintSerializable mPaintSmallCircle = null;
+  private PaintSerializable mPaintLaser = null;
+  private PaintSerializable mPaintEnemy = null;
+  private final PaintSerializable mPaintDkGray = new PaintSerializable(Color.DKGRAY);
+  private final PaintSerializable mPaintGray = new PaintSerializable(Color.GRAY);
+  private PointSerializable mPointMiddleOfScreen = null;
+  private PointSerializable mPointSmallerCircle = null;
+  private final ArrayList<Enemy> enemies = new ArrayList<Enemy>();
   private int mCenterCircleSize;
   private int mSmallCircleSize;
   private int rectLeft, rectRight, rectTop, rectDown;
-  private int stepsToInvade;
 
   public MiniGameTInvader(String fileName, Integer position, GameActivity game) {
     super(fileName, position, game);
@@ -47,7 +49,6 @@ public class MiniGameTInvader extends AMiniGame implements IMiniGameTouch {
   }
 
   public void initMinigame(Bitmap mBitmap, boolean wasGameSaved) {
-
     mHeight = mBitmap.getHeight();
     mWidth = mBitmap.getWidth();
 
@@ -58,11 +59,8 @@ public class MiniGameTInvader extends AMiniGame implements IMiniGameTouch {
     }
 
     mPaintMiddleCircle = new PaintSerializable(colorAlt, Paint.Style.STROKE);
-
     mPaintSmallCircle = new PaintSerializable(colorMain, Paint.Style.FILL);
-
     mPaintLaser = new PaintSerializable(colorMain, Paint.Style.STROKE);
-
     mPaintEnemy = new PaintSerializable(colorAlt, Paint.Style.FILL);
 
     setRectangleCoordinates(mPointMiddleOfScreen, mPointSmallerCircle);
@@ -74,17 +72,10 @@ public class MiniGameTInvader extends AMiniGame implements IMiniGameTouch {
     stepsToInvade = (int) (100 / DebugSettings.GLOBAL_DIFFICULTY_COEFFICIENT);
 
     maximumDifficulty = 1;
-    //        difficultyStep = 8;
-
-//    minimumStepsToInvade = 50;
-//    stepsToInvadestep = 5;
-
     isMinigameInitialized = true;
-
   }
 
   public void updateMinigame() {
-
     if (framesToGo == 0) {
       createEnemy();
       framesToGo = framesToCreateEnemy;
@@ -95,9 +86,7 @@ public class MiniGameTInvader extends AMiniGame implements IMiniGameTouch {
   }
 
   private void createEnemy() {
-
     //TODO jj mohlo by tu v kľude byť toss iba raz od jedna do štyri a switch
-
     //Complicated for not have enemy coming from kolma line
     if (mRandomGenerator.tossACoin(50)) {
       if (mRandomGenerator.tossACoin(50)) {
@@ -143,8 +132,7 @@ public class MiniGameTInvader extends AMiniGame implements IMiniGameTouch {
     }
   }
 
-  public void onUserInteracted(float x, float y) {
-
+  public void onUserInteractedTouch(float x, float y) {
     if (x > 0 && x < mWidth) {
       if (y > 0 && y < mHeight) {
         mPointSmallerCircle.mPoint.x = Math.round(x);
@@ -152,7 +140,6 @@ public class MiniGameTInvader extends AMiniGame implements IMiniGameTouch {
         setRectangleCoordinates(mPointMiddleOfScreen, mPointSmallerCircle);
       }
     }
-
   }
 
   public void drawMinigame(Canvas mCanvas) {
@@ -163,12 +150,9 @@ public class MiniGameTInvader extends AMiniGame implements IMiniGameTouch {
     mCanvas.drawRect(rectLeft, rectTop, rectRight, rectDown, mPaintLaser.mPaint);
 
     for (Enemy enemy : enemies) {
-      mCanvas.drawCircle(enemy.x, enemy.y, mSmallCircleSize, enemy.mPaintSer.mPaint);
+      mCanvas.drawCircle(enemy.x, enemy.y, mSmallCircleSize, enemy.mPaint.mPaint);
     }
-
   }
-
-
 
   private void moveObjects() {
     for (Enemy enemy : enemies) {
@@ -178,7 +162,7 @@ public class MiniGameTInvader extends AMiniGame implements IMiniGameTouch {
             enemies.remove(enemy);
             break;
           }
-          changeColor(enemy);
+          enemy.changeColor();
         }
         enemy.move();
       } else {
@@ -192,7 +176,6 @@ public class MiniGameTInvader extends AMiniGame implements IMiniGameTouch {
 
   private void setRectangleCoordinates(PointSerializable mPointMiddleOfScreen,
       PointSerializable mPointSmallerCircle) {
-
     if (mPointSmallerCircle.mPoint.x < mPointMiddleOfScreen.mPoint.x) {
       rectLeft = mPointSmallerCircle.mPoint.x;
       rectRight = mPointMiddleOfScreen.mPoint.x;
@@ -211,37 +194,17 @@ public class MiniGameTInvader extends AMiniGame implements IMiniGameTouch {
   }
 
   private boolean takesDamage(Enemy enemy) {
-    if (rectLeft <= enemy.x && rectRight >= enemy.x && rectTop <= enemy.y && rectDown >= enemy.y) {
-      return true;
-    }
-    return false;
-  }
-
-  PaintSerializable mPaintDkGray = new PaintSerializable(Color.DKGRAY);
-  PaintSerializable mPaintGray = new PaintSerializable(Color.GRAY);
-  private void changeColor(Enemy enemy) {
-    switch (enemy.damageToTake) {
-      case 2:
-        enemy.mPaintSer = mPaintDkGray;
-        break;
-      case 1:
-        enemy.mPaintSer = mPaintGray;
-        break;
-    }
+    return rectLeft <= enemy.x && rectRight >= enemy.x && rectTop <= enemy.y && rectDown >= enemy.y;
   }
 
   @Override
   public void onDifficultyIncreased() {
-    difficultyStep = (framesToCreateEnemy / 100) * DebugSettings.GLOBAL_DIFFICULTY_INCREASE_COEFFICIENT;
+    int difficultyStep =
+        (framesToCreateEnemy / 100) * DebugSettings.GLOBAL_DIFFICULTY_INCREASE_COEFFICIENT;
 
     if (difficultyStep < 1) {
       difficultyStep = 1;
     }
-
-    //        if (stepsToInvade > minimumStepsToInvade) {
-    //            stepsToInvade -= stepsToInvadestep;
-    //        }
-
     if (framesToCreateEnemy > maximumDifficulty) {
       framesToCreateEnemy -= difficultyStep;
     }
@@ -257,22 +220,21 @@ public class MiniGameTInvader extends AMiniGame implements IMiniGameTouch {
   }
 
   @Override
-  public void setForTutorial() {
+  public void setDifficultyForTutorial() {
     //do nothing
   }
 
   @Override
-  public void setForClassicGame() {
+  public void setDifficultyForClassicGame() {
   }
 
   private class Enemy implements Serializable {
-
     float x;
     float y;
-    private float stepX;
-    private float stepY;
+    private final float stepX;
+    private final float stepY;
     private int damageToTake = 3;
-    private PaintSerializable mPaintSer = null;
+    private PaintSerializable mPaint = null;
     private int stepsToGo;
 
     public Enemy(int initialX, int initialY) {
@@ -281,7 +243,7 @@ public class MiniGameTInvader extends AMiniGame implements IMiniGameTouch {
       stepsToGo = stepsToInvade;
       stepX = countStep(initialX, mPointMiddleOfScreen.mPoint.x);
       stepY = countStep(initialY, mPointMiddleOfScreen.mPoint.y);
-      mPaintSer = mPaintEnemy;
+      mPaint = mPaintEnemy;
     }
 
     public void move() {
@@ -289,11 +251,21 @@ public class MiniGameTInvader extends AMiniGame implements IMiniGameTouch {
 
       x += stepX;
       y += stepY;
-
     }
 
     private float countStep(int initial, int destination) {
       return -((initial - destination) / (float) stepsToGo);
+    }
+
+    private void changeColor() {
+      switch (damageToTake) {
+        case 2:
+          mPaint = mPaintDkGray;
+          break;
+        case 1:
+          mPaint = mPaintGray;
+          break;
+      }
     }
   }
 }

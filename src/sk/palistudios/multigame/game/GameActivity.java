@@ -32,8 +32,6 @@ import sk.palistudios.multigame.MgTracker;
 import sk.palistudios.multigame.R;
 import sk.palistudios.multigame.customization_center.achievements.AchievementsCenterListActivity;
 import sk.palistudios.multigame.customization_center.skins.SkinsCenterListActivity;
-import sk.palistudios.multigame.game.minigames.IMiniGameHorizontal;
-import sk.palistudios.multigame.game.minigames.IMiniGameVertical;
 import sk.palistudios.multigame.game.minigames.MinigamesManager;
 import sk.palistudios.multigame.game.persistence.GameSaverLoader;
 import sk.palistudios.multigame.game.persistence.GameSharedPref;
@@ -49,6 +47,12 @@ import sk.palistudios.multigame.tools.sound.SoundEffectsCenter;
  * @author Pali
  */
 public class GameActivity extends BaseActivity implements SensorEventListener {
+  public interface userInteractedVerticalListener {
+    public void onUserInteractedVertical(float verticalMovement);
+  }
+  public interface userInteractedHorizontalListener {
+    public void onUserInteractedHorizontal(float horizontalMovement);
+  }
 
   public static int dialogScore = -1;
   public static int dialogType = -1;
@@ -158,8 +162,8 @@ public class GameActivity extends BaseActivity implements SensorEventListener {
   private View gameScoreSeparator;
   private boolean mStartedMusicForTutorial = false;
   private int frames = 0;
-  private IMiniGameVertical minigametoSendEvents1;
-  private IMiniGameHorizontal minigametoSendEvents2;
+  private userInteractedVerticalListener minigametoSendEvents1;
+  private userInteractedHorizontalListener minigametoSendEvents2;
   private int mScore = 0;
   private int mLevel = 1;
   private boolean closedByButton = false;
@@ -196,8 +200,8 @@ public class GameActivity extends BaseActivity implements SensorEventListener {
     mMusicPlayer = new MusicPlayer(musicID, getApplicationContext());
 
     //I need to have direct pointer because of speed
-    minigametoSendEvents1 = (IMiniGameVertical) MinigamesManager.getMinigames()[0];
-    minigametoSendEvents2 = (IMiniGameHorizontal) MinigamesManager.getMinigames()[1];
+    minigametoSendEvents1 = (userInteractedVerticalListener) MinigamesManager.getMinigames()[0];
+    minigametoSendEvents2 = (userInteractedHorizontalListener) MinigamesManager.getMinigames()[1];
 
     resolveOrientation();
 
@@ -496,22 +500,21 @@ public class GameActivity extends BaseActivity implements SensorEventListener {
         }
 
         if (mOrientation == Configuration.ORIENTATION_LANDSCAPE) {
-
           if (MinigamesManager.isMiniGameActive(0)) {
-            minigametoSendEvents1.onUserInteracted(event.values[1] - DEFAULT_AXIS_X);
+            minigametoSendEvents1.onUserInteractedVertical(event.values[1] - DEFAULT_AXIS_X);
           }
 
           if (MinigamesManager.isMiniGameActive(1)) {
-            minigametoSendEvents2.onUserInteracted(-event.values[0] - DEFAULT_AXIS_Y);
+            minigametoSendEvents2.onUserInteractedHorizontal(-event.values[0] - DEFAULT_AXIS_Y);
           }
 
         } else {
           if (MinigamesManager.isMiniGameActive(0)) {
-            minigametoSendEvents1.onUserInteracted(event.values[0] - DEFAULT_AXIS_Y);
+            minigametoSendEvents1.onUserInteractedVertical(event.values[0] - DEFAULT_AXIS_Y);
           }
 
           if (MinigamesManager.isMiniGameActive(1)) {
-            minigametoSendEvents2.onUserInteracted(event.values[1] - DEFAULT_AXIS_X);
+            minigametoSendEvents2.onUserInteractedHorizontal(event.values[1] - DEFAULT_AXIS_X);
           }
 
         }

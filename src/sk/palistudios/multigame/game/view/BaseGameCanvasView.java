@@ -8,16 +8,13 @@ import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Rect;
 import android.util.AttributeSet;
-import android.view.SurfaceView;
 import android.view.View;
 
 import sk.palistudios.multigame.R;
-import sk.palistudios.multigame.game.minigames.AMiniGame;
-import sk.palistudios.multigame.game.minigames.MinigamesManager;
-import sk.palistudios.multigame.game.persistence.GameSharedPref;
+import sk.palistudios.multigame.game.minigames.BaseMiniGame;
 
 abstract public class BaseGameCanvasView extends View {
-  protected AMiniGame mMiniGame;
+  protected BaseMiniGame mMiniGame;
   private Bitmap mBitmap;
   private int mBackgroundColor;
 
@@ -39,7 +36,7 @@ abstract public class BaseGameCanvasView extends View {
     super(context, attrs, defStyle);
   }
 
-  public void attachMinigame(AMiniGame minigame, int position){
+  public void attachMinigame(BaseMiniGame minigame, int position){
     mMiniGame = minigame;
 //    int mPosition = position;
 

@@ -15,69 +15,62 @@ import sk.palistudios.multigame.tools.RandomGenerator;
 /**
  * @author Pali
  */
-public class MiniGameHBalance extends AMiniGame implements IMiniGameHorizontal {
+public class MiniGameHBalance extends BaseMiniGame implements
+    GameActivity.userInteractedHorizontalListener {
+  //DIFFICULTY
+  private int framestoRandomLeverMovement =
+      (int) (60 / DebugSettings.GLOBAL_DIFFICULTY_COEFFICIENT);
+  private float maxSpeed;
+  private float maxLean;
+  private float maxDifficulty;
 
-  int framestoRandomLeverMovement = (int) (60 / DebugSettings.GLOBAL_DIFFICULTY_COEFFICIENT);
-  float maxSpeed;
-  float maxLean;
-  float difficultyStep;
-  float maxDifficulty;
-  float speedDelta;
-  PointSerializable[] mBar;
-  int mBallSize;
-  PaintSerializable mPaintBallColor = null;
-  PaintSerializable mPaintBarColor = null;
-  int splitHeight;
-  float movementSensitivity;
-  int leanRatio;
-  int barLength;
-  int barLeftEdgeX;
-  int barRightEdgeX;
-  PointSerializable pointBarLeftEdge;
-  PointSerializable pointBarRightEdge;
-  float lean;
-  PointSerializable pBallCenter;
-  float momentalBallSpeed;
-  int overEdgeToLose;
-  float ballXAxis;
-  float ballYAxis;
-  int barWidth;
-  //Difficulty settings
-  private int DIF_FRAMES_TO_RANDOM = 160;
-  private int DIF_SHORTEST_BAR = 4;
+  //GRAPHICS
+  private int mBallSize;
+  private PaintSerializable mPaintBallColor = null;
+  private PaintSerializable mPaintBarColor = null;
+  private int splitHeight;
+  private float movementSensitivity;
+  private int leanRatio;
+  private PointSerializable pointBarLeftEdge;
+  private PointSerializable pointBarRightEdge;
+  private float lean;
+  private PointSerializable pBallCenter;
+  private float momentalBallSpeed;
+  private int overEdgeToLose;
+  private float ballXAxis;
+  private PointSerializable pVector;
+  private PointSerializable normalVector;
 
-  public MiniGameHBalance(String fileName, Integer position, GameActivity game) {
+  protected MiniGameHBalance(String fileName, Integer position, GameActivity game) {
     super(fileName, position, game);
     type = Type.Horizontal;
   }
 
   public void initMinigame(Bitmap mBitmap, boolean wasGameSaved) {
-
     mHeight = mBitmap.getHeight();
     mWidth = mBitmap.getWidth();
 
-    splitHeight = (int) (mHeight / 2);
+    splitHeight = (mHeight / 2);
     mBallSize = mWidth / 30;
     maxSpeed = (float) (mWidth) / 500;
-    //        maxSpeed /= 1.6;
     maxLean = mWidth / 20;
     leanRatio = 150;
     movementSensitivity = maxLean / 5;
-    setForClassicGame();
+    setDifficultyForClassicGame();
 
     if (!wasGameSaved) {
-      barLength = mWidth / 2;
-      barLeftEdgeX = (mWidth - barLength) / 2;
-      barRightEdgeX = (mWidth - barLength) / 2 + barLength;
+      int barLength = mWidth / 2;
+      int barLeftEdgeX = (mWidth - barLength) / 2;
+      int barRightEdgeX = (mWidth - barLength) / 2 + barLength;
       pointBarLeftEdge = new PointSerializable(barLeftEdgeX, splitHeight);
       pointBarRightEdge = new PointSerializable(barRightEdgeX, splitHeight);
       pBallCenter = new PointSerializable(mWidth / 2, splitHeight - mBallSize);
       ballXAxis = mWidth / 2;
 
       //difficulty
+      int DIF_SHORTEST_BAR = 4;
       maxDifficulty = DIF_SHORTEST_BAR;
       //because in onDifficultyIncreased you decrease from both sides
-      //            difficultyStep = (barLength - maxDifficulty) / 40;
     }
     mPaintBallColor = new PaintSerializable(colorMain, Paint.Style.FILL);
     mPaintBarColor = new PaintSerializable(colorAlt, Paint.Style.STROKE);
@@ -90,14 +83,15 @@ public class MiniGameHBalance extends AMiniGame implements IMiniGameHorizontal {
 
     pVector = new PointSerializable(pointBarRightEdge.mPoint.x - pointBarLeftEdge.mPoint.x,
         pointBarRightEdge.mPoint.y - pointBarLeftEdge.mPoint.y);
-    normalVector = new PointSerializable(pVector.mPoint.y,-pVector.mPoint.x);
+    normalVector = new PointSerializable(pVector.mPoint.y, -pVector.mPoint.x);
   }
 
   public void updateMinigame() {
 
     //for random movement of the bar
     if (framestoRandomLeverMovement == 0) {
-      onUserInteracted(RandomGenerator.getInstance().generateFloat(-0.5f, 0.5f));
+      onUserInteractedHorizontal(RandomGenerator.getInstance().generateFloat(-0.5f, 0.5f));
+      int DIF_FRAMES_TO_RANDOM = 160;
       framestoRandomLeverMovement = DIF_FRAMES_TO_RANDOM;
     }
     framestoRandomLeverMovement--;
@@ -106,9 +100,8 @@ public class MiniGameHBalance extends AMiniGame implements IMiniGameHorizontal {
     pointBarLeftEdge.mPoint.y = Math.round(splitHeight - lean);
     pointBarRightEdge.mPoint.y = Math.round(splitHeight + lean);
 
-    speedDelta = lean / leanRatio;
-    //        Log.i("Max speed: " + String.valueOf(maxSpeed));
-    //        Log.i("Speed delta: " + String.valueOf(speedDelta));
+    float speedDelta = lean / leanRatio;
+
     //BALL
     if (momentalBallSpeed + speedDelta >= -maxSpeed && momentalBallSpeed + speedDelta <= maxSpeed) {
       momentalBallSpeed += speedDelta;
@@ -120,10 +113,7 @@ public class MiniGameHBalance extends AMiniGame implements IMiniGameHorizontal {
       }
     }
 
-    //        Log.i("Momental ball speed: " + String.valueOf(momentalBallSpeed));
-
     ballXAxis += momentalBallSpeed;
-    //        Log.i("X axis: " + String.valueOf(ballXAxis));
     pBallCenter.mPoint.x = Math.round(ballXAxis);
     pBallCenter.mPoint.y = findOnLine(pointBarLeftEdge, pointBarRightEdge, pBallCenter.mPoint.x) -
         mBallSize;
@@ -135,51 +125,44 @@ public class MiniGameHBalance extends AMiniGame implements IMiniGameHorizontal {
     }
   }
 
-  PointSerializable pVector;
-  PointSerializable normalVector;
+
   int findOnLine(PointSerializable pBarLeftEdge, PointSerializable pBarRightEdge, int xAxisBall) {
-    pVector.mPoint.x =
-        pBarRightEdge.mPoint.x - pBarLeftEdge.mPoint.x;
+    pVector.mPoint.x = pBarRightEdge.mPoint.x - pBarLeftEdge.mPoint.x;
     pVector.mPoint.y = pBarRightEdge.mPoint.y - pBarLeftEdge.mPoint.y;
     normalVector.mPoint.x = pVector.mPoint.y;
     normalVector.mPoint.y = -pVector.mPoint.x;
 
     int c = -(normalVector.mPoint.x * pBarLeftEdge.mPoint.x +
         normalVector.mPoint.y * pBarLeftEdge.mPoint.y);
-
     return ((-c - (normalVector.mPoint.x * xAxisBall)) / normalVector.mPoint.y);
-
   }
 
   public void drawMinigame(Canvas canvas) {
-
     canvas.drawLine(pointBarLeftEdge.mPoint.x, pointBarLeftEdge.mPoint.y,
         pointBarRightEdge.mPoint.x, pointBarRightEdge.mPoint.y, mPaintBarColor.mPaint);
     canvas.drawCircle(pBallCenter.mPoint.x, pBallCenter.mPoint.y, mBallSize,
         mPaintBallColor.mPaint);
   }
 
-  public void onUserInteracted(float movement) {
+  public void onUserInteractedHorizontal(float horizontalMovement) {
     if (mWidth == 0 || mHeight == 0) {
       return;
     }
 
     //for the ball not to go uphills and be more sensitivite to user inputs
-    movement *= movementSensitivity;
+    horizontalMovement *= movementSensitivity;
 
-    if (movement > -maxLean && movement < maxLean) {
-      lean = movement;
+    if (horizontalMovement > -maxLean && horizontalMovement < maxLean) {
+      lean = horizontalMovement;
     }
   }
 
-
-
   @Override
   public void onDifficultyIncreased() {
-    barWidth = pointBarRightEdge.mPoint.x - pointBarLeftEdge.mPoint.x;
+    int barWidth = pointBarRightEdge.mPoint.x - pointBarLeftEdge.mPoint.x;
 
-    difficultyStep = ((pointBarRightEdge.mPoint.x - pointBarLeftEdge.mPoint.x) / 100) *
-        (DebugSettings.GLOBAL_DIFFICULTY_INCREASE_COEFFICIENT / 2);//because I trim from both sides
+    float difficultyStep = ((pointBarRightEdge.mPoint.x - pointBarLeftEdge.mPoint.x) / 100) *
+        (DebugSettings.GLOBAL_DIFFICULTY_INCREASE_COEFFICIENT / 2);
 
     if (difficultyStep < 1) {
       difficultyStep = 1;
@@ -200,7 +183,6 @@ public class MiniGameHBalance extends AMiniGame implements IMiniGameHorizontal {
 
   @Override
   public String getDescription(Context context) {
-    //        return context.getText(R.string.minigames_HBalance);
     return context.getString(R.string.minigames_HBalance);
   }
 
@@ -209,14 +191,14 @@ public class MiniGameHBalance extends AMiniGame implements IMiniGameHorizontal {
   }
 
   @Override
-  public void setForTutorial() {
+  public void setDifficultyForTutorial() {
     framestoRandomLeverMovement = (int) (framestoRandomLeverMovement * 1.4);
     //        maxLean /= 2;
     //        maxSpeed /= 1.6;
   }
 
   @Override
-  public void setForClassicGame() {
+  public void setDifficultyForClassicGame() {
     framestoRandomLeverMovement = (int) (framestoRandomLeverMovement * 1.3);
     //        maxLean /= 2;
     //        maxSpeed /= 1.6;
