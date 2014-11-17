@@ -18,12 +18,13 @@ import sk.palistudios.multigame.tools.RandomGenerator;
 /**
  * @author Pali
  */
-public class MiniGameTCatcher extends BaseMiniGame implements
-    GameCanvasViewTouch.userInteractedTouchListener {
+public class MiniGameTCatcher extends BaseMiniGame
+    implements GameCanvasViewTouch.userInteractedTouchListener {
   //DIFFICULTY
+  private int framesToGenerateNewBall = (int) (160 / DebugSettings.GLOBAL_DIFFICULTY_COEFFICIENT);
+  private float fallingStep;
   private int fallingHeight;
   private int maxDifficulty;
-  private int framesToGenerateNewBall = (int) (160 / DebugSettings.GLOBAL_DIFFICULTY_COEFFICIENT);
   private int framesToGo = 30;
 
   //GRAPHICS
@@ -33,7 +34,6 @@ public class MiniGameTCatcher extends BaseMiniGame implements
   private PaintSerializable mPaintFallingBalls = null;
   private PaintSerializable mPaintCatchingBallInactive = null;
   private PaintSerializable mPaintCatchingBallActive = null;
-  private float fallingStep;
   private int activeBall = 4;
   private int mBallSize;
   private int catchingBallsHeight;
@@ -51,8 +51,13 @@ public class MiniGameTCatcher extends BaseMiniGame implements
     columnWidth = (mWidth) / NUMBER_OF_COLUMNS;
     mBallSize = mWidth / 40;
     catchingBallsHeight = mHeight - (mHeight / 15) - mBallSize;
-    fallingStep = ((float) (mHeight - fallingHeight) / 180) * DebugSettings
-        .GLOBAL_DIFFICULTY_COEFFICIENT;
+    fallingStep =
+        ((float) (mHeight - fallingHeight) / 180) * DebugSettings.GLOBAL_DIFFICULTY_COEFFICIENT;
+
+    if (mGame.isTutorial()) {
+      framesToGenerateNewBall /= DebugSettings.GLOBAL_DIFFICULTY_TUTORIAL_COEFFICIENT;
+      fallingStep *= DebugSettings.GLOBAL_DIFFICULTY_TUTORIAL_COEFFICIENT;
+    }
 
     mPaintFallingBalls = new PaintSerializable(colorMain, Paint.Style.FILL);
     mPaintCatchingBallActive = new PaintSerializable(colorAlt, Paint.Style.FILL);
@@ -151,16 +156,6 @@ public class MiniGameTCatcher extends BaseMiniGame implements
   public String getName() {
     return "Catcher";
 
-  }
-
-  @Override
-  public void setDifficultyForTutorial() {
-    framesToGenerateNewBall = (int) (framesToGenerateNewBall * 1.4);
-  }
-
-  @Override
-  public void setDifficultyForClassicGame() {
-    framesToGenerateNewBall = (int) (framesToGenerateNewBall * 1.2);
   }
 
   private class FallingBall implements Serializable {

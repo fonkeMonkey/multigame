@@ -17,7 +17,7 @@ public class GameCanvasViewTouch extends BaseGameCanvasView {
   public interface userInteractedTouchListener {
     void onUserInteractedTouch(float x, float y);
   }
-  
+
   private GameActivity mGame;
 
   public GameCanvasViewTouch(Context context) {

@@ -20,14 +20,14 @@ import sk.palistudios.multigame.tools.RandomGenerator;
 public class MiniGameVBird extends BaseMiniGame implements
     GameActivity.userInteractedVerticalListener {
   //Difficulty
-  private int framesWithoutObstacle = (int) (160 / DebugSettings.GLOBAL_DIFFICULTY_COEFFICIENT);
+  private int framesToCreateObstacle = (int) (200 / DebugSettings.GLOBAL_DIFFICULTY_COEFFICIENT);
   private float movementStep;
   private int maxDifficulty;
   private float actualMovement = 0;
   private int framesToGo;
 
   //Graphics
-  private final RandomGenerator mRG = RandomGenerator.getInstance();
+  private transient RandomGenerator mRG;
   private PaintSerializable mPaintBird = null;
   private PaintSerializable mPaintObstacle = null;
   private float movementSensitivity;
@@ -55,6 +55,16 @@ public class MiniGameVBird extends BaseMiniGame implements
   public void initMinigame(Bitmap mBitmap, boolean wasGameSaved) {
     mHeight = mBitmap.getHeight();
     mWidth = mBitmap.getWidth();
+    mRG = RandomGenerator.getInstance();
+
+    movementThreshold = 0.25f;
+    movementSensitivity = (float) mHeight / 150;
+    movementStep = ((float) mWidth / 400) * DebugSettings.GLOBAL_DIFFICULTY_COEFFICIENT;
+
+    if (mGame.isTutorial()){
+      framesToCreateObstacle /= DebugSettings.GLOBAL_DIFFICULTY_TUTORIAL_COEFFICIENT;
+      movementStep *= DebugSettings.GLOBAL_DIFFICULTY_TUTORIAL_COEFFICIENT;
+    }
 
     mPaintObstacle = new PaintSerializable(colorAlt, Paint.Style.FILL);
 
@@ -75,9 +85,6 @@ public class MiniGameVBird extends BaseMiniGame implements
       maxDifficulty = (int) (mBirdSize * 1.5);
     }
 
-    movementThreshold = 0.25f;
-    movementSensitivity = (float) mHeight / 150;
-    movementStep = ((float) mWidth / 400) * DebugSettings.GLOBAL_DIFFICULTY_COEFFICIENT;
 
     isMinigameInitialized = true;
   }
@@ -109,7 +116,7 @@ public class MiniGameVBird extends BaseMiniGame implements
       Obstacle obj = new Obstacle(mWidth - 5 - mObstacleWidth, bottom - mObstacleHeight, mWidth - 5,
           bottom);
       mObstacles.add(obj);
-      framesToGo = framesWithoutObstacle;
+      framesToGo = framesToCreateObstacle;
     } else {
       framesToGo--;
     }
@@ -147,14 +154,14 @@ public class MiniGameVBird extends BaseMiniGame implements
   @Override
   public void onDifficultyIncreased() {
     int difficultyStep =
-        (framesWithoutObstacle / 100) * DebugSettings.GLOBAL_DIFFICULTY_INCREASE_COEFFICIENT;
+        (framesToCreateObstacle / 100) * DebugSettings.GLOBAL_DIFFICULTY_INCREASE_COEFFICIENT;
 
     if (difficultyStep < 1) {
       difficultyStep = 1;
     }
 
-    if (framesWithoutObstacle > maxDifficulty) {
-      framesWithoutObstacle -= difficultyStep;
+    if (framesToCreateObstacle > maxDifficulty) {
+      framesToCreateObstacle -= difficultyStep;
     }
   }
 
@@ -172,16 +179,6 @@ public class MiniGameVBird extends BaseMiniGame implements
       return true;
     }
     return birdBottom < bottom && birdBottom > top;
-  }
-
-  @Override
-  public void setDifficultyForTutorial() {
-    framesWithoutObstacle = (int) (framesWithoutObstacle * 1.2);
-  }
-
-  @Override
-  public void setDifficultyForClassicGame() {
-    framesWithoutObstacle = (int) (framesWithoutObstacle * 1.1);
   }
 
   private class Obstacle implements Serializable {

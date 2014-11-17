@@ -15,8 +15,8 @@ import sk.palistudios.multigame.tools.RandomGenerator;
 /**
  * @author Pali
  */
-public class MiniGameVBouncer extends BaseMiniGame implements
-    GameActivity.userInteractedVerticalListener {
+public class MiniGameVBouncer extends BaseMiniGame
+    implements GameActivity.userInteractedVerticalListener {
   //Difficulty
   private float velocityX;
   private float velocityY;
@@ -56,6 +56,9 @@ public class MiniGameVBouncer extends BaseMiniGame implements
 
       mPointBall = new PointSerializable(30, 30);
       velocityX = ((float) mWidth / 200) * DebugSettings.GLOBAL_DIFFICULTY_COEFFICIENT;
+      if (mGame.isTutorial()) {
+        velocityX *= DebugSettings.GLOBAL_DIFFICULTY_TUTORIAL_COEFFICIENT;
+      }
       velocityY = RandomGenerator.getInstance().generateFloat(1, 1.2f);
 
       //difficulty
@@ -139,8 +142,10 @@ public class MiniGameVBouncer extends BaseMiniGame implements
 
   @Override
   public void onDifficultyIncreased() {
-    difficultyStepX = (Math.abs(velocityX) / 100) * DebugSettings.GLOBAL_DIFFICULTY_INCREASE_COEFFICIENT;
-    difficultyStepY = (Math.abs(velocityY) / 100) * DebugSettings.GLOBAL_DIFFICULTY_INCREASE_COEFFICIENT;
+    difficultyStepX = (Math.abs(velocityX) / 100) *
+        DebugSettings.GLOBAL_DIFFICULTY_INCREASE_COEFFICIENT;
+    difficultyStepY = (Math.abs(velocityY) / 100) *
+        DebugSettings.GLOBAL_DIFFICULTY_INCREASE_COEFFICIENT;
 
     if (Math.abs(velocityX) < maxDifficulty - difficultyStepX) {
       if (velocityX > 0) {
@@ -163,14 +168,5 @@ public class MiniGameVBouncer extends BaseMiniGame implements
 
   public String getName() {
     return "Bouncer";
-  }
-
-  @Override
-  public void setDifficultyForTutorial() {
-    //do nothing
-  }
-
-  @Override
-  public void setDifficultyForClassicGame() {
   }
 }

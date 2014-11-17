@@ -12,7 +12,7 @@ import sk.palistudios.multigame.R;
 import sk.palistudios.multigame.game.GameActivity;
 import sk.palistudios.multigame.game.persistence.PaintSerializable;
 import sk.palistudios.multigame.game.time.GameTimeManager;
-import sk.palistudios.multigame.game.time.ITimeObserver;
+import sk.palistudios.multigame.game.time.ISecondsObserver;
 import sk.palistudios.multigame.game.view.GameCanvasViewTouch;
 import sk.palistudios.multigame.mainMenu.DebugSettings;
 import sk.palistudios.multigame.tools.RandomGenerator;
@@ -21,17 +21,16 @@ import sk.palistudios.multigame.tools.RandomGenerator;
  * @author Pali
  */
 public class MiniGameTGatherer extends BaseMiniGame implements
-    GameCanvasViewTouch.userInteractedTouchListener,
-    ITimeObserver {
+    GameCanvasViewTouch.userInteractedTouchListener, ISecondsObserver {
   //DIFFICULTY
+  private int framesToGenerateCircle = (int) (160 / DebugSettings.GLOBAL_DIFFICULTY_COEFFICIENT);
   public static final int CIRCLE_DURATION = 9;
   private int touchingDistance;
   private int maximumDifficulty;
-  private int framesToGenerateCircle = (int) (160 / DebugSettings.GLOBAL_DIFFICULTY_COEFFICIENT);
   private int framesToGo = 20;
 
   //GRAPHICS
-  private final RandomGenerator mRg = RandomGenerator.getInstance();
+  private transient RandomGenerator mRg;
   private boolean gameLost = false;
   private PaintSerializable mPaintCircleColor = null;
   private PaintSerializable mPaintNumberColor = null;
@@ -45,8 +44,13 @@ public class MiniGameTGatherer extends BaseMiniGame implements
   }
 
   public void initMinigame(Bitmap mBitmap, boolean wasGameSaved) {
+    if (mGame.isTutorial()) {
+      framesToGenerateCircle /= DebugSettings.GLOBAL_DIFFICULTY_TUTORIAL_COEFFICIENT;
+    }
+
     mHeight = mBitmap.getHeight();
     mWidth = mBitmap.getWidth();
+    mRg = RandomGenerator.getInstance();
 
     mPaintCircleColor = new PaintSerializable(colorAlt, Paint.Style.STROKE);
     mPaintNumberColor = new PaintSerializable(colorMain, Paint.Style.FILL);
@@ -110,13 +114,12 @@ public class MiniGameTGatherer extends BaseMiniGame implements
 
 
   @Override
-  public void onTimeChanged() {
+  public void onSecondPassed() {
     for (CircleToTouch circle : mCircles) {
       circle.decreaseDuration();
       if (circle.duration == 0) {
         gameLost = true;
       }
-
     }
   }
 
@@ -168,20 +171,11 @@ public class MiniGameTGatherer extends BaseMiniGame implements
     return false;
   }
 
-  @Override
-  public void setDifficultyForTutorial() {
-    framesToGenerateCircle *= 1.3;
-  }
-
-  @Override
-  public void setDifficultyForClassicGame() {
-    framesToGenerateCircle *= 1.2;
-  }
-
   private class CircleToTouch implements Serializable {
     private final int x;
     private final int y;
     private int duration;
+    private long nextUpdate = -1;
 
     public CircleToTouch(int x, int y) {
       this.x = x;
@@ -190,7 +184,12 @@ public class MiniGameTGatherer extends BaseMiniGame implements
     }
 
     public void decreaseDuration() {
-      duration--;
+      //TODO yy ugly hack, lebo sa mi v tutoriali to volalo 4krat za sekundu pokiaaľ som vyhral 3
+      // predošlé in a row
+      if (!mGame.isTutorial() || System.currentTimeMillis() > nextUpdate) {
+        duration--;
+        nextUpdate = System.currentTimeMillis() + 800;
+      }
     }
   }
 }

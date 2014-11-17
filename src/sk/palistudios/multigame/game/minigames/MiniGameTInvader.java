@@ -23,13 +23,13 @@ import sk.palistudios.multigame.tools.RandomGenerator;
 public class MiniGameTInvader extends BaseMiniGame implements
     GameCanvasViewTouch.userInteractedTouchListener {
   //Difficulty
-  private int maximumDifficulty;
-  private int framesToCreateEnemy = (int) (160 / DebugSettings.GLOBAL_DIFFICULTY_COEFFICIENT);
+  private int framesToCreateEnemy = (int) (120 / DebugSettings.GLOBAL_DIFFICULTY_COEFFICIENT);
+  private int stepsToInvade  = (int) (100 / DebugSettings.GLOBAL_DIFFICULTY_COEFFICIENT);;
+  private int maximumDifficulty = 1;
   private int framesToGo = 60;
-  private int stepsToInvade;
 
   //Graphics
-  private final RandomGenerator mRandomGenerator = RandomGenerator.getInstance();
+  private transient RandomGenerator mRandomGenerator;
   private PaintSerializable mPaintMiddleCircle = null;
   private PaintSerializable mPaintSmallCircle = null;
   private PaintSerializable mPaintLaser = null;
@@ -49,8 +49,13 @@ public class MiniGameTInvader extends BaseMiniGame implements
   }
 
   public void initMinigame(Bitmap mBitmap, boolean wasGameSaved) {
+    if (mGame.isTutorial()){
+      framesToCreateEnemy /= DebugSettings.GLOBAL_DIFFICULTY_TUTORIAL_COEFFICIENT;
+      stepsToInvade /= DebugSettings.GLOBAL_DIFFICULTY_TUTORIAL_COEFFICIENT;
+    }
     mHeight = mBitmap.getHeight();
     mWidth = mBitmap.getWidth();
+    mRandomGenerator = RandomGenerator.getInstance();
 
     mPointMiddleOfScreen = new PointSerializable(mWidth / 2, mHeight / 2);
     if (!wasGameSaved) {
@@ -68,10 +73,6 @@ public class MiniGameTInvader extends BaseMiniGame implements
     mCenterCircleSize = mWidth / 25;
     mSmallCircleSize = mWidth / 60;
 
-    //difficulty
-    stepsToInvade = (int) (100 / DebugSettings.GLOBAL_DIFFICULTY_COEFFICIENT);
-
-    maximumDifficulty = 1;
     isMinigameInitialized = true;
   }
 
@@ -215,15 +216,6 @@ public class MiniGameTInvader extends BaseMiniGame implements
 
   public String getName() {
     return "Invader";
-  }
-
-  @Override
-  public void setDifficultyForTutorial() {
-    //do nothing
-  }
-
-  @Override
-  public void setDifficultyForClassicGame() {
   }
 
   private class Enemy implements Serializable {

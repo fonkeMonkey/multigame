@@ -6,16 +6,16 @@ import java.util.ArrayList;
 
 import sk.palistudios.multigame.game.GameActivity;
 import sk.palistudios.multigame.game.minigames.BaseMiniGame;
-import sk.palistudios.multigame.game.minigames.MiniGameTCatcher;
+import sk.palistudios.multigame.game.minigames.MiniGameTGatherer;
 
 public class GameTimeManager {
 
-  private static ArrayList<ITimeObserver> registeredSecondsObservers = new ArrayList<ITimeObserver>();
+  private static ArrayList<ISecondsObserver> registeredSecondsObservers = new ArrayList<ISecondsObserver>();
   private static ArrayList<BaseMiniGame> registeredLevelObservers = new ArrayList<BaseMiniGame>();
 
   public static void onSecondPassed() {
-    for (ITimeObserver o : registeredSecondsObservers) {
-      o.onTimeChanged();
+    for (ISecondsObserver o : registeredSecondsObservers) {
+      o.onSecondPassed();
     }
   }
 
@@ -31,10 +31,10 @@ public class GameTimeManager {
     }
   }
 
-  public static void registerSecondsObserver(ITimeObserver to) {
+  public static void registerSecondsObserver(ISecondsObserver to) {
   /* TODO Škaredý ojeb I know  aby sa mi viac razy tam neregoval*/
-    for (ITimeObserver obs : registeredSecondsObservers) {
-      if (obs instanceof MiniGameTCatcher) {
+    for (ISecondsObserver obs : registeredSecondsObservers) {
+      if (to instanceof MiniGameTGatherer && obs instanceof MiniGameTGatherer) {
         return;
       }
     }
@@ -44,8 +44,12 @@ public class GameTimeManager {
     }
   }
 
-  public static void unregisterSecondsObserver(ITimeObserver to) {
+  public static void unregisterSecondsObserver(ISecondsObserver to) {
     registeredSecondsObservers.remove(to);
+  }
+
+  public static void clearTimeObservers(){
+    registeredSecondsObservers.clear();
   }
 
   public static void registerLevelChangedObserver(BaseMiniGame mg) {
