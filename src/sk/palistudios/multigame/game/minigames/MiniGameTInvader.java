@@ -96,6 +96,8 @@ public class MiniGameTInvader extends AMiniGame implements IMiniGameTouch {
 
   private void createEnemy() {
 
+    //TODO jj mohlo by tu v kľude byť toss iba raz od jedna do štyri a switch
+
     //Complicated for not have enemy coming from kolma line
     if (mRandomGenerator.tossACoin(50)) {
       if (mRandomGenerator.tossACoin(50)) {
