@@ -3,8 +3,6 @@ package sk.palistudios.multigame.game.view;
 import android.content.Context;
 import android.util.AttributeSet;
 
-import sk.palistudios.multigame.game.minigames.AMiniGame;
-
 /**
  * @author Pali
  */

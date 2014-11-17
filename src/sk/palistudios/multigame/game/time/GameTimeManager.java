@@ -5,13 +5,13 @@ package sk.palistudios.multigame.game.time;
 import java.util.ArrayList;
 
 import sk.palistudios.multigame.game.GameActivity;
-import sk.palistudios.multigame.game.minigames.AMiniGame;
+import sk.palistudios.multigame.game.minigames.BaseMiniGame;
 import sk.palistudios.multigame.game.minigames.MiniGameTCatcher;
 
 public class GameTimeManager {
 
   private static ArrayList<ITimeObserver> registeredSecondsObservers = new ArrayList<ITimeObserver>();
-  private static ArrayList<AMiniGame> registeredLevelObservers = new ArrayList<AMiniGame>();
+  private static ArrayList<BaseMiniGame> registeredLevelObservers = new ArrayList<BaseMiniGame>();
 
   public static void onSecondPassed() {
     for (ITimeObserver o : registeredSecondsObservers) {
@@ -20,7 +20,7 @@ public class GameTimeManager {
   }
 
   public static void onLevelIncreased(GameActivity game) {
-    for (AMiniGame mg : registeredLevelObservers) {
+    for (BaseMiniGame mg : registeredLevelObservers) {
       if (mg.isActive()) {
         mg.onDifficultyIncreased();
       }
@@ -48,7 +48,7 @@ public class GameTimeManager {
     registeredSecondsObservers.remove(to);
   }
 
-  public static void registerLevelChangedObserver(AMiniGame mg) {
+  public static void registerLevelChangedObserver(BaseMiniGame mg) {
     if (!registeredLevelObservers.contains(mg)) {
       registeredLevelObservers.add(mg);
     }

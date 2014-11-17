@@ -6,8 +6,7 @@ import android.view.MotionEvent;
 import android.view.View;
 
 import sk.palistudios.multigame.game.GameActivity;
-import sk.palistudios.multigame.game.minigames.AMiniGame;
-import sk.palistudios.multigame.game.minigames.IMiniGameTouch;
+import sk.palistudios.multigame.game.minigames.BaseMiniGame;
 import sk.palistudios.multigame.game.minigames.MinigamesManager;
 import sk.palistudios.multigame.game.persistence.GameSharedPref;
 
@@ -15,6 +14,10 @@ import sk.palistudios.multigame.game.persistence.GameSharedPref;
  * @author Pali
  */
 public class GameCanvasViewTouch extends BaseGameCanvasView {
+  public interface userInteractedTouchListener {
+    void onUserInteractedTouch(float x, float y);
+  }
+  
   private GameActivity mGame;
 
   public GameCanvasViewTouch(Context context) {
@@ -30,7 +33,7 @@ public class GameCanvasViewTouch extends BaseGameCanvasView {
   }
 
   @Override
-  public void attachMinigame(final AMiniGame minigame, final int position) {
+  public void attachMinigame(final BaseMiniGame minigame, final int position) {
     super.attachMinigame(minigame, position);
     mGame = mMiniGame.mGame;
 
@@ -39,7 +42,8 @@ public class GameCanvasViewTouch extends BaseGameCanvasView {
       public boolean onTouch(final View view, final MotionEvent event) {
 
         if (MinigamesManager.isMiniGameActive(position) && !mGame.isGameStopped()) {
-          ((IMiniGameTouch) mMiniGame).onUserInteracted(event.getX(), event.getY());
+          ((userInteractedTouchListener) mMiniGame).onUserInteractedTouch(event.getX(),
+              event.getY());
           return true;
         }
 

@@ -11,7 +11,7 @@ public class MinigamesManager {
   //TODO tuto by sa mali centralnejsie robit tie veci a nie volat zvonku activateMinigame po jednom
   //
 
-  private static AMiniGame[] mMinigames = new AMiniGame[4];
+  private static BaseMiniGame[] mMinigames = new BaseMiniGame[4];
   private static boolean[] mMinigamesActivityFlags = new boolean[4];
 
   public static void loadMinigames(GameActivity game) {
@@ -29,7 +29,7 @@ public class MinigamesManager {
     }
   }
 
-  private static AMiniGame loadMinigame(GameActivity game, String activeMinigameName,
+  private static BaseMiniGame loadMinigame(GameActivity game, String activeMinigameName,
       int position) {
     if (activeMinigameName.equals("VBird")) {
       return new MiniGameVBird("MG_V", position, game);
@@ -84,7 +84,7 @@ public class MinigamesManager {
   }
 
   public static void detachGameRefFromMinigames(){
-    for(AMiniGame mg : mMinigames){
+    for(BaseMiniGame mg : mMinigames){
       mg.mGame = null;
     }
   }
@@ -101,24 +101,24 @@ public class MinigamesManager {
     System.arraycopy(flags, 0, mMinigamesActivityFlags, 0, 4);
   }
 
-  public static AMiniGame[] getMinigames() {
+  public static BaseMiniGame[] getMinigames() {
     return mMinigames;
   }
 
   public static void setAllMinigamesDifficultyForTutorial() {
-    for (AMiniGame mg : mMinigames) {
-      mg.setForTutorial();
+    for (BaseMiniGame mg : mMinigames) {
+      mg.setDifficultyForTutorial();
     }
   }
 
   public static void setAllMinigamesDifficultyForClassicGame() {
-    for (AMiniGame mg : mMinigames) {
-      mg.setForClassicGame();
+    for (BaseMiniGame mg : mMinigames) {
+      mg.setDifficultyForClassicGame();
     }
   }
 
   public static boolean isAllMinigamesInitialized() {
-    for (AMiniGame mg : mMinigames) {
+    for (BaseMiniGame mg : mMinigames) {
       if (!mg.isMinigameInitialized()) {
         return false;
       }

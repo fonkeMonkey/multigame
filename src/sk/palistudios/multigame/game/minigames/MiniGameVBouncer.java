@@ -15,24 +15,26 @@ import sk.palistudios.multigame.tools.RandomGenerator;
 /**
  * @author Pali
  */
-public class MiniGameVBouncer extends AMiniGame implements IMiniGameVertical {
+public class MiniGameVBouncer extends BaseMiniGame implements
+    GameActivity.userInteractedVerticalListener {
+  //Difficulty
+  private float velocityX;
+  private float velocityY;
+  private float difficultyStepX;
+  private float difficultyStepY;
+  private float maxDifficulty;
 
-  PointSerializable mPointBall = null;
-  PaintSerializable mPaintBall = null;
-  PaintSerializable mPaintBar = null;
-  float movementSensitivity;
-  float velocityX;
-  float velocityY;
-  float difficultyStepX;
-  float difficultyStepY;
-  float maxDifficulty;
+  //Graphics
+  private PointSerializable mPointBall = null;
+  private PaintSerializable mPaintBall = null;
+  private PaintSerializable mPaintBar = null;
+  private float movementSensitivity;
   private int ballSize;
   private int barHeight;
   private int barTop;
   private int barLeft;
   private int barBottom;
   private int barRight;
-  private int barWidth;
   private float actualMovement = 0;
 
   public MiniGameVBouncer(String fileName, Integer position, GameActivity game) {
@@ -41,7 +43,6 @@ public class MiniGameVBouncer extends AMiniGame implements IMiniGameVertical {
   }
 
   public void initMinigame(Bitmap mBitmap, boolean wasGameSaved) {
-
     mHeight = mBitmap.getHeight();
     mWidth = mBitmap.getWidth();
 
@@ -59,19 +60,14 @@ public class MiniGameVBouncer extends AMiniGame implements IMiniGameVertical {
 
       //difficulty
       maxDifficulty = mWidth / 10;
-      //            difficultyStepX = (maxDifficulty - velocityX) / 20;
-      //            difficultyStepY = (difficultyStepX / velocityX) * velocityY;
-
     }
 
     barLeft = 0;
-    barWidth = mWidth / 40;
+    int barWidth = mWidth / 40;
     barRight = barLeft + barWidth;
 
     mPaintBall = new PaintSerializable(colorMain, Paint.Style.FILL);
-
     mPaintBar = new PaintSerializable(colorAlt, Paint.Style.FILL);
-
     isMinigameInitialized = true;
   }
 
@@ -81,7 +77,6 @@ public class MiniGameVBouncer extends AMiniGame implements IMiniGameVertical {
   }
 
   private void moveBall() {
-
     mPointBall.mPoint.x += Math.round(velocityX);
     mPointBall.mPoint.y += Math.round(velocityY);
 
@@ -93,57 +88,39 @@ public class MiniGameVBouncer extends AMiniGame implements IMiniGameVertical {
     //hitting the bar
     if (mPointBall.mPoint.x - ballSize <= barRight) {
       if (mPointBall.mPoint.y - ballSize < barBottom && mPointBall.mPoint.y + ballSize > barTop) {
-        //                if (framesFromLastVerticalHit != 0) {
         velocityX = Math.abs(velocityX);
-        //                    framesFromLastVerticalHit = 1;
-        //                }
       }
     }
 
     //up
     if (mPointBall.mPoint.y - ballSize <= 0) {
-      //            if (framesFromLastHorizontalHit != 0) {
       velocityY = Math.abs(velocityY);
-      //                framesFromLastHorizontalHit = 1;
-      //            }
     }
 
     //down
     if (mPointBall.mPoint.y + ballSize >= mHeight) {
-      //            if (framesFromLastHorizontalHit != 0) {
       velocityY = -Math.abs(velocityY);
-      //                framesFromLastHorizontalHit = 1;
-      //            }
     }
 
     //right
     if (mPointBall.mPoint.x + ballSize >= mWidth) {
-      //            if (framesFromLastVerticalHit != 0) {
       velocityX = -Math.abs(velocityX);
-      //                framesFromLastVerticalHit = 1;
-      //            }
     }
-    //        framesFromLastHorizontalHit--;
-    //        framesFromLastVerticalHit--;
   }
 
   private void moveBar() {
     if (barBottom + actualMovement <= mHeight && barTop + actualMovement >= 0) {
-
       barBottom += actualMovement;
       barTop += actualMovement;
     } else {
       if (barBottom + actualMovement >= mHeight) {
         barBottom = mHeight;
         barTop = mHeight - barHeight;
-
       }
       if (barTop + actualMovement <= 0) {
         barBottom = barHeight;
         barTop = 0;
-
       }
-
     }
   }
 
@@ -152,22 +129,13 @@ public class MiniGameVBouncer extends AMiniGame implements IMiniGameVertical {
     mCanvas.drawRect(barLeft, barTop, barRight, barBottom, mPaintBar.mPaint);
   }
 
-  public void onUserInteracted(float movement) {
-
+  public void onUserInteractedVertical(float verticalMovement) {
     if (mWidth == 0 || mHeight == 0) {
       return;
     }
-
-    movement *= movementSensitivity;
-
-    actualMovement = movement;
-
+    verticalMovement *= movementSensitivity;
+    actualMovement = verticalMovement;
   }
-  //in order to escape deadlock, when ball is bouncing back and forth on the edge
-  //    private int framesFromLastVerticalHit = -1;
-  //    private int framesFromLastHorizontalHit = -1;
-
-
 
   @Override
   public void onDifficultyIncreased() {
@@ -185,7 +153,6 @@ public class MiniGameVBouncer extends AMiniGame implements IMiniGameVertical {
       } else {
         velocityY -= difficultyStepY;
       }
-
     }
   }
 
@@ -199,11 +166,11 @@ public class MiniGameVBouncer extends AMiniGame implements IMiniGameVertical {
   }
 
   @Override
-  public void setForTutorial() {
+  public void setDifficultyForTutorial() {
     //do nothing
   }
 
   @Override
-  public void setForClassicGame() {
+  public void setDifficultyForClassicGame() {
   }
 }
