@@ -33,10 +33,6 @@ public class HofDatabaseCenter extends SQLiteOpenHelper {
       sHofDb = new HofDatabaseCenter(context);
     }
   }
-  //
-  //    public boolean isEmpty() {
-  //        if(database.g)
-  //    }
 
   public static HofDatabaseCenter getsHofDb() {
     return sHofDb;

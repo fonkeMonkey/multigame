@@ -68,7 +68,7 @@ public class GameActivity extends BaseActivity implements SensorEventListener {
   private Handler mTutorialHandler = new Handler();
   private Handler mGameLoopHandler = new Handler();
   private Handler mTimeHandler = new Handler();
-  private Runnable mRunnableGameLoop = new Runnable() {
+  private final Runnable mRunnableGameLoop = new Runnable() {
     int updates_per_refresh = 0;
     long nextUpdateGame = -1;
 
@@ -97,8 +97,8 @@ public class GameActivity extends BaseActivity implements SensorEventListener {
         mGameLoopHandler.post(this);
       }
     }
-  };;
-  private Runnable mRunnableTutorial = new Runnable() {
+  };
+  private final Runnable mRunnableTutorial = new Runnable() {
     public void run() {
       mMusicPlayer.pauseMusic();
 
@@ -110,10 +110,10 @@ public class GameActivity extends BaseActivity implements SensorEventListener {
       }
     }
   };
-  private Runnable mRunnableTime = new Runnable() {
+  private final Runnable mRunnableTime = new Runnable() {
     int milisecondsPassed = 0;
-    int updatesPerSeconds = 1;
-    int refreshInterval = 1000 / updatesPerSeconds;
+    final int updatesPerSeconds = 1;
+    final int refreshInterval = 1000 / updatesPerSeconds;
 
     public void run() {
       if (mTimeHandler != null) {
@@ -144,7 +144,6 @@ public class GameActivity extends BaseActivity implements SensorEventListener {
   private Toast mToast;
   private MusicPlayer mMusicPlayer;
   private SensorManager sm = null;
-  private Sensor sensor = null;
   private TextView mScoreView = null;
   private TextView mDifficultyView = null;
   private BaseGameCanvasView mCanvases[];
@@ -156,9 +155,6 @@ public class GameActivity extends BaseActivity implements SensorEventListener {
   private boolean isDefaultCoordinatesSet = false;
   private float DEFAULT_AXIS_X = 0f;
   private float DEFAULT_AXIS_Y = 0f;
-  private LinearLayout gameBar;
-  private View gameScoreSeparatorDown;
-  private View gameScoreSeparator;
   private boolean mStartedMusicForTutorial = false;
   private int frames = 0;
   private userInteractedVerticalListener minigametoSendEvents1;
@@ -168,69 +164,47 @@ public class GameActivity extends BaseActivity implements SensorEventListener {
   private boolean closedByButton = false;
   private long mTimeGameStarted;
   private boolean mLoseTracked = false;
-  private int mBarLabelColor;
-  private int mBarTextColor;
   private SpannableString mDifficultySpannable;
   private SpannableString mScoreSpannable;
 
   @Override
   public void onCreate(Bundle icicle) {
     super.onCreate(icicle);
-    overridePendingTransition(R.anim.fadein, R.anim.fadeout);
+    //TODO možno vytiahnuť do baseactivity
+    setContentView(R.layout.game_layout);
     setVolumeControlStream(AudioManager.STREAM_MUSIC);
-    HofDatabaseCenter.initDB(this);
 
     initVariables();
-    setContentView(R.layout.game_layout);
-
-    mTutorialMode = GameSharedPref.isTutorialModeActivated();
     initGraphics();
     initMinigames();
   }
 
   private void initVariables() {
-    wasGameSaved = GameSharedPref.isGameSaved();
-
-    MinigamesManager.loadMinigames(this);
+    mTutorialMode = GameSharedPref.isTutorialModeActivated();
+//    wasGameSaved = GameSharedPref.isGameSaved();
 
     int musicID = getResources().getIdentifier(GameSharedPref.getMusicLoopChosen(), "raw",
         getPackageName());
 
     mMusicPlayer = new MusicPlayer(musicID, getApplicationContext());
-
-    //I need to have direct pointer because of speed
-    minigametoSendEvents1 = (userInteractedVerticalListener) MinigamesManager.getMinigames()[0];
-    minigametoSendEvents2 = (userInteractedHorizontalListener) MinigamesManager.getMinigames()[1];
-
     resolveOrientation();
-
-  }
-
-  public void initMinigames() {
-    for (int i = 0; i < 4; i++) {
-      MinigamesManager.activateMinigame(this, i);
-      GameTimeManager.registerLevelChangedObserver(MinigamesManager.getMinigames()[i]);
-      mCanvases[i].attachMinigame(MinigamesManager.getMinigames()[i], i);
-    }
-
-    for (int i = 0; i < 4; i++) {
-      mCanvases[i].invalidate();
-    }
   }
 
   private void initGraphics() {
-    gameBar = (LinearLayout) findViewById(R.id.game_bar);
-    gameBar.setBackgroundColor(SkinsCenterListActivity.getCurrentSkin(getApplicationContext()).getBarBgColor());
+    LinearLayout gameBar = (LinearLayout) findViewById(R.id.game_bar);
+    gameBar.setBackgroundColor(SkinsCenterListActivity.getCurrentSkin(getApplicationContext())
+        .getBarBgColor());
     mScoreView = (TextView) findViewById(R.id.game_score);
     mScoreView.setTextColor(SkinsCenterListActivity.getCurrentSkin(getApplicationContext()).getBarLabelColor());
     mDifficultyView = (TextView) findViewById(R.id.game_level);
     mDifficultyView.setTextColor(SkinsCenterListActivity.getCurrentSkin(getApplicationContext()).getBarLabelColor());
-    gameScoreSeparator = (View) findViewById(R.id.game_score_separator);
-    gameScoreSeparator.setBackgroundColor(SkinsCenterListActivity.getCurrentSkin(getApplicationContext())
-        .getBarSeparatorColor());
-    gameScoreSeparatorDown = (View) findViewById(R.id.game_score_separator_down);
-    gameScoreSeparatorDown.setBackgroundColor(SkinsCenterListActivity.getCurrentSkin(getApplicationContext())
-        .getBarSeparatorColorDown());
+
+    View gameScoreSeparator = findViewById(R.id.game_score_separator);
+    gameScoreSeparator.setBackgroundColor(SkinsCenterListActivity.getCurrentSkin(
+        getApplicationContext()).getBarSeparatorColor());
+    View gameScoreSeparatorDown = findViewById(R.id.game_score_separator_down);
+    gameScoreSeparatorDown.setBackgroundColor(SkinsCenterListActivity.getCurrentSkin(
+        getApplicationContext()).getBarSeparatorColorDown());
 
     mCanvases = new BaseGameCanvasView[4];
     mCanvases[0] = (BaseGameCanvasView) findViewById(R.id.canvas1);
@@ -243,12 +217,14 @@ public class GameActivity extends BaseActivity implements SensorEventListener {
     mCanvases[2].setGameSaved(wasGameSaved);
     mCanvases[3].setGameSaved(wasGameSaved);
 
-    mBarLabelColor = SkinsCenterListActivity.getCurrentSkin(getApplicationContext()).getBarLabelColor();
-    mBarTextColor = SkinsCenterListActivity.getCurrentSkin(getApplicationContext()).getBarTextColor();
+    int barLabelColor = SkinsCenterListActivity.getCurrentSkin(getApplicationContext())
+        .getBarLabelColor();
+    int barTextColor = SkinsCenterListActivity.getCurrentSkin(getApplicationContext())
+        .getBarTextColor();
     mScoreSpannable = new SpannableString(getString(R.string.score));
     mDifficultySpannable = new SpannableString("Level: ");
-    mLeftSpanFgColor = new ForegroundColorSpan(mBarLabelColor);
-    mRightSpanFgColor = new ForegroundColorSpan(mBarTextColor);
+    mLeftSpanFgColor = new ForegroundColorSpan(barLabelColor);
+    mRightSpanFgColor = new ForegroundColorSpan(barTextColor);
 
     if (mTutorialMode) {
       redrawScoreView("Tutorial");
@@ -259,82 +235,127 @@ public class GameActivity extends BaseActivity implements SensorEventListener {
     }
   }
 
+  void initMinigames() {
+    //I need to have direct pointer because of speed
+    MinigamesManager.loadMinigames(this);
+    minigametoSendEvents1 = (userInteractedVerticalListener) MinigamesManager.getMinigames()[0];
+    minigametoSendEvents2 = (userInteractedHorizontalListener) MinigamesManager.getMinigames()[1];
+
+    for (int i = 0; i < 4; i++) {
+      MinigamesManager.activateMinigame(this, i);
+      GameTimeManager.registerLevelChangedObserver(MinigamesManager.getMinigames()[i]);
+      mCanvases[i].attachMinigame(MinigamesManager.getMinigames()[i], i);
+    }
+
+    for (int i = 0; i < 4; i++) {
+      mCanvases[i].invalidate();
+    }
+  }
+
+
+
+  private void resolveOrientation() {
+    WindowManager windowManager = (WindowManager) getSystemService(WINDOW_SERVICE);
+    Configuration config = getResources().getConfiguration();
+
+    if (Build.VERSION.SDK_INT < 8) {
+      mOrientation = config.orientation;
+    } else {
+      int rotation = windowManager.getDefaultDisplay().getRotation();
+
+      if (((rotation == Surface.ROTATION_0 || rotation == Surface.ROTATION_180) &&
+          config.orientation == Configuration.ORIENTATION_LANDSCAPE) ||
+          ((rotation == Surface.ROTATION_90 || rotation == Surface.ROTATION_270) &&
+              config.orientation == Configuration.ORIENTATION_PORTRAIT)) {
+        mOrientation = Configuration.ORIENTATION_LANDSCAPE;
+      } else {
+        mOrientation = Configuration.ORIENTATION_PORTRAIT;
+      }
+    }
+  }
+
   @Override
   public void onResume() {
+    overridePendingTransition(R.anim.fadein, R.anim.fadeout);
     getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
 
     super.onResume();
 
-    if (isDialogPresent == true) {
+    if (isDialogPresent) {
       //MainMenu will handle it
       isDialogPresent = false;
       finish();
+      return;
+    }
+    registerAccelerometerListener();
 
+    wasGameSaved = GameSharedPref.isGameSaved();
+    //TUTORIAL
+    if (mTutorialMode) {
+      if (sTutorialLastLevel == 0) {
+        if (SoundEffectsCenter.getCurrentVolume(getApplicationContext()) == 0 &&
+            !sRaisedVolumeForTutorialAlready) {
+          SoundEffectsCenter.raiseCurrentVolume(getApplicationContext());
+          sRaisedVolumeForTutorialAlready = true;
+        }
+        if (!sTutorialRestart) {
+          GameDialogs.showWelcomeTutorialWindow(this);
+        } else {
+          sTutorialRestart = false;
+          GameDialogs.showNextTutorialWindow(this, false);
+        }
+      } else {
+        if (!sTutorialRestart) {
+          GameDialogs.showNextTutorialWindow(this, true);
+        } else {
+          sTutorialRestart = false;
+          GameDialogs.showNextTutorialWindow(this, false);
+        }
+      }
+    //REAL DEAL
     } else {
-      //register listener for accelerometer
-      sm = (SensorManager) getSystemService(SENSOR_SERVICE);
-      sensor = sm.getDefaultSensor(
-          Sensor.TYPE_ACCELEROMETER);//SensorList(Sensor.TYPE_GYROSCOPE).get(0);
-      sm.registerListener(this, sensor, SensorManager.SENSOR_DELAY_NORMAL);
-
-      wasGameSaved = GameSharedPref.isGameSaved();
-
-      if (mTutorialMode) {
-        if (sTutorialLastLevel == 0) {
-          if (SoundEffectsCenter.getCurrentVolume(getApplicationContext()) == 0 && !sRaisedVolumeForTutorialAlready) {
+      if (wasGameSaved) {
+        mToast = Toaster.toastLong(getResources().getString(R.string.game_touch_resume),
+            getApplicationContext());
+        wasActivityPaused = false;
+        redrawScoreView(String.valueOf(mScore));
+        redrawDifficultyView(String.valueOf(mLevel));
+        GameSharedPref.setGameSaved(false);
+      } else {
+        boolean playingFirstTime = GameSharedPref.isPlayingGameFirstTime();
+        if (playingFirstTime) {
+          Toaster.toastLong(getResources().getString(R.string.game_touch_save),
+              getApplicationContext());
+          mToast = Toaster.toastLong(getResources().getString(R.string.game_touch_start),
+              getApplicationContext());
+          if (SoundEffectsCenter.getCurrentVolume(getApplicationContext()) == 0) {
             SoundEffectsCenter.raiseCurrentVolume(getApplicationContext());
           }
-          if (!sTutorialRestart) {
-            GameDialogs.showWelcomeTutorialWindow(this);
-          } else {
-            sTutorialRestart = false;
-            GameDialogs.showNextTutorialWindow(this, false);
-          }
+          GameSharedPref.setPlayingGameFirstTimeFalse();
         } else {
-          if (!sTutorialRestart) {
-            GameDialogs.showNextTutorialWindow(this, true);
-          } else {
-            sTutorialRestart = false;
-            GameDialogs.showNextTutorialWindow(this, false);
-          }
-        }
-
-      } else {
-        if (wasGameSaved) {
-          mToast = Toaster.toastLong(getResources().getString(R.string.game_touch_resume),
+          mToast = Toaster.toastLong(getResources().getString(R.string.game_touch_start),
               getApplicationContext());
-          wasActivityPaused = false;
-          redrawScoreView(String.valueOf(mScore));
-          redrawDifficultyView(String.valueOf(mLevel));
-          GameSharedPref.setGameSaved(false);
-        } else {
-          boolean playingFirstTime = GameSharedPref.isPlayingGameFirstTime();
-          if (playingFirstTime) {
-            Toaster.toastLong(getResources().getString(R.string.game_touch_save), getApplicationContext());
-            mToast = Toaster.toastLong( getResources().getString(R.string.game_touch_start),
-                getApplicationContext());
-            if (SoundEffectsCenter.getCurrentVolume(getApplicationContext()) == 0 &&
-                !sRaisedVolumeForTutorialAlready) {
-              SoundEffectsCenter.raiseCurrentVolume(getApplicationContext());
-            }
-            GameSharedPref.setPlayingGameFirstTimeFalse();
-          } else {
-            mToast = Toaster.toastLong( getResources().getString(R.string.game_touch_start),
-                getApplicationContext());
-            if (SoundEffectsCenter.getCurrentVolume(getApplicationContext()) == 0 && !sIncreaseVolumeShown) {
-              Toaster.toastLong(getString(R.string.increase_music_volume), getApplicationContext());
-              sIncreaseVolumeShown = true;
-            }
+          if (SoundEffectsCenter.getCurrentVolume(getApplicationContext()) == 0 &&
+              !sIncreaseVolumeShown) {
+            Toaster.toastLong(getString(R.string.increase_music_volume), getApplicationContext());
+            sIncreaseVolumeShown = true;
           }
         }
       }
     }
   }
 
+  private void registerAccelerometerListener() {
+    sm = (SensorManager) getSystemService(SENSOR_SERVICE);
+    Sensor sensor = sm.getDefaultSensor(Sensor.TYPE_ACCELEROMETER);
+    sm.registerListener(this, sensor, SensorManager.SENSOR_DELAY_NORMAL);
+  }
+
   public void startGame() {
     MgTracker.trackGameStarted();
     mTimeGameStarted = System.currentTimeMillis();
     sGamesPerSession++;
+
     if (mRunnableGameLoop != null) {
       if (GameSharedPref.isMusicOn()) {
         if (!wasActivityPaused) {
@@ -349,7 +370,6 @@ public class GameActivity extends BaseActivity implements SensorEventListener {
     if (mRunnableTime != null) {
       mRunnableTime.run();
     }
-
   }
 
   public void startGameTutorial() {
@@ -359,7 +379,6 @@ public class GameActivity extends BaseActivity implements SensorEventListener {
     for (int i = 0; i <= sTutorialLastLevel; i++) {
       MinigamesManager.activateMinigame(this, i);
     }
-
 
     if (mMusicPlayer != null && GameSharedPref.isMusicOn()) {
       if (!mStartedMusicForTutorial) {
@@ -377,7 +396,7 @@ public class GameActivity extends BaseActivity implements SensorEventListener {
         1000);
   }
 
-  public void startTutorialGameLoop() {
+  void startTutorialGameLoop() {
     if (mRunnableGameLoop != null) {
       mRunnableGameLoop.run();
     }
@@ -386,7 +405,7 @@ public class GameActivity extends BaseActivity implements SensorEventListener {
     }
   }
 
-  public void stopTutorialGameLoop() {
+  void stopTutorialGameLoop() {
     if (mGameLoopHandler != null) {
       mGameLoopHandler.removeCallbacks(null);
     }
@@ -397,20 +416,10 @@ public class GameActivity extends BaseActivity implements SensorEventListener {
 
   private void updateGame() {
     for (int i = 0; i < 4; i++) {
-      if (MinigamesManager.getmMinigamesActivityFlags()[i] == true) {
+      if (MinigamesManager.getmMinigamesActivityFlags()[i]) {
         MinigamesManager.getMinigames()[i].updateMinigame();
       }
     }
-
-  }
-
-  public void flashScreen() {
-    Animation animation = new AlphaAnimation(0, 1); // Change alpha
-    animation.setDuration(500); // duration - half a second
-    animation.setInterpolator(new LinearInterpolator());
-    animation.setRepeatCount(0);
-    LinearLayout gameLayout = (LinearLayout) findViewById(R.id.game_container);
-    gameLayout.startAnimation(animation);
   }
 
   private void refreshDisplayGame() {
@@ -419,15 +428,14 @@ public class GameActivity extends BaseActivity implements SensorEventListener {
     }
 
     for (int i = 0; i < 4; i++) {
-      if (MinigamesManager.getmMinigamesActivityFlags()[i] == true) {
+      if (MinigamesManager.getmMinigamesActivityFlags()[i]) {
         mCanvases[i].invalidate();
       }
     }
-
   }
 
-  ForegroundColorSpan mLeftSpanFgColor;
-  ForegroundColorSpan mRightSpanFgColor;
+  private ForegroundColorSpan mLeftSpanFgColor;
+  private ForegroundColorSpan mRightSpanFgColor;
   private void redrawScoreView(String score) {
     mScoreSpannable.setSpan(mLeftSpanFgColor, 0, mScoreSpannable.length(),
         Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
@@ -451,39 +459,32 @@ public class GameActivity extends BaseActivity implements SensorEventListener {
     mDifficultyView.append(secondPart);
   }
 
+  public void flashScreen() {
+    Animation animation = new AlphaAnimation(0, 1); // Change alpha
+    animation.setDuration(500); // duration - half a second
+    animation.setInterpolator(new LinearInterpolator());
+    animation.setRepeatCount(0);
+    LinearLayout gameLayout = (LinearLayout) findViewById(R.id.game_container);
+    gameLayout.startAnimation(animation);
+  }
+
   @Override
-  public void onPause() {
-    super.onPause();
-    overridePendingTransition(R.anim.fadein, R.anim.fadeout);
-    getWindow().clearFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
-    if (mTutorialMode) {
-      GameDialogs.sLostGame = true;
-      stopTutorial();
-    } else {
-      if (mGameLoopHandler != null && mRunnableGameLoop != null) {
-        mGameLoopHandler.removeCallbacks(mRunnableGameLoop);
-      }
-      if (mTimeHandler != null) {
-        mTimeHandler.removeCallbacks(mRunnableTime);
-      }
+  public boolean onTouchEvent(MotionEvent evt) {
+    if (!gameStopped) {
+      return true;
     }
-
-    if (!gameStopped && !closedByButton) {
-      if (!mTutorialMode) {
-        saveGame();
+    if (evt.getAction() == MotionEvent.ACTION_DOWN) {
+      if (mToast != null) {
+        mToast.cancel();
+        mToast = null;
       }
+      startGame();
     }
-
-    closedByButton = false;
-    sm.unregisterListener(this);
-    mMusicPlayer.pauseMusic();
-    wasActivityPaused = true;
+    return true;
   }
 
   public void onSensorChanged(SensorEvent event) {
-
     if (event.sensor.getType() == Sensor.TYPE_ACCELEROMETER) {
-
       if (!gameStopped) {
         if (!isDefaultCoordinatesSet && GameSharedPref.getAutoCalibrationEnabled()) {
                     /* Na stojaka je to 10, opacny stojak - 10, rovina nula,
@@ -515,10 +516,14 @@ public class GameActivity extends BaseActivity implements SensorEventListener {
           if (MinigamesManager.isMiniGameActive(1)) {
             minigametoSendEvents2.onUserInteractedHorizontal(event.values[1] - DEFAULT_AXIS_X);
           }
-
         }
       }
     }
+  }
+
+  @Override
+  public void onAccuracyChanged(Sensor sensor, int accuracy) {
+    //Nada
   }
 
   private float normaliseAxis(float value) {
@@ -530,28 +535,46 @@ public class GameActivity extends BaseActivity implements SensorEventListener {
     }
     return value;
   }
+  @Override
+  public void onPause() {
+    super.onPause();
+    overridePendingTransition(R.anim.fadein, R.anim.fadeout);
+    getWindow().clearFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
+
+    if (mTutorialMode) {
+      GameDialogs.sLostGame = true;
+      stopTutorial();
+    } else {
+      if (mGameLoopHandler != null && mRunnableGameLoop != null) {
+        mGameLoopHandler.removeCallbacks(mRunnableGameLoop);
+      }
+      if (mTimeHandler != null) {
+        mTimeHandler.removeCallbacks(mRunnableTime);
+      }
+    }
+
+    if (!gameStopped && !closedByButton) {
+      if (!mTutorialMode) {
+        saveGame();
+      }
+    }
+
+    closedByButton = false;
+    sm.unregisterListener(this);
+    if(mMusicPlayer != null){
+      mMusicPlayer.pauseMusic();
+    }
+    wasActivityPaused = true;
+  }
 
   @Override
-  public boolean onTouchEvent(MotionEvent evt) {
-    if (!gameStopped) {
-      return true;
+  public void onStop() {
+    super.onStop();
+    if (mMusicPlayer != null) {
+      mMusicPlayer.stopMusic();
     }
-    if (evt.getAction() == MotionEvent.ACTION_DOWN) {
-      if (mToast != null) {
-        mToast.cancel();
-        mToast = null;
-      }
-      startGame();
-    }
-    return true;
   }
 
-  public void onAccuracyChanged(Sensor arg0, int arg1) {
-  }
-
-  /**
-   * hoňím si
-   */
   public void onGameLost(int loser) {
     wasGameLost = true;
     GameSharedPref.setGameSaved(false);
@@ -562,25 +585,23 @@ public class GameActivity extends BaseActivity implements SensorEventListener {
       mLoseTracked = true;
     }
 
-    if (gameStopped != true) {
+    if (!gameStopped) {
       gameStopped = true;
 
       if (mTutorialMode) {
         stopTutorial();
-
         colorFragmentGray(loser);
-
         GameDialogs.showTutorialLoserDialogWindow(this);
         return;
       }
 
       stopCurrentGame();
       colorFragmentGray(loser);
-
       GameSharedPref.StatsGamesPlayedIncrease();
 
       AchievementsCenterListActivity.checkAchievements(mScore, mLevel, getApplicationContext());
-
+      HofDatabaseCenter.initDB(this);
+      //TODO dovnotura open close tej metody
       HofDatabaseCenter.getsHofDb().open();
       boolean isInHallOfFame = HofDatabaseCenter.getsHofDb().isInHallOfFame(mScore);
       HofDatabaseCenter.getsHofDb().close();
@@ -590,15 +611,11 @@ public class GameActivity extends BaseActivity implements SensorEventListener {
       } else {
         GameDialogs.showLoserDialogWindow(this);
       }
-
     }
-
   }
 
   private void colorFragmentGray(int loser) {
-
     switch (loser) {
-
       case 0:
         mCanvases[0].setBackgroundGray();
         break;
@@ -612,7 +629,6 @@ public class GameActivity extends BaseActivity implements SensorEventListener {
         mCanvases[3].setBackgroundGray();
         break;
     }
-
   }
 
   @Override
@@ -640,59 +656,62 @@ public class GameActivity extends BaseActivity implements SensorEventListener {
     closedByButton = true;
   }
 
-  @Override
-  public void onStop() {
-    super.onStop();
-    if (mMusicPlayer != null) {
-      mMusicPlayer.stopMusic();
+  private void saveGame() throws NotFoundException {
+    if (!wasGameLost) {
+      GameSaverLoader.saveGame(this);
+      Toaster.toastShort(getResources().getString(R.string.game_game_saved), getApplicationContext());
+      stopCurrentGame();
+      GameSharedPref.setGameSaved(true);
+      finish();
+    } else {
+      GameSharedPref.setGameSaved(false);
     }
   }
 
+  void stopCurrentGame() {
+//    sm.unregisterListener(this);
 
-
-  public void stopCurrentGame() {
-    sm.unregisterListener(this);
-
-    if (mGameLoopHandler != null && mRunnableGameLoop != null) {
-      mGameLoopHandler.removeCallbacks(mRunnableGameLoop);
-      mRunnableGameLoop = null;
-      mGameLoopHandler = null;
-    }
-    if (mTimeHandler != null) {
-      mTimeHandler.removeCallbacks(mRunnableTime);
-    }
-    if (mMusicPlayer != null) {
-      mMusicPlayer.pauseMusic();
-    }
+//    if (mGameLoopHandler != null && mRunnableGameLoop != null) {
+//      mGameLoopHandler.removeCallbacks(mRunnableGameLoop);
+//      mRunnableGameLoop = null;
+//      mGameLoopHandler = null;
+//    }
+//    if (mTimeHandler != null) {
+//      mTimeHandler.removeCallbacks(mRunnableTime);
+//    }
+//    if (mMusicPlayer != null) {
+//      mMusicPlayer.stopMusic();
+//    }
+    destroyEverythingSafely();
   }
 
   public void stopTutorial() {
-    sm.unregisterListener(this);
-    mMusicPlayer.stopMusic();
 
-    if (mGameLoopHandler != null) {
-      mGameLoopHandler.removeCallbacks(mRunnableGameLoop);
-      mGameLoopHandler = null;
-    }
+//    mMusicPlayer.stopMusic();
 
-    if (mRunnableGameLoop != null) {
-      mRunnableGameLoop = null;
-    }
-
-    if (mTimeHandler != null) {
-      mTimeHandler.removeCallbacks(mRunnableTime);
-      mTimeHandler = null;
-    }
-
-    if (mTutorialHandler != null) {
-      mTutorialHandler.removeCallbacks(mRunnableTutorial);
-      mTutorialHandler = null;
-    }
-
-    if (mRunnableTutorial != null) {
-      mRunnableTutorial = null;
-    }
-
+//    if (mGameLoopHandler != null) {
+//      mGameLoopHandler.removeCallbacks(mRunnableGameLoop);
+//      mGameLoopHandler = null;
+//    }
+//
+//    if (mRunnableGameLoop != null) {
+//      mRunnableGameLoop = null;
+//    }
+//
+//    if (mTimeHandler != null) {
+//      mTimeHandler.removeCallbacks(mRunnableTime);
+//      mTimeHandler = null;
+//    }
+//
+//    if (mTutorialHandler != null) {
+//      mTutorialHandler.removeCallbacks(mRunnableTutorial);
+//      mTutorialHandler = null;
+//    }
+//
+//    if (mRunnableTutorial != null) {
+//      mRunnableTutorial = null;
+//    }
+    destroyEverythingSafely();
   }
 
   public BaseGameCanvasView[] getCanvases() {
@@ -721,44 +740,6 @@ public class GameActivity extends BaseActivity implements SensorEventListener {
     return gameStopped;
   }
 
-  private void saveGame() throws NotFoundException {
-    if (!wasGameLost) {
-      GameSaverLoader.saveGame(this);
-      Toaster.toastShort(getResources().getString(R.string.game_game_saved), getApplicationContext());
-      stopCurrentGame();
-      GameSharedPref.setGameSaved(true);
-      finish();
-    } else {
-      GameSharedPref.setGameSaved(false);
-    }
-  }
-
-  @Override
-  protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-    super.onActivityResult(requestCode, resultCode, data);
-    Session.getActiveSession().onActivityResult(this, requestCode, resultCode, data);
-  }
-
-  private void resolveOrientation() {
-    WindowManager windowManager = (WindowManager) getSystemService(WINDOW_SERVICE);
-    Configuration config = getResources().getConfiguration();
-
-    if (Build.VERSION.SDK_INT < 8) {
-      mOrientation = config.orientation;
-    } else {
-      int rotation = windowManager.getDefaultDisplay().getRotation();
-
-      if (((rotation == Surface.ROTATION_0 || rotation == Surface.ROTATION_180) &&
-          config.orientation == Configuration.ORIENTATION_LANDSCAPE) ||
-          ((rotation == Surface.ROTATION_90 || rotation == Surface.ROTATION_270) &&
-              config.orientation == Configuration.ORIENTATION_PORTRAIT)) {
-        mOrientation = Configuration.ORIENTATION_LANDSCAPE;
-      } else {
-        mOrientation = Configuration.ORIENTATION_PORTRAIT;
-      }
-    }
-  }
-
   public boolean isTutorial() {
     return mTutorialMode;
   }
@@ -767,6 +748,12 @@ public class GameActivity extends BaseActivity implements SensorEventListener {
     if (mMusicPlayer != null) {
       mMusicPlayer.stopMusic();
     }
+  }
+
+  @Override
+  protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+    super.onActivityResult(requestCode, resultCode, data);
+    Session.getActiveSession().onActivityResult(this, requestCode, resultCode, data);
   }
 
   @Override
@@ -782,10 +769,12 @@ public class GameActivity extends BaseActivity implements SensorEventListener {
     mCanvases = null;
     MinigamesManager.detachGameRefFromMinigames();
 
-    destroyThreadsSafely();
+    destroyEverythingSafely();
   }
 
-  private void destroyThreadsSafely() {
+  private void destroyEverythingSafely() {
+    sm.unregisterListener(this);
+
     if(mGameLoopHandler != null && mRunnableGameLoop != null){
       mGameLoopHandler.removeCallbacks(mRunnableGameLoop);
     }
@@ -802,5 +791,10 @@ public class GameActivity extends BaseActivity implements SensorEventListener {
     mGameLoopHandler=null;
     mTimeHandler=null;
     GameTimeManager.clearTimeObservers();
+
+    if (mMusicPlayer != null) {
+      mMusicPlayer.stopMusic();
+      mMusicPlayer = null;
+    }
   }
 }
