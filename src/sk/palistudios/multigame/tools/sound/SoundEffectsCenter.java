@@ -18,7 +18,6 @@ public class SoundEffectsCenter {
 
   /* Field to control the volume of the app sounds. */
   private static final float VOLUME_COEFICIENT = 0.3f;
-  public static MediaPlayer mp_forward_old;
   public static MediaPlayer mp_forward;
   public static MediaPlayer mp_tab;
   public static AudioManager mAudioManager;
@@ -30,10 +29,7 @@ public class SoundEffectsCenter {
     //TODO virdzek  * mDesiredMusicVolume nejak to ešte napasovať možno (alebo to robí
     // automaticky ten stream?
 
-    mp_forward_old = MediaPlayer.create(context, R.raw.button_forward);
-    mp_forward_old.setAudioStreamType(AudioManager.STREAM_MUSIC);
-    mp_forward_old.setVolume(soundVolume, soundVolume);
-    mp_forward = MediaPlayer.create(context, R.raw.button_back);
+    mp_forward = MediaPlayer.create(context, R.raw.button_forward);
     mp_forward.setAudioStreamType(AudioManager.STREAM_MUSIC);
     mp_forward.setVolume(soundVolume, soundVolume);
     mp_tab = MediaPlayer.create(context, R.raw.button_tab);
@@ -80,10 +76,6 @@ public class SoundEffectsCenter {
   }
 
   public static void releaseMediaPlayer() {
-    if (mp_forward_old != null) {
-      mp_forward_old.release();
-      mp_forward_old = null;
-    }
     if (mp_forward != null) {
       mp_forward.release();
       mp_forward = null;
