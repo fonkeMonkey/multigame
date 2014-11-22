@@ -3,20 +3,18 @@ package sk.palistudios.multigame.mainMenu;
 // @author Pali
 
 import android.content.Intent;
-import android.graphics.PorterDuff.Mode;
 import android.media.AudioManager;
 import android.os.Bundle;
 import android.view.KeyEvent;
 import android.view.MotionEvent;
 import android.view.View;
-import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.TextView;
 
 import com.facebook.Session;
 import sk.palistudios.multigame.BaseActivity;
 import sk.palistudios.multigame.MgTracker;
 import sk.palistudios.multigame.R;
-import sk.palistudios.multigame.customization_center.skins.SkinsCenterListActivity;
 import sk.palistudios.multigame.game.GameActivity;
 import sk.palistudios.multigame.game.GameDialogs;
 import sk.palistudios.multigame.game.persistence.GameSharedPref;
@@ -30,11 +28,8 @@ public class MainMenuActivity extends BaseActivity {
   private static int sShowHighScoreScore;
   private static MainMenuActivity sMainMenuInstance;
   private static boolean sFacebookShared = false;
-  private Button buttonStart;
-  private Button buttonCc;
-  private Button buttonHof;
-  private Button buttonPreferences;
-  private ImageView logo;
+  private TextView mTVStart;
+  private ImageView mlogoView;
   private int mClicksOnLogo = 0;
 
   public static MainMenuActivity getInstance() {
@@ -45,10 +40,6 @@ public class MainMenuActivity extends BaseActivity {
     sShowHighScoreStatus = true;
     sShowHighScoreScore = score;
   }
-
-//  public static void setMainMenuFacebook(MainMenuActivity mainMenu) {
-//    mainMenuFacebook = mainMenu;
-//  }
 
   public static void setWallPostAchievementDone() {
     sFacebookShared = true;
@@ -66,14 +57,10 @@ public class MainMenuActivity extends BaseActivity {
     GameSharedPref.initSharedPref(this);
     ApplicationInitializer.initApplication(this);
 
-    logo = (ImageView) findViewById(R.id.logo);
+    mlogoView = (ImageView) findViewById(R.id.logo);
+    mTVStart = (TextView) findViewById(R.id.menu_start);
 
-    buttonStart = (Button) findViewById(R.id.mainMenu_button_start);
-    buttonCc = (Button) findViewById(R.id.mainMenu_button_MGC);
-    buttonHof = (Button) findViewById(R.id.mainMenu_button_HOF);
-    buttonPreferences = (Button) findViewById(R.id.mainMenu_button_preferences);
-
-    findViewById(R.id.logo).setOnTouchListener(new View.OnTouchListener() {
+    mlogoView.setOnTouchListener(new View.OnTouchListener() {
       @Override
       public boolean onTouch(View v, MotionEvent event) {
         mClicksOnLogo++;
@@ -90,11 +77,6 @@ public class MainMenuActivity extends BaseActivity {
   }
 
   @Override
-  protected void onRestart() {
-    super.onRestart();
-  }
-
-  @Override
   protected void onResume() {
     super.onResume();
 
@@ -106,9 +88,6 @@ public class MainMenuActivity extends BaseActivity {
     }
 
     setStartGameButtonName();
-
-    logo.setImageResource(SkinsCenterListActivity.getCurrentSkin(this).getLogoID());
-    setMainMenuColors();
 
     if (sShowHighScoreStatus) {
       GameDialogs.showWinnerDialogAfterShareWindow(this, sShowHighScoreScore);
@@ -131,46 +110,6 @@ public class MainMenuActivity extends BaseActivity {
     sFacebookShared = false;
 
     GameActivity.sTutorialRestart = false;
-  }
-
-  private void setMainMenuColors() {
-    /* Zasa hacky lebo sa mi to nechce redezignovat. */
-    if (GameSharedPref.isSkinChosen("kuba")) {
-      buttonStart.getBackground().setColorFilter(getResources().getColor(R.color.kubaMenu1),
-          Mode.SRC);
-      buttonCc.getBackground().setColorFilter(getResources().getColor(R.color.kubaMenu2), Mode.SRC);
-      buttonPreferences.getBackground().setColorFilter(getResources().getColor(R.color.kubaMenu3),
-          Mode.SRC);
-      buttonHof.getBackground().setColorFilter(getResources().getColor(R.color.kubaMenu4),
-          Mode.SRC);
-    } else if (GameSharedPref.isSkinChosen("summer")) {
-      buttonStart.getBackground().setColorFilter(getResources().getColor(R.color.summerMenu1),
-          Mode.SRC);
-      buttonCc.getBackground().setColorFilter(getResources().getColor(R.color.summerMenu2),
-          Mode.SRC);
-      buttonPreferences.getBackground().setColorFilter(getResources().getColor(R.color.summerMenu3),
-          Mode.SRC);
-      buttonHof.getBackground().setColorFilter(getResources().getColor(R.color.summerMenu4),
-          Mode.SRC);
-    } else if (GameSharedPref.isSkinChosen("girl_power")) {
-      buttonStart.getBackground().setColorFilter(getResources().getColor(R.color.pinkyMenu1),
-          Mode.SRC);
-      buttonCc.getBackground().setColorFilter(getResources().getColor(R.color.pinkyMenu2),
-          Mode.SRC);
-      buttonPreferences.getBackground().setColorFilter(getResources().getColor(R.color.pinkyMenu3),
-          Mode.SRC);
-      buttonHof.getBackground().setColorFilter(getResources().getColor(R.color.pinkyMenu4),
-          Mode.SRC);
-    } else if (GameSharedPref.isSkinChosen("blue_sky")) {
-      buttonStart.getBackground().setColorFilter(getResources().getColor(R.color.blueSkyMenu1),
-          Mode.SRC);
-      buttonCc.getBackground().setColorFilter(getResources().getColor(R.color.blueSkyMenu2),
-          Mode.SRC);
-      buttonPreferences.getBackground().setColorFilter(getResources().getColor(
-          R.color.blueSkyMenu3), Mode.SRC);
-      buttonHof.getBackground().setColorFilter(getResources().getColor(R.color.blueSkyMenu4),
-          Mode.SRC);
-    }
   }
 
   @Override
@@ -213,21 +152,21 @@ public class MainMenuActivity extends BaseActivity {
 
   private void setStartGameButtonName() {
     if (GameSharedPref.isGameSaved()) {
-      buttonStart.setText(getString(R.string.button_resume));
+      mTVStart.setText(getString(R.string.button_resume));
       return;
     }
 
     if (GameSharedPref.isTutorialModeActivated()) {
       if (GameActivity.sTutorialLastLevel == 0) {
-        buttonStart.setText(getString(R.string.button_tutorial));
+        mTVStart.setText(getString(R.string.button_tutorial));
 
       } else {
-        buttonStart.setText(getString(R.string.button_resume_tutorial));
+        mTVStart.setText(getString(R.string.button_resume_tutorial));
       }
       return;
     }
 
-    buttonStart.setText(getString(R.string.button_game));
+    mTVStart.setText(getString(R.string.button_game));
 
   }
 
