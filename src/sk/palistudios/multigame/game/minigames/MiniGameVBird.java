@@ -251,7 +251,9 @@ public class MiniGameVBird extends AMiniGame implements IMiniGameVertical {
       if ((birdRight >= left - 1 && birdRight <= right - 1) ||
           (birdLeft >= left - 1 && birdLeft <= right - 1)) {
         if (isCollision(top, bottom, mBirdTop, mBirdBottom)) {
-          mGame.onGameLost(mPosition);
+          if(mGame != null){
+            mGame.onGameLost(mPosition);
+          }
         }
       }
       left -= movementStep;

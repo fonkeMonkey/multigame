@@ -129,7 +129,9 @@ public class MiniGameHBalance extends AMiniGame implements IMiniGameHorizontal {
         mBallSize;
     if (pBallCenter.mPoint.x + overEdgeToLose < pointBarLeftEdge.mPoint.x ||
         pBallCenter.mPoint.x - overEdgeToLose > pointBarRightEdge.mPoint.x) {
-      mGame.onGameLost(mPosition);
+      if(mGame != null){
+        mGame.onGameLost(mPosition);
+      }
     }
   }
 

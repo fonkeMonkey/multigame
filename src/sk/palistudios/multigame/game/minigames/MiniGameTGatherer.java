@@ -63,7 +63,9 @@ public class MiniGameTGatherer extends AMiniGame implements IMiniGameTouch, ITim
 
   public void updateMinigame() {
     if (gameLost) {
-      mGame.onGameLost(mPosition);
+      if(mGame != null){
+        mGame.onGameLost(mPosition);
+      }
     }
     generateNewObjects();
   }

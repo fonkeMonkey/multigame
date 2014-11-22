@@ -192,7 +192,9 @@ public class MiniGameTCatcher extends AMiniGame implements IMiniGameTouch {
     private boolean isCatched() {
 
       if (yAxis + mBallSize + 1 > mHeight) {
-        mGame.onGameLost(mPosition);
+        if(mGame != null){
+          mGame.onGameLost(mPosition);
+        }
       } else {
         //collision scenario
         if (mColumn == activeBall) {

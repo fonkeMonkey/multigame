@@ -182,7 +182,9 @@ public class MiniGameTInvader extends AMiniGame implements IMiniGameTouch {
         }
         enemy.move();
       } else {
-        mGame.onGameLost(mPosition);
+        if(mGame != null){
+          mGame.onGameLost(mPosition);
+        }
         break;
       }
     }

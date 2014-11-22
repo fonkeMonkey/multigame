@@ -86,7 +86,9 @@ public class MiniGameVBouncer extends AMiniGame implements IMiniGameVertical {
     mPointBall.mPoint.y += Math.round(velocityY);
 
     if (mPointBall.mPoint.x - ballSize < 0) {
-      mGame.onGameLost(mPosition);
+      if(mGame != null){
+        mGame.onGameLost(mPosition);
+      }
       return;
     }
 
