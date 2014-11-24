@@ -3,12 +3,14 @@ package sk.palistudios.multigame.mainMenu;
 // @author Pali
 
 import android.content.Intent;
+import android.content.res.Configuration;
 import android.media.AudioManager;
 import android.os.Bundle;
 import android.view.KeyEvent;
 import android.view.MotionEvent;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.facebook.Session;
@@ -18,6 +20,8 @@ import sk.palistudios.multigame.R;
 import sk.palistudios.multigame.game.GameActivity;
 import sk.palistudios.multigame.game.GameDialogs;
 import sk.palistudios.multigame.game.persistence.GameSharedPref;
+import sk.palistudios.multigame.tools.DisplayHelper;
+import sk.palistudios.multigame.tools.SkinManager;
 import sk.palistudios.multigame.tools.Toaster;
 import sk.palistudios.multigame.tools.sound.SoundEffectsCenter;
 
@@ -28,6 +32,7 @@ public class MainMenuActivity extends BaseActivity {
   private static int sShowHighScoreScore;
   private static MainMenuActivity sMainMenuInstance;
   private static boolean sFacebookShared = false;
+  private LinearLayout mViewContainer;
   private TextView mTVStart;
   private ImageView mlogoView;
   private int mClicksOnLogo = 0;
@@ -48,7 +53,7 @@ public class MainMenuActivity extends BaseActivity {
   @Override
   public void onCreate(Bundle icicle) {
     super.onCreate(icicle);
-    overridePendingTransition(R.anim.fadein, R.anim.fadeout);
+
     setContentView(R.layout.main_menu);
     setVolumeControlStream(AudioManager.STREAM_MUSIC);
 
@@ -59,6 +64,7 @@ public class MainMenuActivity extends BaseActivity {
 
     mlogoView = (ImageView) findViewById(R.id.logo);
     mTVStart = (TextView) findViewById(R.id.menu_start);
+    mViewContainer = (LinearLayout) findViewById(R.id.background);
 
     mlogoView.setOnTouchListener(new View.OnTouchListener() {
       @Override
@@ -74,6 +80,45 @@ public class MainMenuActivity extends BaseActivity {
       }
     });
 
+  }
+
+  @Override
+  protected void changeSkinBasedOnCurrentSkin(SkinManager.Skin currentSkin) {
+    changeLogo(currentSkin);
+  }
+
+  private void changeLogo(SkinManager.Skin currentSkin) {
+    if (DisplayHelper.getOrientation(this) == Configuration.ORIENTATION_LANDSCAPE) {
+      switch (currentSkin) {
+        case QUAD:
+          mlogoView.setImageDrawable(getResources().getDrawable(R.drawable.logo1_lndscp));
+          break;
+        case THRESHOLD:
+          mlogoView.setImageDrawable(getResources().getDrawable(R.drawable.logo2_lndscp));
+          break;
+        case DIFFUSE:
+          mlogoView.setImageDrawable(getResources().getDrawable(R.drawable.logo1_lndscp));
+          break;
+        case CORRUPTED:
+          mlogoView.setImageDrawable(getResources().getDrawable(R.drawable.logo3_lndscp));
+          break;
+      }
+    } else {
+      switch (currentSkin) {
+        case QUAD:
+          mlogoView.setImageDrawable(getResources().getDrawable(R.drawable.logo1_prt));
+          break;
+        case THRESHOLD:
+          mlogoView.setImageDrawable(getResources().getDrawable(R.drawable.logo2_prt));
+          break;
+        case DIFFUSE:
+          mlogoView.setImageDrawable(getResources().getDrawable(R.drawable.logo1_prt));
+          break;
+        case CORRUPTED:
+          mlogoView.setImageDrawable(getResources().getDrawable(R.drawable.logo3_prt));
+          break;
+      }
+    }
   }
 
   @Override
@@ -110,12 +155,6 @@ public class MainMenuActivity extends BaseActivity {
     sFacebookShared = false;
 
     GameActivity.sTutorialRestart = false;
-  }
-
-  @Override
-  protected void onPause() {
-    super.onPause();
-    overridePendingTransition(R.anim.fadein, R.anim.fadeout);
   }
 
   public void startGame(View view) {

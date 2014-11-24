@@ -26,7 +26,6 @@ public class HallOfFameActivity extends BaseListActivity {
   @Override
   public void onCreate(Bundle icicle) {
     super.onCreate(icicle);
-    overridePendingTransition(R.anim.fadein, R.anim.fadeout);
 
     if (!GameSharedPref.getDbInitialized()) {
       mRingProgressDialog = ProgressDialog.show(HallOfFameActivity.this, "Please wait..",
@@ -65,11 +64,5 @@ public class HallOfFameActivity extends BaseListActivity {
 
     setListAdapter(adapter);
 
-  }
-
-  @Override
-  protected void onPause() {
-    super.onPause();
-    overridePendingTransition(R.anim.fadein, R.anim.fadeout);
   }
 }

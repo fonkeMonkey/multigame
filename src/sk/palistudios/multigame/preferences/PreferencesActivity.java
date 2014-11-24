@@ -44,7 +44,6 @@ public class PreferencesActivity extends PreferenceActivity {
   @Override
   public void onCreate(Bundle icicle) {
     super.onCreate(icicle);
-    overridePendingTransition(R.anim.fadein, R.anim.fadeout);
     setVolumeControlStream(AudioManager.STREAM_MUSIC);
     //        getWindow().setFlags(WindoswManager.LayoutParams.FLAG_FULLSCREEN,
     // WindowManager.LayoutParams.FLAG_FULLSCREEN);
@@ -173,7 +172,6 @@ public class PreferencesActivity extends PreferenceActivity {
   @Override
   public void onPause() {
     super.onPause();
-    overridePendingTransition(R.anim.fadein, R.anim.fadeout);
     //        saveSettings();
   }
 

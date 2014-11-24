@@ -8,7 +8,6 @@ import android.hardware.SensorEvent;
 import android.hardware.SensorEventListener;
 import android.hardware.SensorManager;
 import android.media.AudioManager;
-import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.text.Spannable;
@@ -16,7 +15,6 @@ import android.text.SpannableString;
 import android.text.style.ForegroundColorSpan;
 import android.util.Log;
 import android.view.MotionEvent;
-import android.view.Surface;
 import android.view.View;
 import android.view.WindowManager;
 import android.view.animation.AlphaAnimation;
@@ -39,6 +37,8 @@ import sk.palistudios.multigame.game.time.GameTimeManager;
 import sk.palistudios.multigame.game.view.BaseGameCanvasView;
 import sk.palistudios.multigame.hall_of_fame.HofDatabaseCenter;
 import sk.palistudios.multigame.mainMenu.DebugSettings;
+import sk.palistudios.multigame.tools.DisplayHelper;
+import sk.palistudios.multigame.tools.SkinManager;
 import sk.palistudios.multigame.tools.Toaster;
 import sk.palistudios.multigame.tools.sound.MusicPlayer;
 import sk.palistudios.multigame.tools.sound.SoundEffectsCenter;
@@ -255,28 +255,18 @@ public class GameActivity extends BaseActivity implements SensorEventListener {
 
 
   private void resolveOrientation() {
-    WindowManager windowManager = (WindowManager) getSystemService(WINDOW_SERVICE);
-    Configuration config = getResources().getConfiguration();
+    mOrientation = DisplayHelper.getOrientationForAccelerometer(this);
 
-    if (Build.VERSION.SDK_INT < 8) {
-      mOrientation = config.orientation;
-    } else {
-      int rotation = windowManager.getDefaultDisplay().getRotation();
 
-      if (((rotation == Surface.ROTATION_0 || rotation == Surface.ROTATION_180) &&
-          config.orientation == Configuration.ORIENTATION_LANDSCAPE) ||
-          ((rotation == Surface.ROTATION_90 || rotation == Surface.ROTATION_270) &&
-              config.orientation == Configuration.ORIENTATION_PORTRAIT)) {
-        mOrientation = Configuration.ORIENTATION_LANDSCAPE;
-      } else {
-        mOrientation = Configuration.ORIENTATION_PORTRAIT;
-      }
-    }
+  }
+
+  @Override
+  protected void changeSkinBasedOnCurrentSkin(SkinManager.Skin currentSkin) {
+    return;
   }
 
   @Override
   public void onResume() {
-    overridePendingTransition(R.anim.fadein, R.anim.fadeout);
     getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
 
     super.onResume();
@@ -538,7 +528,6 @@ public class GameActivity extends BaseActivity implements SensorEventListener {
   @Override
   public void onPause() {
     super.onPause();
-    overridePendingTransition(R.anim.fadein, R.anim.fadeout);
     getWindow().clearFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
 
     if (mTutorialMode) {

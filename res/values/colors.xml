@@ -1,19 +1,29 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-<!--    Patresk     -->
-   <color name="bg_menu_item_pressed">#33000000</color>
+  <!--    Multigame 2     -->
+  <color name="quad_text_color">@android:color/white</color>
+  <color name="threshold_text_color">@android:color/black</color>
+  <color name="diffuse_text_color">@android:color/white</color>
+  <color name="corrupted_text_color">#B8F506</color>
 
-    <color name="text_header">#ccffffff</color>
-    <color name="text_customize_header">#33ffffff</color>
 
-    <!-- Hall of Fame -->
-    <color name="hof_bg_switch_on">@android:color/white</color>
-    <color name="hof_bg_switch_off">#00AFCE</color>
-    <color name="hof_text_switch_on">#00AFCE</color>
-    <color name="hof_text_switch_off">@android:color/white</color>
 
-<!--    /Patresk     -->
+  <!--    Patresk     -->
+  <color name="bg_menu_item_pressed">#33000000</color>
+
+  <color name="text_header">#ccffffff</color>
+  <color name="text_customize_header">#33ffffff</color>
+
+  <!-- Hall of Fame -->
+  <color name="hof_bg_switch_on">@android:color/white</color>
+  <color name="hof_bg_switch_off">#00AFCE</color>
+  <color name="hof_text_switch_on">#00AFCE</color>
+  <color name="hof_text_switch_off">@android:color/white</color>
+
+  <!--    /Patresk     -->
+  <!--    Multigame 2     -->
+
 
   <!--    Game colors     -->
   <color name="game_background_1">#FAFAFA</color>
