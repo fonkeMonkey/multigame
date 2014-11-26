@@ -3,11 +3,13 @@
 
   <!--    Multigame 2     -->
   <color name="quad_text_color">@android:color/white</color>
+  <color name="quad_text_color_disabled">#03598A</color>
   <color name="threshold_text_color">@android:color/black</color>
-  <color name="diffuse_text_color">@android:color/white</color>
+  <color name="threshold_text_color_disabled">#B5B5B5</color>
+  <color name="diffuse_text_color">@color/quad_text_color</color>
+  <color name="diffuse_text_color_disabled">@color/quad_text_color_disabled</color>
   <color name="corrupted_text_color">#B8F506</color>
-
-
+  <color name="corrupted_text_color_disabled">#8E8E8D</color>
 
   <!--    Patresk     -->
   <color name="bg_menu_item_pressed">#33000000</color>

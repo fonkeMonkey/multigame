@@ -476,7 +476,7 @@ public class GameActivity extends BaseActivity implements SensorEventListener {
   public void onSensorChanged(SensorEvent event) {
     if (event.sensor.getType() == Sensor.TYPE_ACCELEROMETER) {
       if (!gameStopped) {
-        if (!isDefaultCoordinatesSet && GameSharedPref.getAutoCalibrationEnabled()) {
+        if (!isDefaultCoordinatesSet && GameSharedPref.isAutoCalibrationEnabled()) {
                     /* Na stojaka je to 10, opacny stojak - 10, rovina nula,
                     ten gece nevie ale na ktoru stranu je otoceny,
                     ide to z oboch stran od 10 do -10. akuratze ked sa tocis okolo 10 on to

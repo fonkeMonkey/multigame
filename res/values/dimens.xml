@@ -1,32 +1,34 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <!-- Default screen margins, per the Android Design guidelines. -->
-    <dimen name="activity_horizontal_margin">16dp</dimen>
-    <dimen name="activity_vertical_margin">16dp</dimen>
+  <!-- Default screen margins, per the Android Design guidelines. -->
+  <dimen name="activity_horizontal_margin">16dp</dimen>
+  <dimen name="activity_vertical_margin">16dp</dimen>
 
-    <dimen name="menu_item_textSize">25sp</dimen>
-    <dimen name="menu_item_marginVertical">10dp</dimen>
-    <dimen name="menu_item_paddingVertical">5dp</dimen>
+  <dimen name="menu_item_textSize">25sp</dimen>
+  <dimen name="menu_item_marginVertical">10dp</dimen>
+  <dimen name="menu_item_paddingVertical">5dp</dimen>
 
-    <dimen name="header_textSize">30sp</dimen>
-    <dimen name="header_customize_menuitem_textSize">14sp</dimen>
-    <dimen name="header_customize_textSize">42sp</dimen>
+  <dimen name="header_textSize">50sp</dimen>
+  <dimen name="header_customize_menuitem_textSize">14sp</dimen>
+  <dimen name="header_customize_textSize">42sp</dimen>
 
-    <dimen name="list_item_skins_music_title_textSize">30sp</dimen>
-    <dimen name="list_item_skins_music_row1_textSize">16sp</dimen>
+  <dimen name="list_item_skins_music_title_textSize">30sp</dimen>
+  <dimen name="list_item_skins_music_row1_textSize">16sp</dimen>
 
-    <dimen name="list_item_achievements_paddingHorizontal">20dp</dimen>
-    <dimen name="list_item_achievements_paddingVertical">10dp</dimen>
-    <dimen name="list_item_achievements_title_textSize">30sp</dimen>
-    <dimen name="list_item_achievements_row1_textSize">20sp</dimen>
-    <dimen name="list_item_achievements_row2_textSize">16sp</dimen>
+  <dimen name="list_item_achievements_paddingHorizontal">20dp</dimen>
+  <dimen name="list_item_achievements_paddingVertical">10dp</dimen>
+  <dimen name="list_item_achievements_title_textSize">30sp</dimen>
+  <dimen name="list_item_achievements_row1_textSize">20sp</dimen>
+  <dimen name="list_item_achievements_row2_textSize">16sp</dimen>
 
-    <dimen name="pref_item_marginVertical">10dp</dimen>
-    <dimen name="pref_item_textSize">20sp</dimen>
+  <dimen name="pref_item_marginVertical">24dp</dimen>
+  <dimen name="pref_item_marginGameMode">6dp</dimen>
+  <dimen name="pref_game_mode_vertical_margin">10dp</dimen>
+  <dimen name="pref_item_textSize">20sp</dimen>
 
-    <dimen name="minigame_imageview_width">200dp</dimen>
-    <dimen name="minigame_imageview_height">100dp</dimen>
-	
+  <dimen name="minigame_imageview_width">200dp</dimen>
+  <dimen name="minigame_imageview_height">100dp</dimen>
+
   <dimen name="main_menutext_size">18sp</dimen>
   <dimen name="main_menutext_size_bigger">20sp</dimen>
   <dimen name="slogan_size">18dp</dimen>
@@ -34,4 +36,5 @@
   <dimen name="margin_small">5dp</dimen>
   <dimen name="margin_smaller">2dp</dimen>
   <dimen name="customization_font_size">25sp</dimen>
+
 </resources>

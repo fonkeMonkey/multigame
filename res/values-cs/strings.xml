@@ -160,11 +160,13 @@
 
   <string name="pref_music">Hudba</string>
   <string name="pref_sound">​​Zvuk</string>
-  <string name="autocalibration">Autokalibrace</string>
-  <string name="autocalibration_subtitle">Nastav osy X a Y pro rotaci na začátku hry podle natočení mobilu</string>
+  <string name="pref_autocalibration">Autokalibrace</string>
+  <string name="pref_autocalibration_subtitle">Nastav osy X a Y pro rotaci na začátku hry podle natočení mobilu</string>
 
   <string name="pref_game_mode">Herní mod</string>
   <string name="pref_rate">Ohodnoť na Google Play</string>
+  <string name="pref_on">ZAP</string>
+  <string name="pref_off">VYP</string>
 
 
   <!-- Rate -->

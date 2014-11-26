@@ -1,15 +1,18 @@
 package sk.palistudios.multigame.tools;
 
 import android.content.Context;
+import android.content.res.Resources;
 import android.graphics.drawable.Drawable;
 import android.os.Build;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.CheckedTextView;
 import android.widget.TextView;
 
 import sk.palistudios.multigame.R;
 import sk.palistudios.multigame.game.persistence.GameSharedPref;
+import sk.palistudios.multigame.preferences.PreferenceOnOffSwitcher;
 
 /**
  * Created by virdzek on 23/11/14.
@@ -31,7 +34,7 @@ public class SkinManager {
     return sSkinManager;
   }
 
-  private SkinManager(){
+  private SkinManager() {
   }
 
   public static Skin reskin(Context context, ViewGroup containerView) {
@@ -49,12 +52,16 @@ public class SkinManager {
   }
 
   private Drawable getCurrentBackground(Context context) {
-        switch (getCurrentSkin()){
-          case QUAD: return context.getResources().getDrawable(R.drawable.xml_bg_quad);
-          case THRESHOLD: return context.getResources().getDrawable(R.drawable.xml_bg_threshold);
-          case DIFFUSE: return context.getResources().getDrawable(R.drawable.bg_diffuse);
-          case CORRUPTED: return context.getResources().getDrawable(R.drawable.bg_corrupted);
-        }
+    switch (getCurrentSkin()) {
+      case QUAD:
+        return context.getResources().getDrawable(R.drawable.xml_bg_quad);
+      case THRESHOLD:
+        return context.getResources().getDrawable(R.drawable.xml_bg_threshold);
+      case DIFFUSE:
+        return context.getResources().getDrawable(R.drawable.bg_diffuse);
+      case CORRUPTED:
+        return context.getResources().getDrawable(R.drawable.bg_corrupted);
+    }
     throw new RuntimeException("Corrupted skin name!");
   }
 
@@ -65,29 +72,62 @@ public class SkinManager {
   private void reskinTextsInView(Context context, ViewGroup view, int color) {
     for (int i = 0; i < view.getChildCount(); i++) {
       View child = view.getChildAt(i);
+      if (child instanceof PreferenceOnOffSwitcher){
+        //handled internally.
+        continue;
+      }
       if (child instanceof ViewGroup) {
         reskinTextsInView(context, (ViewGroup) child, color);
       } else if (child != null) {
+        if (child.getClass() == PreferenceOnOffSwitcher.class) {
+          //handled internally.
+          return;
+        }
         if (child.getClass() == TextView.class) {
           ((TextView) child).setTextColor(color);
         }
         if (child.getClass() == Button.class) {
           ((Button) child).setTextColor(color);
         }
+        if (child.getClass() == CheckedTextView.class) {
+          ((CheckedTextView) child).setTextColor(color);
+        }
       }
     }
   }
 
-  private int getCurrentTextColor(Context context) {
+  public int getCurrentTextColor(Context context) {
+    return getCurrentTextColor(context.getResources());
+  }
+
+  public int getCurrentTextColor(Resources resources) {
     switch (getCurrentSkin()) {
       case QUAD:
-        return context.getResources().getColor(R.color.quad_text_color);
+        return resources.getColor(R.color.quad_text_color);
       case THRESHOLD:
-        return context.getResources().getColor(R.color.threshold_text_color);
+        return resources.getColor(R.color.threshold_text_color);
       case DIFFUSE:
-        return context.getResources().getColor(R.color.diffuse_text_color);
+        return resources.getColor(R.color.diffuse_text_color);
       case CORRUPTED:
-        return context.getResources().getColor(R.color.corrupted_text_color);
+        return resources.getColor(R.color.corrupted_text_color);
+    }
+    throw new RuntimeException("Corrupted skin name!");
+  }
+
+  public int getCurrentTextColorDisabled(Context context) {
+    return getCurrentTextColorDisabled(context.getResources());
+  }
+
+  public int getCurrentTextColorDisabled(Resources resources) {
+    switch (getCurrentSkin()) {
+      case QUAD:
+        return resources.getColor(R.color.quad_text_color_disabled);
+      case THRESHOLD:
+        return resources.getColor(R.color.threshold_text_color_disabled);
+      case DIFFUSE:
+        return resources.getColor(R.color.diffuse_text_color_disabled);
+      case CORRUPTED:
+        return resources.getColor(R.color.corrupted_text_color_disabled);
     }
     throw new RuntimeException("Corrupted skin name!");
   }
@@ -110,4 +150,5 @@ public class SkinManager {
     }
     throw new RuntimeException("Corrupted skin name!");
   }
+
 }

@@ -134,11 +134,13 @@
   <string name="finish_saved_game">Please finish your saved game first.</string>
   <string name="pref_music">Music</string>
   <string name="pref_sound">Sound</string>
-  <string name="autocalibration">Autocalibration</string>
-  <string name="autocalibration_subtitle">Set the default X,Y axis for rotation based on the position of cell phone at the beginning of each game</string>
+  <string name="pref_autocalibration">Autocalibration</string>
+  <string name="pref_autocalibration_subtitle">Set the default X,Y axis for rotation based on the position of cell phone at the beginning of each game</string>
   <string name="pref_about">About…</string>
   <string name="pref_game_mode">Game mode</string>
   <string name="pref_rate">Rate on Google Play</string>
+  <string name="pref_on">ON</string>
+  <string name="pref_off">OFF</string>
 
   <!-- Rate -->
   <string name="rate">Rate</string>

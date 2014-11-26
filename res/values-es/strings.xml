@@ -22,6 +22,7 @@
   <string name="button_hall_of_fame">Salón de la Fama</string>
   <string name="button_preferences">Preferencias</string>
 
+
   <!-- Game -->
   <string name="score">Clasificación:\u0020</string>
 
@@ -154,11 +155,13 @@
 
   <string name="pref_music">Música</string>
   <string name="pref_sound">Sonido</string>
-  <string name="autocalibration">Autocalibración</string>
-  <string name="autocalibration_subtitle">Configurar por defecto el eje X,Y basándose en la posición del teléfono al comienzo de cada juego</string>
+  <string name="pref_autocalibration">Autocalibración</string>
+  <string name="pref_autocalibration_subtitle">Configurar por defecto el eje X,Y basándose en la posición del teléfono al comienzo de cada juego</string>
   <string name="pref_about">Acerca de…</string>
   <string name="pref_game_mode">Modo de Juego</string>
   <string name="pref_rate">Puntuar en Google Play</string>
+  <string name="pref_on">Encienda</string>
+  <string name="pref_off">Apague</string>
 
   <string name="button_hall_of_fame_multigame_fan">Fan de Multigame</string>
 

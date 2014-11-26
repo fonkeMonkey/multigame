@@ -3,37 +3,31 @@ package sk.palistudios.multigame.preferences;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+import android.app.Dialog;
 import android.content.Context;
 import android.content.pm.PackageManager.NameNotFoundException;
-import android.preference.DialogPreference;
-import android.util.AttributeSet;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import sk.palistudios.multigame.MultigameDialog;
 import sk.palistudios.multigame.R;
 import sk.palistudios.multigame.game.persistence.GameSharedPref;
 import sk.palistudios.multigame.tools.Toaster;
 
-public class AboutDialog extends DialogPreference {
-
-  private static Context mContext = null;
+public class AboutDialog extends MultigameDialog {
   private int mCheater;
   private boolean mPaliStudiosClicked = false;
 
-  public AboutDialog(Context context, AttributeSet attrs) {
-    super(context, attrs);
-    mContext = context;
-
-    setDialogTitle(mContext.getString(R.string.pref_about));
-
-    setDialogLayoutResource(R.layout.about);
-
-    setNegativeButtonText(null);
+  public AboutDialog(Context context) {
+    super(context);
   }
 
   @Override
-  protected void onBindDialogView(View view) {
+  protected Dialog createDialog(Context context) {
+    Dialog dialog = new Dialog(context);
+    dialog.setTitle(mContext.getString(R.string.pref_about));
+    dialog.setContentView(R.layout.about);
 
     String versionName = "1.0";
     try {
@@ -42,8 +36,7 @@ public class AboutDialog extends DialogPreference {
     } catch (NameNotFoundException ex) {
       Logger.getLogger(AboutDialog.class.getName()).log(Level.SEVERE, null, ex);
     }
-
-    TextView aboutTextView = (TextView) view.findViewById(R.id.about_text);
+    TextView aboutTextView = (TextView) dialog.findViewById(R.id.about_text);
     aboutTextView.setText("Multigame v. " + versionName + "\n©Pali Studios\n");
 
     aboutTextView.setOnClickListener(new View.OnClickListener() {
@@ -57,14 +50,14 @@ public class AboutDialog extends DialogPreference {
       }
     });
 
-    ImageView aboutLogo = (ImageView) view.findViewById(R.id.about_logo);
+    ImageView aboutLogo = (ImageView) dialog.findViewById(R.id.about_logo);
     aboutLogo.setOnClickListener(new View.OnClickListener() {
       @Override
       public void onClick(View view) {
         if (mPaliStudiosClicked) {
           mCheater++;
           if (mCheater == 7) {
-            Toaster.toastLong("Stuff is unlocked.", getContext());
+            Toaster.toastLong("Stuff is unlocked.", mContext);
             GameSharedPref.unlockItemsAll();
           }
         } else {
@@ -72,6 +65,6 @@ public class AboutDialog extends DialogPreference {
         }
       }
     });
-    super.onBindDialogView(view);
+    return dialog;
   }
 }

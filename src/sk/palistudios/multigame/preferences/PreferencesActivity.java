@@ -1,213 +1,172 @@
 package sk.palistudios.multigame.preferences;
 
-import android.app.Activity;
 import android.content.SharedPreferences;
-import android.media.AudioManager;
+import android.graphics.Typeface;
 import android.os.Bundle;
-import android.preference.CheckBoxPreference;
-import android.preference.ListPreference;
-import android.preference.Preference;
-import android.preference.Preference.OnPreferenceChangeListener;
-import android.preference.Preference.OnPreferenceClickListener;
-import android.preference.PreferenceActivity;
-import android.preference.PreferenceManager;
-import android.view.Gravity;
+import android.view.View;
+import android.widget.CheckedTextView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import sk.palistudios.multigame.BaseActivity;
 import sk.palistudios.multigame.R;
-import sk.palistudios.multigame.customization_center.skins.SkinsCenterListActivity;
 import sk.palistudios.multigame.game.persistence.GameSharedPref;
 import sk.palistudios.multigame.mainMenu.DebugSettings;
-import sk.palistudios.multigame.tools.Toaster;
-import sk.palistudios.multigame.tools.sound.SoundEffectsCenter;
-
-//import com.appflood.AppFlood;
+import sk.palistudios.multigame.tools.SkinManager;
 
 /**
  * @author Pali
  */
-public class PreferencesActivity extends PreferenceActivity {
-
+public class PreferencesActivity extends BaseActivity {
+  public static final int ALPHA_80pc = 204;
+  //TODO možno aby sa tie dialógy nedestroyovali onRotation
   private static SharedPreferences.Editor editor;
   private static SharedPreferences prefs;
-  private static PreferencesActivity singleton = null;
-
-  public static PreferencesActivity getInstance() {
-    if (singleton == null) {
-      return new PreferencesActivity();
-    } else {
-      return singleton;
-    }
-
-  }
+  private PreferenceOnOffSwitcher mMusicSwitch;
+  private PreferenceOnOffSwitcher mSoundSwitch;
+  private PreferenceOnOffSwitcher mAutoCalibrationSwitch;
+  private LinearLayout mGameModeLayout;
+  private TextView mGameModeLabel;
+  private CheckedTextView mGameModeClassic;
+  private CheckedTextView mGameModeTutorial;
+  private TextView mRateUs;
+  private TextView mAbout;
+  private TextView mHeader;
 
   @Override
   public void onCreate(Bundle icicle) {
     super.onCreate(icicle);
-    setVolumeControlStream(AudioManager.STREAM_MUSIC);
-    //        getWindow().setFlags(WindoswManager.LayoutParams.FLAG_FULLSCREEN,
-    // WindowManager.LayoutParams.FLAG_FULLSCREEN);
-    //        if (!GameSharedPref.isAchievementFulfilled("pro") && DebugSettings.adsActivated) {
-    setContentView(R.layout.list_layout);
-    //        } else {
-    //            setContentView(R.layout.list_layout_adfree);
-    //        }
+    setContentView(R.layout.preferences);
 
-    TextView footer = new TextView(this);
-    footer.setTextSize(60);
-    footer.setText(" ");
-    getListView().addFooterView(footer, null, false);
+    mHeader = (TextView) findViewById(R.id.pref_header);
 
-    singleton = this;
+    mMusicSwitch = (PreferenceOnOffSwitcher) findViewById(R.id.pref_music);
+    mMusicSwitch.setChecked(GameSharedPref.isMusicOn());
+    mMusicSwitch.setOnCheckedChangeListener(new PreferenceOnOffSwitcher.OnCheckedChangeListener() {
+      @Override
+      public void onCheckedChanged(PreferenceOnOffSwitcher buttonView, boolean isChecked) {
+        GameSharedPref.setMusicOn(isChecked);
+      }
+    });
+
+    mSoundSwitch = (PreferenceOnOffSwitcher) findViewById(R.id.pref_sound);
+    mSoundSwitch.setChecked(GameSharedPref.isSoundOn());
+    mSoundSwitch.setOnCheckedChangeListener(new PreferenceOnOffSwitcher.OnCheckedChangeListener() {
+      @Override
+      public void onCheckedChanged(PreferenceOnOffSwitcher buttonView, boolean isChecked) {
+        GameSharedPref.setSoundOn(isChecked);
+      }
+    });
+
+    mAutoCalibrationSwitch = (PreferenceOnOffSwitcher) findViewById(R.id.pref_autocalibration);
+    mAutoCalibrationSwitch.setChecked(GameSharedPref.isAutoCalibrationEnabled());
+    mAutoCalibrationSwitch.setOnCheckedChangeListener(
+        new PreferenceOnOffSwitcher.OnCheckedChangeListener() {
+          @Override
+          public void onCheckedChanged(PreferenceOnOffSwitcher buttonView, boolean isChecked) {
+            GameSharedPref.setAutocalibration(isChecked);
+          }
+        });
+
+    mGameModeLayout = (LinearLayout) findViewById(R.id.pref_gamemode_layout);
+    mGameModeLabel = (TextView) findViewById(R.id.pref_gamemode_label);
+    mGameModeClassic = (CheckedTextView) findViewById(R.id.pref_classic_gamemode);
+    mGameModeTutorial = (CheckedTextView) findViewById(R.id.pref_tutor_gamemode);
 
     boolean isTutorialCompleted =
         GameSharedPref.isTutorialCompleted() || DebugSettings.tutorialCompleted;
-
-    if (isTutorialCompleted) {
-      addPreferencesFromResource(R.xml.preferences);
-
-    } else { //diferent layout withou possibility of changing game_layout mode
-      addPreferencesFromResource(R.xml.preferences_tutorial);
-    }
-
-    prefs = PreferenceManager.getDefaultSharedPreferences(this);
-    editor = prefs.edit();
-
-    final Activity act = this;
-
-    TextView header = new TextView(this);
-    header.setText(getString(R.string.pref_title));
-    header.setTextSize(35);
-    header.setBackgroundColor(SkinsCenterListActivity.getCurrentSkin(this).getColorHeader());
-    header.setGravity(Gravity.CENTER);
-    getListView().addHeaderView(header);
-
-    Preference myPref = (Preference) findPreference("MoreGamesPreference");
-    if (!GameSharedPref.isAchievementFulfilled("pro") && DebugSettings.adsActivated) {
-      myPref.setOnPreferenceClickListener(new OnPreferenceClickListener() {
-        public boolean onPreferenceClick(Preference preference) {
-          //                    AppFlood.showPanel(act, AppFlood.PANEL_TOP);
-          return false;
-          //open browser or intent here
-        }
-      });
+    if (isTutorialCompleted || DebugSettings.tutorialCompleted) {
+      mGameModeLabel.setVisibility(View.VISIBLE);
+      mGameModeLayout.setVisibility(View.VISIBLE);
     } else {
-      //            myPref.setShouldDisableView(true);
-      getPreferenceScreen().removePreference(myPref);
-      //        myPref.setEnabled(false);
+      mGameModeLabel.setVisibility(View.GONE);
+      mGameModeLayout.setVisibility(View.GONE);
     }
+
+    refreshGameModeStatus("Tutorial".equals(GameSharedPref.getGameMode()));
+    mGameModeTutorial.setOnClickListener(new View.OnClickListener() {
+      @Override
+      public void onClick(View v) {
+        GameSharedPref.setGameMode("Tutorial");
+        refreshGameModeStatus(true);
+      }
+    });
+    mGameModeClassic.setOnClickListener(new View.OnClickListener() {
+      @Override
+      public void onClick(View v) {
+        GameSharedPref.setGameMode("Classic");
+        refreshGameModeStatus(false);
+      }
+    });
+
+    mRateUs = (TextView) findViewById(R.id.rate_us);
+    mRateUs.setOnClickListener(new View.OnClickListener() {
+      @Override
+      public void onClick(View v) {
+        new RateDialog(PreferencesActivity.this).show();
+      }
+    });
+
+    mAbout = (TextView) findViewById(R.id.about_us);
+    mAbout.setOnClickListener(new View.OnClickListener() {
+      @Override
+      public void onClick(View v) {
+        new AboutDialog(PreferencesActivity.this).show();
+      }
+    });
   }
 
+  //TODO radšej premysli poriadne skinovanie preferenceOnOFFSwitchera v SkingManageri (deje sa to
+  // v onStart a dojebáva ti to, ale som lenivá pička.
   @Override
   protected void onResume() {
     super.onResume();
-    SoundEffectsCenter.muteSystemSounds(this, true);
-    String game_mode = GameSharedPref.getGameMode();
+    mMusicSwitch.reskinDynamically();
+    mSoundSwitch.reskinDynamically();
+    mAutoCalibrationSwitch.reskinDynamically();
 
-    boolean isTutorialCompleted =
-        GameSharedPref.isTutorialCompleted() || DebugSettings.tutorialCompleted;
+    mHeader.setTextColor(mHeader.getTextColors().withAlpha(ALPHA_80pc));
+  }
 
-    if (isTutorialCompleted) {
-      ListPreference preferenceGameMode = (ListPreference) findPreference("game_mode");
-      if (game_mode.equals("Tutorial")) {
-        preferenceGameMode.setValueIndex(0);
-        preferenceGameMode.setSummary("Tutorial");
-      } else {
-        preferenceGameMode.setValueIndex(1);
-        preferenceGameMode.setSummary("Classic");
-      }
-      preferenceGameMode.setOnPreferenceChangeListener(new OnPreferenceChangeListener() {
-        @Override
-        public boolean onPreferenceChange(Preference preference, Object newValue) {
-          GameSharedPref.setGameSaved(false);
-          preference.setSummary(newValue.toString());
-          GameSharedPref.setGameMode(newValue.toString());
-          return true;
-        }
-      });
+  //TODO light a medium integruj
+  private void refreshGameModeStatus(boolean isTutorial) {
+//    int version = Build.VERSION.SDK_INT;
+    if (isTutorial) {
+      mGameModeTutorial.setChecked(true);
+      //      if (version >= Build.VERSION_CODES.LOLLIPOP) {
+      //        mGameModeTutorial.setTypeface(Typeface.create("sans-serif-medium", Typeface
+      // .NORMAL));
+      //      } else {
+      mGameModeTutorial.setTypeface(mGameModeTutorial.getTypeface(), Typeface.BOLD);
+      //      }
+
+      mGameModeClassic.setChecked(false);
+      //      if (version >= Build.VERSION_CODES.JELLY_BEAN) {
+      //        mGameModeClassic.setTypeface(Typeface.create("sans-serif-light", Typeface.NORMAL));
+      //      } else {
+      mGameModeClassic.setTypeface(mGameModeClassic.getTypeface(), Typeface.NORMAL);
+      //      }
+    } else {
+      mGameModeTutorial.setChecked(false);
+      //      if (version >= Build.VERSION_CODES.JELLY_BEAN) {
+      //        mGameModeTutorial.setTypeface(Typeface.create("sans-serif-light", Typeface.NORMAL));
+      //      } else {
+      mGameModeTutorial.setTypeface(mGameModeTutorial.getTypeface(), Typeface.NORMAL);
+      //      }
+
+      mGameModeClassic.setChecked(true);
+      //      if (version >= Build.VERSION_CODES.LOLLIPOP) {
+      //        mGameModeClassic.setTypeface(Typeface.create("sans-serif-medium", Typeface.NORMAL));
+      //      } else {
+      mGameModeClassic.setTypeface(mGameModeClassic.getTypeface(), Typeface.BOLD);
+      //      }
     }
-
-    CheckBoxPreference preferenceMusic = (CheckBoxPreference) findPreference("music_on");
-    preferenceMusic.setOnPreferenceChangeListener(new OnPreferenceChangeListener() {
-      @Override
-      public boolean onPreferenceChange(Preference preference, Object newValue) {
-        if (newValue.toString().equals("true")) {
-          GameSharedPref.setMusicOn(true);
-        } else {
-          GameSharedPref.setMusicOn(false);
-        }
-        return true;
-      }
-    });
-
-    CheckBoxPreference preferenceSound = (CheckBoxPreference) findPreference("sound_on");
-    preferenceSound.setOnPreferenceChangeListener(new OnPreferenceChangeListener() {
-      @Override
-      public boolean onPreferenceChange(Preference preference, Object newValue) {
-        if (newValue.toString().equals("true")) {
-          GameSharedPref.setSoundOn(true);
-        } else {
-          GameSharedPref.setSoundOn(false);
-        }
-        return true;
-      }
-    });
-
-    CheckBoxPreference preferenceAutocalibration = (CheckBoxPreference) findPreference(
-        "autocalibration");
-    preferenceAutocalibration.setOnPreferenceChangeListener(new OnPreferenceChangeListener() {
-      @Override
-      public boolean onPreferenceChange(Preference preference, Object newValue) {
-        if (newValue.toString().equals("true")) {
-          GameSharedPref.setAutocalibration(true);
-        } else {
-          GameSharedPref.setAutocalibration(false);
-        }
-        return true;
-      }
-    });
-
+    mGameModeClassic.invalidate();
+    mGameModeTutorial.invalidate();
   }
 
   @Override
-  public void onPause() {
-    super.onPause();
-    //        saveSettings();
-  }
-
-  @Override
-  public void onBackPressed() {
-    super.onBackPressed();
-//    SoundEffectsCenter.playBackSound(this);
-  }
-
-  private void saveSettings() {
-    //        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
-
-    boolean music_on = prefs.getBoolean("music_on", true);
-    boolean sound_on = prefs.getBoolean("sound_on", true);
-    String game_mode = prefs.getString("game_mode", null);
-
-    GameSharedPref.setMusicOn(music_on);
-    GameSharedPref.setSoundOn(sound_on);
-    GameSharedPref.setGameMode(game_mode);
-
-  }
-
-  @Override
-  public void onUserLeaveHint() {
-    super.onUserLeaveHint();
-    finish();
-  }
-
-  @Override
-  public void onStart() {
-    super.onStart();
-  }
-
-  @Override
-  public void onStop() {
-    super.onStop();
-    SoundEffectsCenter.muteSystemSounds(this, false);
+  protected void changeSkinBasedOnCurrentSkin(SkinManager.Skin currentSkin) {
+    return;
   }
 }

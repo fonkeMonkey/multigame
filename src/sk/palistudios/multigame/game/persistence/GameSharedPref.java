@@ -270,7 +270,7 @@ public class GameSharedPref {
     return mSharedPreferences.getBoolean("ad_shown", false);
   }
 
-  public static boolean getAutoCalibrationEnabled() {
+  public static boolean isAutoCalibrationEnabled() {
     return mSharedPreferences.getBoolean("autocalibration", true);
   }
 

@@ -25,6 +25,7 @@ import sk.palistudios.multigame.mainMenu.MainMenuActivity;
 import sk.palistudios.multigame.tools.internet.FacebookSharer;
 import sk.palistudios.multigame.tools.internet.InternetChecker;
 
+//TODO títo chlapci jedného dňa by mohli dediť od MultiGameDialog a mať každý samostatnú classu
 public class GameDialogs {
 
   public final static int ASK_USER_TO_CONNECT = 1;
