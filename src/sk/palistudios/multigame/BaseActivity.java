@@ -5,7 +5,6 @@
 package sk.palistudios.multigame;
 
 import android.app.Activity;
-import android.os.Bundle;
 import android.view.ViewGroup;
 
 import sk.palistudios.multigame.tools.SkinManager;
@@ -17,16 +16,19 @@ import sk.palistudios.multigame.tools.sound.SoundEffectsCenter;
 public abstract class BaseActivity extends Activity {
   //TODO VL mutey nie sú akoby 'oproti' mal by byť v onStart nie?
 
+  /*
+   * RESKIN sem pretože musí sa reskinovať aj po backu z customize MainMenu.
+   */
   @Override
   protected void onStart() {
     super.onStart();
     SkinManager.Skin currentSkin = SkinManager.reskin(this, (ViewGroup) ((ViewGroup) (findViewById(android.R.id
         .content)))
         .getChildAt(0));
-    changeSkinBasedOnCurrentSkin(currentSkin);
+    reskinLocally(currentSkin);
   }
 
-  protected abstract void changeSkinBasedOnCurrentSkin(SkinManager.Skin currentSkin);
+  protected abstract void reskinLocally(SkinManager.Skin currentSkin);
 
   @Override
   protected void onResume() {

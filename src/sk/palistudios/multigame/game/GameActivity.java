@@ -261,7 +261,7 @@ public class GameActivity extends BaseActivity implements SensorEventListener {
   }
 
   @Override
-  protected void changeSkinBasedOnCurrentSkin(SkinManager.Skin currentSkin) {
+  protected void reskinLocally(SkinManager.Skin currentSkin) {
     return;
   }
 

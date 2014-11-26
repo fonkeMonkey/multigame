@@ -83,7 +83,7 @@ public class MainMenuActivity extends BaseActivity {
   }
 
   @Override
-  protected void changeSkinBasedOnCurrentSkin(SkinManager.Skin currentSkin) {
+  protected void reskinLocally(SkinManager.Skin currentSkin) {
     changeLogo(currentSkin);
   }
 
