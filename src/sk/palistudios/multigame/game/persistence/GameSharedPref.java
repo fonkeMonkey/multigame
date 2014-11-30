@@ -51,17 +51,15 @@ public class GameSharedPref {
     mEditor.commit();
   }
 
-  //    public static boolean setGameMode(String gameMode) {
-  //        boolean isNoviceModeActive = mSharedPreferences.getBoolean("noviceModeActive", true);
-  //
-  //        if (isNoviceModeActive) {
-  //            mEditor.putBoolean("noviceModeActive", false);
-  //        } else {
-  //            mEditor.putBoolean("noviceModeActive", true);
-  //        }
-  //        mEditor.commit();
-  //        return mSharedPreferences.getBoolean("noviceModeActive", true);
-  //    }
+  public static int getHighestScore() {
+    return mSharedPreferences.getInt("highestScore", -1);
+  }
+
+  public static void setHighestScore(int score) {
+    mEditor.putInt("highestScore", score);
+    mEditor.commit();
+  }
+
   public static void saveGameDetails(final int scoreToSave, final int levelToSave,
       final int framesToSave, final boolean[] activeMinigames) {
     GameSharedPref.mEditor.putInt("score", scoreToSave);
@@ -344,27 +342,27 @@ public class GameSharedPref {
   // String[] allMusicLoopsHumanNames) {
   //        mEditor.putInt("AllMusicLoopsCount", allMusicLoopsPCNames.length);
   //        StringBuilder minigameKey = new StringBuilder();
-  //        int rank = 1;
+  //        int position = 1;
   //
   //        for (String musicLoop : allMusicLoopsPCNames) {
-  //            minigameKey.append("AllMusicLoops").append(rank).append("PCName");
+  //            minigameKey.append("AllMusicLoops").append(position).append("PCName");
   //            mEditor.putString(minigameKey.toString(), musicLoop);
   //            minigameKey.setLength(0);
   //
   //            boolean isSoundChosen = isMusicLoopChosen(musicLoop);
-  //            minigameKey.append("AllMusicLoops").append(rank).append("Chosen");
+  //            minigameKey.append("AllMusicLoops").append(position).append("Chosen");
   //            mEditor.putBoolean(minigameKey.toString(), isSoundChosen);
   //            minigameKey.setLength(0);
   //
-  //            rank++;
+  //            position++;
   //        }
   //
-  //        rank = 1;
+  //        position = 1;
   //        for (String musicLoop : allMusicLoopsHumanNames) {
-  //            minigameKey.append("AllMusicLoops").append(rank).append("HumanName");
+  //            minigameKey.append("AllMusicLoops").append(position).append("HumanName");
   //            mEditor.putString(minigameKey.toString(), musicLoop);
   //            minigameKey.setLength(0);
-  //            rank++;
+  //            position++;
   //        }
   //
   //        mEditor.commit();
@@ -503,4 +501,6 @@ public class GameSharedPref {
     unlockItem("dst_blam");
     unlockItem("dst_cv_x");
   }
+
+
 }
