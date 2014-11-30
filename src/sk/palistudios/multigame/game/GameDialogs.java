@@ -184,6 +184,9 @@ public class GameDialogs {
       return;
     }
     final int score = game.getScore();
+    if (GameSharedPref.getHighestScore() < game.getScore()){
+      GameSharedPref.setHighestScore(game.getScore());
+    }
 
     DialogInterface.OnClickListener dialogClickListener = new DialogInterface.OnClickListener() {
       @Override
@@ -197,7 +200,6 @@ public class GameDialogs {
           case DialogInterface.BUTTON_NEUTRAL:
             MgTracker.trackGameLoserShareButtonPushed();
             if (InternetChecker.isNetworkAvailable(game)) {
-
               FacebookSharer.shareScoreToFacebook(score, false);
               game.finish();
             } else {
@@ -247,6 +249,9 @@ public class GameDialogs {
 
             HofDatabaseCenter db = HofDatabaseCenter.getsHofDb();
             db.writeIntoHallOfFame(new HofItem(playerName, game.getScore()));
+            if (GameSharedPref.getHighestScore() < game.getScore()){
+              GameSharedPref.setHighestScore(game.getScore());
+            }
             intent = new Intent(act, HallOfFameActivity.class);
             game.startActivity(intent);
             game.finish();
