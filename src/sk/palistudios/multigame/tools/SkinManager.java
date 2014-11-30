@@ -132,6 +132,42 @@ public class SkinManager {
     throw new RuntimeException("Corrupted skin name!");
   }
 
+  public int getCurrentTextColorListItemActive(Context context) {
+    return getCurrentTextColorDisabled(context.getResources());
+  }
+
+  public int getCurrentTextColorListItemActive(Resources resources) {
+    switch (getCurrentSkin()) {
+      case QUAD:
+        return resources.getColor(R.color.quad_text_color_li_active);
+      case THRESHOLD:
+        return resources.getColor(R.color.threshold_text_color_active);
+      case DIFFUSE:
+        return resources.getColor(R.color.diffuse_text_color_active);
+      case CORRUPTED:
+        return resources.getColor(R.color.corrupted_text_color_active);
+    }
+    throw new RuntimeException("Corrupted skin name!");
+  }
+
+  public int getCurrentTextColorListItemInactive(Context context) {
+    return getCurrentTextColorDisabled(context.getResources());
+  }
+
+  public int getCurrentTextColorListItemInactive(Resources resources) {
+    switch (getCurrentSkin()) {
+      case QUAD:
+        return resources.getColor(R.color.quad_text_color_li_inactive);
+      case THRESHOLD:
+        return resources.getColor(R.color.threshold_text_color_inactive);
+      case DIFFUSE:
+        return resources.getColor(R.color.diffuse_text_color_inactive);
+      case CORRUPTED:
+        return resources.getColor(R.color.corrupted_text_color_inactive);
+    }
+    throw new RuntimeException("Corrupted skin name!");
+  }
+
   private Skin getCurrentSkin() {
     //TODO jj, staré názvy
     String skinName = GameSharedPref.getChosenSkin();

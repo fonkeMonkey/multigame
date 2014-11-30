@@ -123,7 +123,7 @@
   <string name="cc_music_blam_name">Blam</string>
 
   <!-- Hall of fame -->
-  <string name="top_10_players">Los 10 mejores jugadores</string>
+  <string name="hof_top_10_players">Los 10 mejores jugadores</string>
 
   <!-- Minigames -->
   <string name="minigame">\u0020Minijuego\u0020</string>
@@ -160,8 +160,8 @@
   <string name="pref_about">Acerca de…</string>
   <string name="pref_game_mode">Modo de Juego</string>
   <string name="pref_rate">Puntuar en Google Play</string>
-  <string name="pref_on">Encienda</string>
-  <string name="pref_off">Apague</string>
+  <string name="pref_on">ON</string>
+  <string name="pref_off">OFF</string>
 
   <string name="button_hall_of_fame_multigame_fan">Fan de Multigame</string>
 

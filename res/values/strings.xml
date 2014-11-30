@@ -107,7 +107,9 @@
   <string name="cc_music_blam_name">Blam</string>
 
   <!-- Hall of fame -->
-  <string name="top_10_players">Top 10 players</string>
+  <string name="hof_top_10_players">Top 10 players</string>
+  <string name="hof_local">LOCAL</string>
+  <string name="hof_online">ONLINE</string>
 
   <!-- Tutorial -->
 

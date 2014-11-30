@@ -3,25 +3,32 @@ package sk.palistudios.multigame.hall_of_fame;
 import java.util.ArrayList;
 
 import android.app.ProgressDialog;
-import android.media.AudioManager;
 import android.os.Bundle;
-import android.view.Gravity;
+import android.view.View;
 import android.widget.ArrayAdapter;
+import android.widget.CompoundButton;
+import android.widget.LinearLayout;
+import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.ToggleButton;
 
-import sk.palistudios.multigame.BaseListActivity;
+import sk.palistudios.multigame.BaseActivity;
 import sk.palistudios.multigame.R;
-import sk.palistudios.multigame.customization_center.skins.SkinsCenterListActivity;
 import sk.palistudios.multigame.game.persistence.GameSharedPref;
-import sk.palistudios.multigame.tools.sound.SoundEffectsCenter;
+import sk.palistudios.multigame.tools.DisplayHelper;
+import sk.palistudios.multigame.tools.SkinManager;
 
 /**
  * @author Pali
  */
-public class HallOfFameActivity extends BaseListActivity {
+public class HallOfFameActivity extends BaseActivity {
+  private ListView mListView;
+  private TextView mHeader;
 
   public static ProgressDialog mRingProgressDialog = null;
-  HofDatabaseCenter hofDb = null;
+  private ToggleButton mSwitchLocal;
+  private ToggleButton mSwitchOnline;
+  private LinearLayout mSwitchLayout;
 
   @Override
   public void onCreate(Bundle icicle) {
@@ -33,36 +40,124 @@ public class HallOfFameActivity extends BaseListActivity {
       mRingProgressDialog.setCancelable(true);
     }
 
-    setVolumeControlStream(AudioManager.STREAM_MUSIC);
-    setContentView(R.layout.list_layout);
+    setContentView(R.layout.hof_layout);
+    initViews();
+    fillData();
+  }
 
-    hofDb = new HofDatabaseCenter(this);
-    hofDb.open();
+  private void initViews() {
+    mHeader = (TextView) findViewById(R.id.hof_header);
+    mListView = (ListView) findViewById(R.id.hof_list);
 
-    ArrayList<HofItem> dbRows = hofDb.fetchAllRows();
-    hofDb.close();
+    mSwitchLayout = (LinearLayout) findViewById(R.id.hof_toggle_layout);
+    mSwitchLocal = (ToggleButton) findViewById(R.id.hof_toggle_local);
+    mSwitchOnline = (ToggleButton) findViewById(R.id.hof_toggle_online);
 
+    mSwitchLocal.setOnClickListener(new View.OnClickListener() {
+      @Override
+      public void onClick(View v) {
+        mSwitchOnline.toggle();
+      }
+    });
+    mSwitchOnline.setOnClickListener(new View.OnClickListener() {
+      @Override
+      public void onClick(View v) {
+        mSwitchLocal.toggle();
+      }
+    });
+
+    mSwitchLocal.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+      @Override
+      public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+        buttonView.setClickable(!isChecked);
+        mListView.setVisibility(View.INVISIBLE);
+      }
+    });
+
+    mSwitchOnline.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+      @Override
+      public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+        buttonView.setClickable(!isChecked);
+        mListView.setVisibility(View.VISIBLE);
+      }
+    });
+
+    mSwitchLocal.setClickable(!mSwitchLocal.isChecked());
+    mSwitchOnline.setClickable(!mSwitchOnline.isChecked());
+  }
+
+  private void fillData() {
+    //cucni databazu
+    HofDatabaseCenter mHofDb = new HofDatabaseCenter(this);
+    mHofDb.open();
+    ArrayList<HofItem> dbRows = mHofDb.fetchAllRows();
+    mHofDb.close();
+
+    //urob svoje itemy
     HofItem[] rows = new HofItem[dbRows.size()];
-
     for (int i = 0; i < dbRows.size(); i++) {
       rows[i] = dbRows.get(i);
-      rows[i].setRank(i + 1);
+      rows[i].setPosition(i + 1);
     }
 
+    //adaptery sracky etc
     ArrayAdapter adapter = new HofArrayAdapter(this, rows);
-    TextView header = new TextView(this);
-    header.setText(getString(R.string.top_10_players));
-    header.setTextSize(35);
-    header.setBackgroundColor(SkinsCenterListActivity.getCurrentSkin(this).getColorHeader());
-    header.setGravity(Gravity.CENTER);
-    getListView().addHeaderView(header);
+    mListView.setAdapter(adapter);
+  }
 
-    TextView footer = new TextView(this);
-    footer.setTextSize(60);
-    footer.setText(" ");
-    getListView().addFooterView(footer, null, false);
+  @Override
+  protected void reskinLocally(SkinManager.Skin currentSkin) {
+    mHeader.setTextColor(mHeader.getTextColors().withAlpha(DisplayHelper.ALPHA_80pc));
 
-    setListAdapter(adapter);
-
+    switch (currentSkin) {
+      case QUAD:
+        mSwitchLayout.setBackgroundDrawable(getResources().getDrawable(
+            R.drawable.xml_bg_hof_switch_layout_quad));
+        mSwitchLocal.setBackgroundDrawable(getResources().getDrawable(
+            R.drawable.xml_bg_hof_switch_quad));
+        mSwitchLocal.setTextColor(getResources().getColorStateList(
+            R.color.xml_text_hof_switch_quad));
+        mSwitchOnline.setBackgroundDrawable(getResources().getDrawable(
+            R.drawable.xml_bg_hof_switch_quad));
+        mSwitchOnline.setTextColor(getResources().getColorStateList(
+            R.color.xml_text_hof_switch_quad));
+        break;
+      case THRESHOLD:
+        mSwitchLayout.setBackgroundDrawable(getResources().getDrawable(
+            R.drawable.xml_bg_hof_switch_layout_thres));
+        mSwitchLocal.setBackgroundDrawable(getResources().getDrawable(
+            R.drawable.xml_bg_hof_switch_thres));
+        mSwitchLocal.setTextColor(getResources().getColorStateList(
+            R.color.xml_text_hof_switch_thres));
+        mSwitchOnline.setBackgroundDrawable(getResources().getDrawable(
+            R.drawable.xml_bg_hof_switch_thres));
+        mSwitchOnline.setTextColor(getResources().getColorStateList(
+            R.color.xml_text_hof_switch_thres));
+        break;
+      case DIFFUSE:
+        mSwitchLayout.setBackgroundDrawable(getResources().getDrawable(
+            R.drawable.xml_bg_hof_switch_layout_diffuse));
+        mSwitchLocal.setBackgroundDrawable(getResources().getDrawable(
+            R.drawable.xml_bg_hof_switch_diffuse));
+        mSwitchLocal.setTextColor(getResources().getColorStateList(
+            R.color.xml_text_hof_switch_diffuse));
+        mSwitchOnline.setBackgroundDrawable(getResources().getDrawable(
+            R.drawable.xml_bg_hof_switch_diffuse));
+        mSwitchOnline.setTextColor(getResources().getColorStateList(
+            R.color.xml_text_hof_switch_diffuse));
+        break;
+      case CORRUPTED:
+        mSwitchLayout.setBackgroundDrawable(getResources().getDrawable(
+            R.drawable.xml_bg_hof_switch_layout_corrupt));
+        mSwitchLocal.setBackgroundDrawable(getResources().getDrawable(
+            R.drawable.xml_bg_hof_switch_corrupt));
+        mSwitchLocal.setTextColor(getResources().getColorStateList(
+            R.color.xml_text_hof_switch_corrupt));
+        mSwitchOnline.setBackgroundDrawable(getResources().getDrawable(
+            R.drawable.xml_bg_hof_switch_corrupt));
+        mSwitchOnline.setTextColor(getResources().getColorStateList(
+            R.color.xml_text_hof_switch_corrupt));
+        break;
+    }
   }
 }

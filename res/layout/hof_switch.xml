@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/hof_toggle_layout"
+    android:background="@drawable/xml_bg_hof_switch_layout_quad"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:orientation="horizontal"
+    android:layout_gravity="center_horizontal"
+    android:layout_marginTop="10dp"
+    android:layout_marginBottom="10dp"
+    tools:showIn="@layout/hof_layout">
+
+  <ToggleButton
+      android:id="@+id/hof_toggle_local"
+      android:checked="true"
+      android:background="@drawable/xml_bg_hof_switch_quad"
+      android:textColor="@color/xml_text_hof_switch_quad"
+      android:layout_width="wrap_content"
+      android:layout_height="@dimen/hof_switch_height"
+      android:layout_margin="0dp"
+      android:textOn="@string/hof_local"
+      android:textOff="@string/hof_local"
+      android:fontFamily="sans-serif-black"
+      android:textStyle="bold" />
+
+  <ToggleButton
+      android:id="@+id/hof_toggle_online"
+      android:textOn="@string/hof_online"
+      android:textOff="@string/hof_online"
+      android:background="@drawable/xml_bg_hof_switch_quad"
+      android:layout_width="wrap_content"
+      android:textColor="@color/xml_text_hof_switch_quad"
+      android:layout_height="@dimen/hof_switch_height"
+      android:fontFamily="sans-serif-black"
+      android:checked="false"
+      android:textStyle="bold" />
+
+</LinearLayout>

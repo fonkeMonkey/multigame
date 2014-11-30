@@ -4,24 +4,34 @@
   <!--    Multigame 2     -->
   <color name="quad_text_color">@android:color/white</color>
   <color name="quad_text_color_disabled">#03598A</color>
+  <color name="quad_text_color_li_active">@color/quad_text_color</color>
+  <color name="quad_text_color_li_inactive">#A8B4BF</color>
+  <color name="quad_text_color_hof_switch_unpressed">#00A5C7</color>
+
   <color name="threshold_text_color">@android:color/black</color>
   <color name="threshold_text_color_disabled">#B5B5B5</color>
+  <color name="threshold_text_color_active">#141414</color>
+  <color name="threshold_text_color_inactive">#6A6A6A</color>
+  <color name="threshold_text_color_hof_switch_unpressed">#DDDDDD</color>
+
   <color name="diffuse_text_color">@color/quad_text_color</color>
   <color name="diffuse_text_color_disabled">@color/quad_text_color_disabled</color>
+  <color name="diffuse_text_color_active">@color/quad_text_color_li_active</color>
+  <color name="diffuse_text_color_inactive">@color/quad_text_color_li_inactive</color>
+  <color name="diffuse_text_color_hof_switch_unpressed">#335B8F</color>
+
   <color name="corrupted_text_color">#B8F506</color>
   <color name="corrupted_text_color_disabled">#8E8E8D</color>
+  <color name="corrupted_text_color_active">#BFFF06</color>
+  <color name="corrupted_text_color_inactive">#8D8D8D</color>
+  <color name="corrupted_text_color_hof_switch_unpressed">#C2FD00</color>
+  <color name="corrupted_text_color_hof_switch_pressed">#FD3608</color>
 
   <!--    Patresk     -->
   <color name="bg_menu_item_pressed">#33000000</color>
 
   <color name="text_header">#ccffffff</color>
   <color name="text_customize_header">#33ffffff</color>
-
-  <!-- Hall of Fame -->
-  <color name="hof_bg_switch_on">@android:color/white</color>
-  <color name="hof_bg_switch_off">#00AFCE</color>
-  <color name="hof_text_switch_on">#00AFCE</color>
-  <color name="hof_text_switch_off">@android:color/white</color>
 
   <!--    /Patresk     -->
   <!--    Multigame 2     -->
@@ -120,6 +130,8 @@
   <color name="dialog_button_pressed">#000000</color>
   <color name="dialog_button_focused">#000000</color>
   <color name="dialog_background">#000000</color>
+
+
 
 </resources>
 

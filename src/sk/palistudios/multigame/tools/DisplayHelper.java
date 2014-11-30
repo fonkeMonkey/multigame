@@ -12,6 +12,8 @@ import sk.palistudios.multigame.game.GameActivity;
  * Created by virdzek on 24/11/14.
  */
 public class DisplayHelper {
+  public static final int ALPHA_80pc = 204;
+
   public static int getOrientation(Context context) {
     WindowManager windowManager = (WindowManager) context.getSystemService(context.WINDOW_SERVICE);
     Configuration config = context.getResources().getConfiguration();

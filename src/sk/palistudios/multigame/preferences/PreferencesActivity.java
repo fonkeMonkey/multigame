@@ -12,13 +12,13 @@ import sk.palistudios.multigame.BaseActivity;
 import sk.palistudios.multigame.R;
 import sk.palistudios.multigame.game.persistence.GameSharedPref;
 import sk.palistudios.multigame.mainMenu.DebugSettings;
+import sk.palistudios.multigame.tools.DisplayHelper;
 import sk.palistudios.multigame.tools.SkinManager;
 
 /**
  * @author Pali
  */
 public class PreferencesActivity extends BaseActivity {
-  public static final int ALPHA_80pc = 204;
   //TODO možno aby sa tie dialógy nedestroyovali onRotation
   private static SharedPreferences.Editor editor;
   private static SharedPreferences prefs;
@@ -116,19 +116,15 @@ public class PreferencesActivity extends BaseActivity {
     });
   }
 
-  //TODO radšej premysli poriadne skinovanie preferenceOnOFFSwitchera v SkingManageri (deje sa to
-  // v onStart a dojebáva ti to, ale som lenivá pička.
   @Override
-  protected void onResume() {
-    super.onResume();
+  protected void reskinLocally(SkinManager.Skin currentSkin) {
     mMusicSwitch.reskinDynamically();
     mSoundSwitch.reskinDynamically();
     mAutoCalibrationSwitch.reskinDynamically();
-
-    mHeader.setTextColor(mHeader.getTextColors().withAlpha(ALPHA_80pc));
+    mHeader.setTextColor(mHeader.getTextColors().withAlpha(DisplayHelper.ALPHA_80pc));
   }
 
-  //TODO light a medium integruj
+  //TODO light a medium integruj (takisto dla obrázka aj podtitulok je light a čosi BLACK
   private void refreshGameModeStatus(boolean isTutorial) {
 //    int version = Build.VERSION.SDK_INT;
     if (isTutorial) {
@@ -163,10 +159,5 @@ public class PreferencesActivity extends BaseActivity {
     }
     mGameModeClassic.invalidate();
     mGameModeTutorial.invalidate();
-  }
-
-  @Override
-  protected void changeSkinBasedOnCurrentSkin(SkinManager.Skin currentSkin) {
-    return;
   }
 }
