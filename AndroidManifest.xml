@@ -29,8 +29,8 @@
       android:label="@string/app_name"
       android:name="sk.palistudios.multigame.MgApplication"
       android:icon="@drawable/ic_logo_land"
-      android:hardwareAccelerated="true"
-      >
+      android:hardwareAccelerated="true">
+
 
     <activity
         android:name="sk.palistudios.multigame.StartActivity"
@@ -116,6 +116,13 @@
     <meta-data
         android:name="com.facebook.sdk.ApplicationId"
         android:value="@string/app_id" />
+
+    <meta-data android:name="com.google.android.gms.games.APP_ID"
+        android:value="@string/google_play_app_id" />
+
+    <meta-data android:name="com.google.android.gms.version"
+        android:value="@integer/google_play_services_version"/>
+
   </application>
 
 </manifest>

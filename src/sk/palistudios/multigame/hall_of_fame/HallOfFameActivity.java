@@ -1,17 +1,19 @@
 package sk.palistudios.multigame.hall_of_fame;
 
-import java.util.ArrayList;
+import java.util.List;
 
 import android.app.ProgressDialog;
 import android.os.Bundle;
 import android.view.View;
-import android.widget.ArrayAdapter;
-import android.widget.CompoundButton;
-import android.widget.LinearLayout;
-import android.widget.ListView;
-import android.widget.TextView;
-import android.widget.ToggleButton;
+import android.view.ViewGroup;
+import android.widget.*;
 
+import com.google.android.gms.common.ConnectionResult;
+import com.google.android.gms.common.SignInButton;
+import com.google.android.gms.common.api.GoogleApiClient;
+import com.google.android.gms.games.Games;
+import com.google.android.gms.games.Player;
+import com.google.android.gms.plus.Plus;
 import sk.palistudios.multigame.BaseActivity;
 import sk.palistudios.multigame.R;
 import sk.palistudios.multigame.game.persistence.GameSharedPref;
@@ -21,7 +23,23 @@ import sk.palistudios.multigame.tools.SkinManager;
 /**
  * @author Pali
  */
-public class HallOfFameActivity extends BaseActivity {
+public class HallOfFameActivity extends BaseActivity implements GoogleApiClient
+    .ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener {
+
+  // Client used to interact with Google APIs
+  private GoogleApiClient mGoogleApiClient;
+
+  private boolean mFirstConnect;
+
+  private HofArrayAdapter mLocalLeaderboardAdapter;
+  private HofArrayAdapter mOnlineLeaderboardAdapter;
+
+  private ViewGroup mSignInBar;
+  private ViewGroup mSignOutBar;
+
+  private SignInButton mSignInButton;
+  private Button mSignOutButton;
+
   private ListView mListView;
   private TextView mHeader;
 
@@ -41,8 +59,21 @@ public class HallOfFameActivity extends BaseActivity {
     }
 
     setContentView(R.layout.hof_layout);
+    initGoogleApiCLient();
     initViews();
     fillData();
+  }
+
+  private void initGoogleApiCLient() {
+    mFirstConnect = true;
+
+    // Create the Google API Client with access to Plus and Games
+    mGoogleApiClient = new GoogleApiClient.Builder(this)
+        .addConnectionCallbacks(this)
+        .addOnConnectionFailedListener(this)
+        .addApi(Plus.API).addScope(Plus.SCOPE_PLUS_LOGIN)
+        .addApi(Games.API).addScope(Games.SCOPE_GAMES)
+        .build();
   }
 
   private void initViews() {
@@ -52,6 +83,30 @@ public class HallOfFameActivity extends BaseActivity {
     mSwitchLayout = (LinearLayout) findViewById(R.id.hof_toggle_layout);
     mSwitchLocal = (ToggleButton) findViewById(R.id.hof_toggle_local);
     mSwitchOnline = (ToggleButton) findViewById(R.id.hof_toggle_online);
+
+    mSignInBar = (LinearLayout) findViewById(R.id.sign_in_bar);
+    mSignOutBar = (LinearLayout) findViewById(R.id.sign_out_bar);
+
+    mSignInButton = (SignInButton) findViewById(R.id.sign_in_button);
+    mSignOutButton = (Button) findViewById(R.id.sign_out_button);
+
+    mSignInButton.setOnClickListener(new View.OnClickListener() {
+      @Override
+      public void onClick(View v) {
+        mGoogleApiClient.connect();
+      }
+    });
+
+    mSignOutButton.setOnClickListener(new View.OnClickListener() {
+      @Override
+      public void onClick(View v) {
+        Games.signOut(mGoogleApiClient);
+        if (mGoogleApiClient.isConnected()) {
+          mGoogleApiClient.disconnect();
+        }
+        refreshSignInLayout(true);
+      }
+    });
 
     mSwitchLocal.setOnClickListener(new View.OnClickListener() {
       @Override
@@ -70,7 +125,10 @@ public class HallOfFameActivity extends BaseActivity {
       @Override
       public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
         buttonView.setClickable(!isChecked);
-        mListView.setVisibility(View.INVISIBLE);
+        if(isChecked) {
+          mListView.setAdapter(mLocalLeaderboardAdapter);
+        }
+        refreshSignInLayout(!isChecked);
       }
     });
 
@@ -78,7 +136,14 @@ public class HallOfFameActivity extends BaseActivity {
       @Override
       public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
         buttonView.setClickable(!isChecked);
-        mListView.setVisibility(View.VISIBLE);
+        if(isChecked) {
+          mListView.setAdapter(mOnlineLeaderboardAdapter);
+        }
+
+        if(mFirstConnect && mGoogleApiClient != null && !mGoogleApiClient.isConnected()) {
+          mGoogleApiClient.connect();
+          mFirstConnect = false;
+        }
       }
     });
 
@@ -88,9 +153,9 @@ public class HallOfFameActivity extends BaseActivity {
 
   private void fillData() {
     //cucni databazu
-    HofDatabaseCenter mHofDb = new HofDatabaseCenter(this);
+    final HofDatabaseCenter mHofDb = new HofDatabaseCenter(this);
     mHofDb.open();
-    ArrayList<HofItem> dbRows = mHofDb.fetchAllRows();
+    final List<HofItem> dbRows = mHofDb.fetchAllRows();
     mHofDb.close();
 
     //urob svoje itemy
@@ -101,8 +166,47 @@ public class HallOfFameActivity extends BaseActivity {
     }
 
     //adaptery sracky etc
-    ArrayAdapter adapter = new HofArrayAdapter(this, rows);
-    mListView.setAdapter(adapter);
+    mLocalLeaderboardAdapter = new HofArrayAdapter(this, rows);
+    mListView.setAdapter(mLocalLeaderboardAdapter);
+  }
+
+  @Override
+  protected void onDestroy() {
+    super.onDestroy();
+
+    if (mGoogleApiClient.isConnected()) {
+      mGoogleApiClient.disconnect();
+    }
+  }
+
+  @Override
+  public void onConnected(Bundle bundle) {
+    refreshSignInLayout(mSwitchOnline.isChecked());
+  }
+
+  @Override
+  public void onConnectionSuspended(int i) {
+    mGoogleApiClient.connect();
+  }
+
+  @Override
+  public void onConnectionFailed(ConnectionResult connectionResult) {
+    Toast.makeText(this, getString(R.string.signin_other_error), Toast.LENGTH_LONG).show();
+  }
+
+  public void refreshSignInLayout(boolean onlineChecked) {
+    if(onlineChecked) {
+      if (mGoogleApiClient != null && mGoogleApiClient.isConnected()) {
+        mSignInBar.setVisibility(View.GONE);
+        mSignOutBar.setVisibility(View.VISIBLE);
+      } else {
+        mSignOutBar.setVisibility(View.GONE);
+        mSignInBar.setVisibility(View.VISIBLE);
+      }
+    } else {
+      mSignInBar.setVisibility(View.GONE);
+      mSignOutBar.setVisibility(View.GONE);
+    }
   }
 
   @Override
