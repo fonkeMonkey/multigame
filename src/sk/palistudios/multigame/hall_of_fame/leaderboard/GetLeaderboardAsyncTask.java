@@ -87,7 +87,7 @@ public class GetLeaderboardAsyncTask extends AsyncTask<Void, Void, List<Leaderbo
 
     mProgressDialog.dismiss();
 
-    if(mCallback != null) {
+    if(mCallback != null && !isCancelled()) {
       mCallback.onGetLeaderboardFinish(scores);
     }
   }

@@ -39,6 +39,8 @@ public class HallOfFameActivity extends BaseActivity implements GoogleApiClient
   private boolean mAutoStartSignInflow = true;
   private boolean mSignInClicked = false;
 
+  private GetLeaderboardAsyncTask mGetLeaderboardAsyncTask;
+
   private boolean mFirstConnect;
 
   private HofArrayAdapter mLocalLeaderboardAdapter;
@@ -200,6 +202,10 @@ public class HallOfFameActivity extends BaseActivity implements GoogleApiClient
   protected void onDestroy() {
     super.onDestroy();
 
+    if(mGetLeaderboardAsyncTask != null) {
+      mGetLeaderboardAsyncTask.cancel(true);
+    }
+
     if (mGoogleApiClient.isConnected()) {
       mGoogleApiClient.disconnect();
     }
@@ -209,9 +215,9 @@ public class HallOfFameActivity extends BaseActivity implements GoogleApiClient
   public void onConnected(Bundle bundle) {
     refreshSignInLayout(mSwitchOnline.isChecked());
 
-    final GetLeaderboardAsyncTask task = new GetLeaderboardAsyncTask(this,
+    mGetLeaderboardAsyncTask = new GetLeaderboardAsyncTask(this,
         mGoogleApiClient, this);
-    task.execute();
+    mGetLeaderboardAsyncTask.execute();
   }
 
   @Override
