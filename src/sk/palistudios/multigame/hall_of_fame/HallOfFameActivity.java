@@ -3,6 +3,7 @@ package sk.palistudios.multigame.hall_of_fame;
 import java.util.List;
 
 import android.app.ProgressDialog;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.view.ViewGroup;
@@ -12,8 +13,8 @@ import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.SignInButton;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.games.Games;
-import com.google.android.gms.games.Player;
 import com.google.android.gms.plus.Plus;
+import com.google.example.games.basegameutils.BaseGameUtils;
 import sk.palistudios.multigame.BaseActivity;
 import sk.palistudios.multigame.R;
 import sk.palistudios.multigame.game.persistence.GameSharedPref;
@@ -28,6 +29,12 @@ public class HallOfFameActivity extends BaseActivity implements GoogleApiClient
 
   // Client used to interact with Google APIs
   private GoogleApiClient mGoogleApiClient;
+
+  private static final int REQUEST_SIGN_IN = 9001;
+
+  private boolean mResolvingConnectionFailure = false;
+  private boolean mAutoStartSignInflow = true;
+  private boolean mSignInClicked = false;
 
   private boolean mFirstConnect;
 
@@ -93,6 +100,7 @@ public class HallOfFameActivity extends BaseActivity implements GoogleApiClient
     mSignInButton.setOnClickListener(new View.OnClickListener() {
       @Override
       public void onClick(View v) {
+        mSignInClicked = true;
         mGoogleApiClient.connect();
       }
     });
@@ -100,6 +108,7 @@ public class HallOfFameActivity extends BaseActivity implements GoogleApiClient
     mSignOutButton.setOnClickListener(new View.OnClickListener() {
       @Override
       public void onClick(View v) {
+        mSignInClicked = false;
         Games.signOut(mGoogleApiClient);
         if (mGoogleApiClient.isConnected()) {
           mGoogleApiClient.disconnect();
@@ -171,6 +180,20 @@ public class HallOfFameActivity extends BaseActivity implements GoogleApiClient
   }
 
   @Override
+  protected void onActivityResult(int requestCode, int resultCode, Intent intent) {
+    super.onActivityResult(requestCode, resultCode, intent);
+    if (requestCode == REQUEST_SIGN_IN) {
+      mSignInClicked = false;
+      mResolvingConnectionFailure = false;
+      if (resultCode == RESULT_OK) {
+        mGoogleApiClient.connect();
+      } else {
+        BaseGameUtils.showActivityResultError(this, requestCode, resultCode, R.string.signin_other_error);
+      }
+    }
+  }
+
+  @Override
   protected void onDestroy() {
     super.onDestroy();
 
@@ -191,7 +214,27 @@ public class HallOfFameActivity extends BaseActivity implements GoogleApiClient
 
   @Override
   public void onConnectionFailed(ConnectionResult connectionResult) {
-    Toast.makeText(this, getString(R.string.signin_other_error), Toast.LENGTH_LONG).show();
+    if (mResolvingConnectionFailure) {
+      // already resolving
+      return;
+    }
+
+    // if the sign-in button was clicked or if auto sign-in is enabled,
+    // launch the sign-in flow
+    if (mSignInClicked || mAutoStartSignInflow) {
+      mAutoStartSignInflow = false;
+      mSignInClicked = false;
+      mResolvingConnectionFailure = true;
+
+      // Attempt to resolve the connection failure using BaseGameUtils.
+      // The R.string.signin_other_error value should reference a generic
+      // error string in your strings.xml file, such as "There was
+      // an issue with sign-in, please try again later."
+      if (!BaseGameUtils.resolveConnectionFailure(this, mGoogleApiClient, connectionResult,
+          REQUEST_SIGN_IN, getString(R.string.signin_other_error))) {
+        mResolvingConnectionFailure = false;
+      }
+    }
   }
 
   public void refreshSignInLayout(boolean onlineChecked) {

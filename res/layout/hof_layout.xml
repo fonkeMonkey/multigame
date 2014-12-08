@@ -43,9 +43,9 @@
         android:layout_width="0dp"
         android:layout_weight="1"
         android:layout_height="wrap_content"
-        android:text="@string/sign_in_why"
         android:layout_marginLeft="10dp"
         android:layout_marginStart="10dp"
+        android:text="@string/sign_in_why"
         android:textColor="@android:color/black" />
   </LinearLayout>
 
@@ -64,9 +64,9 @@
         android:layout_width="0dp"
         android:layout_weight="1"
         android:layout_height="wrap_content"
-        android:text="@string/you_are_signed_in"
         android:layout_marginRight="10dp"
         android:layout_marginEnd="10dp"
+        android:text="@string/you_are_signed_in"
         android:textColor="@android:color/black" />
 
     <Button
