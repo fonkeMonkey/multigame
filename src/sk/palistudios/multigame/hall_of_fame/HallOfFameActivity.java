@@ -13,11 +13,14 @@ import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.SignInButton;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.games.Games;
+import com.google.android.gms.games.leaderboard.LeaderboardScore;
 import com.google.android.gms.plus.Plus;
 import com.google.example.games.basegameutils.BaseGameUtils;
 import sk.palistudios.multigame.BaseActivity;
 import sk.palistudios.multigame.R;
 import sk.palistudios.multigame.game.persistence.GameSharedPref;
+import sk.palistudios.multigame.hall_of_fame.leaderboard.GetLeaderboardAsyncTask;
+import sk.palistudios.multigame.hall_of_fame.leaderboard.GetLeaderboardCallback;
 import sk.palistudios.multigame.tools.DisplayHelper;
 import sk.palistudios.multigame.tools.SkinManager;
 
@@ -25,7 +28,7 @@ import sk.palistudios.multigame.tools.SkinManager;
  * @author Pali
  */
 public class HallOfFameActivity extends BaseActivity implements GoogleApiClient
-    .ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener {
+    .ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener, GetLeaderboardCallback {
 
   // Client used to interact with Google APIs
   private GoogleApiClient mGoogleApiClient;
@@ -205,6 +208,10 @@ public class HallOfFameActivity extends BaseActivity implements GoogleApiClient
   @Override
   public void onConnected(Bundle bundle) {
     refreshSignInLayout(mSwitchOnline.isChecked());
+
+    final GetLeaderboardAsyncTask task = new GetLeaderboardAsyncTask(this,
+        mGoogleApiClient, this);
+    task.execute();
   }
 
   @Override
@@ -249,6 +256,28 @@ public class HallOfFameActivity extends BaseActivity implements GoogleApiClient
     } else {
       mSignInBar.setVisibility(View.GONE);
       mSignOutBar.setVisibility(View.GONE);
+    }
+  }
+
+  @Override
+  public void onGetLeaderboardFinish(List<LeaderboardScore> scoresList) {
+    if (!scoresList.isEmpty()) {
+      final int size = scoresList.size();
+      final HofItem[] items = new HofItem[size];
+      LeaderboardScore score;
+      for(int i = 0; i < size; i++) {
+        score = scoresList.get(i);
+        long rawScore = score.getRawScore();
+        if(rawScore > Integer.MAX_VALUE) {
+          rawScore = Integer.MAX_VALUE;
+        }
+        items[i] = new HofItem(score.getScoreHolderDisplayName(), (int) rawScore);
+        items[i].setPosition((int)score.getRank());
+      }
+      mOnlineLeaderboardAdapter = new HofArrayAdapter(this, items);
+      mListView.setAdapter(mOnlineLeaderboardAdapter);
+    } else {
+      Toast.makeText(this, getString(R.string.leaderboard_no_data), Toast.LENGTH_LONG).show();
     }
   }
 

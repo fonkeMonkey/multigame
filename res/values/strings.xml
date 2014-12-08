@@ -194,4 +194,7 @@
   <string name="license_failed">License check failed.</string>
   <string name="unknown_error">Unknown error.</string>
 
+  <string name="getting_leaderboard">Getting leaderboard. Please wait...</string>
+  <string name="leaderboard_no_data">No data downloaded. Please, try again later.</string>
+
 </resources>
