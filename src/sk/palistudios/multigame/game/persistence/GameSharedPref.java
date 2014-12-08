@@ -60,6 +60,25 @@ public class GameSharedPref {
     mEditor.commit();
   }
 
+  /**
+   * Returns whether the new highest score was alredy submitted to online leaderboard.
+   *
+   * @return True if submitted, false otherwise.
+   */
+  public static boolean getHighestScoreSubmitted() {
+    return mSharedPreferences.getBoolean("highestScoreSubmitted", false);
+  }
+
+  /**
+   * Sets whether the local top score was already submitted to online leaderboard.
+   *
+   * @param submitted True to submitted, false otherwise.
+   */
+  public static void setHighestScoreSubmitted(boolean submitted) {
+    mEditor.putBoolean("highestScoreSubmitted", submitted);
+    mEditor.commit();
+  }
+
   public static void saveGameDetails(final int scoreToSave, final int levelToSave,
       final int framesToSave, final boolean[] activeMinigames) {
     GameSharedPref.mEditor.putInt("score", scoreToSave);

@@ -115,7 +115,7 @@ public class HallOfFameActivity extends BaseActivity implements GoogleApiClient
       public void onClick(View v) {
         mSignInClicked = false;
         Games.signOut(mGoogleApiClient);
-        if (mGoogleApiClient.isConnected()) {
+        if (isConnected()) {
           mGoogleApiClient.disconnect();
         }
         refreshSignInLayout(true);
@@ -154,7 +154,7 @@ public class HallOfFameActivity extends BaseActivity implements GoogleApiClient
           mListView.setAdapter(mOnlineLeaderboardAdapter);
         }
 
-        if(mFirstConnect && mGoogleApiClient != null && !mGoogleApiClient.isConnected()) {
+        if(mFirstConnect && !isConnected()) {
           mGoogleApiClient.connect();
           mFirstConnect = false;
         }
@@ -206,14 +206,26 @@ public class HallOfFameActivity extends BaseActivity implements GoogleApiClient
       mGetLeaderboardAsyncTask.cancel(true);
     }
 
-    if (mGoogleApiClient.isConnected()) {
+    if (isConnected()) {
       mGoogleApiClient.disconnect();
     }
+  }
+
+  private boolean isConnected() {
+    return (mGoogleApiClient != null && mGoogleApiClient.isConnected());
   }
 
   @Override
   public void onConnected(Bundle bundle) {
     refreshSignInLayout(mSwitchOnline.isChecked());
+
+    final boolean shouldSubmit = ((GameSharedPref.getHighestScore() > 0) && !GameSharedPref
+        .getHighestScoreSubmitted());
+    if (isConnected() && shouldSubmit) {
+      Games.Leaderboards.submitScore(mGoogleApiClient, getString(R.string.google_play_leaderboard_id),
+          GameSharedPref.getHighestScore());
+      GameSharedPref.setHighestScoreSubmitted(true);
+    }
 
     mGetLeaderboardAsyncTask = new GetLeaderboardAsyncTask(this,
         mGoogleApiClient, this);
@@ -252,7 +264,7 @@ public class HallOfFameActivity extends BaseActivity implements GoogleApiClient
 
   public void refreshSignInLayout(boolean onlineChecked) {
     if(onlineChecked) {
-      if (mGoogleApiClient != null && mGoogleApiClient.isConnected()) {
+      if (isConnected()) {
         mSignInBar.setVisibility(View.GONE);
         mSignOutBar.setVisibility(View.VISIBLE);
       } else {
