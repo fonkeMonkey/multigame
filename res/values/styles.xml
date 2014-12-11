@@ -2,66 +2,67 @@
 <resources>
 
   <!-- Base application theme. -->
-    <style name="AppTheme" parent="Theme.AppCompat.Light.DarkActionBar">
-        <!-- Customize your theme here. -->
-    </style>
+  <style name="AppTheme" parent="Theme.AppCompat.Light.DarkActionBar">
+    <!-- Customize your theme here. -->
+  </style>
 
-    <style name="TextView.Menu" parent="android:Widget.TextView">
-        <item name="android:layout_width">match_parent</item>
-        <item name="android:layout_height">wrap_content</item>
-        <item name="android:layout_marginTop">@dimen/menu_item_marginVertical</item>
-        <item name="android:layout_marginBottom">@dimen/menu_item_marginVertical</item>
-        <item name="android:paddingTop">@dimen/menu_item_paddingVertical</item>
-        <item name="android:paddingBottom">@dimen/menu_item_paddingVertical</item>
-        <item name="android:gravity">center</item>
-        <item name="android:textColor">@android:color/white</item>
-        <item name="android:textSize">@dimen/menu_item_textSize</item>
-        <item name="android:background">@drawable/xml_bg_menu_item</item>
-        <item name="android:clickable">true</item>
-        <item name="android:focusable">true</item>
-    </style>
+  <style name="TextView.Menu" parent="android:Widget.TextView">
+    <item name="android:layout_width">match_parent</item>
+    <item name="android:layout_height">wrap_content</item>
+    <item name="android:layout_marginTop">@dimen/menu_item_marginVertical</item>
+    <item name="android:layout_marginBottom">@dimen/menu_item_marginVertical</item>
+    <item name="android:paddingTop">@dimen/menu_item_paddingVertical</item>
+    <item name="android:paddingBottom">@dimen/menu_item_paddingVertical</item>
+    <item name="android:gravity">center</item>
+    <item name="android:textColor">@android:color/white</item>
+    <item name="android:textSize">@dimen/menu_item_textSize</item>
+    <item name="android:background">@drawable/xml_bg_menu_item</item>
+    <item name="android:clickable">true</item>
+    <item name="android:focusable">true</item>
+  </style>
 
-    <style name="TextView.Header" parent="android:Widget.TextView">
-        <item name="android:layout_width">wrap_content</item>
-        <item name="android:layout_height">wrap_content</item>
-        <item name="android:fontFamily">sans-serif-black</item>
-        <item name="android:textStyle">bold</item>
-        <item name="android:textSize">@dimen/header_textSize</item>
-        <item name="android:layout_marginTop">@dimen/activity_vertical_margin</item>
-        <item name="android:layout_marginBottom">@dimen/activity_vertical_margin</item>
-        <item name="android:textColor">@color/text_header</item>
-    </style>
+  <style name="TextView.Header" parent="android:Widget.TextView">
+    <item name="android:layout_width">wrap_content</item>
+    <item name="android:layout_height">wrap_content</item>
+    <item name="android:fontFamily">sans-serif-black</item>
+    <item name="android:textStyle">bold</item>
+    <item name="android:textSize">@dimen/header_textSize</item>
+    <item name="android:layout_marginTop">@dimen/activity_vertical_margin</item>
+    <item name="android:layout_marginBottom">@dimen/activity_vertical_margin</item>
+    <item name="android:textColor">@color/text_header</item>
+  </style>
 
-    <style name="TextView.Customize.MenuItem" parent="android:Widget.TextView">
-        <item name="android:layout_width">wrap_content</item>
-        <item name="android:layout_height">match_parent</item>
-        <item name="android:clickable">true</item>
-        <item name="android:gravity">center</item>
-        <item name="android:padding">10dp</item>
-        <item name="android:fontFamily">sans-serif-black</item>
-        <item name="android:textStyle">bold</item>
-        <item name="android:textSize">@dimen/header_customize_menuitem_textSize</item>
-        <item name="android:textColor">@android:color/white</item>
-        <item name="android:background">@drawable/xml_bg_menu_item</item>
-    </style>
+  <style name="TextView.Customize.MenuItem" parent="android:Widget.TextView">
+    <item name="android:layout_width">wrap_content</item>
+    <item name="android:layout_height">match_parent</item>
+    <item name="android:layout_weight">1</item>
+    <item name="android:clickable">true</item>
+    <item name="android:gravity">center</item>
+    <item name="android:padding">10dp</item>
+    <item name="android:fontFamily">sans-serif-black</item>
+    <item name="android:textStyle">bold</item>
+    <item name="android:textSize">@dimen/header_customize_menuitem_textSize</item>
+    <item name="android:textColor">@android:color/white</item>
+    <item name="android:background">@drawable/xml_bg_menu_item</item>
+  </style>
 
-    <style name="TextView.Customize.Header" parent="android:Widget.TextView">
-        <item name="android:layout_width">match_parent</item>
-        <item name="android:layout_height">wrap_content</item>
-        <item name="android:gravity">center_horizontal</item>
-        <item name="android:textSize">@dimen/header_customize_textSize</item>
-        <item name="android:textColor">@color/text_customize_header</item>
-        <item name="android:fontFamily">sans-serif-black</item>
-        <item name="android:textStyle">bold</item>
-    </style>
+  <style name="TextView.Customize.Header" parent="android:Widget.TextView">
+    <item name="android:layout_width">match_parent</item>
+    <item name="android:layout_height">wrap_content</item>
+    <item name="android:gravity">center_horizontal</item>
+    <item name="android:textSize">@dimen/header_customize_textSize</item>
+    <item name="android:textColor">@color/text_customize_header</item>
+    <item name="android:fontFamily">sans-serif-black</item>
+    <item name="android:textStyle">bold</item>
+  </style>
 
-    <style name="TextView.PreferenceSwitch" parent="android:Widget.TextView">
-        <item name="android:layout_width">wrap_content</item>
-        <item name="android:layout_height">wrap_content</item>
-        <item name="android:fontFamily">sans-serif-black</item>
-        <item name="android:textStyle">bold</item>
-        <item name="android:includeFontPadding">false</item>
-    </style>
+  <style name="TextView.PreferenceSwitch" parent="android:Widget.TextView">
+    <item name="android:layout_width">wrap_content</item>
+    <item name="android:layout_height">wrap_content</item>
+    <item name="android:fontFamily">sans-serif-black</item>
+    <item name="android:textStyle">bold</item>
+    <item name="android:includeFontPadding">false</item>
+  </style>
 
   <style name="Nadpis" parent="@android:style/TextAppearance.Medium">
     <item name="android:layout_width">fill_parent</item>

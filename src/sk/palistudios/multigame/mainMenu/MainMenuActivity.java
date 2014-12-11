@@ -17,6 +17,7 @@ import com.facebook.Session;
 import sk.palistudios.multigame.BaseActivity;
 import sk.palistudios.multigame.MgTracker;
 import sk.palistudios.multigame.R;
+import sk.palistudios.multigame.customization_center.CustomizationCenterActivity;
 import sk.palistudios.multigame.game.GameActivity;
 import sk.palistudios.multigame.game.GameDialogs;
 import sk.palistudios.multigame.game.persistence.GameSharedPref;
@@ -166,7 +167,7 @@ public class MainMenuActivity extends BaseActivity {
   public void showMGC(View view) {
     SoundEffectsCenter.playForwardSound(MainMenuActivity.this);
     Intent intent = new Intent(this,
-        sk.palistudios.multigame.customization_center.CustomizationCenterActivity.class);
+        CustomizationCenterActivity.class);
     startActivity(intent);
   }
 

@@ -1,24 +1,47 @@
 <?xml version="1.0" encoding="utf-8"?>
-<TabHost
+<LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
-    android:id="@android:id/tabhost"
     android:layout_width="fill_parent"
-    android:layout_height="fill_parent">
+    android:layout_height="fill_parent"
+    android:orientation="vertical">
 
-  <LinearLayout
-      android:layout_width="fill_parent"
-      android:layout_height="fill_parent"
-      android:orientation="vertical">
+    <HorizontalScrollView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:fillViewport="true"
+        android:layout_gravity="center_horizontal">
 
-    <TabWidget
-        android:id="@android:id/tabs"
-        android:layout_width="fill_parent"
-        android:background="#FFFFFF"
-        android:layout_height="wrap_content" />
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+            <CheckedTextView
+                android:id="@+id/customize_minigames"
+                style="@style/TextView.Customize.MenuItem"
+                android:text="@string/cc_minigames_tab_name" />
 
-    <FrameLayout
-        android:id="@android:id/tabcontent"
-        android:layout_width="fill_parent"
-        android:layout_height="fill_parent" />
-  </LinearLayout>
-</TabHost>
+            <CheckedTextView
+                android:id="@+id/customize_skins"
+                style="@style/TextView.Customize.MenuItem"
+                android:text="@string/cc_skins_tab_name" />
+
+            <CheckedTextView
+                android:id="@+id/customize_music"
+                style="@style/TextView.Customize.MenuItem"
+                android:text="@string/cc_music_tab_name" />
+
+            <CheckedTextView
+                android:id="@+id/customize_achievements"
+                style="@style/TextView.Customize.MenuItem"
+                android:text="@string/cc_achievements_tab_name" />
+
+        </LinearLayout>
+    </HorizontalScrollView>
+
+    <android.support.v4.view.ViewPager
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        android:id="@+id/pager"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
+
+</LinearLayout>

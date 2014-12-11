@@ -3,8 +3,8 @@
 <selector xmlns:android="http://schemas.android.com/apk/res/android">
 
     <item
-            android:state_pressed="true"
-            android:drawable="@color/bg_menu_item_pressed" />
+            android:state_checked="true"
+            android:drawable="@color/quad_cust_pager_selected" />
 
     <item
             android:drawable="@android:color/transparent" />

@@ -1,4 +1,4 @@
-package sk.palistudios.multigame.customization_center.mgc;
+package sk.palistudios.multigame.customization_center.minigames;
 
 // @author Pali
 

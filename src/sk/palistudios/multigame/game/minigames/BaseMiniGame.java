@@ -32,6 +32,10 @@ abstract public class BaseMiniGame implements Serializable, ISecondsObserver {
     Touch
   }
 
+  public enum Minigame {
+    BALANCE, BOUNCER, BIRD, CATCHER, GATHERER, INVADER,
+  }
+
   public BaseMiniGame(String fileName, int position, GameActivity game) {
     mFileName = fileName;
     mPosition = position;

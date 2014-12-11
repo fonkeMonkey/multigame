@@ -4,7 +4,7 @@
  */
 package sk.palistudios.multigame;
 
-import android.app.Activity;
+import android.support.v4.app.FragmentActivity;
 import android.view.ViewGroup;
 
 import sk.palistudios.multigame.tools.SkinManager;
@@ -13,7 +13,7 @@ import sk.palistudios.multigame.tools.sound.SoundEffectsCenter;
 /**
  * @author virdzek
  */
-public abstract class BaseActivity extends Activity {
+public abstract class BaseActivity extends FragmentActivity {
   //TODO VL mutey nie sú akoby 'oproti' mal by byť v onStart nie?
 
   /*

@@ -1,192 +1,172 @@
 package sk.palistudios.multigame.customization_center;
 
-import java.util.ArrayList;
-
-import android.app.Activity;
-import android.app.TabActivity;
-import android.content.Intent;
-import android.media.AudioManager;
-import android.os.Build;
 import android.os.Bundle;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentStatePagerAdapter;
+import android.support.v4.view.PagerAdapter;
+import android.support.v4.view.ViewPager;
 import android.view.View;
-import android.view.View.OnClickListener;
-import android.widget.TabHost;
-import android.widget.TabHost.TabSpec;
-import android.widget.TextView;
+import android.widget.CheckedTextView;
 
+import sk.palistudios.multigame.BaseActivity;
+import sk.palistudios.multigame.MgTracker;
 import sk.palistudios.multigame.R;
-import sk.palistudios.multigame.customization_center.achievements.AchievementsCenterListActivity;
-import sk.palistudios.multigame.customization_center.mgc.MinigamesCenterListActivity;
-import sk.palistudios.multigame.customization_center.moreGames.MoreGamesCenterActivity;
-import sk.palistudios.multigame.customization_center.music.MusicCenterListActivity;
-import sk.palistudios.multigame.customization_center.skins.SkinItem;
-import sk.palistudios.multigame.customization_center.skins.SkinsCenterListActivity;
-import sk.palistudios.multigame.mainMenu.DebugSettings;
+import sk.palistudios.multigame.customization_center.minigames.MinigamesFragment;
+import sk.palistudios.multigame.game.persistence.GameSharedPref;
+import sk.palistudios.multigame.tools.SkinManager;
 import sk.palistudios.multigame.tools.sound.SoundEffectsCenter;
 
-//import com.appflood.AppFlood;
+public class CustomizationCenterActivity extends BaseActivity
+    implements ViewPager.OnPageChangeListener {
+  /**
+   * The number of pages (wizard steps) to show in this demo.
+   */
+  private static final int NUM_PAGES = 4;
 
-public class CustomizationCenterActivity extends TabActivity {
-  // TabSpec Names
+  /**
+   * The pager widget, which handles animation and allows swiping horizontally to access previous
+   * and next wizard steps.
+   */
+  private ViewPager mPager;
 
-  private static ArrayList<TextView> headers = new ArrayList<TextView>();
-  private static ArrayList<IAdapter> adapters = new ArrayList<IAdapter>();
-  private String MINIGAMES_SPEC;
-  private String SKINS_SPEC;
-  private String MUSIC_SPEC;
-  private String ACHIEVEMENTS_SPEC;
-  private String MORE_GAMES_SPEC;
-
-  public static void changeSkinForAllTabs(SkinItem currentSkin) {
-    //zmen header
-    for (TextView header : headers) {
-      header.setBackgroundColor(currentSkin.getColorHeader());
-    }
-
-    for (IAdapter adapter : adapters) {
-      adapter.setColorChosen(currentSkin.getColorChosen());
-      adapter.notifyDataSetChanged();
-    }
-
-  }
-
-  public static void addAdapter(IAdapter adapter) {
-    adapters.add(adapter);
-  }
-
-  public static void addHeader(TextView header) {
-    headers.add(header);
-  }
+  /**
+   * The pager adapter, which provides the pages to the view pager widget.
+   */
+  private PagerAdapter mPagerAdapter;
+  private CheckedTextView minigamesButton;
+  private CheckedTextView achievementsButton;
+  private CheckedTextView musicButton;
+  private CheckedTextView skinsButton;
 
   @Override
   public void onCreate(Bundle savedInstanceState) {
+    //TODO debug
+    GameSharedPref.initSharedPref(this);
+    MgTracker.init(this);
+
     super.onCreate(savedInstanceState);
-    setVolumeControlStream(AudioManager.STREAM_MUSIC);
-
-    MINIGAMES_SPEC = (String) getResources().getString(R.string.cc_minigames_tab_name);
-    SKINS_SPEC = (String) getResources().getString(R.string.cc_skins_tab_name);
-    ACHIEVEMENTS_SPEC = (String) getResources().getString(R.string.cc_achievements_tab_name);
-    MUSIC_SPEC = (String) getResources().getString(R.string.cc_music_tab_name);
-
-    overridePendingTransition(R.anim.fadein, R.anim.fadeout);
     setContentView(R.layout.customization_center);
 
-    TabHost tabHost = getTabHost();
+    // Instantiate a ViewPager and a PagerAdapter.
+    mPager = (ViewPager) findViewById(R.id.pager);
+    mPagerAdapter = new ScreenSlidePagerAdapter(getSupportFragmentManager());
+    mPager.setAdapter(mPagerAdapter);
+    mPager.setOnPageChangeListener(this);
 
-    TabSpec minigamesTab = tabHost.newTabSpec(MINIGAMES_SPEC);
-    //        gamesTab.setIndicator(MINIGAMES_SPEC, getResources().getDrawable(R.drawable
-    // .icon_inbox));
-    minigamesTab.setIndicator(MINIGAMES_SPEC);
-    Intent minigamesIntent = new Intent(this, MinigamesCenterListActivity.class);
-    minigamesTab.setContent(minigamesIntent);
+    minigamesButton = (CheckedTextView) findViewById(R.id.customize_minigames);
+    achievementsButton = (CheckedTextView) findViewById(R.id.customize_achievements);
+    musicButton = (CheckedTextView) findViewById(R.id.customize_music);
+    skinsButton = (CheckedTextView) findViewById(R.id.customize_skins);
+    minigamesButton.setChecked(true);
 
-    TabSpec skinsTab = tabHost.newTabSpec(SKINS_SPEC);
-    skinsTab.setIndicator(SKINS_SPEC);
-    Intent skinsIntent = new Intent(this, SkinsCenterListActivity.class);
-    skinsTab.setContent(skinsIntent);
+    minigamesButton.setOnClickListener(new View.OnClickListener() {
+      @Override
+      public void onClick(View v) {
+        SoundEffectsCenter.playTabSound(CustomizationCenterActivity.this);
+        mPager.setCurrentItem(0);
+        checkTextView(minigamesButton);
+      }
+    });
+    musicButton.setOnClickListener(new View.OnClickListener() {
+      @Override
+      public void onClick(View v) {
+        SoundEffectsCenter.playTabSound(CustomizationCenterActivity.this);
+        mPager.setCurrentItem(2);
+        checkTextView(musicButton);
+      }
+    });
+    skinsButton.setOnClickListener(new View.OnClickListener() {
+      @Override
+      public void onClick(View v) {
+        SoundEffectsCenter.playTabSound(CustomizationCenterActivity.this);
+        mPager.setCurrentItem(1);
+        checkTextView(skinsButton);
+      }
+    });
+    achievementsButton.setOnClickListener(new View.OnClickListener() {
+      @Override
+      public void onClick(View v) {
+        SoundEffectsCenter.playTabSound(CustomizationCenterActivity.this);
+        mPager.setCurrentItem(3);
+        checkTextView(achievementsButton);
+      }
+    });
+  }
 
-    // Profile Tab
-    TabSpec MusicTab = tabHost.newTabSpec(MUSIC_SPEC);
-    //        SoundsTab.setIndicator(SOUNDS_SPEC, getResources().getDrawable(R.drawable
-    // .icon_profile));
-    MusicTab.setIndicator(MUSIC_SPEC);
-    Intent musicIntent = new Intent(this, MusicCenterListActivity.class);
-    MusicTab.setContent(musicIntent);
+  private void checkTextView(CheckedTextView textView) {
+    minigamesButton.setChecked(textView.equals(minigamesButton) ? true : false);
+    achievementsButton.setChecked(textView.equals(achievementsButton) ? true : false);
+    musicButton.setChecked(textView.equals(musicButton) ? true : false);
+    skinsButton.setChecked(textView.equals(skinsButton) ? true : false);
+  }
 
-    TabSpec achievementsTab = tabHost.newTabSpec(ACHIEVEMENTS_SPEC);
-    //        SoundsTab.setIndicator(SOUNDS_SPEC, getResources().getDrawable(R.drawable
-    // .icon_profile));
-    achievementsTab.setIndicator(ACHIEVEMENTS_SPEC);
-    Intent achievementsIntent = new Intent(this, AchievementsCenterListActivity.class);
-    achievementsTab.setContent(achievementsIntent);
+  @Override
+  protected void reskinLocally(SkinManager.Skin currentSkin) {
+  }
 
-    if (DebugSettings.adsActivated) {
-      MORE_GAMES_SPEC = (String) getResources().getString(R.string.cc_more_games_tab_name);
-      TabSpec moreGamesTab = tabHost.newTabSpec(MORE_GAMES_SPEC);
-      //        SoundsTab.setIndicator(SOUNDS_SPEC, getResources().getDrawable(R.drawable
-      // .icon_profile));
-      moreGamesTab.setIndicator(MORE_GAMES_SPEC);
-      Intent moreGamesIntent = new Intent(this, MoreGamesCenterActivity.class);
-      moreGamesTab.setContent(moreGamesIntent);
-      tabHost.addTab(moreGamesTab); // Adding Profile tab
+  @Override
+  public void onPageScrolled(int i, float v, int i1) {
 
+  }
+
+  @Override
+  public void onPageSelected(int i) {
+    switch (i) {
+      case 0:
+        checkTextView(minigamesButton);
+        break;
+      case 1:
+        checkTextView(skinsButton);
+        break;
+      case 2:
+        checkTextView(musicButton);
+        break;
+      case 3:
+        checkTextView(achievementsButton);
+        break;
+      default:
+        throw new RuntimeException("Pager's onPageSelected() out of bounds.");
+    }
+  }
+
+  @Override
+  public void onPageScrollStateChanged(int i) {
+
+  }
+
+  /**
+   * A simple pager adapter that represents 4 ScreenSlidePageFragment objects, in sequence.
+   */
+  private class ScreenSlidePagerAdapter extends FragmentStatePagerAdapter {
+    Fragment[] mFragments = new Fragment[NUM_PAGES];
+
+    public ScreenSlidePagerAdapter(FragmentManager fm) {
+      super(fm);
+      mFragments[0] = new MinigamesFragment();
+      mFragments[1] = new MinigamesFragment();
+      mFragments[2] = new MinigamesFragment();
+      mFragments[3] = new MinigamesFragment();
     }
 
-    // Adding all TabSpec to TabHost
-    tabHost.addTab(minigamesTab); // Adding Inbox tab
-    tabHost.addTab(skinsTab); // Adding Outbox tab
-    tabHost.addTab(MusicTab); // Adding Profile tab
-    tabHost.addTab(achievementsTab); // Adding Profile tab
-
-    tabHost.setCurrentTab(0);
-
-    final Activity act = this;
-
-    for (int i = 0; i < 4; i++) {
-      final int rank = i;
-      getTabWidget().getChildAt(i).setOnClickListener(new OnClickListener() {
-        @Override
-        public void onClick(View v) {
-          getTabHost().setCurrentTab(rank);
-          SoundEffectsCenter.playTabSound(CustomizationCenterActivity.this);
-        }
-      });
-
+    @Override
+    public Fragment getItem(int position) {
+      switch (position) {
+        case 0:
+          return mFragments[0];
+        case 1:
+          return mFragments[1];
+        case 2:
+          return mFragments[2];
+        case 3:
+          return mFragments[3];
+      }
+      throw new RuntimeException("Pager's getItem() out of bounds.");
     }
 
-    if (DebugSettings.adsActivated) {
-      getTabWidget().getChildAt(4).setOnClickListener(new OnClickListener() {
-        @Override
-        public void onClick(View v) {
-          if (getTabHost().getCurrentTabTag().equals(MORE_GAMES_SPEC)) {
-            getTabHost().setCurrentTab(4);
-          }
-          //                AppFlood.showList(act, AppFlood.LIST_GAME);
-          SoundEffectsCenter.playTabSound(CustomizationCenterActivity.this);
-          //                AppFlood.showPanel(act, AppFlood.PANEL_PORTRAIT);
-        }
-      });
-    }
-    if (android.os.Build.VERSION.SDK_INT > Build.VERSION_CODES.ECLAIR_MR1) {
-      getTabWidget().setStripEnabled(false);
+    @Override
+    public int getCount() {
+      return NUM_PAGES;
     }
   }
-
-  @Override
-  protected void onResume() {
-    super.onResume();
-    SoundEffectsCenter.muteSystemSounds(this, true);
-  }
-
-  @Override
-  protected void onPause() {
-    super.onPause();
-    overridePendingTransition(R.anim.fadein, R.anim.fadeout);
-  }
-
-  @Override
-  public void onStop() {
-    super.onStop();
-    SoundEffectsCenter.muteSystemSounds(this, false);
-  }
-
-  @Override
-  protected void onDestroy() {
-    super.onDestroy();
-    headers.clear();
-    adapters.clear();
-  }
-
-  @Override
-  public void onBackPressed() {
-    super.onBackPressed();
-//    SoundEffectsCenter.playBackSound(this);
-  }
-
-  @Override
-  public void onUserLeaveHint() {
-    super.onUserLeaveHint();
-    finish();
-  }
-
 }

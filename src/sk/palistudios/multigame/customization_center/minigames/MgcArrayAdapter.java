@@ -1,4 +1,4 @@
-package sk.palistudios.multigame.customization_center.mgc;
+package sk.palistudios.multigame.customization_center.minigames;
 
 // @author Pali
 
@@ -15,10 +15,8 @@ import android.widget.TextView;
 
 import sk.palistudios.multigame.R;
 import sk.palistudios.multigame.customization_center.IAdapter;
-import sk.palistudios.multigame.customization_center.skins.SkinItem;
 
 public class MgcArrayAdapter extends ArrayAdapter<MgcItem> implements IAdapter {
-
   private final int colorDisabled;
   TextView mHorizontal;
   TextView mVertical;
@@ -28,14 +26,14 @@ public class MgcArrayAdapter extends ArrayAdapter<MgcItem> implements IAdapter {
   private int lastTActivated;
   private int colorChosen;
   private FrameLayout mFrame;
-  MgcArrayAdapter(Context context, ArrayList<MgcItem> items, SkinItem currentSkin) {
+  MgcArrayAdapter(Context context, ArrayList<MgcItem> items) {
     super(context, R.layout.mgc_listitem, items);
     this.context = context;
     myItems = items;
     lastTActivated = findFirstActiveTouchGame();
-    colorChosen = currentSkin.getColorChosen();
     colorDisabled = context.getResources().getColor(R.color.listview_inactive_item);
   }
+
 
   @Override
   public View getView(int position, View convertView, ViewGroup parent) {
@@ -72,17 +70,17 @@ public class MgcArrayAdapter extends ArrayAdapter<MgcItem> implements IAdapter {
   }
 
   private void showCorrectLeftIcon(View view, char type) {
-    if (type == MinigamesCenterListActivity.SYMBOL_MINIGAME_VERTICAL) {
+    if (type == MinigamesFragment.SYMBOL_MINIGAME_VERTICAL) {
       mHorizontal.setVisibility(View.INVISIBLE);
       mTouch.setVisibility(View.GONE);
       mVertical.setVisibility(View.VISIBLE);
     }
-    if (type == MinigamesCenterListActivity.SYMBOL_MINIGAME_TOUCH) {
+    if (type == MinigamesFragment.SYMBOL_MINIGAME_TOUCH) {
       mHorizontal.setVisibility(View.INVISIBLE);
       mTouch.setVisibility(View.VISIBLE);
       mVertical.setVisibility(View.GONE);
     }
-    if (type == MinigamesCenterListActivity.SYMBOL_MINIGAME_HORIZONTAL) {
+    if (type == MinigamesFragment.SYMBOL_MINIGAME_HORIZONTAL) {
       mHorizontal.setVisibility(View.VISIBLE);
       mTouch.setVisibility(View.GONE);
       mVertical.setVisibility(View.GONE);
@@ -113,7 +111,7 @@ public class MgcArrayAdapter extends ArrayAdapter<MgcItem> implements IAdapter {
 
     for (MgcItem item : myItems) {
       //H or V
-      if (type != MinigamesCenterListActivity.SYMBOL_MINIGAME_TOUCH) {
+      if (type != MinigamesFragment.SYMBOL_MINIGAME_TOUCH) {
         if (item.type == type) {
           item.inactivate();
         }
@@ -138,11 +136,11 @@ public class MgcArrayAdapter extends ArrayAdapter<MgcItem> implements IAdapter {
       }
 
     }
-    if (type == MinigamesCenterListActivity.SYMBOL_MINIGAME_TOUCH) {
+    if (type == MinigamesFragment.SYMBOL_MINIGAME_TOUCH) {
       lastTActivated = tmpLastTActivated;
 
       for (MgcItem item : myItems) {
-        if (item.type == MinigamesCenterListActivity.SYMBOL_MINIGAME_TOUCH) {
+        if (item.type == MinigamesFragment.SYMBOL_MINIGAME_TOUCH) {
           if (item.isChosen() == false) {
             return item.getComputerName();
           }
@@ -156,7 +154,7 @@ public class MgcArrayAdapter extends ArrayAdapter<MgcItem> implements IAdapter {
   private int findFirstActiveTouchGame() {
     for (MgcItem item : myItems) {
 
-      if (item.type == MinigamesCenterListActivity.SYMBOL_MINIGAME_TOUCH) {
+      if (item.type == MinigamesFragment.SYMBOL_MINIGAME_TOUCH) {
         if (item.isChosen() == true) {
           return myItems.indexOf(item);
         }

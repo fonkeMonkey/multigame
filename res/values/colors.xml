@@ -7,6 +7,9 @@
   <color name="quad_text_color_li_active">@color/quad_text_color</color>
   <color name="quad_text_color_li_inactive">#A8B4BF</color>
   <color name="quad_text_color_hof_switch_unpressed">#00A5C7</color>
+  <color name="quad_cust_pager_selected">#035A8C</color>
+
+  <color name="quad_cust_minigame_bg_unchosen">#75A6BB</color>
 
   <color name="threshold_text_color">@android:color/black</color>
   <color name="threshold_text_color_disabled">#B5B5B5</color>
@@ -28,7 +31,6 @@
   <color name="corrupted_text_color_hof_switch_pressed">#FD3608</color>
 
   <!--    Patresk     -->
-  <color name="bg_menu_item_pressed">#33000000</color>
 
   <color name="text_header">#ccffffff</color>
   <color name="text_customize_header">#33ffffff</color>
@@ -130,6 +132,7 @@
   <color name="dialog_button_pressed">#000000</color>
   <color name="dialog_button_focused">#000000</color>
   <color name="dialog_background">#000000</color>
+  <color name="cust_minigame_border_disabled">#76B4C7</color>
 
 
 

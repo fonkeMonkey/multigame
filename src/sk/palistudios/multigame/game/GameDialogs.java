@@ -14,7 +14,7 @@ import com.google.android.gms.analytics.HitBuilders;
 import com.google.android.gms.analytics.Tracker;
 import sk.palistudios.multigame.MgTracker;
 import sk.palistudios.multigame.R;
-import sk.palistudios.multigame.customization_center.mgc.MinigamesCenterListActivity;
+import sk.palistudios.multigame.customization_center.minigames.MinigamesFragment;
 import sk.palistudios.multigame.game.minigames.MinigamesManager;
 import sk.palistudios.multigame.game.persistence.GameSharedPref;
 import sk.palistudios.multigame.hall_of_fame.HallOfFameActivity;
@@ -95,17 +95,17 @@ public class GameDialogs {
       switch (GameActivity.sTutorialLastLevel) {
         case 0:
           symbol =
-              "<font color=#D98179><b>(" + MinigamesCenterListActivity.SYMBOL_MINIGAME_VERTICAL +
+              "<font color=#D98179><b>(" + MinigamesFragment.SYMBOL_MINIGAME_VERTICAL +
                   ")</b></font>";
           break;
         case 1:
           symbol =
-              "<font color=#D98179><b>(" + MinigamesCenterListActivity.SYMBOL_MINIGAME_HORIZONTAL +
+              "<font color=#D98179><b>(" + MinigamesFragment.SYMBOL_MINIGAME_HORIZONTAL +
                   ")</b></font>";
           break;
         case 2:
         case 3:
-          symbol = "<font color=#D98179><b>(" + MinigamesCenterListActivity.SYMBOL_MINIGAME_TOUCH +
+          symbol = "<font color=#D98179><b>(" + MinigamesFragment.SYMBOL_MINIGAME_TOUCH +
               ")</b></font>";
           break;
 
