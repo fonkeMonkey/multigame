@@ -6,6 +6,7 @@ public class HofItem {
   private int position = -1;
   private String name;
   private int score;
+  private String googlePlayerIdentifier;
 
   public HofItem(String name, int score) {
     this.name = name;
@@ -14,6 +15,14 @@ public class HofItem {
 
   public void setPosition(int position) {
     this.position = position;
+  }
+
+  public void setGooglePlayerIdentifier(String googlePlayerIdentifier) {
+    this.googlePlayerIdentifier = googlePlayerIdentifier;
+  }
+
+  public String getGooglePlayerIdentifier() {
+    return googlePlayerIdentifier;
   }
 
   public String getName() {

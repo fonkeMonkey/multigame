@@ -61,21 +61,39 @@ public class GetLeaderboardAsyncTask extends AsyncTask<Void, Void, List<Leaderbo
 
   @Override
   protected List<LeaderboardScore> doInBackground(Void... params) {
-    PendingResult<Leaderboards.LoadScoresResult> result = Games.Leaderboards.loadTopScores(
+    final String currentPlayerId = Games.Players.getCurrentPlayerId(mGoogleApiClient);
+    final PendingResult<Leaderboards.LoadScoresResult> result = Games.Leaderboards.loadTopScores(
         mGoogleApiClient, mContext.getString(R.string.google_play_leaderboard_id),
         LeaderboardVariant.TIME_SPAN_ALL_TIME, LeaderboardVariant.COLLECTION_PUBLIC,
         TOP_SCORES_COUNT, true);
 
-    Leaderboards.LoadScoresResult loadScoresResult = result.await(TIMEOUT_SECONDS, TimeUnit.SECONDS);
+    final Leaderboards.LoadScoresResult loadScoresResult = result.await(TIMEOUT_SECONDS, TimeUnit
+        .SECONDS);
 
-    LeaderboardScoreBuffer buffer = loadScoresResult.getScores();
+    final LeaderboardScoreBuffer buffer = loadScoresResult.getScores();
 
-    List<LeaderboardScore> scores = new ArrayList<LeaderboardScore>();
+    final List<LeaderboardScore> scores = new ArrayList<LeaderboardScore>();
 
-    int count = buffer.getCount();
+    boolean currentPlayerScoreFound = false;
+
+    final int count = buffer.getCount();
+    LeaderboardScore score;
     for(int i = 0; i < count; i++) {
-      LeaderboardScore score = buffer.get(i);
+      score = buffer.get(i);
       scores.add(score);
+      if(score.getScoreHolder().getPlayerId().equals(currentPlayerId)) {
+        currentPlayerScoreFound = true;
+      }
+    }
+
+    if(!currentPlayerScoreFound) {
+      final PendingResult<Leaderboards.LoadPlayerScoreResult> playerResult = Games.Leaderboards
+          .loadCurrentPlayerLeaderboardScore(mGoogleApiClient, mContext.getString(
+                  R.string.google_play_leaderboard_id), LeaderboardVariant.TIME_SPAN_ALL_TIME,
+              LeaderboardVariant.COLLECTION_PUBLIC);
+      final Leaderboards.LoadPlayerScoreResult loadPlayerScoresResult = playerResult.await(
+          TIMEOUT_SECONDS, TimeUnit.SECONDS);
+      scores.add(loadPlayerScoresResult.getScore());
     }
 
     return scores;

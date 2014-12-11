@@ -13,6 +13,7 @@ import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.SignInButton;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.games.Games;
+import com.google.android.gms.games.Player;
 import com.google.android.gms.games.leaderboard.LeaderboardScore;
 import com.google.android.gms.plus.Plus;
 import com.google.example.games.basegameutils.BaseGameUtils;
@@ -30,10 +31,12 @@ import sk.palistudios.multigame.tools.SkinManager;
 public class HallOfFameActivity extends BaseActivity implements GoogleApiClient
     .ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener, GetLeaderboardCallback {
 
+  private static final int REQUEST_SIGN_IN = 9001;
+
   // Client used to interact with Google APIs
   private GoogleApiClient mGoogleApiClient;
 
-  private static final int REQUEST_SIGN_IN = 9001;
+  private String mPlayerIdentifier;
 
   private boolean mResolvingConnectionFailure = false;
   private boolean mAutoStartSignInflow = true;
@@ -51,6 +54,9 @@ public class HallOfFameActivity extends BaseActivity implements GoogleApiClient
 
   private SignInButton mSignInButton;
   private Button mSignOutButton;
+
+  private TextView mSignInMessage;
+  private TextView mSignOutMessage;
 
   private ListView mListView;
   private TextView mHeader;
@@ -101,6 +107,9 @@ public class HallOfFameActivity extends BaseActivity implements GoogleApiClient
 
     mSignInButton = (SignInButton) findViewById(R.id.sign_in_button);
     mSignOutButton = (Button) findViewById(R.id.sign_out_button);
+
+    mSignInMessage = (TextView) findViewById(R.id.sign_in_message);
+    mSignOutMessage = (TextView) findViewById(R.id.sign_out_message);
 
     mSignInButton.setOnClickListener(new View.OnClickListener() {
       @Override
@@ -180,7 +189,7 @@ public class HallOfFameActivity extends BaseActivity implements GoogleApiClient
     }
 
     //adaptery sracky etc
-    mLocalLeaderboardAdapter = new HofArrayAdapter(this, rows);
+    mLocalLeaderboardAdapter = new HofArrayAdapter(this, rows, false, null);
     mListView.setAdapter(mLocalLeaderboardAdapter);
   }
 
@@ -219,9 +228,14 @@ public class HallOfFameActivity extends BaseActivity implements GoogleApiClient
   public void onConnected(Bundle bundle) {
     refreshSignInLayout(mSwitchOnline.isChecked());
 
+    final Player player = Games.Players.getCurrentPlayer(mGoogleApiClient);
+    if (player != null) {
+      mPlayerIdentifier = player.getPlayerId();
+    }
+
     final boolean shouldSubmit = ((GameSharedPref.getHighestScore() > 0) && !GameSharedPref
         .getHighestScoreSubmitted());
-    if (isConnected() && shouldSubmit) {
+    if (shouldSubmit) {
       Games.Leaderboards.submitScore(mGoogleApiClient, getString(R.string.google_play_leaderboard_id),
           GameSharedPref.getHighestScore());
       GameSharedPref.setHighestScoreSubmitted(true);
@@ -291,8 +305,9 @@ public class HallOfFameActivity extends BaseActivity implements GoogleApiClient
         }
         items[i] = new HofItem(score.getScoreHolderDisplayName(), (int) rawScore);
         items[i].setPosition((int)score.getRank());
+        items[i].setGooglePlayerIdentifier(score.getScoreHolder().getPlayerId());
       }
-      mOnlineLeaderboardAdapter = new HofArrayAdapter(this, items);
+      mOnlineLeaderboardAdapter = new HofArrayAdapter(this, items, true, mPlayerIdentifier);
       mListView.setAdapter(mOnlineLeaderboardAdapter);
     } else {
       Toast.makeText(this, getString(R.string.leaderboard_no_data), Toast.LENGTH_LONG).show();
@@ -315,6 +330,14 @@ public class HallOfFameActivity extends BaseActivity implements GoogleApiClient
             R.drawable.xml_bg_hof_switch_quad));
         mSwitchOnline.setTextColor(getResources().getColorStateList(
             R.color.xml_text_hof_switch_quad));
+        if(mSignInMessage != null) {
+          mSignInBar.setBackgroundColor(getResources().getColor(android.R.color.white));
+          mSignOutBar.setBackgroundColor(getResources().getColor(android.R.color.white));
+//          mSignOutButton.setBackgroundResource(R.drawable.xml_bg_hof_sign_out_button_quad);
+          mSignOutButton.setTextColor(getResources().getColor(android.R.color.white));
+          mSignInMessage.setTextColor(getResources().getColor(android.R.color.black));
+          mSignOutMessage.setTextColor(getResources().getColor(android.R.color.black));
+        }
         break;
       case THRESHOLD:
         mSwitchLayout.setBackgroundDrawable(getResources().getDrawable(
@@ -327,6 +350,14 @@ public class HallOfFameActivity extends BaseActivity implements GoogleApiClient
             R.drawable.xml_bg_hof_switch_thres));
         mSwitchOnline.setTextColor(getResources().getColorStateList(
             R.color.xml_text_hof_switch_thres));
+        if(mSignInMessage != null) {
+          mSignInBar.setBackgroundColor(getResources().getColor(android.R.color.white));
+          mSignOutBar.setBackgroundColor(getResources().getColor(android.R.color.white));
+//          mSignOutButton.setBackgroundResource(R.drawable.xml_bg_hof_sign_out_button_thres);
+          mSignOutButton.setTextColor(getResources().getColor(android.R.color.white));
+          mSignInMessage.setTextColor(getResources().getColor(android.R.color.black));
+          mSignOutMessage.setTextColor(getResources().getColor(android.R.color.black));
+        }
         break;
       case DIFFUSE:
         mSwitchLayout.setBackgroundDrawable(getResources().getDrawable(
@@ -339,6 +370,14 @@ public class HallOfFameActivity extends BaseActivity implements GoogleApiClient
             R.drawable.xml_bg_hof_switch_diffuse));
         mSwitchOnline.setTextColor(getResources().getColorStateList(
             R.color.xml_text_hof_switch_diffuse));
+        if(mSignInMessage != null) {
+          mSignInBar.setBackgroundColor(getResources().getColor(android.R.color.white));
+          mSignOutBar.setBackgroundColor(getResources().getColor(android.R.color.white));
+//          mSignOutButton.setBackgroundResource(R.drawable.xml_bg_hof_sign_out_button_diffuse);
+          mSignOutButton.setTextColor(getResources().getColor(android.R.color.white));
+          mSignInMessage.setTextColor(getResources().getColor(android.R.color.black));
+          mSignOutMessage.setTextColor(getResources().getColor(android.R.color.black));
+        }
         break;
       case CORRUPTED:
         mSwitchLayout.setBackgroundDrawable(getResources().getDrawable(
@@ -351,6 +390,14 @@ public class HallOfFameActivity extends BaseActivity implements GoogleApiClient
             R.drawable.xml_bg_hof_switch_corrupt));
         mSwitchOnline.setTextColor(getResources().getColorStateList(
             R.color.xml_text_hof_switch_corrupt));
+        if(mSignInMessage != null) {
+          mSignInBar.setBackgroundColor(getResources().getColor(android.R.color.white));
+          mSignOutBar.setBackgroundColor(getResources().getColor(android.R.color.white));
+//          mSignOutButton.setBackgroundResource(R.drawable.xml_bg_hof_sign_out_button_corrupt);
+          mSignOutButton.setTextColor(getResources().getColor(android.R.color.white));
+          mSignInMessage.setTextColor(getResources().getColor(android.R.color.black));
+          mSignOutMessage.setTextColor(getResources().getColor(android.R.color.black));
+        }
         break;
     }
   }
