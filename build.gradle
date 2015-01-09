@@ -52,6 +52,10 @@ android {
 //            keyAlias "multigame"
 //            keyPassword "..." //System.console().readLine("\n\$ Enter mg password: ")
         }
+        debug {
+            storeFile file(".//!etc//debug.keystore")
+            storePassword "android"
+        }
     }
     buildTypes {
         release {
@@ -59,6 +63,9 @@ android {
             proguardFile getDefaultProguardFile('proguard-android.txt')
             proguardFile 'proguard.cfg'
             signingConfig signingConfigs.release
+        }
+        debug {
+            signingConfig signingConfigs.debug
         }
     }
 }

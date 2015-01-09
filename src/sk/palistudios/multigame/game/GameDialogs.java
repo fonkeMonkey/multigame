@@ -186,6 +186,7 @@ public class GameDialogs {
     final int score = game.getScore();
     if (GameSharedPref.getHighestScore() < game.getScore()){
       GameSharedPref.setHighestScore(game.getScore());
+      GameSharedPref.setHighestScoreSubmitted(false);
     }
 
     DialogInterface.OnClickListener dialogClickListener = new DialogInterface.OnClickListener() {
@@ -251,6 +252,7 @@ public class GameDialogs {
             db.writeIntoHallOfFame(new HofItem(playerName, game.getScore()));
             if (GameSharedPref.getHighestScore() < game.getScore()){
               GameSharedPref.setHighestScore(game.getScore());
+              GameSharedPref.setHighestScoreSubmitted(false);
             }
             intent = new Intent(act, HallOfFameActivity.class);
             game.startActivity(intent);

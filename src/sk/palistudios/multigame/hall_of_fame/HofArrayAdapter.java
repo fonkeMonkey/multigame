@@ -7,6 +7,7 @@ import java.util.Arrays;
 
 import android.content.Context;
 import android.graphics.Typeface;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -20,11 +21,16 @@ public class HofArrayAdapter extends ArrayAdapter<HofItem> {
 
   private ArrayList<HofItem> myItems = new ArrayList<HofItem>();
   private Context mContext;
+  private boolean mOnline;
+  private String mPlayerIdentifier;
 
-  public HofArrayAdapter(Context context, HofItem[] objects) {
+  public HofArrayAdapter(Context context, HofItem[] objects, boolean online, String
+      playerIdentifier) {
     super(context, R.layout.hof_list_item, objects);
     mContext = context;
     myItems = new ArrayList<HofItem>(Arrays.asList(objects));
+    mOnline = online;
+    mPlayerIdentifier = playerIdentifier;
   }
 
   @Override
@@ -53,7 +59,12 @@ public class HofArrayAdapter extends ArrayAdapter<HofItem> {
     nameTV.setText(getItem(position).getName());
     scoreTV.setText(String.valueOf(getItem(position).getScore()));
 
-    boolean isPlayer = shouldBeHiglighted(getItem(position).getName());
+    final boolean isPlayer;
+    if(mOnline) {
+      isPlayer = shouldBeHiglighted(getItem(position).getGooglePlayerIdentifier());
+    } else {
+      isPlayer = shouldBeHiglighted(getItem(position).getName());
+    }
 
     int skinColor;
     if (isPlayer) {
@@ -79,35 +90,44 @@ public class HofArrayAdapter extends ArrayAdapter<HofItem> {
 
   /* Hack, lebo sa mi nechcelo updatovať db. */
   private boolean shouldBeHiglighted(String name) {
-    if (name.equals("Chuck N.")) {
+    if(mOnline) {
+      if(!TextUtils.isEmpty(mPlayerIdentifier)) {
+        if (name.equals(mPlayerIdentifier)) {
+          return true;
+        }
+      }
       return false;
-    }
-    if (name.equals("Steven S.")) {
-      return false;
-    }
-    if (name.equals("Bruce L.")) {
-      return false;
-    }
-    if (name.equals("Bruce W.")) {
-      return false;
-    }
-    if (name.equals("Arnold S.")) {
-      return false;
-    }
-    if (name.equals("Sylvester S.")) {
-      return false;
-    }
-    if (name.equals("Jackie Ch.")) {
-      return false;
-    }
-    if (name.equals("Vin D.")) {
-      return false;
-    }
-    if (name.equals("Denzel W.")) {
-      return false;
-    }
-    if (name.equals("Jason S.")) {
-      return false;
+    } else {
+      if (name.equals("Chuck N.")) {
+        return false;
+      }
+      if (name.equals("Steven S.")) {
+        return false;
+      }
+      if (name.equals("Bruce L.")) {
+        return false;
+      }
+      if (name.equals("Bruce W.")) {
+        return false;
+      }
+      if (name.equals("Arnold S.")) {
+        return false;
+      }
+      if (name.equals("Sylvester S.")) {
+        return false;
+      }
+      if (name.equals("Jackie Ch.")) {
+        return false;
+      }
+      if (name.equals("Vin D.")) {
+        return false;
+      }
+      if (name.equals("Denzel W.")) {
+        return false;
+      }
+      if (name.equals("Jason S.")) {
+        return false;
+      }
     }
     return true;
   }
