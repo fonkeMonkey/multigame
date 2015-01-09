@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:paddingTop="5dp"
+    android:paddingBottom="5dp"
+    android:paddingLeft="10dp"
+    android:paddingRight="10dp">
+
+  <RelativeLayout
+      android:orientation="horizontal"
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content">
+
+    <TextView
+        android:id="@+id/position"
+        android:layout_alignParentLeft="true"
+        android:textSize="20sp"
+        android:text="1."
+        android:gravity="left|start"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:fontFamily="sans-serif-black"
+        android:textStyle="bold"
+        android:textColor="@android:color/white" />
+
+    <TextView
+        android:id="@+id/name"
+        android:layout_centerInParent="true"
+        android:textSize="20sp"
+        android:text="JULO"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:fontFamily="sans-serif-black"
+        android:textStyle="bold"
+        android:textColor="@android:color/white" />
+
+    <TextView
+        android:id="@+id/score"
+        android:layout_alignParentRight="true"
+        android:textSize="20sp"
+        android:text="40 197"
+        android:gravity="right|end"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:fontFamily="sans-serif-black"
+        android:textStyle="bold"
+        android:textColor="@android:color/white" />
+
+  </RelativeLayout>
+
+  <View
+      android:id="@+id/underline"
+      android:layout_width="match_parent"
+      android:layout_height="2dp"
+      android:background="@android:color/white" />
+</LinearLayout>

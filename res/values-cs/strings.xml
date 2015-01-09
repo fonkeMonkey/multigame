@@ -61,10 +61,10 @@
   <!-- Customization center -->
   <string name="cc_unlocks">Odemkne:\u0020</string>
 
-  <string name="cc_music_tab_name">Hudba</string>
-  <string name="cc_minigames_tab_name">Minihry</string>
-  <string name="cc_skins_tab_name">Témata</string>
-  <string name="cc_achievements_tab_name">Cíle</string>
+  <string name="cc_music_tab_name">HUDBA</string>
+  <string name="cc_minigames_tab_name">MINIHRY</string>
+  <string name="cc_skins_tab_name">TÉMATA</string>
+  <string name="cc_achievements_tab_name">CÍLE</string>
   <string name="cc_more_games_tab_name">Více her</string>
 
   <!-- Úspěchy center -->
@@ -124,7 +124,7 @@
   <string name="cc_music_blam_name">Blam</string>
 
   <!-- Hall of fame -->
-  <string name="top_10_players">Top 10 hráčů</string>
+  <string name="hof_top_10_players">Top 10 hráčů</string>
 
 
   <!-- Tutorial -->
@@ -160,11 +160,13 @@
 
   <string name="pref_music">Hudba</string>
   <string name="pref_sound">​​Zvuk</string>
-  <string name="autocalibration">Autokalibrace</string>
-  <string name="autocalibration_subtitle">Nastav osy X a Y pro rotaci na začátku hry podle natočení mobilu</string>
+  <string name="pref_autocalibration">Autokalibrace</string>
+  <string name="pref_autocalibration_subtitle">Nastav osy X a Y pro rotaci na začátku hry podle natočení mobilu</string>
 
   <string name="pref_game_mode">Herní mod</string>
   <string name="pref_rate">Ohodnoť na Google Play</string>
+  <string name="pref_on">ZAP</string>
+  <string name="pref_off">VYP</string>
 
 
   <!-- Rate -->

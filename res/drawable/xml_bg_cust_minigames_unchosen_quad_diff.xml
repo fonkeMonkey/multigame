@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<shape xmlns:android="http://schemas.android.com/apk/res/android">
+  <solid android:color="@color/quad_cust_minigame_bg_unchosen" />
+  <stroke android:color="@android:color/transparent" android:width="3dp" />
+  <padding
+      android:left="3dp"
+      android:top="3dp"
+      android:right="3dp"
+      android:bottom="3dp" />
+  <corners android:radius="1dp" />
+</shape>

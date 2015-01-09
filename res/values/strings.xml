@@ -54,10 +54,10 @@
 
   <!-- Customization center -->
   <string name="cc_unlocks">unlocks\u0020</string>
-  <string name="cc_music_tab_name">Music</string>
-  <string name="cc_minigames_tab_name">Minigames</string>
-  <string name="cc_skins_tab_name">Skins</string>
-  <string name="cc_achievements_tab_name">Achievements</string>
+  <string name="cc_music_tab_name">MUSIC</string>
+  <string name="cc_minigames_tab_name">MINIGAMES</string>
+  <string name="cc_skins_tab_name">SKINS</string>
+  <string name="cc_achievements_tab_name">ACHIEVEMENTS</string>
   <string name="cc_more_games_tab_name">More games</string>
 
   <!-- Achievements center -->
@@ -107,7 +107,9 @@
   <string name="cc_music_blam_name">Blam</string>
 
   <!-- Hall of fame -->
-  <string name="top_10_players">Top 10 players</string>
+  <string name="hof_top_10_players">Top 10 players</string>
+  <string name="hof_local">LOCAL</string>
+  <string name="hof_online">ONLINE</string>
 
   <!-- Tutorial -->
 
@@ -134,11 +136,13 @@
   <string name="finish_saved_game">Please finish your saved game first.</string>
   <string name="pref_music">Music</string>
   <string name="pref_sound">Sound</string>
-  <string name="autocalibration">Autocalibration</string>
-  <string name="autocalibration_subtitle">Set the default X,Y axis for rotation based on the position of cell phone at the beginning of each game</string>
+  <string name="pref_autocalibration">Autocalibration</string>
+  <string name="pref_autocalibration_subtitle">Set the default X,Y axis for rotation based on the position of cell phone at the beginning of each game</string>
   <string name="pref_about">About…</string>
   <string name="pref_game_mode">Game mode</string>
   <string name="pref_rate">Rate on Google Play</string>
+  <string name="pref_on">ON</string>
+  <string name="pref_off">OFF</string>
 
   <!-- Rate -->
   <string name="rate">Rate</string>
@@ -175,5 +179,22 @@
   <string name="title_activity_leader_board">Multigame champions</string>
   <string name="hello_world">Hello world!</string>
   <string name="action_settings">Settings</string>
+
+  <!-- Google Play Services -->
+  <string name="google_play_app_id">108128301602</string>
+  <string name="google_play_leaderboard_id">CgkIouTL55IDEAIQBw</string>
+  <string name="sign_in_why">Sign in with Google to share your scores and achievements with your friends.</string>
+  <string name="you_are_signed_in">You are signed in with Google.</string>
+  <string name="sign_in">Sign in</string>
+  <string name="sign_out">Sign out</string>
+  <string name="signin_other_error">There was an issue with sign in. Please try again later.</string>
+
+  <string name="sign_in_failed">Failed to sign in. Please check your network connection and try again.</string>
+  <string name="app_misconfigured">The application is incorrectly configured. Check that the package name and signing certificate match the client ID created in Developer Console. Also, if the application is not yet published, check that the account you are trying to sign in with is listed as a tester account. See logs for more information.</string>
+  <string name="license_failed">License check failed.</string>
+  <string name="unknown_error">Unknown error.</string>
+
+  <string name="getting_leaderboard">Getting leaderboard. Please wait...</string>
+  <string name="leaderboard_no_data">No data downloaded. Please, try again later.</string>
 
 </resources>

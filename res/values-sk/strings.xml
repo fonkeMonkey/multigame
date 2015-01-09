@@ -62,10 +62,10 @@
   <!-- Customization center -->
   <string name="cc_unlocks">Odomkne:\u0020</string>
 
-  <string name="cc_music_tab_name">Hudba</string>
-  <string name="cc_minigames_tab_name">Minihry</string>
-  <string name="cc_skins_tab_name">Témy</string>
-  <string name="cc_achievements_tab_name">Ciele</string>
+  <string name="cc_music_tab_name">HUDBA</string>
+  <string name="cc_minigames_tab_name">MINIHRY</string>
+  <string name="cc_skins_tab_name">TÉMY</string>
+  <string name="cc_achievements_tab_name">CIELE</string>
   <string name="cc_more_games_tab_name">Viac hier</string>
 
   <!-- Achievements center -->
@@ -134,7 +134,7 @@
 
 
   <!-- Hall of fame -->
-  <string name="top_10_players">Top 10 hráčov</string>
+  <string name="hof_top_10_players">Top 10 hráčov</string>
 
 
   <!-- Tutorial -->
@@ -164,12 +164,12 @@
 
   <string name="pref_music">Hudba</string>
   <string name="pref_sound">Zvuk</string>
-  <string name="autocalibration">Autokalibrácia</string>
-  <string name="autocalibration_subtitle">Nastav osy X a Y pre rotáciu na začiatku hry podľa natočenia mobilu</string>
+  <string name="pref_autocalibration">Autokalibrácia</string>
+  <string name="pref_autocalibration_subtitle">Nastav osy X a Y pre rotáciu na začiatku hry podľa natočenia mobilu</string>
   <string name="pref_game_mode">Herný mod</string>
   <string name="pref_rate">Ohodnoť na Google Play</string>
-  <!--<string name="finish_saved_game">Please finish your saved game_layout first.</string>-->
-
+  <string name="pref_on">ZAP</string>
+  <string name="pref_off">VYP</string>
 
   <!-- Rate -->
   <string name="rate">Ohodnoť</string>

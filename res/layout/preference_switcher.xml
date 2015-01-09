@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<LinearLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        android:id="@+id/preference_switcher"
+        android:orientation="horizontal"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content">
+
+    <TextView
+            android:id="@+id/title"
+            style="@style/TextView.PreferenceSwitch"
+            android:layout_gravity="bottom"
+            android:textSize="@dimen/pref_item_textSize" />
+    <TextView
+            android:id="@+id/status"
+            style="@style/TextView.PreferenceSwitch"
+            android:layout_gravity="top"
+            android:textSize="14sp" />
+
+</LinearLayout>

@@ -1,0 +1,165 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<ScrollView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/customize_minigames_scroll_container"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+  <LinearLayout
+      android:id="@+id/customize_minigames_container"
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"
+      android:orientation="vertical"
+      android:gravity="center_horizontal"
+      >
+
+    <TextView
+        android:id="@+id/header"
+        style="@style/TextView.Header"
+        tools:text="MINIGAMES"
+        android:text="@string/cc_minigames_tab_name"
+        android:layout_gravity="center_horizontal" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+      <View
+          android:layout_width="0dp"
+          android:layout_height="wrap_content"
+          android:layout_weight="1"
+          />
+
+      <ImageView
+          android:id="@+id/bird"
+          android:src="@drawable/icon_minigame_bird"
+          android:layout_width="0dp"
+          android:layout_height="wrap_content"
+          android:layout_margin="10dp"
+          android:layout_weight="9"
+          android:scaleType="fitXY"
+          android:adjustViewBounds="true"
+          />
+
+      <View
+          android:layout_width="10dp"
+          android:layout_height="wrap_content"
+          android:layout_weight="2"
+          />
+
+      <ImageView
+          android:id="@+id/bouncer"
+          android:src="@drawable/icon_minigame_bouncer"
+          android:layout_width="0dp"
+          android:layout_height="wrap_content"
+          android:layout_margin="10dp"
+          android:layout_weight="9"
+          android:scaleType="fitXY"
+          android:adjustViewBounds="true"
+          />
+
+      <View
+          android:layout_width="0dp"
+          android:layout_height="wrap_content"
+          android:layout_weight="1"
+          />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+      <View
+          android:layout_width="0dp"
+          android:layout_height="wrap_content"
+          android:layout_weight="1"
+          />
+
+      <ImageView
+          android:id="@+id/balance"
+          android:src="@drawable/icon_minigame_balance"
+          android:layout_width="0dp"
+          android:layout_height="wrap_content"
+          android:layout_margin="10dp"
+          android:layout_weight="9"
+          android:scaleType="fitXY"
+          android:adjustViewBounds="true"
+          />
+
+      <View
+          android:layout_width="10dp"
+          android:layout_height="wrap_content"
+          android:layout_weight="2"
+          />
+
+      <ImageView
+          android:id="@+id/catcher"
+          android:src="@drawable/icon_minigame_catcher"
+          android:layout_width="0dp"
+          android:layout_height="wrap_content"
+          android:layout_margin="10dp"
+          android:layout_weight="9"
+          android:scaleType="fitXY"
+          android:adjustViewBounds="true"
+          />
+
+      <View
+          android:layout_width="0dp"
+          android:layout_height="wrap_content"
+          android:layout_weight="1"
+          />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+      <View
+          android:layout_width="0dp"
+          android:layout_height="wrap_content"
+          android:layout_weight="1"
+          />
+
+      <ImageView
+          android:id="@+id/gatherer"
+          android:src="@drawable/icon_minigame_gatherer"
+          android:layout_height="wrap_content"
+          android:layout_width="0dp"
+          android:layout_margin="10dp"
+          android:layout_weight="9"
+          android:scaleType="fitXY"
+          android:adjustViewBounds="true"
+          />
+
+      <View
+          android:layout_width="10dp"
+          android:layout_height="wrap_content"
+          android:layout_weight="2"
+          />
+
+      <ImageView
+          android:id="@+id/invader"
+          android:src="@drawable/icon_minigame_invader"
+          android:layout_height="wrap_content"
+          android:layout_width="0dp"
+          android:layout_margin="10dp"
+          android:layout_weight="9"
+          android:scaleType="fitXY"
+          android:adjustViewBounds="true"
+          />
+
+      <View
+          android:layout_width="0dp"
+          android:layout_height="wrap_content"
+          android:layout_weight="1"
+          />
+    </LinearLayout>
+
+  </LinearLayout>
+</ScrollView>

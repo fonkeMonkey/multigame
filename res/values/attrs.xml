@@ -16,6 +16,11 @@
 -->
 
 <resources>
+    <declare-styleable name="PreferenceOnOffSwitcher">
+        <attr name="switcherTitle" format="string|reference" />
+        <attr name="switcherChecked" format="boolean" />
+    </declare-styleable>
+  
   <declare-styleable name="com_facebook_picker_fragment">
     <attr name="show_pictures" format="boolean" />
     <attr name="extra_fields" format="string" />

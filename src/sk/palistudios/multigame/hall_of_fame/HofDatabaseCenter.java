@@ -111,7 +111,7 @@ public class HofDatabaseCenter extends SQLiteOpenHelper {
     }
 
     for (int i = 9; i >= 0; i--) {
-      if (score >= (rows.get(i).score)) {
+      if (score >= (rows.get(i).getScore())) {
         return true;
       }
     }
@@ -159,7 +159,7 @@ public class HofDatabaseCenter extends SQLiteOpenHelper {
         boolean smallest = true;
 
         for (int i = 0; i < listSize; i++) {
-          if (userInfo.score >= (scoreList.get(i).score)) {
+          if (userInfo.getScore() >= (scoreList.get(i).getScore())) {
             scoreList = putIntoPosition(scoreList, i, userInfo);
             smallest = false;
             break;
@@ -174,7 +174,7 @@ public class HofDatabaseCenter extends SQLiteOpenHelper {
 
         //if list is allready full
         for (int i = 0; i < listSize; i++) {
-          if (userInfo.score >= (scoreList.get(i).score)) {
+          if (userInfo.getScore() >= (scoreList.get(i).getScore())) {
             scoreList = putIntoPosition(scoreList, i, userInfo);
             break;
           }
@@ -191,7 +191,7 @@ public class HofDatabaseCenter extends SQLiteOpenHelper {
 
   private void writeScoreList(ArrayList<HofItem> rows) {
     for (HofItem item : rows) {
-      createRow(item.name, item.score);
+      createRow(item.getName(), item.getScore());
     }
   }
 

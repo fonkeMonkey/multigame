@@ -14,7 +14,7 @@ import com.google.android.gms.analytics.HitBuilders;
 import com.google.android.gms.analytics.Tracker;
 import sk.palistudios.multigame.MgTracker;
 import sk.palistudios.multigame.R;
-import sk.palistudios.multigame.customization_center.mgc.MinigamesCenterListActivity;
+import sk.palistudios.multigame.customization_center.minigames.MinigamesFragment;
 import sk.palistudios.multigame.game.minigames.MinigamesManager;
 import sk.palistudios.multigame.game.persistence.GameSharedPref;
 import sk.palistudios.multigame.hall_of_fame.HallOfFameActivity;
@@ -25,6 +25,7 @@ import sk.palistudios.multigame.mainMenu.MainMenuActivity;
 import sk.palistudios.multigame.tools.internet.FacebookSharer;
 import sk.palistudios.multigame.tools.internet.InternetChecker;
 
+//TODO títo chlapci jedného dňa by mohli dediť od MultiGameDialog a mať každý samostatnú classu
 public class GameDialogs {
 
   public final static int ASK_USER_TO_CONNECT = 1;
@@ -94,17 +95,17 @@ public class GameDialogs {
       switch (GameActivity.sTutorialLastLevel) {
         case 0:
           symbol =
-              "<font color=#D98179><b>(" + MinigamesCenterListActivity.SYMBOL_MINIGAME_VERTICAL +
+              "<font color=#D98179><b>(" + MinigamesFragment.SYMBOL_MINIGAME_VERTICAL +
                   ")</b></font>";
           break;
         case 1:
           symbol =
-              "<font color=#D98179><b>(" + MinigamesCenterListActivity.SYMBOL_MINIGAME_HORIZONTAL +
+              "<font color=#D98179><b>(" + MinigamesFragment.SYMBOL_MINIGAME_HORIZONTAL +
                   ")</b></font>";
           break;
         case 2:
         case 3:
-          symbol = "<font color=#D98179><b>(" + MinigamesCenterListActivity.SYMBOL_MINIGAME_TOUCH +
+          symbol = "<font color=#D98179><b>(" + MinigamesFragment.SYMBOL_MINIGAME_TOUCH +
               ")</b></font>";
           break;
 
@@ -183,6 +184,10 @@ public class GameDialogs {
       return;
     }
     final int score = game.getScore();
+    if (GameSharedPref.getHighestScore() < game.getScore()){
+      GameSharedPref.setHighestScore(game.getScore());
+      GameSharedPref.setHighestScoreSubmitted(false);
+    }
 
     DialogInterface.OnClickListener dialogClickListener = new DialogInterface.OnClickListener() {
       @Override
@@ -196,7 +201,6 @@ public class GameDialogs {
           case DialogInterface.BUTTON_NEUTRAL:
             MgTracker.trackGameLoserShareButtonPushed();
             if (InternetChecker.isNetworkAvailable(game)) {
-
               FacebookSharer.shareScoreToFacebook(score, false);
               game.finish();
             } else {
@@ -246,6 +250,10 @@ public class GameDialogs {
 
             HofDatabaseCenter db = HofDatabaseCenter.getsHofDb();
             db.writeIntoHallOfFame(new HofItem(playerName, game.getScore()));
+            if (GameSharedPref.getHighestScore() < game.getScore()){
+              GameSharedPref.setHighestScore(game.getScore());
+              GameSharedPref.setHighestScoreSubmitted(false);
+            }
             intent = new Intent(act, HallOfFameActivity.class);
             game.startActivity(intent);
             game.finish();

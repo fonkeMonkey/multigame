@@ -63,7 +63,7 @@ public class AchievementsArrayAdapter extends ArrayAdapter<AchievementItem> impl
     rowViewReward.setTextSize(18);
     //        textView3.setTextSize(25);
 
-    if (myItems.get(position).isChosen()) {
+    if (myItems.get(position).isActive()) {
       rowViewName.setBackgroundColor(colorChosen);
       rowViewDescription.setBackgroundColor(colorChosen);
       rowViewReward.setBackgroundColor(colorChosen);

@@ -7,28 +7,30 @@ import java.util.Arrays;
 
 import android.content.Context;
 import android.graphics.Typeface;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import sk.palistudios.multigame.R;
-import sk.palistudios.multigame.customization_center.skins.SkinItem;
-import sk.palistudios.multigame.customization_center.skins.SkinsCenterListActivity;
-import sk.palistudios.multigame.tools.GraphicUnitsConvertor;
-import sk.palistudios.multigame.tools.Toaster;
+import sk.palistudios.multigame.tools.SkinManager;
 
 public class HofArrayAdapter extends ArrayAdapter<HofItem> {
 
   private ArrayList<HofItem> myItems = new ArrayList<HofItem>();
   private Context mContext;
+  private boolean mOnline;
+  private String mPlayerIdentifier;
 
-  public HofArrayAdapter(Context context, HofItem[] objects) {
-    super(context, R.layout.hof_listitem, objects);
+  public HofArrayAdapter(Context context, HofItem[] objects, boolean online, String
+      playerIdentifier) {
+    super(context, R.layout.hof_list_item, objects);
     mContext = context;
     myItems = new ArrayList<HofItem>(Arrays.asList(objects));
+    mOnline = online;
+    mPlayerIdentifier = playerIdentifier;
   }
 
   @Override
@@ -43,73 +45,89 @@ public class HofArrayAdapter extends ArrayAdapter<HofItem> {
 
   @Override
   public View getView(int position, View convertView, ViewGroup parent) {
-
-    View view = convertView;
-
-    if (view == null) {
+    if (convertView == null) {
       LayoutInflater vi = (LayoutInflater) mContext.getSystemService(
           Context.LAYOUT_INFLATER_SERVICE);
-      view = vi.inflate(R.layout.hof_listitem, null);
+      convertView = vi.inflate(R.layout.hof_list_item, null);
     }
-    TextView textView1 = (TextView) view.findViewById(R.id.hof_ranking);
-    TextView textView2 = (TextView) view.findViewById(R.id.hof_player);
-    TextView textView3 = (TextView) view.findViewById(R.id.hof_score);
+    TextView positionTV = (TextView) convertView.findViewById(R.id.position);
+    TextView nameTV = (TextView) convertView.findViewById(R.id.name);
+    TextView scoreTV = (TextView) convertView.findViewById(R.id.score);
+    View underlineView = (View) convertView.findViewById(R.id.underline);
 
-    textView1.setPadding(GraphicUnitsConvertor.convertDptoPx(mContext, 5), 0, 0, 0);
-    textView3.setPadding(0, 0, GraphicUnitsConvertor.convertDptoPx(mContext, 5), 0);
+    positionTV.setText(String.valueOf(position + 1) + ".");
+    nameTV.setText(getItem(position).getName());
+    scoreTV.setText(String.valueOf(getItem(position).getScore()));
 
-    textView1.setText(String.valueOf(getItem(position).rank) + ".");
-    textView2.setText(String.valueOf(getItem(position).name));
-    textView3.setText(String.valueOf(getItem(position).score));
-
-    boolean shouldBeHightlighted = shouldBeHiglighted(getItem(position).name);
-
-    if (shouldBeHightlighted) {
-      textView1.setTypeface(null, Typeface.BOLD);
-      textView2.setTypeface(null, Typeface.BOLD);
-      textView3.setTypeface(null, Typeface.BOLD);
-      SkinItem currentSkin = SkinsCenterListActivity.getCurrentSkin(mContext);
-      view.setBackgroundColor(currentSkin.getColorChosen());
+    final boolean isPlayer;
+    if(mOnline) {
+      isPlayer = shouldBeHiglighted(getItem(position).getGooglePlayerIdentifier());
+    } else {
+      isPlayer = shouldBeHiglighted(getItem(position).getName());
     }
 
-    textView1.setTextSize(25);
-    textView2.setTextSize(25);
-    textView3.setTextSize(25);
+    int skinColor;
+    if (isPlayer) {
+      positionTV.setTypeface(null, Typeface.BOLD);
+      nameTV.setTypeface(null, Typeface.BOLD);
+      scoreTV.setTypeface(null, Typeface.BOLD);
+      skinColor = SkinManager.getInstance().getCurrentTextColorListItemActive(
+          convertView.getResources());
+    } else {
+      positionTV.setTypeface(null, Typeface.BOLD_ITALIC);
+      nameTV.setTypeface(null, Typeface.BOLD_ITALIC);
+      scoreTV.setTypeface(null, Typeface.BOLD_ITALIC);
+      skinColor = SkinManager.getInstance().getCurrentTextColorListItemInactive(
+          convertView.getResources());
+    }
+    positionTV.setTextColor(skinColor);
+    nameTV.setTextColor(skinColor);
+    scoreTV.setTextColor(skinColor);
+    underlineView.setBackgroundColor(skinColor);
 
-    return view;
+    return convertView;
   }
 
   /* Hack, lebo sa mi nechcelo updatovať db. */
   private boolean shouldBeHiglighted(String name) {
-    if (name.equals("Chuck N.")) {
+    if(mOnline) {
+      if(!TextUtils.isEmpty(mPlayerIdentifier)) {
+        if (name.equals(mPlayerIdentifier)) {
+          return true;
+        }
+      }
       return false;
-    }
-    if (name.equals("Steven S.")) {
-      return false;
-    }
-    if (name.equals("Bruce L.")) {
-      return false;
-    }
-    if (name.equals("Bruce W.")) {
-      return false;
-    }
-    if (name.equals("Arnold S.")) {
-      return false;
-    }
-    if (name.equals("Sylvester S.")) {
-      return false;
-    }
-    if (name.equals("Jackie Ch.")) {
-      return false;
-    }
-    if (name.equals("Vin D.")) {
-      return false;
-    }
-    if (name.equals("Denzel W.")) {
-      return false;
-    }
-    if (name.equals("Jason S.")) {
-      return false;
+    } else {
+      if (name.equals("Chuck N.")) {
+        return false;
+      }
+      if (name.equals("Steven S.")) {
+        return false;
+      }
+      if (name.equals("Bruce L.")) {
+        return false;
+      }
+      if (name.equals("Bruce W.")) {
+        return false;
+      }
+      if (name.equals("Arnold S.")) {
+        return false;
+      }
+      if (name.equals("Sylvester S.")) {
+        return false;
+      }
+      if (name.equals("Jackie Ch.")) {
+        return false;
+      }
+      if (name.equals("Vin D.")) {
+        return false;
+      }
+      if (name.equals("Denzel W.")) {
+        return false;
+      }
+      if (name.equals("Jason S.")) {
+        return false;
+      }
     }
     return true;
   }
@@ -117,8 +135,6 @@ public class HofArrayAdapter extends ArrayAdapter<HofItem> {
   /* Makes listview unclickable. */
   @Override
   public boolean isEnabled(int position) {
-    // TODO Auto-generated method stub
-
     return false;
   }
 }

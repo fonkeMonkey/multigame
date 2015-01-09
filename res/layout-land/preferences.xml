@@ -1,0 +1,134 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<!--android:fillViewpor––t="true"-->
+<ScrollView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/xml_bg_quad">
+
+  <LinearLayout
+      android:layout_width="match_parent"
+      android:layout_height="match_parent">
+
+    <LinearLayout
+        android:layout_width="0dp"
+        android:layout_weight="1"
+        android:layout_height="match_parent" />
+
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="0dp"
+        android:layout_weight="3"
+        android:layout_height="match_parent"
+        android:gravity="center_horizontal">
+
+      <TextView
+          android:id="@+id/pref_header"
+          style="@style/TextView.Header"
+          android:text="@string/pref_title"
+          android:layout_gravity="center_horizontal" />
+
+      <sk.palistudios.multigame.preferences.PreferenceOnOffSwitcher
+          android:id="@+id/pref_music"
+          android:layout_width="wrap_content"
+          android:layout_height="wrap_content"
+          app:switcherTitle="@string/pref_music"
+          app:switcherChecked="true"
+          android:layout_marginTop="@dimen/pref_item_marginVertical" />
+
+      <sk.palistudios.multigame.preferences.PreferenceOnOffSwitcher
+          android:id="@+id/pref_sound"
+          android:layout_width="wrap_content"
+          android:layout_height="wrap_content"
+          app:switcherTitle="@string/pref_sound"
+          app:switcherChecked="false"
+          android:layout_marginTop="@dimen/pref_item_marginVertical" />
+
+      <sk.palistudios.multigame.preferences.PreferenceOnOffSwitcher
+          android:id="@+id/pref_autocalibration"
+          android:layout_width="wrap_content"
+          android:layout_height="wrap_content"
+          app:switcherTitle="@string/pref_autocalibration"
+          app:switcherChecked="false"
+          android:layout_marginTop="@dimen/pref_item_marginVertical" />
+
+      <TextView
+          android:layout_width="wrap_content"
+          android:layout_height="wrap_content"
+          android:gravity="center"
+          android:fontFamily="sans-serif-light"
+          android:text="@string/pref_autocalibration_subtitle"
+          android:layout_marginLeft="@dimen/activity_horizontal_margin"
+          android:layout_marginRight="@dimen/activity_horizontal_margin" />
+
+      <TextView
+          android:id="@+id/pref_gamemode_label"
+          android:layout_width="wrap_content"
+          android:layout_height="wrap_content"
+          android:text="@string/pref_game_mode"
+          android:textSize="@dimen/pref_item_textSize"
+          android:fontFamily="sans-serif-black"
+          android:textStyle="bold"
+          android:layout_marginTop="@dimen/pref_item_marginVertical"
+          android:layout_marginBottom="@dimen/pref_item_marginGameMode"
+          />
+
+      <LinearLayout
+          android:id="@+id/pref_gamemode_layout"
+          android:layout_width="wrap_content"
+          android:layout_height="wrap_content"
+          android:orientation="horizontal">
+
+        <CheckedTextView
+            android:id="@+id/pref_classic_gamemode"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/pref_gameMode_Classic"
+            android:layout_marginRight="@dimen/pref_game_mode_vertical_margin"
+            android:layout_marginEnd="@dimen/pref_game_mode_vertical_margin"
+            android:fontFamily="sans-serif-light"
+            android:checked="false" />
+
+        <CheckedTextView
+            android:id="@+id/pref_tutor_gamemode"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/pref_gameMode_Tutorial"
+            android:layout_marginLeft="@dimen/pref_game_mode_vertical_margin"
+            android:layout_marginStart="@dimen/pref_game_mode_vertical_margin"
+            android:fontFamily="sans-serif-light"
+            android:checked="true" />
+      </LinearLayout>
+
+      <TextView
+          android:id="@+id/about_us"
+          android:layout_width="wrap_content"
+          android:layout_height="wrap_content"
+          android:text="@string/pref_about"
+          android:textSize="@dimen/pref_item_textSize"
+          android:fontFamily="sans-serif-black"
+          android:textStyle="bold"
+          android:layout_marginTop="@dimen/pref_item_marginVertical" />
+
+      <TextView
+          android:id="@+id/rate_us"
+          android:layout_width="wrap_content"
+          android:layout_height="wrap_content"
+          android:text="@string/pref_rate"
+          android:textSize="@dimen/pref_item_textSize"
+          android:fontFamily="sans-serif-black"
+          android:textStyle="bold"
+          android:layout_marginTop="@dimen/pref_item_marginVertical"
+          android:layout_marginBottom="@dimen/pref_item_marginVertical" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="0dp"
+        android:layout_weight="1"
+        android:layout_height="match_parent" />
+
+  </LinearLayout>
+</ScrollView>

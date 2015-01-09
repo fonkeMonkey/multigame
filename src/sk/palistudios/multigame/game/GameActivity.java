@@ -8,7 +8,6 @@ import android.hardware.SensorEvent;
 import android.hardware.SensorEventListener;
 import android.hardware.SensorManager;
 import android.media.AudioManager;
-import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.text.Spannable;
@@ -16,7 +15,6 @@ import android.text.SpannableString;
 import android.text.style.ForegroundColorSpan;
 import android.util.Log;
 import android.view.MotionEvent;
-import android.view.Surface;
 import android.view.View;
 import android.view.WindowManager;
 import android.view.animation.AlphaAnimation;
@@ -31,7 +29,6 @@ import sk.palistudios.multigame.BaseActivity;
 import sk.palistudios.multigame.MgTracker;
 import sk.palistudios.multigame.R;
 import sk.palistudios.multigame.customization_center.achievements.AchievementsCenterListActivity;
-import sk.palistudios.multigame.customization_center.skins.SkinsCenterListActivity;
 import sk.palistudios.multigame.game.minigames.MinigamesManager;
 import sk.palistudios.multigame.game.persistence.GameSaverLoader;
 import sk.palistudios.multigame.game.persistence.GameSharedPref;
@@ -39,6 +36,8 @@ import sk.palistudios.multigame.game.time.GameTimeManager;
 import sk.palistudios.multigame.game.view.BaseGameCanvasView;
 import sk.palistudios.multigame.hall_of_fame.HofDatabaseCenter;
 import sk.palistudios.multigame.mainMenu.DebugSettings;
+import sk.palistudios.multigame.tools.DisplayHelper;
+import sk.palistudios.multigame.tools.SkinManager;
 import sk.palistudios.multigame.tools.Toaster;
 import sk.palistudios.multigame.tools.sound.MusicPlayer;
 import sk.palistudios.multigame.tools.sound.SoundEffectsCenter;
@@ -192,19 +191,19 @@ public class GameActivity extends BaseActivity implements SensorEventListener {
 
   private void initGraphics() {
     LinearLayout gameBar = (LinearLayout) findViewById(R.id.game_bar);
-    gameBar.setBackgroundColor(SkinsCenterListActivity.getCurrentSkin(getApplicationContext())
+    gameBar.setBackgroundColor(SkinManager.getSkinCompat(getApplicationContext())
         .getBarBgColor());
     mScoreView = (TextView) findViewById(R.id.game_score);
-    mScoreView.setTextColor(SkinsCenterListActivity.getCurrentSkin(getApplicationContext()).getBarLabelColor());
+    mScoreView.setTextColor(SkinManager.getSkinCompat(getApplicationContext()).getBarLabelColor());
     mDifficultyView = (TextView) findViewById(R.id.game_level);
-    mDifficultyView.setTextColor(SkinsCenterListActivity.getCurrentSkin(getApplicationContext()).getBarLabelColor());
+    mDifficultyView.setTextColor(SkinManager.getSkinCompat(getApplicationContext()).getBarLabelColor());
 
     View gameScoreSeparator = findViewById(R.id.game_score_separator);
-    gameScoreSeparator.setBackgroundColor(SkinsCenterListActivity.getCurrentSkin(
-        getApplicationContext()).getBarSeparatorColor());
+    gameScoreSeparator.setBackgroundColor(SkinManager.getSkinCompat(getApplicationContext())
+        .getBarSeparatorColor());
     View gameScoreSeparatorDown = findViewById(R.id.game_score_separator_down);
-    gameScoreSeparatorDown.setBackgroundColor(SkinsCenterListActivity.getCurrentSkin(
-        getApplicationContext()).getBarSeparatorColorDown());
+    gameScoreSeparatorDown.setBackgroundColor(SkinManager.getSkinCompat(getApplicationContext())
+        .getBarSeparatorColorDown());
 
     mCanvases = new BaseGameCanvasView[4];
     mCanvases[0] = (BaseGameCanvasView) findViewById(R.id.canvas1);
@@ -217,9 +216,9 @@ public class GameActivity extends BaseActivity implements SensorEventListener {
     mCanvases[2].setGameSaved(wasGameSaved);
     mCanvases[3].setGameSaved(wasGameSaved);
 
-    int barLabelColor = SkinsCenterListActivity.getCurrentSkin(getApplicationContext())
+    int barLabelColor = SkinManager.getSkinCompat(getApplicationContext())
         .getBarLabelColor();
-    int barTextColor = SkinsCenterListActivity.getCurrentSkin(getApplicationContext())
+    int barTextColor = SkinManager.getSkinCompat(getApplicationContext())
         .getBarTextColor();
     mScoreSpannable = new SpannableString(getString(R.string.score));
     mDifficultySpannable = new SpannableString("Level: ");
@@ -255,23 +254,14 @@ public class GameActivity extends BaseActivity implements SensorEventListener {
 
 
   private void resolveOrientation() {
-    WindowManager windowManager = (WindowManager) getSystemService(WINDOW_SERVICE);
-    Configuration config = getResources().getConfiguration();
+    mOrientation = DisplayHelper.getOrientationForAccelerometer(this);
 
-    if (Build.VERSION.SDK_INT < 8) {
-      mOrientation = config.orientation;
-    } else {
-      int rotation = windowManager.getDefaultDisplay().getRotation();
 
-      if (((rotation == Surface.ROTATION_0 || rotation == Surface.ROTATION_180) &&
-          config.orientation == Configuration.ORIENTATION_LANDSCAPE) ||
-          ((rotation == Surface.ROTATION_90 || rotation == Surface.ROTATION_270) &&
-              config.orientation == Configuration.ORIENTATION_PORTRAIT)) {
-        mOrientation = Configuration.ORIENTATION_LANDSCAPE;
-      } else {
-        mOrientation = Configuration.ORIENTATION_PORTRAIT;
-      }
-    }
+  }
+
+  @Override
+  public void reskinLocally(SkinManager.Skin currentSkin) {
+    return;
   }
 
   @Override
@@ -486,7 +476,7 @@ public class GameActivity extends BaseActivity implements SensorEventListener {
   public void onSensorChanged(SensorEvent event) {
     if (event.sensor.getType() == Sensor.TYPE_ACCELEROMETER) {
       if (!gameStopped) {
-        if (!isDefaultCoordinatesSet && GameSharedPref.getAutoCalibrationEnabled()) {
+        if (!isDefaultCoordinatesSet && GameSharedPref.isAutoCalibrationEnabled()) {
                     /* Na stojaka je to 10, opacny stojak - 10, rovina nula,
                     ten gece nevie ale na ktoru stranu je otoceny,
                     ide to z oboch stran od 10 do -10. akuratze ked sa tocis okolo 10 on to
@@ -538,7 +528,6 @@ public class GameActivity extends BaseActivity implements SensorEventListener {
   @Override
   public void onPause() {
     super.onPause();
-    overridePendingTransition(R.anim.fadein, R.anim.fadeout);
     getWindow().clearFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
 
     if (mTutorialMode) {
