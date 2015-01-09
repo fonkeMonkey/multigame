@@ -48,7 +48,7 @@ public class MusicArrayAdapter extends ArrayAdapter<MusicItem> implements IAdapt
 
     rowView.setTextSize(25);
 
-    if (myItems.get(position).isChosen()) {
+    if (myItems.get(position).isActive()) {
       rowView.setBackgroundColor(colorChosen);
     } else {
       rowView.setBackgroundColor(Color.WHITE);

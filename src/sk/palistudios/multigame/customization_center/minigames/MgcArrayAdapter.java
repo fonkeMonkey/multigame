@@ -56,7 +56,7 @@ public class MgcArrayAdapter extends ArrayAdapter<MgcItem> implements IAdapter {
     showCorrectLeftIcon(view, getItem(position).type);
     textView2.setText(String.valueOf(getItem(position).getHumanName()));
 
-    if (myItems.get(position).isChosen()) {
+    if (myItems.get(position).isActive()) {
       background.setBackgroundColor(colorChosen);
     } else {
       background.setBackgroundColor(Color.WHITE);
@@ -105,7 +105,7 @@ public class MgcArrayAdapter extends ArrayAdapter<MgcItem> implements IAdapter {
     int tmpLastTActivated = -1;
 
     //if it is already activated
-    if (myItems.get(positionClicked).isChosen() == true) {
+    if (myItems.get(positionClicked).isActive() == true) {
       return "";
     }
 
@@ -141,7 +141,7 @@ public class MgcArrayAdapter extends ArrayAdapter<MgcItem> implements IAdapter {
 
       for (MgcItem item : myItems) {
         if (item.type == MinigamesFragment.SYMBOL_MINIGAME_TOUCH) {
-          if (item.isChosen() == false) {
+          if (item.isActive() == false) {
             return item.getComputerName();
           }
         }
@@ -155,7 +155,7 @@ public class MgcArrayAdapter extends ArrayAdapter<MgcItem> implements IAdapter {
     for (MgcItem item : myItems) {
 
       if (item.type == MinigamesFragment.SYMBOL_MINIGAME_TOUCH) {
-        if (item.isChosen() == true) {
+        if (item.isActive() == true) {
           return myItems.indexOf(item);
         }
       }

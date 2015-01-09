@@ -106,7 +106,7 @@ public class HallOfFameActivity extends BaseActivity {
   }
 
   @Override
-  protected void reskinLocally(SkinManager.Skin currentSkin) {
+  public void reskinLocally(SkinManager.Skin currentSkin) {
     mHeader.setTextColor(mHeader.getTextColors().withAlpha(DisplayHelper.ALPHA_80pc));
 
     switch (currentSkin) {

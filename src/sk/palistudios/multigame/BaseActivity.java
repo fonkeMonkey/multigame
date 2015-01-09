@@ -22,13 +22,12 @@ public abstract class BaseActivity extends FragmentActivity {
   @Override
   protected void onStart() {
     super.onStart();
-    SkinManager.Skin currentSkin = SkinManager.reskin(this, (ViewGroup) ((ViewGroup) (findViewById(android.R.id
-        .content)))
-        .getChildAt(0));
+    SkinManager.Skin currentSkin = SkinManager.reskin(this, (ViewGroup) ((ViewGroup) (findViewById(
+        android.R.id.content))).getChildAt(0));
     reskinLocally(currentSkin);
   }
 
-  protected abstract void reskinLocally(SkinManager.Skin currentSkin);
+  public abstract void reskinLocally(SkinManager.Skin currentSkin);
 
   @Override
   protected void onResume() {

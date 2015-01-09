@@ -59,10 +59,10 @@
   <!-- Customization center -->
   <string name="cc_unlocks">desbloqueo\u0020</string>
 
-  <string name="cc_music_tab_name">Música</string>
-  <string name="cc_minigames_tab_name">Minijuegos</string>
-  <string name="cc_skins_tab_name">Skins</string>
-  <string name="cc_achievements_tab_name">Retos</string>
+  <string name="cc_music_tab_name">MÚSICA</string>
+  <string name="cc_minigames_tab_name">MINIJUEGOS</string>
+  <string name="cc_skins_tab_name">SKINS</string>
+  <string name="cc_achievements_tab_name">RETOS</string>
   <string name="cc_more_games_tab_name">Más juegos</string>
 
   <!-- Achievements center -->

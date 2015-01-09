@@ -5,35 +5,25 @@ import sk.palistudios.multigame.game.persistence.GameSharedPref;
 /**
  * @author Pali
  */
-public class AbstractItem {
+public class CustomizeItem {
 
-  protected boolean chosen;
+  protected boolean active;
   String computerName;
   String humanName;
   private String unlockDescription;
 
-  public AbstractItem(String computerName, String humanName, boolean chosen) {
+  public CustomizeItem(String computerName, String humanName, boolean chosen) {
     this.computerName = computerName;
-    this.chosen = chosen;
+    this.active = chosen;
     this.humanName = humanName;
   }
 
-  public AbstractItem(String computerName, String humanName, boolean chosen,
+  public CustomizeItem(String computerName, String humanName, boolean chosen,
       String unlockDescription) {
     this.computerName = computerName;
-    this.chosen = chosen;
+    this.active = chosen;
     this.humanName = humanName;
     this.unlockDescription = unlockDescription;
-  }
-
-  public boolean isLocked() {
-    return GameSharedPref.isItemLocked(computerName);
-    //        return locked;
-  }
-
-  void unlock() {
-    GameSharedPref.unlockItem(computerName);
-    //        locked = false;
   }
 
   public String getComputerName() {
@@ -45,15 +35,23 @@ public class AbstractItem {
   }
 
   public void activate() {
-    chosen = true;
+    active = true;
   }
 
   public void inactivate() {
-    chosen = false;
+    active = false;
   }
 
-  public boolean isChosen() {
-    return chosen;
+  public boolean isActive() {
+    return active;
+  }
+
+  void unlock() {
+    GameSharedPref.unlockItem(computerName);
+  }
+
+  public boolean isLocked() {
+    return GameSharedPref.isItemLocked(computerName);
   }
 
   public String getLockedDescription() {

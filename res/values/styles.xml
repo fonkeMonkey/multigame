@@ -16,7 +16,7 @@
     <item name="android:gravity">center</item>
     <item name="android:textColor">@android:color/white</item>
     <item name="android:textSize">@dimen/menu_item_textSize</item>
-    <item name="android:background">@drawable/xml_bg_menu_item</item>
+    <item name="android:background">@drawable/xml_bg_quad_tab</item>
     <item name="android:clickable">true</item>
     <item name="android:focusable">true</item>
   </style>
@@ -27,23 +27,23 @@
     <item name="android:fontFamily">sans-serif-black</item>
     <item name="android:textStyle">bold</item>
     <item name="android:textSize">@dimen/header_textSize</item>
-    <item name="android:layout_marginTop">@dimen/activity_vertical_margin</item>
-    <item name="android:layout_marginBottom">@dimen/activity_vertical_margin</item>
+    <item name="android:layout_marginTop">@dimen/header_margin_bottom</item>
+    <item name="android:layout_marginBottom">@dimen/header_margin_bottom</item>
     <item name="android:textColor">@color/text_header</item>
   </style>
 
   <style name="TextView.Customize.MenuItem" parent="android:Widget.TextView">
     <item name="android:layout_width">wrap_content</item>
-    <item name="android:layout_height">match_parent</item>
+    <item name="android:layout_height">wrap_content</item>
     <item name="android:layout_weight">1</item>
     <item name="android:clickable">true</item>
     <item name="android:gravity">center</item>
-    <item name="android:padding">10dp</item>
+    <item name="android:padding">4dp</item>
     <item name="android:fontFamily">sans-serif-black</item>
     <item name="android:textStyle">bold</item>
     <item name="android:textSize">@dimen/header_customize_menuitem_textSize</item>
     <item name="android:textColor">@android:color/white</item>
-    <item name="android:background">@drawable/xml_bg_menu_item</item>
+    <item name="android:background">@drawable/xml_bg_quad_tab</item>
   </style>
 
   <style name="TextView.Customize.Header" parent="android:Widget.TextView">
@@ -122,6 +122,7 @@
   <dimen name="com_facebook_profilepictureview_preset_size_small">50dp</dimen>
   <dimen name="com_facebook_profilepictureview_preset_size_normal">100dp</dimen>
   <dimen name="com_facebook_profilepictureview_preset_size_large">180dp</dimen>
+  <dimen name="header_margin_bottom">8dp</dimen>
 
   <style name="com_facebook_loginview_default_style" parent="@android:style/Widget.Button">
     <item name="android:layout_width">wrap_content</item>

@@ -2,15 +2,14 @@ package sk.palistudios.multigame.customization_center.achievements;
 
 // @author Pali
 
-import android.app.Activity;
 import android.content.Context;
 
 import sk.palistudios.multigame.R;
-import sk.palistudios.multigame.customization_center.AbstractItem;
+import sk.palistudios.multigame.customization_center.CustomizeItem;
 import sk.palistudios.multigame.game.persistence.GameSharedPref;
 import sk.palistudios.multigame.tools.Toaster;
 
-public class AchievementItem extends AbstractItem {
+public class AchievementItem extends CustomizeItem {
 
   private String description;
   private String whatToFulfill;
@@ -90,7 +89,7 @@ public class AchievementItem extends AbstractItem {
     return correspondingItemHuman;
   }
 
-  public boolean isChosen() {
+  public boolean isActive() {
     return GameSharedPref.isAchievementFulfilled(getComputerName());
   }
 }

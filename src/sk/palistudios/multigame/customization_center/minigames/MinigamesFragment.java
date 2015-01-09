@@ -2,44 +2,40 @@ package sk.palistudios.multigame.customization_center.minigames;
 
 import java.util.ArrayList;
 
-import android.content.res.Resources;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
-import android.widget.TextView;
 
 import sk.palistudios.multigame.MgTracker;
 import sk.palistudios.multigame.R;
+import sk.palistudios.multigame.customization_center.CustomizeFragment;
 import sk.palistudios.multigame.game.minigames.BaseMiniGame;
 import sk.palistudios.multigame.game.persistence.GameSharedPref;
-import sk.palistudios.multigame.tools.DisplayHelper;
+import sk.palistudios.multigame.tools.SkinManager;
 import sk.palistudios.multigame.tools.Toaster;
 
 /**
  * @author Pali
  */
-public class MinigamesFragment extends Fragment {
+public class MinigamesFragment extends CustomizeFragment {
 
   public static char SYMBOL_MINIGAME_HORIZONTAL = '⇆';
   public static char SYMBOL_MINIGAME_TOUCH = '⇩';
   public static char SYMBOL_MINIGAME_VERTICAL = '⇅';
 
   private static String[] tmpChosenMinigames = new String[4];
-  private MgcArrayAdapter mMinigamesAdapter;
   private ImageView mInvader;
   private ImageView mCatcher;
   private ImageView mBalance;
   private ImageView mGatherer;
   private ImageView mBird;
   private ImageView mBouncer;
+  private MgcArrayAdapter mMinigamesAdapter;
   private ArrayList<MgcItem> mItems = new ArrayList<MgcItem>();
-  private LinearLayout mBirdBorder;
-  private LinearLayout mBouncerBorder;
 
   @Override
   public void onCreate(Bundle icicle) {
@@ -70,6 +66,14 @@ public class MinigamesFragment extends Fragment {
   }
 
   @Override
+  public View onCreateView(LayoutInflater inflater, ViewGroup container,
+      Bundle savedInstanceState) {
+    ViewGroup rootView = (ViewGroup) inflater.inflate(R.layout.cust_minigames_layout, container,
+        false);
+    return rootView;
+  }
+
+  @Override
   public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
     super.onViewCreated(view, savedInstanceState);
     mBalance = (ImageView) getView().findViewById(R.id.balance);
@@ -77,10 +81,8 @@ public class MinigamesFragment extends Fragment {
     mGatherer = (ImageView) getView().findViewById(R.id.gatherer);
     mInvader = (ImageView) getView().findViewById(R.id.invader);
     mBird = (ImageView) getView().findViewById(R.id.bird);
-//    mBirdBorder = (LinearLayout) getView().findViewById(R.id.bird_border);
     mBouncer = (ImageView) getView().findViewById(R.id.bouncer);
-//    mBouncerBorder = (LinearLayout) getView().findViewById(R.id.bouncer_border);
-    refreshImageStates();
+    refreshImageBorders(SkinManager.getInstance().getCurrentSkin());
 
     mInvader.setOnClickListener(new View.OnClickListener() {
       @Override
@@ -189,36 +191,33 @@ public class MinigamesFragment extends Fragment {
     }
     GameSharedPref.SetChosenMinigamesNames(tmpChosenMinigames);
     mMinigamesAdapter.notifyDataSetChanged();
-    refreshImageStates();
+    refreshImageBorders(SkinManager.getInstance().getCurrentSkin());
   }
 
   //TODO M možno cez bitmapfactory, lebo toto dekóduje bitmapu na mainthreade (pomalé)
-  private void refreshImageStates() {
-    Resources resources = getResources();
+  //TODO a taktiež sa to volá skurvene často hlavne to načítavanie bitmap je useless pri zmene
+  // skinov o.i
+  private void refreshImageBorders(SkinManager.Skin currentSkin) {
+    Drawable activeDrawable = getActiveDrawableBySkin(currentSkin);
+    Drawable inactiveDrawable = getInactiveDrawableBySkin(currentSkin);
 
-    if (mItems.get(0).isChosen()) {
-      mBalance.setBackgroundDrawable(resources.getDrawable(
-          R.drawable.xml_bg_cust_minigames_chosen));
+    if (mItems.get(0).isActive()) {
+      mBalance.setBackgroundDrawable(activeDrawable);
     } else {
-      mBalance.setBackgroundDrawable(resources.getDrawable(
-          R.drawable.xml_bg_cust_minigames_unchosen));
+      mBalance.setBackgroundDrawable(inactiveDrawable);
     }
 
-    if (mItems.get(1).isChosen()) {
-      mCatcher.setBackgroundDrawable(resources.getDrawable(
-          R.drawable.xml_bg_cust_minigames_chosen));
+    if (mItems.get(1).isActive()) {
+      mCatcher.setBackgroundDrawable(activeDrawable);
     } else {
-      mCatcher.setBackgroundDrawable(resources.getDrawable(
-          R.drawable.xml_bg_cust_minigames_unchosen));
+      mCatcher.setBackgroundDrawable(inactiveDrawable);
     }
 
         /* Invader */
-    if (mItems.get(2).isChosen()) {
-      mGatherer.setBackgroundDrawable(resources.getDrawable(
-          R.drawable.xml_bg_cust_minigames_chosen));
+    if (mItems.get(2).isActive()) {
+      mGatherer.setBackgroundDrawable(activeDrawable);
     } else {
-      mGatherer.setBackgroundDrawable(resources.getDrawable(
-          R.drawable.xml_bg_cust_minigames_unchosen));
+      mGatherer.setBackgroundDrawable(inactiveDrawable);
     }
 
         /* Invader */
@@ -226,20 +225,18 @@ public class MinigamesFragment extends Fragment {
       mInvader.setImageResource(R.drawable.icon_minigame_invader_disabled);
       mInvader.setOnClickListener(null);
     } else {
-      if (mItems.get(3).isChosen()) {
-        mInvader.setBackgroundDrawable(resources.getDrawable(
-            R.drawable.xml_bg_cust_minigames_chosen));
+      if (mItems.get(3).isActive()) {
+        mInvader.setBackgroundDrawable(activeDrawable);
       } else {
-        mInvader.setBackgroundDrawable(resources.getDrawable(
-            R.drawable.xml_bg_cust_minigames_unchosen));
+        mInvader.setBackgroundDrawable(inactiveDrawable);
       }
     }
 
     /* Bird */
-    if (mItems.get(4).isChosen()) {
-      mBird.setBackgroundDrawable(resources.getDrawable(R.drawable.xml_bg_cust_minigames_chosen));
+    if (mItems.get(4).isActive()) {
+      mBird.setBackgroundDrawable(activeDrawable);
     } else {
-      mBird.setBackgroundDrawable(resources.getDrawable(R.drawable.xml_bg_cust_minigames_unchosen));
+      mBird.setBackgroundDrawable(inactiveDrawable);
     }
 
     /* Bouncer */
@@ -247,24 +244,48 @@ public class MinigamesFragment extends Fragment {
       mBouncer.setImageResource(R.drawable.icon_minigame_bouncer_disabled);
       mBouncer.setOnClickListener(null);
     } else {
-      if (mItems.get(5).isChosen()) {
-        mBouncer.setBackgroundDrawable(resources.getDrawable(
-            R.drawable.xml_bg_cust_minigames_chosen));
+      if (mItems.get(5).isActive()) {
+        mBouncer.setBackgroundDrawable(activeDrawable);
       } else {
-        mBouncer.setBackgroundDrawable(resources.getDrawable(
-            R.drawable.xml_bg_cust_minigames_unchosen));
+        mBouncer.setBackgroundDrawable(inactiveDrawable);
       }
     }
 
   }
 
+  private Drawable getActiveDrawableBySkin(SkinManager.Skin currentSkin) {
+    switch (currentSkin) {
+      case QUAD:
+        return getResources().getDrawable(R.drawable.xml_bg_cust_minigames_chosen_quad_diff);
+      case THRESHOLD:
+        return getResources().getDrawable(R.drawable.xml_bg_cust_minigames_chosen_thres);
+      case DIFFUSE:
+        return getResources().getDrawable(R.drawable.xml_bg_cust_minigames_chosen_quad_diff);
+      case CORRUPTED:
+        return getResources().getDrawable(R.drawable.xml_bg_cust_minigames_chosen_corr);
+    }
+    throw new RuntimeException("Invalid Skin");
+  }
+
+  private Drawable getInactiveDrawableBySkin(SkinManager.Skin currentSkin) {
+    switch (currentSkin) {
+      case QUAD:
+        return getResources().getDrawable(R.drawable.xml_bg_cust_minigames_unchosen_quad_diff);
+      case THRESHOLD:
+        return getResources().getDrawable(R.drawable.xml_bg_cust_minigames_unchosen_thres);
+      case DIFFUSE:
+        return getResources().getDrawable(R.drawable.xml_bg_cust_minigames_unchosen_quad_diff);
+      case CORRUPTED:
+        return getResources().getDrawable(R.drawable.xml_bg_cust_minigames_unchosen_corr);
+    }
+    throw new RuntimeException("Invalid Skin");
+  }
+
   @Override
-  public View onCreateView(LayoutInflater inflater, ViewGroup container,
-      Bundle savedInstanceState) {
-    ViewGroup rootView = (ViewGroup) inflater.inflate(R.layout.cust_minigames_layout, container,
-        false);
-    ((TextView) rootView.findViewById(R.id.header)).setTextColor(((TextView) rootView.findViewById(
-        R.id.header)).getTextColors().withAlpha(DisplayHelper.ALPHA_80pc));
-    return rootView;
+  public void reskinLocally(SkinManager.Skin currentSkin) {
+    super.reskinLocally(currentSkin);
+    if (isAdded()) {
+      refreshImageBorders(currentSkin);
+    }
   }
 }

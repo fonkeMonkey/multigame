@@ -4,7 +4,7 @@
 
     <item
             android:state_checked="true"
-            android:drawable="@color/quad_cust_pager_selected" />
+            android:drawable="@color/threshold_tab_active" />
 
     <item
             android:drawable="@android:color/transparent" />

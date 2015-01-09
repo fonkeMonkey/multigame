@@ -117,7 +117,7 @@ public class PreferencesActivity extends BaseActivity {
   }
 
   @Override
-  protected void reskinLocally(SkinManager.Skin currentSkin) {
+  public void reskinLocally(SkinManager.Skin currentSkin) {
     mMusicSwitch.reskinDynamically();
     mSoundSwitch.reskinDynamically();
     mAutoCalibrationSwitch.reskinDynamically();

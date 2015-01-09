@@ -62,10 +62,10 @@
   <!-- Customization center -->
   <string name="cc_unlocks">Odomkne:\u0020</string>
 
-  <string name="cc_music_tab_name">Hudba</string>
-  <string name="cc_minigames_tab_name">Minihry</string>
-  <string name="cc_skins_tab_name">Témy</string>
-  <string name="cc_achievements_tab_name">Ciele</string>
+  <string name="cc_music_tab_name">HUDBA</string>
+  <string name="cc_minigames_tab_name">MINIHRY</string>
+  <string name="cc_skins_tab_name">TÉMY</string>
+  <string name="cc_achievements_tab_name">CIELE</string>
   <string name="cc_more_games_tab_name">Viac hier</string>
 
   <!-- Achievements center -->

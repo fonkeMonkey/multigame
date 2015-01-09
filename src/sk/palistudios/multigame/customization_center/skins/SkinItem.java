@@ -2,10 +2,10 @@ package sk.palistudios.multigame.customization_center.skins;
 
 // @author Pali
 
-import sk.palistudios.multigame.customization_center.AbstractItem;
+import sk.palistudios.multigame.customization_center.CustomizeItem;
 import sk.palistudios.multigame.game.persistence.GameSharedPref;
 
-public class SkinItem extends AbstractItem {
+public class SkinItem extends CustomizeItem {
 
   int color1;
   int color2;

@@ -2,33 +2,83 @@
 <resources>
 
   <!--    Multigame 2     -->
+  <!--    Quad      -->
   <color name="quad_text_color">@android:color/white</color>
+  <color name="quad_text_color_header">#33FFFFFF</color>
   <color name="quad_text_color_disabled">#03598A</color>
   <color name="quad_text_color_li_active">@color/quad_text_color</color>
-  <color name="quad_text_color_li_inactive">#A8B4BF</color>
+  <color name="quad_text_color_li_inactive">#A3B6BD</color>
   <color name="quad_text_color_hof_switch_unpressed">#00A5C7</color>
-  <color name="quad_cust_pager_selected">#035A8C</color>
 
-  <color name="quad_cust_minigame_bg_unchosen">#75A6BB</color>
+  <color name="quad_text_color_listitem_active">@android:color/white</color>
+  <color name="quad_text_color_listitem_inactive">#035B8C</color>
+  <color name="quad_text_color_listitem_locked">#95B3CB</color>
 
+  <color name="quad_tab_active">#035A8C</color>
+  <color name="quad_tab_active_text">@android:color/white</color>
+
+  <color name="quad_cust_minigame_bg_unchosen">#76B7BF</color>
+
+
+  <!--    Threshold      -->
   <color name="threshold_text_color">@android:color/black</color>
+  <color name="threshold_text_color_header">#33000000</color>
   <color name="threshold_text_color_disabled">#B5B5B5</color>
   <color name="threshold_text_color_active">#141414</color>
   <color name="threshold_text_color_inactive">#6A6A6A</color>
+
   <color name="threshold_text_color_hof_switch_unpressed">#DDDDDD</color>
 
+  <color name="threshold_text_color_listitem_active">@color/threshold_text_color_active</color>
+  <color name="threshold_text_color_listitem_inactive">@color/threshold_text_color_inactive</color>
+  <color name="threshold_text_color_listitem_locked">@color/threshold_text_color_disabled</color>
+
+  <color name="threshold_tab_active">#424242</color>
+  <color name="thres_tab_active_text">@android:color/white</color>
+  <color name="thres_tab_inactive_text">@android:color/black</color>
+
+  <color name="thres_cust_minigame_bg_chosen">#42423F</color>
+  <color name="thres_cust_minigame_bg_unchosen">#C3C7C6</color>
+
+  <!--    Diffuse      -->
   <color name="diffuse_text_color">@color/quad_text_color</color>
+  <color name="diffuse_text_color_header">@color/quad_text_color_header</color>
   <color name="diffuse_text_color_disabled">@color/quad_text_color_disabled</color>
   <color name="diffuse_text_color_active">@color/quad_text_color_li_active</color>
   <color name="diffuse_text_color_inactive">@color/quad_text_color_li_inactive</color>
+
   <color name="diffuse_text_color_hof_switch_unpressed">#335B8F</color>
 
+  <color name="diffuse_text_color_listitem_active">@android:color/white</color>
+  <color name="diffuse_text_color_listitem_inactive">#035B8C</color>
+  <color name="diffuse_text_color_listitem_locked">#95B3CB</color>
+
+  <color name="diffuse_tab_active">#035A8C</color>
+  <color name="diff_tab_active_text">@android:color/white</color>
+
+
+  <!--    Corrupted      -->
   <color name="corrupted_text_color">#B8F506</color>
+  <color name="corrupted_text_color_header">#4B4C4C</color>
   <color name="corrupted_text_color_disabled">#8E8E8D</color>
   <color name="corrupted_text_color_active">#BFFF06</color>
   <color name="corrupted_text_color_inactive">#8D8D8D</color>
+
   <color name="corrupted_text_color_hof_switch_unpressed">#C2FD00</color>
   <color name="corrupted_text_color_hof_switch_pressed">#FD3608</color>
+
+  <color name="corrupted_text_color_listitem_active">@color/corrupted_text_color_active</color>
+  <color name="corrupted_text_color_listitem_inactive">@color/corrupted_text_color_inactive</color>
+  <color name="corrupted_text_color_listitem_locked">@color/corrupted_text_color_disabled</color>
+
+  <color name="corrupted_tab_active">#FC3F1E</color>
+  <color name="corr_tab_active_text" >@android:color/white</color>
+  <color name="corr_tab_inactive_text">#C7FC35</color>
+
+  <!--<color name="corrupted_cust_minigame_bg_chosen">#A14F3E</color>-->
+  <color name="corrupted_cust_minigame_bg_chosen">#F1401B</color>
+  <color name="corrupted_cust_minigame_bg_unchosen">#919699</color>
+
 
   <!--    Patresk     -->
 

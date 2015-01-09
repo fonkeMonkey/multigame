@@ -12,12 +12,10 @@ import android.widget.TextView;
 import sk.palistudios.multigame.BaseListActivity;
 import sk.palistudios.multigame.MgTracker;
 import sk.palistudios.multigame.R;
-import sk.palistudios.multigame.customization_center.CustomizationCenterActivity;
-import sk.palistudios.multigame.customization_center.skins.SkinsCenterListActivity;
 import sk.palistudios.multigame.game.persistence.GameSharedPref;
 import sk.palistudios.multigame.mainMenu.DebugSettings;
+import sk.palistudios.multigame.tools.SkinManager;
 import sk.palistudios.multigame.tools.Toaster;
-import sk.palistudios.multigame.tools.sound.SoundEffectsCenter;
 
 /**
  * @author Pali
@@ -40,10 +38,9 @@ public class MusicCenterListActivity extends BaseListActivity {
     initAdapter();
 
     TextView header = new TextView(this);
-    CustomizationCenterActivity.addHeader(header);
     header.setText((String) getResources().getString(R.string.cc_music_music_center_name));
     header.setTextSize(35);
-    header.setBackgroundColor(SkinsCenterListActivity.getCurrentSkin(this).getColorHeader());
+    header.setBackgroundColor(SkinManager.getSkinCompat(this).getColorHeader());
     header.setGravity(Gravity.CENTER);
 
     TextView footer = new TextView(this);
@@ -53,7 +50,6 @@ public class MusicCenterListActivity extends BaseListActivity {
 
     getListView().addHeaderView(header);
     setListAdapter(musicArrayAdapter);
-    CustomizationCenterActivity.addAdapter(musicArrayAdapter);
     getListView().setClickable(true);
 
     getListView().setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -131,8 +127,7 @@ public class MusicCenterListActivity extends BaseListActivity {
     //            i++;
     //        }
 
-    musicArrayAdapter = new MusicArrayAdapter(this, items, SkinsCenterListActivity.getCurrentSkin(
-        this));
+    musicArrayAdapter = new MusicArrayAdapter(this, items, SkinManager.getSkinCompat(this));
   }
 
   public MusicArrayAdapter getMusicArrayAdapter() {

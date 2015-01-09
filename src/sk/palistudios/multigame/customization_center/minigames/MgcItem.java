@@ -2,9 +2,9 @@ package sk.palistudios.multigame.customization_center.minigames;
 
 // @author Pali
 
-import sk.palistudios.multigame.customization_center.AbstractItem;
+import sk.palistudios.multigame.customization_center.CustomizeItem;
 
-public class MgcItem extends AbstractItem {
+public class MgcItem extends CustomizeItem {
 
   protected char type;
 

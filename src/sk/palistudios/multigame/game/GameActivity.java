@@ -29,7 +29,6 @@ import sk.palistudios.multigame.BaseActivity;
 import sk.palistudios.multigame.MgTracker;
 import sk.palistudios.multigame.R;
 import sk.palistudios.multigame.customization_center.achievements.AchievementsCenterListActivity;
-import sk.palistudios.multigame.customization_center.skins.SkinsCenterListActivity;
 import sk.palistudios.multigame.game.minigames.MinigamesManager;
 import sk.palistudios.multigame.game.persistence.GameSaverLoader;
 import sk.palistudios.multigame.game.persistence.GameSharedPref;
@@ -192,19 +191,19 @@ public class GameActivity extends BaseActivity implements SensorEventListener {
 
   private void initGraphics() {
     LinearLayout gameBar = (LinearLayout) findViewById(R.id.game_bar);
-    gameBar.setBackgroundColor(SkinsCenterListActivity.getCurrentSkin(getApplicationContext())
+    gameBar.setBackgroundColor(SkinManager.getSkinCompat(getApplicationContext())
         .getBarBgColor());
     mScoreView = (TextView) findViewById(R.id.game_score);
-    mScoreView.setTextColor(SkinsCenterListActivity.getCurrentSkin(getApplicationContext()).getBarLabelColor());
+    mScoreView.setTextColor(SkinManager.getSkinCompat(getApplicationContext()).getBarLabelColor());
     mDifficultyView = (TextView) findViewById(R.id.game_level);
-    mDifficultyView.setTextColor(SkinsCenterListActivity.getCurrentSkin(getApplicationContext()).getBarLabelColor());
+    mDifficultyView.setTextColor(SkinManager.getSkinCompat(getApplicationContext()).getBarLabelColor());
 
     View gameScoreSeparator = findViewById(R.id.game_score_separator);
-    gameScoreSeparator.setBackgroundColor(SkinsCenterListActivity.getCurrentSkin(
-        getApplicationContext()).getBarSeparatorColor());
+    gameScoreSeparator.setBackgroundColor(SkinManager.getSkinCompat(getApplicationContext())
+        .getBarSeparatorColor());
     View gameScoreSeparatorDown = findViewById(R.id.game_score_separator_down);
-    gameScoreSeparatorDown.setBackgroundColor(SkinsCenterListActivity.getCurrentSkin(
-        getApplicationContext()).getBarSeparatorColorDown());
+    gameScoreSeparatorDown.setBackgroundColor(SkinManager.getSkinCompat(getApplicationContext())
+        .getBarSeparatorColorDown());
 
     mCanvases = new BaseGameCanvasView[4];
     mCanvases[0] = (BaseGameCanvasView) findViewById(R.id.canvas1);
@@ -217,9 +216,9 @@ public class GameActivity extends BaseActivity implements SensorEventListener {
     mCanvases[2].setGameSaved(wasGameSaved);
     mCanvases[3].setGameSaved(wasGameSaved);
 
-    int barLabelColor = SkinsCenterListActivity.getCurrentSkin(getApplicationContext())
+    int barLabelColor = SkinManager.getSkinCompat(getApplicationContext())
         .getBarLabelColor();
-    int barTextColor = SkinsCenterListActivity.getCurrentSkin(getApplicationContext())
+    int barTextColor = SkinManager.getSkinCompat(getApplicationContext())
         .getBarTextColor();
     mScoreSpannable = new SpannableString(getString(R.string.score));
     mDifficultySpannable = new SpannableString("Level: ");
@@ -261,7 +260,7 @@ public class GameActivity extends BaseActivity implements SensorEventListener {
   }
 
   @Override
-  protected void reskinLocally(SkinManager.Skin currentSkin) {
+  public void reskinLocally(SkinManager.Skin currentSkin) {
     return;
   }
 

@@ -58,7 +58,6 @@
         android:label="MultiGame"
         android:screenOrientation="landscape"
         android:theme="@style/Multigame_style_game"
-
         >
     </activity>
 
@@ -81,31 +80,6 @@
         android:label="Preferences"
         android:theme="@style/Multigame_style_other"
         >
-    </activity>
-    <!-- TABS -->
-
-    <activity
-        android:name="sk.palistudios.multigame.customization_center.achievements.AchievementsCenterListActivity"
-        android:label="AchievementsCenter"
-        android:theme="@style/Multigame_style_other">
-    </activity>
-
-    <activity
-        android:name="sk.palistudios.multigame.customization_center.mgc.MinigamesCenterListActivity"
-        android:label="MiniGamesCenter"
-        android:theme="@style/Multigame_style_other">
-    </activity>
-
-    <activity
-        android:name="sk.palistudios.multigame.customization_center.skins.SkinsCenterListActivity"
-        android:label="SkinsCenter"
-        android:theme="@style/Multigame_style_other">
-    </activity>
-
-    <activity
-        android:name="sk.palistudios.multigame.customization_center.music.MusicCenterListActivity"
-        android:label="MusicCenter"
-        android:theme="@style/Multigame_style_other">
     </activity>
 
     <activity

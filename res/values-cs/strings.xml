@@ -61,10 +61,10 @@
   <!-- Customization center -->
   <string name="cc_unlocks">Odemkne:\u0020</string>
 
-  <string name="cc_music_tab_name">Hudba</string>
-  <string name="cc_minigames_tab_name">Minihry</string>
-  <string name="cc_skins_tab_name">Témata</string>
-  <string name="cc_achievements_tab_name">Cíle</string>
+  <string name="cc_music_tab_name">HUDBA</string>
+  <string name="cc_minigames_tab_name">MINIHRY</string>
+  <string name="cc_skins_tab_name">TÉMATA</string>
+  <string name="cc_achievements_tab_name">CÍLE</string>
   <string name="cc_more_games_tab_name">Více her</string>
 
   <!-- Úspěchy center -->

@@ -2,7 +2,6 @@ package sk.palistudios.multigame.customization_center.achievements;
 
 import java.util.ArrayList;
 
-import android.app.Activity;
 import android.content.Context;
 import android.media.AudioManager;
 import android.os.Bundle;
@@ -11,11 +10,9 @@ import android.widget.TextView;
 
 import sk.palistudios.multigame.BaseListActivity;
 import sk.palistudios.multigame.R;
-import sk.palistudios.multigame.customization_center.CustomizationCenterActivity;
-import sk.palistudios.multigame.customization_center.skins.SkinsCenterListActivity;
 import sk.palistudios.multigame.game.persistence.GameSharedPref;
 import sk.palistudios.multigame.mainMenu.DebugSettings;
-import sk.palistudios.multigame.tools.sound.SoundEffectsCenter;
+import sk.palistudios.multigame.tools.SkinManager;
 
 /**
  * @author Pali
@@ -107,7 +104,7 @@ public class AchievementsCenterListActivity extends BaseListActivity {
     TextView header = new TextView(this);
     header.setText(getResources().getString(R.string.cc_achievements_achievements_center_name));
     header.setTextSize(35);
-    header.setBackgroundColor(SkinsCenterListActivity.getCurrentSkin(this).getColorHeader());
+    header.setBackgroundColor(SkinManager.getSkinCompat(this).getColorHeader());
     header.setGravity(Gravity.CENTER);
 
     getListView().addHeaderView(header);
@@ -118,7 +115,6 @@ public class AchievementsCenterListActivity extends BaseListActivity {
     getListView().addFooterView(footer, null, false);
 
     setListAdapter(achievementsAdapter);
-    CustomizationCenterActivity.addAdapter(achievementsAdapter);
 
     getListView().setClickable(true);
 
@@ -128,7 +124,7 @@ public class AchievementsCenterListActivity extends BaseListActivity {
 
     ArrayList<AchievementItem> items = new ArrayList<AchievementItem>(achievements);
     achievementsAdapter = new AchievementsArrayAdapter(this, items,
-        SkinsCenterListActivity.getCurrentSkin(this));
+        SkinManager.getSkinCompat(this));
   }
 
   public AchievementsArrayAdapter getAchievementsArrayAdapter() {
