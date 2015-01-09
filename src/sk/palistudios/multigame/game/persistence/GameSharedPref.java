@@ -66,7 +66,7 @@ public class GameSharedPref {
    * @return True if submitted, false otherwise.
    */
   public static boolean getHighestScoreSubmitted() {
-    return mSharedPreferences.getBoolean("highestScoreSubmitted", false);
+    return sSharedPreferences.getBoolean("highestScoreSubmitted", false);
   }
 
   /**
@@ -75,8 +75,8 @@ public class GameSharedPref {
    * @param submitted True to submitted, false otherwise.
    */
   public static void setHighestScoreSubmitted(boolean submitted) {
-    mEditor.putBoolean("highestScoreSubmitted", submitted);
-    mEditor.commit();
+    sEditor.putBoolean("highestScoreSubmitted", submitted);
+    sEditor.commit();
   }
 
   public static void saveGameDetails(final int scoreToSave, final int levelToSave,
