@@ -16,6 +16,7 @@ import sk.palistudios.multigame.game.time.ISecondsObserver;
 import sk.palistudios.multigame.game.view.GameCanvasViewTouch;
 import sk.palistudios.multigame.mainMenu.DebugSettings;
 import sk.palistudios.multigame.tools.RandomGenerator;
+import sk.palistudios.multigame.tools.SkinManager;
 
 /**
  * @author Pali
@@ -158,6 +159,11 @@ public class MiniGameTGatherer extends BaseMiniGame implements
   public void onMinigameDeactivated() {
     super.onMinigameDeactivated();
     GameTimeManager.unregisterSecondsObserver(this);
+  }
+
+  @Override
+  public void reskinLocally(SkinManager.Skin currentSkin) {
+    
   }
 
   private boolean collidesWithOtherCircles(CircleToTouch circleNew) {

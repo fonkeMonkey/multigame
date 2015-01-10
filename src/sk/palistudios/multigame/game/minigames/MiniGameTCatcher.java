@@ -14,6 +14,7 @@ import sk.palistudios.multigame.game.persistence.PaintSerializable;
 import sk.palistudios.multigame.game.view.GameCanvasViewTouch;
 import sk.palistudios.multigame.mainMenu.DebugSettings;
 import sk.palistudios.multigame.tools.RandomGenerator;
+import sk.palistudios.multigame.tools.SkinManager;
 
 /**
  * @author Pali
@@ -146,6 +147,11 @@ public class MiniGameTCatcher extends BaseMiniGame
     if (framesToGenerateNewBall > maxDifficulty) {
       framesToGenerateNewBall -= difficultyStep;
     }
+  }
+
+  @Override
+  public void reskinLocally(SkinManager.Skin currentSkin) {
+
   }
 
   @Override

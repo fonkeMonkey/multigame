@@ -11,6 +11,7 @@ import sk.palistudios.multigame.game.persistence.PaintSerializable;
 import sk.palistudios.multigame.game.persistence.PointSerializable;
 import sk.palistudios.multigame.mainMenu.DebugSettings;
 import sk.palistudios.multigame.tools.RandomGenerator;
+import sk.palistudios.multigame.tools.SkinManager;
 
 /**
  * @author Pali
@@ -161,6 +162,11 @@ public class MiniGameVBouncer extends BaseMiniGame
         velocityY -= difficultyStepY;
       }
     }
+  }
+
+  @Override
+  public void reskinLocally(SkinManager.Skin currentSkin) {
+
   }
 
   @Override

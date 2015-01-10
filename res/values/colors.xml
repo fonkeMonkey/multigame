@@ -184,7 +184,13 @@
   <color name="dialog_background">#000000</color>
   <color name="cust_minigame_border_disabled">#76B4C7</color>
 
+  <color name="transparent_white_2">#05ffffff</color>
+  <color name="transparent_white_5">#0dffffff</color>
+  <color name="transparent_white_75">#bfffffff</color>
 
+  <color name="text_game_score">@color/transparent_white_5</color>
+  <color name="text_game_level">@color/transparent_white_5</color>
+  <color name="text_game_level_highlight">@color/transparent_white_75</color>
 
 </resources>
 

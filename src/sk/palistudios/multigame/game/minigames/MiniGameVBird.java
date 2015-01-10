@@ -13,6 +13,7 @@ import sk.palistudios.multigame.game.GameActivity;
 import sk.palistudios.multigame.game.persistence.PaintSerializable;
 import sk.palistudios.multigame.mainMenu.DebugSettings;
 import sk.palistudios.multigame.tools.RandomGenerator;
+import sk.palistudios.multigame.tools.SkinManager;
 
 /**
  * @author Pali
@@ -163,6 +164,11 @@ public class MiniGameVBird extends BaseMiniGame implements
     if (framesToCreateObstacle > maxDifficulty) {
       framesToCreateObstacle -= difficultyStep;
     }
+  }
+
+  @Override
+  public void reskinLocally(SkinManager.Skin currentSkin) {
+
   }
 
   @Override

@@ -16,6 +16,7 @@ import sk.palistudios.multigame.game.persistence.PointSerializable;
 import sk.palistudios.multigame.game.view.GameCanvasViewTouch;
 import sk.palistudios.multigame.mainMenu.DebugSettings;
 import sk.palistudios.multigame.tools.RandomGenerator;
+import sk.palistudios.multigame.tools.SkinManager;
 
 /**
  * @author Pali
@@ -209,6 +210,11 @@ public class MiniGameTInvader extends BaseMiniGame implements
     if (framesToCreateEnemy > maximumDifficulty) {
       framesToCreateEnemy -= difficultyStep;
     }
+  }
+
+  @Override
+  public void reskinLocally(SkinManager.Skin currentSkin) {
+
   }
 
   @Override

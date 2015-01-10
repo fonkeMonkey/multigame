@@ -10,21 +10,21 @@ import android.hardware.SensorManager;
 import android.media.AudioManager;
 import android.os.Bundle;
 import android.os.Handler;
-import android.text.Spannable;
 import android.text.SpannableString;
-import android.text.style.ForegroundColorSpan;
 import android.util.Log;
 import android.view.MotionEvent;
-import android.view.View;
 import android.view.WindowManager;
 import android.view.animation.AlphaAnimation;
 import android.view.animation.Animation;
 import android.view.animation.LinearInterpolator;
-import android.widget.LinearLayout;
+import android.widget.FrameLayout;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.facebook.Session;
+import com.nineoldandroids.animation.Animator;
+import com.nineoldandroids.animation.ValueAnimator;
 import sk.palistudios.multigame.BaseActivity;
 import sk.palistudios.multigame.MgTracker;
 import sk.palistudios.multigame.R;
@@ -130,10 +130,56 @@ public class GameActivity extends BaseActivity implements SensorEventListener {
         mLevel++;
         GameTimeManager.onLevelIncreased(GameActivity.this);
         redrawDifficultyView(String.valueOf(mLevel));
+        animateLevelChange();
       }
 
     }
   };
+
+  private void animateLevelChange() {
+    mDifficultyView.setText(String.valueOf(mLevel));
+    final ValueAnimator highlight = ValueAnimator.ofInt(mDifficultyView.getTextColors()
+            .getDefaultColor(),
+        getResources().getColor(R.color.text_game_level_highlight));
+    highlight.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
+      @Override
+      public void onAnimationUpdate(ValueAnimator animator) {
+        mDifficultyView.setTextColor((Integer) animator.getAnimatedValue());
+      }
+    });
+
+    final ValueAnimator unhighlight = ValueAnimator.ofInt(mDifficultyView.getTextColors()
+            .getDefaultColor(),
+        getResources().getColor(R.color.text_game_level));
+    highlight.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
+      @Override
+      public void onAnimationUpdate(ValueAnimator animator) {
+        mDifficultyView.setTextColor((Integer) animator.getAnimatedValue());
+      }
+    });
+
+    highlight.addListener(new Animator.AnimatorListener() {
+      @Override
+      public void onAnimationStart(Animator animation) {
+      }
+
+      @Override
+      public void onAnimationEnd(Animator animation) {
+        unhighlight.setDuration(500);
+        unhighlight.start();
+      }
+
+      @Override
+      public void onAnimationCancel(Animator animation) {
+      }
+
+      @Override
+      public void onAnimationRepeat(Animator animation) {
+      }
+    });
+    highlight.setDuration(200);
+    highlight.start();
+  }
 
   final private int GAME_UPDATES_PER_SECOND = 60;//Cell phones have seldom more fps per seconds,
   // although some have 120 now
@@ -163,8 +209,6 @@ public class GameActivity extends BaseActivity implements SensorEventListener {
   private boolean closedByButton = false;
   private long mTimeGameStarted;
   private boolean mLoseTracked = false;
-  private SpannableString mDifficultySpannable;
-  private SpannableString mScoreSpannable;
 
   @Override
   public void onCreate(Bundle icicle) {
@@ -190,20 +234,8 @@ public class GameActivity extends BaseActivity implements SensorEventListener {
   }
 
   private void initGraphics() {
-    LinearLayout gameBar = (LinearLayout) findViewById(R.id.game_bar);
-    gameBar.setBackgroundColor(SkinManager.getSkinCompat(getApplicationContext())
-        .getBarBgColor());
     mScoreView = (TextView) findViewById(R.id.game_score);
-    mScoreView.setTextColor(SkinManager.getSkinCompat(getApplicationContext()).getBarLabelColor());
     mDifficultyView = (TextView) findViewById(R.id.game_level);
-    mDifficultyView.setTextColor(SkinManager.getSkinCompat(getApplicationContext()).getBarLabelColor());
-
-    View gameScoreSeparator = findViewById(R.id.game_score_separator);
-    gameScoreSeparator.setBackgroundColor(SkinManager.getSkinCompat(getApplicationContext())
-        .getBarSeparatorColor());
-    View gameScoreSeparatorDown = findViewById(R.id.game_score_separator_down);
-    gameScoreSeparatorDown.setBackgroundColor(SkinManager.getSkinCompat(getApplicationContext())
-        .getBarSeparatorColorDown());
 
     mCanvases = new BaseGameCanvasView[4];
     mCanvases[0] = (BaseGameCanvasView) findViewById(R.id.canvas1);
@@ -215,15 +247,6 @@ public class GameActivity extends BaseActivity implements SensorEventListener {
     mCanvases[1].setGameSaved(wasGameSaved);
     mCanvases[2].setGameSaved(wasGameSaved);
     mCanvases[3].setGameSaved(wasGameSaved);
-
-    int barLabelColor = SkinManager.getSkinCompat(getApplicationContext())
-        .getBarLabelColor();
-    int barTextColor = SkinManager.getSkinCompat(getApplicationContext())
-        .getBarTextColor();
-    mScoreSpannable = new SpannableString(getString(R.string.score));
-    mDifficultySpannable = new SpannableString("Level: ");
-    mLeftSpanFgColor = new ForegroundColorSpan(barLabelColor);
-    mRightSpanFgColor = new ForegroundColorSpan(barTextColor);
 
     if (mTutorialMode) {
       redrawScoreView("Tutorial");
@@ -424,29 +447,12 @@ public class GameActivity extends BaseActivity implements SensorEventListener {
     }
   }
 
-  private ForegroundColorSpan mLeftSpanFgColor;
-  private ForegroundColorSpan mRightSpanFgColor;
   private void redrawScoreView(String score) {
-    mScoreSpannable.setSpan(mLeftSpanFgColor, 0, mScoreSpannable.length(),
-        Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
-    mScoreView.setText(mScoreSpannable);
-
-    Spannable secondPart = new SpannableString(score);
-    secondPart.setSpan(mRightSpanFgColor, 0, score.length(),
-        Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
-
-    mScoreView.append(secondPart);
+    mScoreView.setText(score);
   }
 
   private void redrawDifficultyView(String difficulty) {
-    mDifficultySpannable.setSpan(mLeftSpanFgColor, 0,
-        mDifficultySpannable.length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
-    mDifficultyView.setText(mDifficultySpannable);
-
-    Spannable secondPart = new SpannableString(difficulty);
-    secondPart.setSpan(mRightSpanFgColor, 0, difficulty.length(),
-        Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
-    mDifficultyView.append(secondPart);
+    mDifficultyView.setText(difficulty);
   }
 
   public void flashScreen() {
@@ -454,7 +460,7 @@ public class GameActivity extends BaseActivity implements SensorEventListener {
     animation.setDuration(500); // duration - half a second
     animation.setInterpolator(new LinearInterpolator());
     animation.setRepeatCount(0);
-    LinearLayout gameLayout = (LinearLayout) findViewById(R.id.game_container);
+    RelativeLayout gameLayout = (RelativeLayout) findViewById(R.id.game_container);
     gameLayout.startAnimation(animation);
   }
 

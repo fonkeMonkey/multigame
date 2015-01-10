@@ -11,6 +11,7 @@ import sk.palistudios.multigame.game.persistence.PaintSerializable;
 import sk.palistudios.multigame.game.persistence.PointSerializable;
 import sk.palistudios.multigame.mainMenu.DebugSettings;
 import sk.palistudios.multigame.tools.RandomGenerator;
+import sk.palistudios.multigame.tools.SkinManager;
 
 /**
  * @author Pali
@@ -183,6 +184,11 @@ public class MiniGameHBalance extends BaseMiniGame implements
     }
 
     maxSpeed *= 1.05f;
+  }
+
+  @Override
+  public void reskinLocally(SkinManager.Skin currentSkin) {
+
   }
 
   @Override

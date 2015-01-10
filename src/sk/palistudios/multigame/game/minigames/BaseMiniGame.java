@@ -12,6 +12,7 @@ import sk.palistudios.multigame.R;
 import sk.palistudios.multigame.game.GameActivity;
 import sk.palistudios.multigame.game.persistence.GameSaverLoader;
 import sk.palistudios.multigame.game.time.ISecondsObserver;
+import sk.palistudios.multigame.tools.SkinManager;
 
 abstract public class BaseMiniGame implements Serializable, ISecondsObserver {
   protected final int colorAlt2;
@@ -77,4 +78,6 @@ abstract public class BaseMiniGame implements Serializable, ISecondsObserver {
   public boolean isMinigameInitialized() {
     return isMinigameInitialized;
   }
+
+  public abstract void reskinLocally(SkinManager.Skin currentSkin);
 }
