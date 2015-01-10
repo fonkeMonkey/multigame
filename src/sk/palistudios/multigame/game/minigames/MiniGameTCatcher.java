@@ -7,8 +7,8 @@ import android.content.Context;
 import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
-import android.graphics.Color;
 import android.graphics.Paint;
+import android.graphics.RectF;
 
 import sk.palistudios.multigame.R;
 import sk.palistudios.multigame.game.GameActivity;
@@ -35,12 +35,18 @@ public class MiniGameTCatcher extends BaseMiniGame
   private final int[] mCatchingBalls = new int[NUMBER_OF_COLUMNS];
   private final ArrayList<FallingBall> mFallingBalls = new ArrayList<FallingBall>();
   private PaintSerializable mPaintFallingBalls = null;
+  private PaintSerializable mPaintFallingBallCenter = null;
   private PaintSerializable mPaintCatchingBallInactive = null;
   private PaintSerializable mPaintCatchingBallActive = null;
   private int activeBall = 4;
-  private int mBallSize;
+  private int mBallSize, mBallSize1, mBallSize2, mBallSize3, mBallSize4;
   private int catchingBallsHeight;
   private int columnWidth;
+
+  private int mBallColor;
+  private int mBallCenterColor;
+  private int mCatchingBallActiveColor;
+  private int mCatchingBallInactiveColor;
 
   public MiniGameTCatcher(String fileName, Integer position, GameActivity game) {
     super(fileName, position, game);
@@ -52,7 +58,11 @@ public class MiniGameTCatcher extends BaseMiniGame
     mWidth = mBitmap.getWidth();
 
     columnWidth = (mWidth) / NUMBER_OF_COLUMNS;
-    mBallSize = mWidth / 40;
+    mBallSize = mWidth / 35;
+    mBallSize1 = (int) (mBallSize / 1.6);
+    mBallSize2 = (int) (mBallSize / 2.4);
+    mBallSize3 = (int) (mBallSize / 3.2);
+    mBallSize4 = (int) (mBallSize / 4.0);
     catchingBallsHeight = mHeight - (mHeight / 15) - mBallSize;
     fallingStep =
         ((float) (mHeight - fallingHeight) / 180) * DebugSettings.GLOBAL_DIFFICULTY_COEFFICIENT;
@@ -62,9 +72,10 @@ public class MiniGameTCatcher extends BaseMiniGame
       fallingStep *= DebugSettings.GLOBAL_DIFFICULTY_TUTORIAL_COEFFICIENT;
     }
 
-    mPaintFallingBalls = new PaintSerializable(colorMain, Paint.Style.FILL);
-    mPaintCatchingBallActive = new PaintSerializable(colorAlt, Paint.Style.FILL);
-    mPaintCatchingBallInactive = new PaintSerializable(colorAlt2, Paint.Style.STROKE);
+    mPaintFallingBalls = new PaintSerializable(mBallColor, Paint.Style.FILL);
+    mPaintFallingBallCenter = new PaintSerializable(mBallCenterColor, Paint.Style.FILL);
+    mPaintCatchingBallActive = new PaintSerializable(mCatchingBallActiveColor, Paint.Style.STROKE);
+    mPaintCatchingBallInactive = new PaintSerializable(mCatchingBallInactiveColor, Paint.Style.FILL);
 
     fallingHeight = mHeight / 20;
 
@@ -104,21 +115,41 @@ public class MiniGameTCatcher extends BaseMiniGame
   }
 
   public void drawMinigame(Canvas mCanvas) {
-    if(mBackgroundColor != 0) {
-      mCanvas.drawColor(mBackgroundColor);
-    }
+    mCanvas.drawColor(mBackgroundColor);
     for (int i = 0; i < NUMBER_OF_COLUMNS; i++) {
+      float left = mCatchingBalls[i] - mBallSize * 2;
+      float right = left + (mBallSize * 4);
+      int top = catchingBallsHeight - mBallSize;
+      int bottom = catchingBallsHeight + mBallSize;
+      RectF rectF = new RectF(left, top, right, bottom);
       if (i != activeBall) {
-        mCanvas.drawCircle(mCatchingBalls[i], catchingBallsHeight, mBallSize,
-            mPaintCatchingBallInactive.mPaint);
+        mCanvas.drawOval(rectF, mPaintCatchingBallInactive.mPaint);
       } else {
-        mCanvas.drawCircle(mCatchingBalls[i], catchingBallsHeight, mBallSize,
-            mPaintCatchingBallActive.mPaint);
+        mCanvas.drawOval(rectF, mPaintCatchingBallActive.mPaint);
       }
     }
 
+    Paint paint = mPaintFallingBalls.mPaint;
+    int ballCenter;
     for (FallingBall ball : mFallingBalls) {
-      mCanvas.drawCircle(ball.xAxis, Math.round(ball.yAxis), mBallSize, mPaintFallingBalls.mPaint);
+      paint.setAlpha(255); // 100%
+      ballCenter = Math.round(ball.yAxis);
+      mCanvas.drawCircle(ball.xAxis, ballCenter, mBallSize, mPaintFallingBalls.mPaint);
+      mCanvas.drawCircle(ball.xAxis, ballCenter, (int) (mBallSize/ 2.5),
+          mPaintFallingBallCenter.mPaint);
+      paint.setAlpha(128); // 50%
+      ballCenter = Math.round(ball.yAxis - (2 * mBallSize));
+      mCanvas.drawCircle(ball.xAxis, ballCenter, mBallSize1, paint);
+      paint.setAlpha(102); // 40%
+      ballCenter = Math.round(ball.yAxis - (2 * mBallSize) - (2 * mBallSize1));
+      mCanvas.drawCircle(ball.xAxis, ballCenter, mBallSize2, paint);
+      paint.setAlpha(77); // 30%
+      ballCenter = Math.round(ball.yAxis - (2 * mBallSize) - (2 * mBallSize1) - (2 * mBallSize2));
+      mCanvas.drawCircle(ball.xAxis, ballCenter, mBallSize3, paint);
+      paint.setAlpha(51); // 20%
+      ballCenter = Math.round(ball.yAxis - (2 * mBallSize) - (2 * mBallSize1) - (2 * mBallSize2) -
+          (2 * mBallSize3));
+      mCanvas.drawCircle(ball.xAxis, ballCenter, mBallSize4, paint);
     }
 
   }
@@ -160,15 +191,46 @@ public class MiniGameTCatcher extends BaseMiniGame
     switch (currentSkin) {
       case QUAD:
         mBackgroundColor = resources.getColor(R.color.game_bg_quad_tcatcher);
+        mBallColor = resources.getColor(R.color.game_tcatcher_ball_quad);
+        mBallCenterColor = resources.getColor(R.color.game_tcatcher_ballcenter_quad);
+        mCatchingBallActiveColor = resources.getColor(R.color.game_tcatcher_catching_active_quad);
+        mCatchingBallInactiveColor = resources.getColor(
+            R.color.game_tcatcher_catching_inactive_quad);
         break;
       case THRESHOLD:
         mBackgroundColor = resources.getColor(R.color.game_bg_threshold_tcatcher);
+        mBallColor = resources.getColor(R.color.game_tcatcher_ball_threshold);
+        mBallCenterColor = resources.getColor(R.color.game_tcatcher_ballcenter_threshold);
+        mCatchingBallActiveColor = resources.getColor(
+            R.color.game_tcatcher_catching_active_threshold);
+        mCatchingBallInactiveColor = resources.getColor(
+            R.color.game_tcatcher_catching_inactive_threshold);
         break;
       case DIFFUSE:
         mBackgroundColor = resources.getColor(R.color.game_bg_diffuse_tcatcher);
+        mBallColor = resources.getColor(R.color.game_tcatcher_ball_diffuse);
+        mBallCenterColor = resources.getColor(R.color.game_tcatcher_ballcenter_diffuse);
+        mCatchingBallActiveColor = resources.getColor(
+            R.color.game_tcatcher_catching_active_diffuse);
+        mCatchingBallInactiveColor = resources.getColor(
+            R.color.game_tcatcher_catching_inactive_diffuse);
         break;
       case CORRUPTED:
         mBackgroundColor = resources.getColor(R.color.game_bg_corrupted_tcatcher);
+        mBallColor = resources.getColor(R.color.game_tcatcher_ball_corrupted);
+        mBallCenterColor = resources.getColor(R.color.game_tcatcher_ballcenter_corrupted);
+        mCatchingBallActiveColor = resources.getColor(
+            R.color.game_tcatcher_catching_active_corrupted);
+        mCatchingBallInactiveColor = resources.getColor(
+            R.color.game_tcatcher_catching_inactive_corrupted);
+        break;
+      default:
+        mBackgroundColor = resources.getColor(R.color.game_bg_quad_tcatcher);
+        mBallColor = resources.getColor(R.color.game_tcatcher_ball_quad);
+        mBallCenterColor = resources.getColor(R.color.game_tcatcher_ballcenter_quad);
+        mCatchingBallActiveColor = resources.getColor(R.color.game_tcatcher_catching_active_quad);
+        mCatchingBallInactiveColor = resources.getColor(
+            R.color.game_tcatcher_catching_inactive_quad);
         break;
     }
   }
