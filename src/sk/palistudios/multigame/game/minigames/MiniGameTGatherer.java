@@ -7,8 +7,8 @@ import android.content.Context;
 import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
-import android.graphics.Color;
 import android.graphics.Paint;
+import android.graphics.RectF;
 
 import sk.palistudios.multigame.R;
 import sk.palistudios.multigame.game.GameActivity;
@@ -25,9 +25,14 @@ import sk.palistudios.multigame.tools.SkinManager;
  */
 public class MiniGameTGatherer extends BaseMiniGame implements
     GameCanvasViewTouch.userInteractedTouchListener, ISecondsObserver {
+
+  private static final long INITIAL_TIME_TO_LIVE_MILLIS = 10 * 1000;
+  private static final long TIME_PERIOD_HALF = INITIAL_TIME_TO_LIVE_MILLIS / 2;
+  private static final long TIME_PERIOD_QUARTER = INITIAL_TIME_TO_LIVE_MILLIS / 4;
+
   //DIFFICULTY
   private int framesToGenerateCircle = (int) (160 / DebugSettings.GLOBAL_DIFFICULTY_COEFFICIENT);
-  public static final int CIRCLE_DURATION = 9;
+  public static final int CIRCLE_DURATION = 10;
   private int touchingDistance;
   private int maximumDifficulty;
   private int framesToGo = 20;
@@ -35,11 +40,13 @@ public class MiniGameTGatherer extends BaseMiniGame implements
   //GRAPHICS
   private transient RandomGenerator mRg;
   private boolean gameLost = false;
-  private PaintSerializable mPaintCircleColor = null;
-  private PaintSerializable mPaintNumberColor = null;
+  private PaintSerializable mPaintCircleColor;
+  private PaintSerializable mPaintCircleCenterColor = null;
   private final ArrayList<CircleToTouch> mCircles = new ArrayList<CircleToTouch>();
   private int mCircleSize;
-  private int textAlign;
+  private int mCircleCenterSize;
+
+  private long mLastUpdate;
 
   public MiniGameTGatherer(String fileName, Integer position, GameActivity game) {
     super(fileName, position, game);
@@ -55,16 +62,17 @@ public class MiniGameTGatherer extends BaseMiniGame implements
     mWidth = mBitmap.getWidth();
     mRg = RandomGenerator.getInstance();
 
-    mPaintCircleColor = new PaintSerializable(colorAlt, Paint.Style.STROKE);
-    mPaintNumberColor = new PaintSerializable(colorMain, Paint.Style.FILL);
+    mPaintCircleColor = new PaintSerializable(mPrimaryColor, Paint.Style.FILL);
+    mPaintCircleCenterColor = new PaintSerializable(mSecondaryColor, Paint.Style.FILL);
 
     mCircleSize = mWidth / 20;
-    textAlign = mCircleSize / 3;
-    mPaintNumberColor.setTextSize(mCircleSize);
+    mCircleCenterSize = (int) (mCircleSize / 2.0);
     touchingDistance = (int) (mCircleSize * 1.5);
     //difficulty
     maximumDifficulty = 1;
     isMinigameInitialized = true;
+
+    mLastUpdate = -1;
   }
 
 
@@ -76,7 +84,6 @@ public class MiniGameTGatherer extends BaseMiniGame implements
     }
     generateNewObjects();
   }
-
 
   public void onUserInteractedTouch(float x, float y) {
     int touchX = Math.round(x);
@@ -109,17 +116,85 @@ public class MiniGameTGatherer extends BaseMiniGame implements
   }
 
   public void drawMinigame(Canvas mCanvas) {
+    final long now = System.currentTimeMillis();
+    if(mLastUpdate == -1) {
+      mLastUpdate = now;
+    }
+    final long timeDifference = now - mLastUpdate;
+    mLastUpdate = now;
     if(mBackgroundColor != 0) {
       mCanvas.drawColor(mBackgroundColor);
     }
     for (CircleToTouch obj : mCircles) {
-      mCanvas.drawCircle(obj.x, obj.y, mCircleSize, mPaintCircleColor.mPaint);
-      mCanvas.drawText(String.valueOf(obj.duration), obj.x - textAlign, obj.y + textAlign,
-          mPaintNumberColor.mPaint);
+      obj.timeToLive -= timeDifference;
+
+      drawCircleQuarters(mCanvas, obj);
+
+      mCanvas.drawCircle(obj.x, obj.y, mCircleCenterSize, mPaintCircleCenterColor.mPaint);
     }
   }
 
+  private void drawCircleQuarters(Canvas canvas, CircleToTouch obj) {
+    int alpha;
 
+    // od 10 do 5 sekund
+    if(obj.timeToLive >= TIME_PERIOD_HALF) {
+      alpha = (int) (((obj.timeToLive - TIME_PERIOD_HALF) / (TIME_PERIOD_HALF * 1.0)) * 255);
+      if (alpha < 5) {
+        alpha = 5;
+      }
+    } else {
+      alpha = 5; // 2%
+    }
+    mPaintCircleColor.mPaint.setAlpha(alpha);
+    RectF arc = new RectF(obj.x - mCircleSize, obj.y - mCircleSize, obj.x + mCircleSize,
+        obj.y + mCircleSize);
+    canvas.drawArc(arc, 270, 90, true, mPaintCircleColor.mPaint);
+
+    // od 7,5 do 2,5 sekund
+    if(obj.timeToLive > (INITIAL_TIME_TO_LIVE_MILLIS - TIME_PERIOD_QUARTER)) {
+      alpha = 255;
+    } else if(obj.timeToLive < TIME_PERIOD_QUARTER) {
+      alpha = 5; // 2%
+    } else {
+      alpha = (int) (((obj.timeToLive - TIME_PERIOD_QUARTER) / (TIME_PERIOD_HALF * 1.0)) * 255);
+      if(alpha < 5) {
+        alpha = 5;
+      }
+    }
+    mPaintCircleColor.mPaint.setAlpha(alpha);
+    arc = new RectF(obj.x - mCircleSize, obj.y - mCircleSize,
+        obj.x + mCircleSize, obj.y + mCircleSize);
+    canvas.drawArc(arc, 0, 90, true, mPaintCircleColor.mPaint);
+
+    // od 5 do 0 sekund
+    if(obj.timeToLive >= TIME_PERIOD_HALF) {
+      alpha = 255;
+    } else {
+      alpha = (int) ((obj.timeToLive / (TIME_PERIOD_HALF * 1.0)) * 255);
+      if(alpha < 5) {
+        alpha = 5;
+      }
+    }
+    mPaintCircleColor.mPaint.setAlpha(alpha);
+    arc = new RectF(obj.x - mCircleSize, obj.y - mCircleSize,
+        obj.x + mCircleSize, obj.y + mCircleSize);
+    canvas.drawArc(arc, 90, 90, true, mPaintCircleColor.mPaint);
+
+    // od 2,5 do 0 sekund
+    if(obj.timeToLive >= TIME_PERIOD_QUARTER) {
+      alpha = 255;
+    } else {
+      alpha = (int) ((obj.timeToLive / (TIME_PERIOD_QUARTER * 1.0)) * 255);
+      if(alpha < 5) {
+        alpha = 5;
+      }
+    }
+    mPaintCircleColor.mPaint.setAlpha(alpha);
+    arc = new RectF(obj.x - mCircleSize, obj.y - mCircleSize,
+        obj.x + mCircleSize, obj.y + mCircleSize);
+    canvas.drawArc(arc, 180, 90, true, mPaintCircleColor.mPaint);
+  }
 
   @Override
   public void onSecondPassed() {
@@ -172,15 +247,28 @@ public class MiniGameTGatherer extends BaseMiniGame implements
     switch (currentSkin) {
       case QUAD:
         mBackgroundColor = resources.getColor(R.color.game_bg_quad_tgatherer);
+        mPrimaryColor = resources.getColor(R.color.game_primary_quad);
+        mSecondaryColor = resources.getColor(R.color.game_secondary_quad);
         break;
       case THRESHOLD:
         mBackgroundColor = resources.getColor(R.color.game_bg_threshold_tgatherer);
+        mPrimaryColor = resources.getColor(R.color.game_primary_threshold);
+        mSecondaryColor = resources.getColor(R.color.game_secondary_threshold);
         break;
       case DIFFUSE:
         mBackgroundColor = resources.getColor(R.color.game_bg_diffuse_tgatherer);
+        mPrimaryColor = resources.getColor(R.color.game_primary_diffuse);
+        mSecondaryColor = resources.getColor(R.color.game_secondary_diffuse);
         break;
       case CORRUPTED:
         mBackgroundColor = resources.getColor(R.color.game_bg_corrupted_tgatherer);
+        mPrimaryColor = resources.getColor(R.color.game_primary_corrupted);
+        mSecondaryColor = resources.getColor(R.color.game_secondary_corrupted);
+        break;
+      default:
+        mBackgroundColor = resources.getColor(R.color.game_bg_quad_tgatherer);
+        mPrimaryColor = resources.getColor(R.color.game_primary_quad);
+        mSecondaryColor = resources.getColor(R.color.game_secondary_quad);
         break;
     }
   }
@@ -203,11 +291,13 @@ public class MiniGameTGatherer extends BaseMiniGame implements
     private final int y;
     private int duration;
     private long nextUpdate = -1;
+    private long timeToLive;
 
     public CircleToTouch(int x, int y) {
       this.x = x;
       this.y = y;
       this.duration = CIRCLE_DURATION;
+      this.timeToLive = INITIAL_TIME_TO_LIVE_MILLIS;
     }
 
     public void decreaseDuration() {

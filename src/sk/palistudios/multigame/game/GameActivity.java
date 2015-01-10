@@ -100,7 +100,9 @@ public class GameActivity extends BaseActivity implements SensorEventListener {
   };
   private final Runnable mRunnableTutorial = new Runnable() {
     public void run() {
-      mMusicPlayer.pauseMusic();
+      if(mMusicPlayer != null) {
+        mMusicPlayer.pauseMusic();
+      }
 
       if (sTutorialLastLevel != 3) {
         GameDialogs.showNextTutorialWindow(GameActivity.this, true);
@@ -356,7 +358,7 @@ public class GameActivity extends BaseActivity implements SensorEventListener {
     sGamesPerSession++;
 
     if (mRunnableGameLoop != null) {
-      if (GameSharedPref.isMusicOn()) {
+      if (mMusicPlayer != null && GameSharedPref.isMusicOn()) {
         if (!wasActivityPaused) {
           mMusicPlayer.startMusic();
         } else {
@@ -381,10 +383,14 @@ public class GameActivity extends BaseActivity implements SensorEventListener {
 
     if (mMusicPlayer != null && GameSharedPref.isMusicOn()) {
       if (!mStartedMusicForTutorial) {
-        mMusicPlayer.startMusic();
+        if(mMusicPlayer != null) {
+          mMusicPlayer.startMusic();
+        }
         mStartedMusicForTutorial = true;
       } else {
-        mMusicPlayer.resumeMusic();
+        if(mMusicPlayer != null) {
+          mMusicPlayer.resumeMusic();
+        }
       }
     }
 
