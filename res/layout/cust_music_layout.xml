@@ -12,14 +12,14 @@
   <TextView
       android:id="@+id/header"
       style="@style/TextView.Header"
-      android:text="@string/cc_skins_tab_name"
+      android:text="@string/cc_music_tab_name"
       android:layout_gravity="center_horizontal" />
 
   <ListView
-      android:id="@+id/customize_listview_skins"
+      android:id="@+id/customize_listview_music"
       android:layout_width="match_parent"
       android:layout_height="wrap_content"
-      tools:listitem="@layout/customize_listview"
+      tools:listitem="@layout/list_item_achievements"
       android:divider="@null" />
 
 </LinearLayout>

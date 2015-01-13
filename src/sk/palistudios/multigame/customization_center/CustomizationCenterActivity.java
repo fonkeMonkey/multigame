@@ -13,6 +13,7 @@ import sk.palistudios.multigame.BaseActivity;
 import sk.palistudios.multigame.MgTracker;
 import sk.palistudios.multigame.R;
 import sk.palistudios.multigame.customization_center.minigames.MinigamesFragment;
+import sk.palistudios.multigame.customization_center.music.MusicFragment;
 import sk.palistudios.multigame.customization_center.skins.SkinsFragment;
 import sk.palistudios.multigame.game.persistence.GameSharedPref;
 import sk.palistudios.multigame.tools.SkinManager;
@@ -71,20 +72,20 @@ public class CustomizationCenterActivity extends BaseActivity
         checkTextView(minigamesButton);
       }
     });
-    musicButton.setOnClickListener(new View.OnClickListener() {
-      @Override
-      public void onClick(View v) {
-        SoundEffectsCenter.playTabSound(CustomizationCenterActivity.this);
-        mPager.setCurrentItem(2);
-        checkTextView(musicButton);
-      }
-    });
     skinsButton.setOnClickListener(new View.OnClickListener() {
       @Override
       public void onClick(View v) {
         SoundEffectsCenter.playTabSound(CustomizationCenterActivity.this);
         mPager.setCurrentItem(1);
         checkTextView(skinsButton);
+      }
+    });
+    musicButton.setOnClickListener(new View.OnClickListener() {
+      @Override
+      public void onClick(View v) {
+        SoundEffectsCenter.playTabSound(CustomizationCenterActivity.this);
+        mPager.setCurrentItem(2);
+        checkTextView(musicButton);
       }
     });
     achievementsButton.setOnClickListener(new View.OnClickListener() {
@@ -165,7 +166,7 @@ public class CustomizationCenterActivity extends BaseActivity
 
   @Override
   public void onPageSelected(int i) {
-    mPager.setCurrentItem(i);
+//    mPager.setCurrentItem(i);
     switch (i) {
       case 0:
         checkTextView(minigamesButton);
@@ -199,8 +200,10 @@ public class CustomizationCenterActivity extends BaseActivity
       super(fm);
       mFragments[0] = new MinigamesFragment();
       mFragments[1] = new SkinsFragment();
-      mFragments[2] = new SkinsFragment();
-      mFragments[3] = new SkinsFragment();
+      mFragments[2] = new MusicFragment();
+      mFragments[3] = new CustomizeFragment() {
+      };
+//      mFragments[3] = new MusicFragment();
     }
 
     private CustomizeFragment[] getFragments() {
@@ -229,6 +232,7 @@ public class CustomizationCenterActivity extends BaseActivity
 
     @Override
     public void destroyItem(ViewGroup container, int position, Object object) {
+//      super.destroyItem(container,position,object);
       //TODO M handle more sexy, this is to not populate viewpagers fragments everytime viewpager
       // is scrolled. Yea and the method of parent is not called, so could destory a fet things,
       // startup ftw.

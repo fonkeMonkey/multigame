@@ -32,10 +32,10 @@ public class SkinsArrayAdapter extends ArrayAdapter<SkinItem> {
     if (view == null) {
       LayoutInflater vi = (LayoutInflater) context.getSystemService(
           Context.LAYOUT_INFLATER_SERVICE);
-      view = vi.inflate(R.layout.list_item_skins_music, null);
+      view = vi.inflate(R.layout.list_item_skins, null);
     }
-    TextView TVName = (TextView) view.findViewById(R.id.name);
-    TextView TVDescription = (TextView) view.findViewById(R.id.description);
+    TextView TVName = (TextView) view.findViewById(R.id.skin_name);
+    TextView TVDescription = (TextView) view.findViewById(R.id.skin_description);
 
     TVName.setText(String.valueOf(getItem(position).getHumanName()));
 
@@ -69,15 +69,6 @@ public class SkinsArrayAdapter extends ArrayAdapter<SkinItem> {
   }
 
   public void activateItem(int positionClicked) {
-
-    //because the list starts from 1, unlike the arraylsit
-//    positionClicked -= 1;
-
-    //header was clicked
-//    if (positionClicked == -1) {
-//      return;
-//    }
-
     for (SkinItem item : myItems) {
       item.inactivate();
     }

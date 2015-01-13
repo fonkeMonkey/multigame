@@ -5,7 +5,6 @@ package sk.palistudios.multigame.customization_center.music;
 import java.util.ArrayList;
 
 import android.content.Context;
-import android.graphics.Color;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,23 +12,16 @@ import android.widget.ArrayAdapter;
 import android.widget.TextView;
 
 import sk.palistudios.multigame.R;
-import sk.palistudios.multigame.customization_center.IAdapter;
-import sk.palistudios.multigame.customization_center.skins.SkinItem;
+import sk.palistudios.multigame.tools.SkinManager;
 
-public class MusicArrayAdapter extends ArrayAdapter<MusicItem> implements IAdapter {
-
-  private final int colorDisabled;
-  TextView rowView = null;
+public class MusicArrayAdapter extends ArrayAdapter<MusicItem> {
   private ArrayList<MusicItem> myItems = new ArrayList<MusicItem>();
   private Context context;
-  private int colorChosen;
 
-  public MusicArrayAdapter(Context context, ArrayList<MusicItem> objects, SkinItem skin) {
+  public MusicArrayAdapter(Context context, ArrayList<MusicItem> objects) {
     super(context, R.layout.musicloops_listitem, objects);
     this.context = context;
     myItems = objects;
-    colorChosen = skin.getColorChosen();
-    colorDisabled = context.getResources().getColor(R.color.listview_inactive_item);
   }
 
   @Override
@@ -40,23 +32,29 @@ public class MusicArrayAdapter extends ArrayAdapter<MusicItem> implements IAdapt
     if (view == null) {
       LayoutInflater vi = (LayoutInflater) context.getSystemService(
           Context.LAYOUT_INFLATER_SERVICE);
-      view = vi.inflate(R.layout.musicloops_listitem, null);
+      view = vi.inflate(R.layout.list_item_music, null);
     }
-    rowView = (TextView) view.findViewById(R.id.music_loop_name);
 
-    rowView.setText(String.valueOf(getItem(position).getHumanName()));
+    TextView TVName = (TextView) view.findViewById(R.id.name);
+    TextView TVDescription = (TextView) view.findViewById(R.id.description);
 
-    rowView.setTextSize(25);
+    TVName.setText(String.valueOf(getItem(position).getHumanName()));
 
-    if (myItems.get(position).isActive()) {
-      rowView.setBackgroundColor(colorChosen);
-    } else {
-      rowView.setBackgroundColor(Color.WHITE);
-    }
     if (myItems.get(position).isLocked()) {
-      rowView.setBackgroundColor(colorDisabled);
+      TVName.setTextColor(SkinManager.getInstance().getCurrentListViewColorLocked(
+          view.getResources()));
+      TVDescription.setTextColor(SkinManager.getInstance().getCurrentListViewColorLocked(
+          view.getResources()));
+      TVDescription.setText(getItem(position).getLockedDescription());
+    } else if (myItems.get(position).isActive()) {
+      TVName.setTextColor(SkinManager.getInstance().getCurrentListViewColorActive(
+          view.getResources()));
+      TVDescription.setText("");
+    } else {
+      TVName.setTextColor(SkinManager.getInstance().getCurrentListViewColorInactive(
+          view.getResources()));
+      TVDescription.setText("");
     }
-
     return view;
   }
 
@@ -70,16 +68,12 @@ public class MusicArrayAdapter extends ArrayAdapter<MusicItem> implements IAdapt
     myItems.add(item);
   }
 
+  @Override
+  public boolean isEnabled(int position) {
+    return !myItems.get(position).isLocked();
+  }
+
   public void activateItem(int positionClicked) {
-
-    //because the list starts from 1, unlike the arraylsit
-    positionClicked -= 1;
-
-    //header was clicked
-    if (positionClicked == -1) {
-      return;
-    }
-
     for (MusicItem item : myItems) {
       item.inactivate();
 
@@ -88,7 +82,4 @@ public class MusicArrayAdapter extends ArrayAdapter<MusicItem> implements IAdapt
     myItems.get(positionClicked).activate();
   }
 
-  public void setColorChosen(int colorChosen) {
-    this.colorChosen = colorChosen;
-  }
 }

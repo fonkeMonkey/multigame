@@ -14,9 +14,8 @@ import android.widget.FrameLayout;
 import android.widget.TextView;
 
 import sk.palistudios.multigame.R;
-import sk.palistudios.multigame.customization_center.IAdapter;
 
-public class MgcArrayAdapter extends ArrayAdapter<MgcItem> implements IAdapter {
+public class MgcArrayAdapter extends ArrayAdapter<MgcItem> {
   private final int colorDisabled;
   TextView mHorizontal;
   TextView mVertical;

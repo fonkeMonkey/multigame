@@ -14,10 +14,9 @@ import android.widget.ArrayAdapter;
 import android.widget.TextView;
 
 import sk.palistudios.multigame.R;
-import sk.palistudios.multigame.customization_center.IAdapter;
 import sk.palistudios.multigame.customization_center.skins.SkinItem;
 
-public class AchievementsArrayAdapter extends ArrayAdapter<AchievementItem> implements IAdapter {
+public class AchievementsArrayAdapter extends ArrayAdapter<AchievementItem> {
 
   private final int colorDisabled;
   TextView rowViewName = null;

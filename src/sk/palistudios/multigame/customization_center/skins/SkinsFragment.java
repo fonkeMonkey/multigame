@@ -72,7 +72,7 @@ public class SkinsFragment extends CustomizeFragment {
   public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
     super.onViewCreated(view, savedInstanceState);
 
-    mListView = (ListView) getActivity().findViewById(R.id.customize_listview);
+    mListView = (ListView) getActivity().findViewById(R.id.customize_listview_skins);
     mListView.setAdapter(mSkinAdapter);
 
     initListeners();
