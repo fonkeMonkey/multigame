@@ -1,8 +1,10 @@
 package sk.palistudios.multigame.game.minigames;
 
 import android.content.Context;
+import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
+import android.graphics.Color;
 import android.graphics.Paint;
 
 import sk.palistudios.multigame.R;
@@ -143,6 +145,9 @@ public class MiniGameHBalance extends BaseMiniGame implements
   }
 
   public void drawMinigame(Canvas canvas) {
+    if(mBackgroundColor != 0) {
+      canvas.drawColor(mBackgroundColor);
+    }
     canvas.drawLine(pointBarLeftEdge.mPoint.x, pointBarLeftEdge.mPoint.y,
         pointBarRightEdge.mPoint.x, pointBarRightEdge.mPoint.y, mPaintBarColor.mPaint);
     canvas.drawCircle(pBallCenter.mPoint.x, pBallCenter.mPoint.y, mBallSize,
@@ -188,7 +193,21 @@ public class MiniGameHBalance extends BaseMiniGame implements
 
   @Override
   public void reskinLocally(SkinManager.Skin currentSkin) {
-
+    final Resources resources = mGame.getResources();
+    switch (currentSkin) {
+      case QUAD:
+        mBackgroundColor = resources.getColor(R.color.game_bg_quad_hbalance);
+        break;
+      case THRESHOLD:
+        mBackgroundColor = resources.getColor(R.color.game_bg_threshold_hbalance);
+        break;
+      case DIFFUSE:
+        mBackgroundColor = resources.getColor(R.color.game_bg_diffuse_hbalance);
+        break;
+      case CORRUPTED:
+        mBackgroundColor = resources.getColor(R.color.game_bg_corrupted_hbalance);
+        break;
+    }
   }
 
   @Override

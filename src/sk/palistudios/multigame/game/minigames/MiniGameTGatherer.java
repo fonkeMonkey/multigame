@@ -4,8 +4,10 @@ import java.io.Serializable;
 import java.util.ArrayList;
 
 import android.content.Context;
+import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
+import android.graphics.Color;
 import android.graphics.Paint;
 
 import sk.palistudios.multigame.R;
@@ -107,6 +109,9 @@ public class MiniGameTGatherer extends BaseMiniGame implements
   }
 
   public void drawMinigame(Canvas mCanvas) {
+    if(mBackgroundColor != 0) {
+      mCanvas.drawColor(mBackgroundColor);
+    }
     for (CircleToTouch obj : mCircles) {
       mCanvas.drawCircle(obj.x, obj.y, mCircleSize, mPaintCircleColor.mPaint);
       mCanvas.drawText(String.valueOf(obj.duration), obj.x - textAlign, obj.y + textAlign,
@@ -163,7 +168,21 @@ public class MiniGameTGatherer extends BaseMiniGame implements
 
   @Override
   public void reskinLocally(SkinManager.Skin currentSkin) {
-    
+    final Resources resources = mGame.getResources();
+    switch (currentSkin) {
+      case QUAD:
+        mBackgroundColor = resources.getColor(R.color.game_bg_quad_tgatherer);
+        break;
+      case THRESHOLD:
+        mBackgroundColor = resources.getColor(R.color.game_bg_threshold_tgatherer);
+        break;
+      case DIFFUSE:
+        mBackgroundColor = resources.getColor(R.color.game_bg_diffuse_tgatherer);
+        break;
+      case CORRUPTED:
+        mBackgroundColor = resources.getColor(R.color.game_bg_corrupted_tgatherer);
+        break;
+    }
   }
 
   private boolean collidesWithOtherCircles(CircleToTouch circleNew) {

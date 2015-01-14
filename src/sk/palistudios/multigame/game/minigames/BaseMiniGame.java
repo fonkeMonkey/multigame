@@ -23,6 +23,7 @@ abstract public class BaseMiniGame implements Serializable, ISecondsObserver {
   protected int mWidth;
   protected int colorMain;
   protected int colorAlt;
+  protected int mBackgroundColor = 0;
   String mFileName;
   boolean isMinigameInitialized;
   private boolean active = false;
@@ -44,6 +45,8 @@ abstract public class BaseMiniGame implements Serializable, ISecondsObserver {
     this.colorMain = mGame.getResources().getColor(R.color.gameMain);
     this.colorAlt = mGame.getResources().getColor(R.color.gameAlt);
     this.colorAlt2 = mGame.getResources().getColor(R.color.gameAlt2);
+
+    reskinLocally(SkinManager.getInstance().getCurrentSkin());
   }
 
   public abstract void initMinigame(Bitmap mBitmap, boolean wasGameSaved);

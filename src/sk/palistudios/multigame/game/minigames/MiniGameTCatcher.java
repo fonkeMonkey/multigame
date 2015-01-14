@@ -4,8 +4,10 @@ import java.io.Serializable;
 import java.util.ArrayList;
 
 import android.content.Context;
+import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
+import android.graphics.Color;
 import android.graphics.Paint;
 
 import sk.palistudios.multigame.R;
@@ -102,6 +104,9 @@ public class MiniGameTCatcher extends BaseMiniGame
   }
 
   public void drawMinigame(Canvas mCanvas) {
+    if(mBackgroundColor != 0) {
+      mCanvas.drawColor(mBackgroundColor);
+    }
     for (int i = 0; i < NUMBER_OF_COLUMNS; i++) {
       if (i != activeBall) {
         mCanvas.drawCircle(mCatchingBalls[i], catchingBallsHeight, mBallSize,
@@ -151,7 +156,21 @@ public class MiniGameTCatcher extends BaseMiniGame
 
   @Override
   public void reskinLocally(SkinManager.Skin currentSkin) {
-
+    final Resources resources = mGame.getResources();
+    switch (currentSkin) {
+      case QUAD:
+        mBackgroundColor = resources.getColor(R.color.game_bg_quad_tcatcher);
+        break;
+      case THRESHOLD:
+        mBackgroundColor = resources.getColor(R.color.game_bg_threshold_tcatcher);
+        break;
+      case DIFFUSE:
+        mBackgroundColor = resources.getColor(R.color.game_bg_diffuse_tcatcher);
+        break;
+      case CORRUPTED:
+        mBackgroundColor = resources.getColor(R.color.game_bg_corrupted_tcatcher);
+        break;
+    }
   }
 
   @Override

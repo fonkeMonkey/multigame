@@ -186,11 +186,34 @@
 
   <color name="transparent_white_2">#05ffffff</color>
   <color name="transparent_white_5">#0dffffff</color>
+  <color name="transparent_white_15">#26ffffff</color>
+  <color name="transparent_white_25">#40ffffff</color>
+  <color name="transparent_white_30">#4cffffff</color>
   <color name="transparent_white_75">#bfffffff</color>
 
-  <color name="text_game_score">@color/transparent_white_5</color>
-  <color name="text_game_level">@color/transparent_white_5</color>
+  <color name="text_game_score">@color/transparent_white_75</color>
+  <color name="text_game_level">@color/transparent_white_15</color>
   <color name="text_game_level_highlight">@color/transparent_white_75</color>
+
+  <color name="game_bg_quad_vbird">#f95658</color>
+  <color name="game_bg_threshold_vbird">#f95658</color>
+  <color name="game_bg_diffuse_vbird">#f95658</color>
+  <color name="game_bg_corrupted_vbird">#f95658</color>
+
+  <color name="game_bg_quad_tcatcher">#8d2ca8</color>
+  <color name="game_bg_threshold_tcatcher">#8d2ca8</color>
+  <color name="game_bg_diffuse_tcatcher">#8d2ca8</color>
+  <color name="game_bg_corrupted_tcatcher">#8d2ca8</color>
+
+  <color name="game_bg_quad_tgatherer">#1179a0</color>
+  <color name="game_bg_threshold_tgatherer">#1179a0</color>
+  <color name="game_bg_diffuse_tgatherer">#1179a0</color>
+  <color name="game_bg_corrupted_tgatherer">#1179a0</color>
+
+  <color name="game_bg_quad_hbalance">#be205d</color>
+  <color name="game_bg_threshold_hbalance">#be205d</color>
+  <color name="game_bg_diffuse_hbalance">#be205d</color>
+  <color name="game_bg_corrupted_hbalance">#be205d</color>
 
 </resources>
 

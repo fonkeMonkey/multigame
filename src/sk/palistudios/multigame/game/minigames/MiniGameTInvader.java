@@ -145,6 +145,9 @@ public class MiniGameTInvader extends BaseMiniGame implements
   }
 
   public void drawMinigame(Canvas mCanvas) {
+    if(mBackgroundColor != 0) {
+      mCanvas.drawColor(mBackgroundColor);
+    }
     mCanvas.drawCircle(mPointMiddleOfScreen.mPoint.x, mPointMiddleOfScreen.mPoint.y,
         mCenterCircleSize, mPaintMiddleCircle.mPaint);
     mCanvas.drawCircle(mPointSmallerCircle.mPoint.x, mPointSmallerCircle.mPoint.y, mSmallCircleSize,
@@ -214,7 +217,20 @@ public class MiniGameTInvader extends BaseMiniGame implements
 
   @Override
   public void reskinLocally(SkinManager.Skin currentSkin) {
-
+    switch (currentSkin) {
+      case QUAD:
+        mBackgroundColor = Color.parseColor("#f0f0ff");
+        break;
+      case THRESHOLD:
+        mBackgroundColor = Color.parseColor("#f0f0ff");
+        break;
+      case DIFFUSE:
+        mBackgroundColor = Color.parseColor("#f0f0ff");
+        break;
+      case CORRUPTED:
+        mBackgroundColor = Color.parseColor("#f0f0ff");
+        break;
+    }
   }
 
   @Override

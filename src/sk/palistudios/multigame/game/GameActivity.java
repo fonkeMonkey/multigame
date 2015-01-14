@@ -10,14 +10,12 @@ import android.hardware.SensorManager;
 import android.media.AudioManager;
 import android.os.Bundle;
 import android.os.Handler;
-import android.text.SpannableString;
 import android.util.Log;
 import android.view.MotionEvent;
 import android.view.WindowManager;
 import android.view.animation.AlphaAnimation;
 import android.view.animation.Animation;
 import android.view.animation.LinearInterpolator;
-import android.widget.FrameLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -60,6 +58,9 @@ public class GameActivity extends BaseActivity implements SensorEventListener {
   public static boolean isDialogPresent = false;
   public static boolean sTutorialRestart = false;
   public static boolean dialogIsWinner = false;
+
+  private static final long LEVEL_HIGHLIGHT_DURATION_MILLIS = 300;
+  private static final long LEVEL_UNHIGHLIGHT_DURATION_MILLIS = 1000;
 
   private static boolean sIncreaseVolumeShown = false;
   private static boolean sRaisedVolumeForTutorialAlready = false;
@@ -128,7 +129,7 @@ public class GameActivity extends BaseActivity implements SensorEventListener {
       //increase level
       if (milisecondsPassed % (DebugSettings.SECONDS_PER_LEVEL * 1000) == 0 && !isTutorial()) {
         mLevel++;
-        GameTimeManager.onLevelIncreased(GameActivity.this);
+        GameTimeManager.onLevelIncreased();
         redrawDifficultyView(String.valueOf(mLevel));
         animateLevelChange();
       }
@@ -137,9 +138,8 @@ public class GameActivity extends BaseActivity implements SensorEventListener {
   };
 
   private void animateLevelChange() {
-    mDifficultyView.setText(String.valueOf(mLevel));
-    final ValueAnimator highlight = ValueAnimator.ofInt(mDifficultyView.getTextColors()
-            .getDefaultColor(),
+    final ValueAnimator highlight = ValueAnimator.ofInt(getResources().getColor(
+            R.color.text_game_level),
         getResources().getColor(R.color.text_game_level_highlight));
     highlight.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
       @Override
@@ -147,38 +147,24 @@ public class GameActivity extends BaseActivity implements SensorEventListener {
         mDifficultyView.setTextColor((Integer) animator.getAnimatedValue());
       }
     });
+    highlight.setDuration(LEVEL_HIGHLIGHT_DURATION_MILLIS);
+    highlight.start();
 
-    final ValueAnimator unhighlight = ValueAnimator.ofInt(mDifficultyView.getTextColors()
-            .getDefaultColor(),
-        getResources().getColor(R.color.text_game_level));
-    highlight.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
+    new Handler(getMainLooper()).postDelayed(new Runnable() {
       @Override
-      public void onAnimationUpdate(ValueAnimator animator) {
-        mDifficultyView.setTextColor((Integer) animator.getAnimatedValue());
-      }
-    });
-
-    highlight.addListener(new Animator.AnimatorListener() {
-      @Override
-      public void onAnimationStart(Animator animation) {
-      }
-
-      @Override
-      public void onAnimationEnd(Animator animation) {
-        unhighlight.setDuration(500);
+      public void run() {
+        final ValueAnimator unhighlight = ValueAnimator.ofInt(getResources().getColor(
+            R.color.text_game_level_highlight), getResources().getColor(R.color.text_game_level));
+        unhighlight.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
+          @Override
+          public void onAnimationUpdate(ValueAnimator animator) {
+            mDifficultyView.setTextColor((Integer) animator.getAnimatedValue());
+          }
+        });
+        unhighlight.setDuration(LEVEL_UNHIGHLIGHT_DURATION_MILLIS);
         unhighlight.start();
       }
-
-      @Override
-      public void onAnimationCancel(Animator animation) {
-      }
-
-      @Override
-      public void onAnimationRepeat(Animator animation) {
-      }
-    });
-    highlight.setDuration(200);
-    highlight.start();
+    }, LEVEL_HIGHLIGHT_DURATION_MILLIS);
   }
 
   final private int GAME_UPDATES_PER_SECOND = 60;//Cell phones have seldom more fps per seconds,

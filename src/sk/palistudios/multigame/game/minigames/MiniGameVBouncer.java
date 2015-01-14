@@ -3,6 +3,7 @@ package sk.palistudios.multigame.game.minigames;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
+import android.graphics.Color;
 import android.graphics.Paint;
 
 import sk.palistudios.multigame.R;
@@ -131,6 +132,9 @@ public class MiniGameVBouncer extends BaseMiniGame
   }
 
   public void drawMinigame(Canvas mCanvas) {
+    if(mBackgroundColor != 0) {
+      mCanvas.drawColor(mBackgroundColor);
+    }
     mCanvas.drawCircle(mPointBall.mPoint.x, mPointBall.mPoint.y, ballSize, mPaintBall.mPaint);
     mCanvas.drawRect(barLeft, barTop, barRight, barBottom, mPaintBar.mPaint);
   }
@@ -166,7 +170,20 @@ public class MiniGameVBouncer extends BaseMiniGame
 
   @Override
   public void reskinLocally(SkinManager.Skin currentSkin) {
-
+    switch (currentSkin) {
+      case QUAD:
+        mBackgroundColor = Color.parseColor("#ff0f0f");
+        break;
+      case THRESHOLD:
+        mBackgroundColor = Color.parseColor("#ff0f0f");
+        break;
+      case DIFFUSE:
+        mBackgroundColor = Color.parseColor("#ff0f0f");
+        break;
+      case CORRUPTED:
+        mBackgroundColor = Color.parseColor("#ff0f0f");
+        break;
+    }
   }
 
   @Override

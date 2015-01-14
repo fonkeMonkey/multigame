@@ -19,15 +19,11 @@ public class GameTimeManager {
     }
   }
 
-  public static void onLevelIncreased(GameActivity game) {
+  public static void onLevelIncreased() {
     for (BaseMiniGame mg : registeredLevelObservers) {
       if (mg.isActive()) {
         mg.onDifficultyIncreased();
       }
-    }
-
-    if (!game.isTutorial()) {
-      game.flashScreen();
     }
   }
 

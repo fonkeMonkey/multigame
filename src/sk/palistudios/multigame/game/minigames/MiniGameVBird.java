@@ -4,8 +4,10 @@ import java.io.Serializable;
 import java.util.ArrayList;
 
 import android.content.Context;
+import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
+import android.graphics.Color;
 import android.graphics.Paint;
 
 import sk.palistudios.multigame.R;
@@ -104,6 +106,9 @@ public class MiniGameVBird extends BaseMiniGame implements
   }
 
   public void drawMinigame(Canvas mCanvas) {
+    if(mBackgroundColor != 0) {
+      mCanvas.drawColor(mBackgroundColor);
+    }
     for (Obstacle obst : mObstacles) {
       mCanvas.drawRect(obst.left, obst.top, obst.right, obst.bottom, mPaintObstacle.mPaint);
     }
@@ -168,7 +173,21 @@ public class MiniGameVBird extends BaseMiniGame implements
 
   @Override
   public void reskinLocally(SkinManager.Skin currentSkin) {
-
+    final Resources resources = mGame.getResources();
+    switch (currentSkin) {
+      case QUAD:
+        mBackgroundColor = resources.getColor(R.color.game_bg_quad_vbird);
+        break;
+      case THRESHOLD:
+        mBackgroundColor = resources.getColor(R.color.game_bg_threshold_vbird);
+        break;
+      case DIFFUSE:
+        mBackgroundColor = resources.getColor(R.color.game_bg_diffuse_vbird);
+        break;
+      case CORRUPTED:
+        mBackgroundColor = resources.getColor(R.color.game_bg_corrupted_vbird);
+        break;
+    }
   }
 
   @Override
