@@ -24,6 +24,8 @@ abstract public class BaseMiniGame implements Serializable, ISecondsObserver {
   protected int colorMain;
   protected int colorAlt;
   protected int mBackgroundColor = 0;
+  protected int mPrimaryColor = 0;
+  protected int mSecondaryColor = 0;
   String mFileName;
   boolean isMinigameInitialized;
   private boolean active = false;

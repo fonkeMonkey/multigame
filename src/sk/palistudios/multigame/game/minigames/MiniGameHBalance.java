@@ -1,10 +1,12 @@
 package sk.palistudios.multigame.game.minigames;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import android.content.Context;
 import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
-import android.graphics.Color;
 import android.graphics.Paint;
 
 import sk.palistudios.multigame.R;
@@ -20,6 +22,9 @@ import sk.palistudios.multigame.tools.SkinManager;
  */
 public class MiniGameHBalance extends BaseMiniGame implements
     GameActivity.userInteractedHorizontalListener {
+
+  private static final int MAX_PATH_POINTS = 30;
+
   //DIFFICULTY
   private int framesToGo =
       (int) (60 / DebugSettings.GLOBAL_DIFFICULTY_COEFFICIENT);
@@ -32,8 +37,9 @@ public class MiniGameHBalance extends BaseMiniGame implements
   //GRAPHICS
   private int mBallSize;
   private PaintSerializable mPaintBallColor = null;
+  private PaintSerializable mPaintBallCenterColor = null;
   private PaintSerializable mPaintBarColor = null;
-  private int splitHeight;
+  private int splitWidth, splitHeight;
   private float movementSensitivity;
   private int leanRatio;
   private PointSerializable pointBarLeftEdge;
@@ -45,6 +51,10 @@ public class MiniGameHBalance extends BaseMiniGame implements
   private float ballXAxis;
   private PointSerializable pVector;
   private PointSerializable normalVector;
+
+  private int mBarThickness;
+
+  private List<PointSerializable> mBallPathHistory = new ArrayList<PointSerializable>();
 
   protected MiniGameHBalance(String fileName, Integer position, GameActivity game) {
     super(fileName, position, game);
@@ -60,6 +70,7 @@ public class MiniGameHBalance extends BaseMiniGame implements
     mWidth = mBitmap.getWidth();
 
     splitHeight = (mHeight / 2);
+    splitWidth = (mWidth / 2);
     mBallSize = mWidth / 30;
     maxSpeed = (float) (mWidth) / 500;
     maxLean = mWidth / 20;
@@ -81,10 +92,12 @@ public class MiniGameHBalance extends BaseMiniGame implements
       //because in onDifficultyIncreased you decrease from both sides
     }
 
-    mPaintBallColor = new PaintSerializable(colorMain, Paint.Style.FILL);
-    mPaintBarColor = new PaintSerializable(colorAlt, Paint.Style.STROKE);
+    mPaintBallColor = new PaintSerializable(mPrimaryColor, Paint.Style.FILL);
+    mPaintBallCenterColor = new PaintSerializable(mSecondaryColor, Paint.Style.FILL);
+    mPaintBarColor = new PaintSerializable(mPrimaryColor, Paint.Style.STROKE);
 
-    mPaintBarColor.setStrokeWidth(mWidth / 50);
+    mBarThickness = mWidth / 50;
+    mPaintBarColor.setStrokeWidth(mBarThickness);
 
     overEdgeToLose = mBallSize / 3 * 2;
 
@@ -124,6 +137,9 @@ public class MiniGameHBalance extends BaseMiniGame implements
     pBallCenter.mPoint.x = Math.round(ballXAxis);
     pBallCenter.mPoint.y = findOnLine(pointBarLeftEdge, pointBarRightEdge, pBallCenter.mPoint.x) -
         mBallSize;
+
+    addBallCenterToHistory();
+
     if (pBallCenter.mPoint.x + overEdgeToLose < pointBarLeftEdge.mPoint.x ||
         pBallCenter.mPoint.x - overEdgeToLose > pointBarRightEdge.mPoint.x) {
       if(mGame != null){
@@ -132,6 +148,13 @@ public class MiniGameHBalance extends BaseMiniGame implements
     }
   }
 
+  private void addBallCenterToHistory() {
+    mBallPathHistory.add(0, new PointSerializable(pBallCenter.mPoint.x, pBallCenter.mPoint.y));
+    final int pathSize = mBallPathHistory.size();
+    if(pathSize > MAX_PATH_POINTS) {
+      mBallPathHistory.remove(pathSize - 1);
+    }
+  }
 
   int findOnLine(PointSerializable pBarLeftEdge, PointSerializable pBarRightEdge, int xAxisBall) {
     pVector.mPoint.x = pBarRightEdge.mPoint.x - pBarLeftEdge.mPoint.x;
@@ -150,8 +173,38 @@ public class MiniGameHBalance extends BaseMiniGame implements
     }
     canvas.drawLine(pointBarLeftEdge.mPoint.x, pointBarLeftEdge.mPoint.y,
         pointBarRightEdge.mPoint.x, pointBarRightEdge.mPoint.y, mPaintBarColor.mPaint);
+
+    canvas.drawCircle(splitWidth, splitHeight, (int) (mBarThickness / 3.0), mPaintBallCenterColor
+        .mPaint);
+
+    drawMotionBlur(canvas);
+
     canvas.drawCircle(pBallCenter.mPoint.x, pBallCenter.mPoint.y, mBallSize,
         mPaintBallColor.mPaint);
+    canvas.drawCircle(pBallCenter.mPoint.x, pBallCenter.mPoint.y, (int) (mBallSize / 2.5),
+        mPaintBallCenterColor.mPaint);
+  }
+
+  private void drawMotionBlur(Canvas canvas) {
+    PointSerializable point;
+    final PaintSerializable paint = new PaintSerializable(mPrimaryColor, Paint.Style.FILL);
+    paint.mPaint.setAlpha(51); //20%
+    if (mBallPathHistory.size() > 29) {
+      point = mBallPathHistory.get(29);
+      canvas.drawCircle(point.mPoint.x, point.mPoint.y, mBallSize, paint.mPaint);
+    }
+
+    paint.mPaint.setAlpha(90); //35%
+    if (mBallPathHistory.size() > 14) {
+      point = mBallPathHistory.get(14);
+      canvas.drawCircle(point.mPoint.x, point.mPoint.y, mBallSize, paint.mPaint);
+    }
+
+    paint.mPaint.setAlpha(128); //50%
+    if (mBallPathHistory.size() > 4) {
+      point = mBallPathHistory.get(4);
+      canvas.drawCircle(point.mPoint.x, point.mPoint.y, mBallSize, paint.mPaint);
+    }
   }
 
   public void onUserInteractedHorizontal(float horizontalMovement) {
@@ -197,15 +250,28 @@ public class MiniGameHBalance extends BaseMiniGame implements
     switch (currentSkin) {
       case QUAD:
         mBackgroundColor = resources.getColor(R.color.game_bg_quad_hbalance);
+        mPrimaryColor = resources.getColor(R.color.game_primary_quad);
+        mSecondaryColor = resources.getColor(R.color.game_secondary_quad);
         break;
       case THRESHOLD:
         mBackgroundColor = resources.getColor(R.color.game_bg_threshold_hbalance);
+        mPrimaryColor = resources.getColor(R.color.game_primary_threshold);
+        mSecondaryColor = resources.getColor(R.color.game_secondary_threshold);
         break;
       case DIFFUSE:
         mBackgroundColor = resources.getColor(R.color.game_bg_diffuse_hbalance);
+        mPrimaryColor = resources.getColor(R.color.game_primary_diffuse);
+        mSecondaryColor = resources.getColor(R.color.game_secondary_diffuse);
         break;
       case CORRUPTED:
         mBackgroundColor = resources.getColor(R.color.game_bg_corrupted_hbalance);
+        mPrimaryColor = resources.getColor(R.color.game_primary_corrupted);
+        mSecondaryColor = resources.getColor(R.color.game_secondary_corrupted);
+        break;
+      default:
+        mBackgroundColor = resources.getColor(R.color.game_bg_quad_hbalance);
+        mPrimaryColor = resources.getColor(R.color.game_primary_quad);
+        mSecondaryColor = resources.getColor(R.color.game_secondary_quad);
         break;
     }
   }

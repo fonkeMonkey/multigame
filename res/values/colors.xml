@@ -239,5 +239,17 @@
   <color name="game_tcatcher_catching_inactive_corrupted">@android:color/white</color>
   <!-- End: Ball Catching -->
 
+  <!-- HBalance -->
+  <color name="game_primary_quad">@android:color/white</color>
+  <color name="game_primary_threshold">@android:color/white</color>
+  <color name="game_primary_diffuse">@android:color/white</color>
+  <color name="game_primary_corrupted">@android:color/white</color>
+
+  <color name="game_secondary_quad">@android:color/black</color>
+  <color name="game_secondary_threshold">@android:color/black</color>
+  <color name="game_secondary_diffuse">@android:color/black</color>
+  <color name="game_secondary_corrupted">@android:color/black</color>
+  <!-- End: HBalance-->
+
 </resources>
 
