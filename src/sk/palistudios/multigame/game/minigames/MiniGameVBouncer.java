@@ -1,6 +1,10 @@
 package sk.palistudios.multigame.game.minigames;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import android.content.Context;
+import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.Color;
@@ -19,6 +23,9 @@ import sk.palistudios.multigame.tools.SkinManager;
  */
 public class MiniGameVBouncer extends BaseMiniGame
     implements GameActivity.userInteractedVerticalListener {
+
+  private static final int MAX_PATH_POINTS = 50;
+
   //Difficulty
   private float velocityX;
   private float velocityY;
@@ -29,15 +36,18 @@ public class MiniGameVBouncer extends BaseMiniGame
   //Graphics
   private PointSerializable mPointBall = null;
   private PaintSerializable mPaintBall = null;
+  private PaintSerializable mPaintBallCenter = null;
   private PaintSerializable mPaintBar = null;
   private float movementSensitivity;
-  private int ballSize;
+  private int mBallSize, mBallSize1, mBallSize2, mBallSize3, mBallSize4;
   private int barHeight;
   private int barTop;
   private int barLeft;
   private int barBottom;
   private int barRight;
   private float actualMovement = 0;
+
+  private List<PointSerializable> mBallPathHistory = new ArrayList<PointSerializable>();
 
   public MiniGameVBouncer(String fileName, Integer position, GameActivity game) {
     super(fileName, position, game);
@@ -48,7 +58,12 @@ public class MiniGameVBouncer extends BaseMiniGame
     mHeight = mBitmap.getHeight();
     mWidth = mBitmap.getWidth();
 
-    ballSize = mHeight / 20;
+    mBallSize = mHeight / 20;
+    mBallSize1 = (int) (mBallSize / 1.6);
+    mBallSize2 = (int) (mBallSize / 2.4);
+    mBallSize3 = (int) (mBallSize / 3.2);
+    mBallSize4 = (int) (mBallSize / 4.0);
+
     barHeight = mHeight / 3;
     movementSensitivity = (float) mHeight / 100;
 
@@ -71,8 +86,9 @@ public class MiniGameVBouncer extends BaseMiniGame
     int barWidth = mWidth / 40;
     barRight = barLeft + barWidth;
 
-    mPaintBall = new PaintSerializable(colorMain, Paint.Style.FILL);
-    mPaintBar = new PaintSerializable(colorAlt, Paint.Style.FILL);
+    mPaintBall = new PaintSerializable(mPrimaryColor, Paint.Style.FILL);
+    mPaintBallCenter = new PaintSerializable(mSecondaryColor, Paint.Style.FILL);
+    mPaintBar = new PaintSerializable(mPrimaryColor, Paint.Style.FILL);
     isMinigameInitialized = true;
   }
 
@@ -84,8 +100,9 @@ public class MiniGameVBouncer extends BaseMiniGame
   private void moveBall() {
     mPointBall.mPoint.x += Math.round(velocityX);
     mPointBall.mPoint.y += Math.round(velocityY);
+    addBallCenterToHistory();
 
-    if (mPointBall.mPoint.x - ballSize < 0) {
+    if (mPointBall.mPoint.x - mBallSize < 0) {
       if(mGame != null){
         mGame.onGameLost(mPosition);
       }
@@ -93,25 +110,33 @@ public class MiniGameVBouncer extends BaseMiniGame
     }
 
     //hitting the bar
-    if (mPointBall.mPoint.x - ballSize <= barRight) {
-      if (mPointBall.mPoint.y - ballSize < barBottom && mPointBall.mPoint.y + ballSize > barTop) {
+    if (mPointBall.mPoint.x - mBallSize <= barRight) {
+      if (mPointBall.mPoint.y - mBallSize < barBottom && mPointBall.mPoint.y + mBallSize > barTop) {
         velocityX = Math.abs(velocityX);
       }
     }
 
     //up
-    if (mPointBall.mPoint.y - ballSize <= 0) {
+    if (mPointBall.mPoint.y - mBallSize <= 0) {
       velocityY = Math.abs(velocityY);
     }
 
     //down
-    if (mPointBall.mPoint.y + ballSize >= mHeight) {
+    if (mPointBall.mPoint.y + mBallSize >= mHeight) {
       velocityY = -Math.abs(velocityY);
     }
 
     //right
-    if (mPointBall.mPoint.x + ballSize >= mWidth) {
+    if (mPointBall.mPoint.x + mBallSize >= mWidth) {
       velocityX = -Math.abs(velocityX);
+    }
+  }
+
+  private void addBallCenterToHistory() {
+    mBallPathHistory.add(0, new PointSerializable(mPointBall.mPoint.x, mPointBall.mPoint.y));
+    final int pathSize = mBallPathHistory.size();
+    if(pathSize > MAX_PATH_POINTS) {
+      mBallPathHistory.remove(pathSize - 1);
     }
   }
 
@@ -135,8 +160,41 @@ public class MiniGameVBouncer extends BaseMiniGame
     if(mBackgroundColor != 0) {
       mCanvas.drawColor(mBackgroundColor);
     }
-    mCanvas.drawCircle(mPointBall.mPoint.x, mPointBall.mPoint.y, ballSize, mPaintBall.mPaint);
+    mCanvas.drawCircle(mPointBall.mPoint.x, mPointBall.mPoint.y, mBallSize, mPaintBall.mPaint);
+    mCanvas.drawCircle(mPointBall.mPoint.x, mPointBall.mPoint.y, (int) (mBallSize / 2.5),
+        mPaintBallCenter.mPaint);
+    drawTail(mCanvas);
     mCanvas.drawRect(barLeft, barTop, barRight, barBottom, mPaintBar.mPaint);
+  }
+
+  private void drawTail(Canvas canvas) {
+    final PaintSerializable paint = new PaintSerializable(mPrimaryColor, Paint.Style.FILL);
+
+    final int historySize = mBallPathHistory.size();
+    PointSerializable point;
+    if(historySize > 17) {
+      paint.mPaint.setAlpha(128);
+      point = mBallPathHistory.get(17);
+      canvas.drawCircle(point.mPoint.x, point.mPoint.y, mBallSize1, paint.mPaint);
+    }
+
+    if(historySize > 28) {
+      paint.mPaint.setAlpha(102);
+      point = mBallPathHistory.get(28);
+      canvas.drawCircle(point.mPoint.x, point.mPoint.y, mBallSize2, paint.mPaint);
+    }
+
+    if(historySize > 36) {
+      paint.mPaint.setAlpha(77);
+      point = mBallPathHistory.get(36);
+      canvas.drawCircle(point.mPoint.x, point.mPoint.y, mBallSize3, paint.mPaint);
+    }
+
+    if(historySize > 42) {
+      paint.mPaint.setAlpha(51);
+      point = mBallPathHistory.get(42);
+      canvas.drawCircle(point.mPoint.x, point.mPoint.y, mBallSize4, paint.mPaint);
+    }
   }
 
   public void onUserInteractedVertical(float verticalMovement) {
@@ -170,18 +228,32 @@ public class MiniGameVBouncer extends BaseMiniGame
 
   @Override
   public void reskinLocally(SkinManager.Skin currentSkin) {
+    final Resources resources = mGame.getResources();
     switch (currentSkin) {
       case QUAD:
-        mBackgroundColor = Color.parseColor("#ff0f0f");
+        mBackgroundColor = resources.getColor(R.color.game_bg_quad_vbouncer);
+        mPrimaryColor = resources.getColor(R.color.game_primary_quad);
+        mSecondaryColor = resources.getColor(R.color.game_secondary_quad);
         break;
       case THRESHOLD:
-        mBackgroundColor = Color.parseColor("#ff0f0f");
+        mBackgroundColor = resources.getColor(R.color.game_bg_threshold_vbouncer);
+        mPrimaryColor = resources.getColor(R.color.game_primary_threshold);
+        mSecondaryColor = resources.getColor(R.color.game_secondary_threshold);
         break;
       case DIFFUSE:
-        mBackgroundColor = Color.parseColor("#ff0f0f");
+        mBackgroundColor = resources.getColor(R.color.game_bg_diffuse_vbouncer);
+        mPrimaryColor = resources.getColor(R.color.game_primary_diffuse);
+        mSecondaryColor = resources.getColor(R.color.game_secondary_diffuse);
         break;
       case CORRUPTED:
-        mBackgroundColor = Color.parseColor("#ff0f0f");
+        mBackgroundColor = resources.getColor(R.color.game_bg_corrupted_vbouncer);
+        mPrimaryColor = resources.getColor(R.color.game_primary_corrupted);
+        mSecondaryColor = resources.getColor(R.color.game_secondary_corrupted);
+        break;
+      default:
+        mBackgroundColor = resources.getColor(R.color.game_bg_quad_vbouncer);
+        mPrimaryColor = resources.getColor(R.color.game_primary_quad);
+        mSecondaryColor = resources.getColor(R.color.game_secondary_quad);
         break;
     }
   }

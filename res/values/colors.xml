@@ -216,6 +216,11 @@
   <color name="game_bg_diffuse_hbalance">#be205d</color>
   <color name="game_bg_corrupted_hbalance">#be205d</color>
 
+  <color name="game_bg_quad_vbouncer">#3f9243</color>
+  <color name="game_bg_threshold_vbouncer">#3f9243</color>
+  <color name="game_bg_diffuse_vbouncer">#3f9243</color>
+  <color name="game_bg_corrupted_vbouncer">#3f9243</color>
+
   <!-- Primary/Secondary game colors -->
   <color name="game_primary_quad">@android:color/white</color>
   <color name="game_primary_threshold">@android:color/white</color>
