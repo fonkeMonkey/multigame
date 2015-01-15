@@ -221,6 +221,11 @@
   <color name="game_bg_diffuse_vbouncer">#3f9243</color>
   <color name="game_bg_corrupted_vbouncer">#3f9243</color>
 
+  <color name="game_bg_quad_tinvader">#fa9013</color>
+  <color name="game_bg_threshold_tinvader">#fa9013</color>
+  <color name="game_bg_diffuse_tinvader">#fa9013</color>
+  <color name="game_bg_corrupted_tinvader">#fa9013</color>
+
   <!-- Primary/Secondary game colors -->
   <color name="game_primary_quad">@android:color/white</color>
   <color name="game_primary_threshold">@android:color/white</color>
