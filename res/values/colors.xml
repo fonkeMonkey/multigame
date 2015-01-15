@@ -216,30 +216,7 @@
   <color name="game_bg_diffuse_hbalance">#be205d</color>
   <color name="game_bg_corrupted_hbalance">#be205d</color>
 
-  <!-- Game components -->
-  <!-- Ball Catching -->
-  <color name="game_tcatcher_ball_quad">@android:color/white</color>
-  <color name="game_tcatcher_ball_threshold">@android:color/white</color>
-  <color name="game_tcatcher_ball_diffuse">@android:color/white</color>
-  <color name="game_tcatcher_ball_corrupted">@android:color/white</color>
-
-  <color name="game_tcatcher_ballcenter_quad">@android:color/black</color>
-  <color name="game_tcatcher_ballcenter_threshold">@android:color/black</color>
-  <color name="game_tcatcher_ballcenter_diffuse">@android:color/black</color>
-  <color name="game_tcatcher_ballcenter_corrupted">@android:color/black</color>
-
-  <color name="game_tcatcher_catching_active_quad">@android:color/black</color>
-  <color name="game_tcatcher_catching_active_threshold">@android:color/black</color>
-  <color name="game_tcatcher_catching_active_diffuse">@android:color/black</color>
-  <color name="game_tcatcher_catching_active_corrupted">@android:color/black</color>
-
-  <color name="game_tcatcher_catching_inactive_quad">@android:color/white</color>
-  <color name="game_tcatcher_catching_inactive_threshold">@android:color/white</color>
-  <color name="game_tcatcher_catching_inactive_diffuse">@android:color/white</color>
-  <color name="game_tcatcher_catching_inactive_corrupted">@android:color/white</color>
-  <!-- End: Ball Catching -->
-
-  <!-- HBalance -->
+  <!-- Primary/Secondary game colors -->
   <color name="game_primary_quad">@android:color/white</color>
   <color name="game_primary_threshold">@android:color/white</color>
   <color name="game_primary_diffuse">@android:color/white</color>
@@ -249,7 +226,7 @@
   <color name="game_secondary_threshold">@android:color/black</color>
   <color name="game_secondary_diffuse">@android:color/black</color>
   <color name="game_secondary_corrupted">@android:color/black</color>
-  <!-- End: HBalance-->
+  <!-- End: Primary/Secondary game colors -->
 
 </resources>
 

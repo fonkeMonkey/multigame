@@ -36,6 +36,7 @@ public class MiniGameVBird extends BaseMiniGame implements
   //Graphics
   private transient RandomGenerator mRG;
   private PaintSerializable mPaintBird = null;
+  private PaintSerializable mPaintBirdCenter = null;
   private PaintSerializable mPaintObstacle = null;
   private float movementSensitivity;
   private final ArrayList<Obstacle> mObstacles = new ArrayList<Obstacle>();
@@ -82,9 +83,9 @@ public class MiniGameVBird extends BaseMiniGame implements
       movementStep *= DebugSettings.GLOBAL_DIFFICULTY_TUTORIAL_COEFFICIENT;
     }
 
-    mPaintObstacle = new PaintSerializable(colorAlt, Paint.Style.FILL);
-
-    mPaintBird = new PaintSerializable(colorMain, Paint.Style.FILL);
+    mPaintObstacle = new PaintSerializable(mPrimaryColor, Paint.Style.FILL);
+    mPaintBird = new PaintSerializable(mPrimaryColor, Paint.Style.FILL);
+    mPaintBirdCenter = new PaintSerializable(mSecondaryColor, Paint.Style.FILL);
 
     mBirdSize = mHeight / 8;
     mObstacleWidth = mWidth / 25;
@@ -142,7 +143,7 @@ public class MiniGameVBird extends BaseMiniGame implements
     final int birdCenterLeft = (int) (birdLeft + (mBirdSize / 2.0) - (birdCenterSize / 2.0));
     final int birdCenterTop = (int) (mBirdTop + (mBirdSize / 2.0) - (birdCenterSize / 2.0));
     mCanvas.drawRect(birdCenterLeft, birdCenterTop, birdCenterLeft + birdCenterSize,
-        birdCenterTop + birdCenterSize, mPaintObstacle.mPaint);
+        birdCenterTop + birdCenterSize, mPaintBirdCenter.mPaint);
 
     drawTail(mCanvas);
   }
@@ -264,19 +265,28 @@ public class MiniGameVBird extends BaseMiniGame implements
     switch (currentSkin) {
       case QUAD:
         mBackgroundColor = resources.getColor(R.color.game_bg_quad_vbird);
-        colorMain = resources.getColor(R.color.gameMain);
+        mPrimaryColor = resources.getColor(R.color.game_primary_quad);
+        mSecondaryColor = resources.getColor(R.color.game_secondary_quad);
         break;
       case THRESHOLD:
         mBackgroundColor = resources.getColor(R.color.game_bg_threshold_vbird);
-        colorMain = resources.getColor(R.color.gameMain);
+        mPrimaryColor = resources.getColor(R.color.game_primary_threshold);
+        mSecondaryColor = resources.getColor(R.color.game_secondary_threshold);
         break;
       case DIFFUSE:
         mBackgroundColor = resources.getColor(R.color.game_bg_diffuse_vbird);
-        colorMain = resources.getColor(R.color.gameMain);
+        mPrimaryColor = resources.getColor(R.color.game_primary_diffuse);
+        mSecondaryColor = resources.getColor(R.color.game_secondary_diffuse);
         break;
       case CORRUPTED:
         mBackgroundColor = resources.getColor(R.color.game_bg_corrupted_vbird);
-        colorMain = resources.getColor(R.color.gameMain);
+        mPrimaryColor = resources.getColor(R.color.game_primary_corrupted);
+        mSecondaryColor = resources.getColor(R.color.game_secondary_corrupted);
+        break;
+      default:
+        mBackgroundColor = resources.getColor(R.color.game_bg_quad_vbird);
+        mPrimaryColor = resources.getColor(R.color.game_primary_quad);
+        mSecondaryColor = resources.getColor(R.color.game_secondary_quad);
         break;
     }
   }

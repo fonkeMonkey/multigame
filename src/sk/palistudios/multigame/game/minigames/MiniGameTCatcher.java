@@ -43,11 +43,6 @@ public class MiniGameTCatcher extends BaseMiniGame
   private int catchingBallsHeight;
   private int columnWidth;
 
-  private int mBallColor;
-  private int mBallCenterColor;
-  private int mCatchingBallActiveColor;
-  private int mCatchingBallInactiveColor;
-
   public MiniGameTCatcher(String fileName, Integer position, GameActivity game) {
     super(fileName, position, game);
     type = Type.Touch;
@@ -72,10 +67,10 @@ public class MiniGameTCatcher extends BaseMiniGame
       fallingStep *= DebugSettings.GLOBAL_DIFFICULTY_TUTORIAL_COEFFICIENT;
     }
 
-    mPaintFallingBalls = new PaintSerializable(mBallColor, Paint.Style.FILL);
-    mPaintFallingBallCenter = new PaintSerializable(mBallCenterColor, Paint.Style.FILL);
-    mPaintCatchingBallActive = new PaintSerializable(mCatchingBallActiveColor, Paint.Style.STROKE);
-    mPaintCatchingBallInactive = new PaintSerializable(mCatchingBallInactiveColor, Paint.Style.FILL);
+    mPaintFallingBalls = new PaintSerializable(mPrimaryColor, Paint.Style.FILL);
+    mPaintFallingBallCenter = new PaintSerializable(mSecondaryColor, Paint.Style.FILL);
+    mPaintCatchingBallActive = new PaintSerializable(mPrimaryColor, Paint.Style.STROKE);
+    mPaintCatchingBallInactive = new PaintSerializable(mPrimaryColor, Paint.Style.FILL);
 
     fallingHeight = mHeight / 20;
 
@@ -191,46 +186,28 @@ public class MiniGameTCatcher extends BaseMiniGame
     switch (currentSkin) {
       case QUAD:
         mBackgroundColor = resources.getColor(R.color.game_bg_quad_tcatcher);
-        mBallColor = resources.getColor(R.color.game_tcatcher_ball_quad);
-        mBallCenterColor = resources.getColor(R.color.game_tcatcher_ballcenter_quad);
-        mCatchingBallActiveColor = resources.getColor(R.color.game_tcatcher_catching_active_quad);
-        mCatchingBallInactiveColor = resources.getColor(
-            R.color.game_tcatcher_catching_inactive_quad);
+        mPrimaryColor = resources.getColor(R.color.game_primary_quad);
+        mSecondaryColor = resources.getColor(R.color.game_secondary_quad);
         break;
       case THRESHOLD:
         mBackgroundColor = resources.getColor(R.color.game_bg_threshold_tcatcher);
-        mBallColor = resources.getColor(R.color.game_tcatcher_ball_threshold);
-        mBallCenterColor = resources.getColor(R.color.game_tcatcher_ballcenter_threshold);
-        mCatchingBallActiveColor = resources.getColor(
-            R.color.game_tcatcher_catching_active_threshold);
-        mCatchingBallInactiveColor = resources.getColor(
-            R.color.game_tcatcher_catching_inactive_threshold);
+        mPrimaryColor = resources.getColor(R.color.game_primary_threshold);
+        mSecondaryColor = resources.getColor(R.color.game_secondary_threshold);
         break;
       case DIFFUSE:
         mBackgroundColor = resources.getColor(R.color.game_bg_diffuse_tcatcher);
-        mBallColor = resources.getColor(R.color.game_tcatcher_ball_diffuse);
-        mBallCenterColor = resources.getColor(R.color.game_tcatcher_ballcenter_diffuse);
-        mCatchingBallActiveColor = resources.getColor(
-            R.color.game_tcatcher_catching_active_diffuse);
-        mCatchingBallInactiveColor = resources.getColor(
-            R.color.game_tcatcher_catching_inactive_diffuse);
+        mPrimaryColor = resources.getColor(R.color.game_primary_diffuse);
+        mSecondaryColor = resources.getColor(R.color.game_secondary_diffuse);
         break;
       case CORRUPTED:
         mBackgroundColor = resources.getColor(R.color.game_bg_corrupted_tcatcher);
-        mBallColor = resources.getColor(R.color.game_tcatcher_ball_corrupted);
-        mBallCenterColor = resources.getColor(R.color.game_tcatcher_ballcenter_corrupted);
-        mCatchingBallActiveColor = resources.getColor(
-            R.color.game_tcatcher_catching_active_corrupted);
-        mCatchingBallInactiveColor = resources.getColor(
-            R.color.game_tcatcher_catching_inactive_corrupted);
+        mPrimaryColor = resources.getColor(R.color.game_primary_corrupted);
+        mSecondaryColor = resources.getColor(R.color.game_secondary_corrupted);
         break;
       default:
         mBackgroundColor = resources.getColor(R.color.game_bg_quad_tcatcher);
-        mBallColor = resources.getColor(R.color.game_tcatcher_ball_quad);
-        mBallCenterColor = resources.getColor(R.color.game_tcatcher_ballcenter_quad);
-        mCatchingBallActiveColor = resources.getColor(R.color.game_tcatcher_catching_active_quad);
-        mCatchingBallInactiveColor = resources.getColor(
-            R.color.game_tcatcher_catching_inactive_quad);
+        mPrimaryColor = resources.getColor(R.color.game_primary_quad);
+        mSecondaryColor = resources.getColor(R.color.game_secondary_quad);
         break;
     }
   }
