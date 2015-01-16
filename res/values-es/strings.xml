@@ -69,28 +69,28 @@
 
   <string name="cc_achievements_achievements_center_name">Logros</string>
 
-  <string name="cc_achievements_lucky_seven_name">Lucky seven</string>
+  <string name="cc_achievements_lucky_seven_name">LUCKY SEVEN</string>
   <string name="cc_achievements_lucky_seven_description">Alcanza el nivel 7</string>
 
-  <string name="cc_achievements_magin_ten_name">Magic 10</string>
+  <string name="cc_achievements_magin_ten_name">MAGIC 10</string>
   <string name="cc_achievements_magin_ten_description">Alcanza el nivel 10</string>
 
-  <string name="cc_achievements_good_start_name">Good start</string>
+  <string name="cc_achievements_good_start_name">GOOD START</string>
   <string name="cc_achievements_good_start_description">Alcanza los 5000 puntos</string>
 
-  <string name="cc_achievements_addict_name">Addict</string>
+  <string name="cc_achievements_addict_name">ADDICT</string>
   <string name="cc_achievements_addicts_description">Juega al menos 10 juegos</string>
 
-  <string name="cc_achievements_supporter_name">Supporter</string>
+  <string name="cc_achievements_supporter_name">SUPPORTER</string>
   <string name="cc_achievements_supporter_description">Puntúa Multigame en Google Play</string>
 
-  <string name="cc_achievements_competitive_name">Competitive</string>
+  <string name="cc_achievements_competitive_name">COMPETITIVE</string>
   <string name="cc_achievements_competitive_description">Comparte tu puntuación en Facebook</string>
 
-  <string name="cc_achievements_champion_name">Campeón</string>
+  <string name="cc_achievements_champion_name">CAMPEÓN</string>
   <string name="cc_achievements_champion_description">Sé ňen salón de la fama</string>
 
-  <string name="cc_achievements_pro_name">Pro</string>
+  <string name="cc_achievements_pro_name">PRO</string>
   <string name="cc_achievements_pro_description">Alcanza el nivel 15</string>
 
   <string name="cc_achievements_requirement_ending">\u0020para desbloquear esta partida</string>

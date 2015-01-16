@@ -110,6 +110,7 @@ public class SkinsFragment extends CustomizeFragment {
           //Ugly as fuck, startup ftw
           SkinManager.reskin(getActivity(), (ViewGroup) ((ViewGroup) (getActivity().findViewById(
               android.R.id.content))).getChildAt(0));
+          /* Reskin activity. */
           ((CustomizationCenterActivity) getActivity()).reskinLocally(SkinManager.getInstance()
               .getCurrentSkin());
         }

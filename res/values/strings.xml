@@ -63,21 +63,29 @@
   <!-- Achievements center -->
 
   <string name="cc_achievements_achievements_center_name">Achievements</string>
-  <string name="cc_achievements_lucky_seven_name">Lucky seven</string>
+
+  <string name="cc_achievements_lucky_seven_name">LUCKY SEVEN</string>
   <string name="cc_achievements_lucky_seven_description">Reach level 7</string>
-  <string name="cc_achievements_magin_ten_name">Magic 10</string>
+
+  <string name="cc_achievements_magin_ten_name">MAGIC 10</string>
   <string name="cc_achievements_magin_ten_description">Reach level 10</string>
-  <string name="cc_achievements_good_start_name">Good start</string>
+
+  <string name="cc_achievements_good_start_name">GOOD START</string>
   <string name="cc_achievements_good_start_description">Reach score of 5000</string>
-  <string name="cc_achievements_addict_name">Addict</string>
+
+  <string name="cc_achievements_addict_name">ADDICT</string>
   <string name="cc_achievements_addicts_description">Play at least 10 games</string>
-  <string name="cc_achievements_supporter_name">Supporter</string>
+
+  <string name="cc_achievements_supporter_name">SUPPORTER</string>
   <string name="cc_achievements_supporter_description">Rate Multigame on Google Play</string>
-  <string name="cc_achievements_competitive_name">Competitive</string>
+
+  <string name="cc_achievements_competitive_name">COMPETITIVE</string>
   <string name="cc_achievements_competitive_description">Share your score on Facebook</string>
-  <string name="cc_achievements_champion_name">Champion</string>
+
+  <string name="cc_achievements_champion_name">CHAMPION</string>
   <string name="cc_achievements_champion_description">Be in the hall of fame</string>
-  <string name="cc_achievements_pro_name">Pro</string>
+
+  <string name="cc_achievements_pro_name">PRO</string>
   <string name="cc_achievements_pro_description">Reach level 15</string>
   <string name="cc_achievements_requirement_ending">\u0020in order to unlock this item</string>
 

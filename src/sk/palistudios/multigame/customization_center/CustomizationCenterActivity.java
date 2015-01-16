@@ -12,6 +12,7 @@ import android.widget.CheckedTextView;
 import sk.palistudios.multigame.BaseActivity;
 import sk.palistudios.multigame.MgTracker;
 import sk.palistudios.multigame.R;
+import sk.palistudios.multigame.customization_center.achievements.AchievementsFragment;
 import sk.palistudios.multigame.customization_center.minigames.MinigamesFragment;
 import sk.palistudios.multigame.customization_center.music.MusicFragment;
 import sk.palistudios.multigame.customization_center.skins.SkinsFragment;
@@ -166,7 +167,6 @@ public class CustomizationCenterActivity extends BaseActivity
 
   @Override
   public void onPageSelected(int i) {
-//    mPager.setCurrentItem(i);
     switch (i) {
       case 0:
         checkTextView(minigamesButton);
@@ -201,8 +201,7 @@ public class CustomizationCenterActivity extends BaseActivity
       mFragments[0] = new MinigamesFragment();
       mFragments[1] = new SkinsFragment();
       mFragments[2] = new MusicFragment();
-      mFragments[3] = new CustomizeFragment() {
-      };
+      mFragments[3] = new AchievementsFragment();
 //      mFragments[3] = new MusicFragment();
     }
 

@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<LinearLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:gravity="center_horizontal"
+        android:paddingTop="@dimen/list_item_achievements_paddingVertical"
+        android:paddingBottom="@dimen/list_item_achievements_paddingVertical"
+        android:paddingLeft="@dimen/list_item_achievements_paddingHorizontal"
+        android:paddingRight="@dimen/list_item_achievements_paddingHorizontal">
+
+    <TextView
+            android:id="@+id/achievement_name"
+            tools:text="GOOD START"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="sans-serif-black"
+            android:textStyle="bold"
+            android:textSize="@dimen/list_item_achievements_title_textSize" />
+
+    <TextView
+            android:id="@+id/achievement_description"
+            tools:text="Reach score of 50000"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="sans-serif-light"
+            android:textSize="@dimen/list_item_achievements_row1_textSize" />
+
+    <TextView
+            android:id="@+id/achievement_reward"
+            tools:text="unlocks minigame Bouncer"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="sans-serif-light"
+            android:textStyle="italic"
+            android:textSize="@dimen/list_item_achievements_row2_textSize" />
+</LinearLayout>

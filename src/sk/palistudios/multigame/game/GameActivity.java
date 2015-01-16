@@ -28,7 +28,7 @@ import com.facebook.Session;
 import sk.palistudios.multigame.BaseActivity;
 import sk.palistudios.multigame.MgTracker;
 import sk.palistudios.multigame.R;
-import sk.palistudios.multigame.customization_center.achievements.AchievementsCenterListActivity;
+import sk.palistudios.multigame.tools.AchievementsHelper;
 import sk.palistudios.multigame.game.minigames.MinigamesManager;
 import sk.palistudios.multigame.game.persistence.GameSaverLoader;
 import sk.palistudios.multigame.game.persistence.GameSharedPref;
@@ -588,7 +588,7 @@ public class GameActivity extends BaseActivity implements SensorEventListener {
       colorFragmentGray(loser);
       GameSharedPref.StatsGamesPlayedIncrease();
 
-      AchievementsCenterListActivity.checkAchievements(mScore, mLevel, getApplicationContext());
+      AchievementsHelper.checkAchievements(mScore, mLevel, getApplicationContext());
       HofDatabaseCenter.initDB(this);
       //TODO dovnotura open close tej metody
       HofDatabaseCenter.getsHofDb().open();

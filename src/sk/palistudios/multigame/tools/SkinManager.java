@@ -19,6 +19,8 @@ import sk.palistudios.multigame.preferences.PreferenceOnOffSwitcher;
 /**
  * Created by virdzek on 23/11/14.
  */
+
+//TODO M toto celé v témach by bolo stokrát lepšie
 public class SkinManager {
   public enum Skin {
     QUAD, THRESHOLD, DIFFUSE, CORRUPTED

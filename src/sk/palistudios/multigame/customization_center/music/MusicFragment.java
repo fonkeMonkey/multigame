@@ -95,4 +95,11 @@ public class MusicFragment extends CustomizeFragment {
     });
   }
 
+  @Override
+  public void reskinLocally(SkinManager.Skin currentSkin) {
+    super.reskinLocally(currentSkin);
+    if (isAdded()) {
+      mMusicArrayAdapter.notifyDataSetChanged();
+    }
+  }
 }

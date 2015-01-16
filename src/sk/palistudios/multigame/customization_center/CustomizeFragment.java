@@ -15,7 +15,6 @@ import sk.palistudios.multigame.tools.SkinManager;
  */
 abstract public class CustomizeFragment extends Fragment {
   protected TextView mHeader;
-  //  private boolean mReskinedAlready = false;
 
   @Override
   public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
@@ -33,6 +32,8 @@ abstract public class CustomizeFragment extends Fragment {
     if (isAdded()) {
       SkinManager.reskin(getActivity(), (ViewGroup) ((ViewGroup) (getActivity().findViewById(
           android.R.id.content))));
+//      SkinManager.reskin(getActivity(), (ViewGroup) ((ViewGroup) (getActivity().findViewById(
+//          android.R.id.content))).getChildAt(0));
     }
   }
 }

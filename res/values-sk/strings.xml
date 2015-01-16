@@ -72,28 +72,28 @@
 
   <string name="cc_achievements_achievements_center_name">Ciele</string>
 
-  <string name="cc_achievements_lucky_seven_name">Štastná sedmička</string>
+  <string name="cc_achievements_lucky_seven_name">ŠTASTNÁ SEDMIČKA</string>
   <string name="cc_achievements_lucky_seven_description">Dosiahni 7. level</string>
 
-  <string name="cc_achievements_magin_ten_name">Magická desiatka</string>
+  <string name="cc_achievements_magin_ten_name">MAGICKÁ DESIATKA</string>
   <string name="cc_achievements_magin_ten_description">Dosiahni 10. level</string>
 
-  <string name="cc_achievements_good_start_name">Dobrý začiatok</string>
+  <string name="cc_achievements_good_start_name">DOBRÝ ZAČIATOK</string>
   <string name="cc_achievements_good_start_description">Dosiahni skóre 5000</string>
 
-  <string name="cc_achievements_addict_name">Závislák</string>
+  <string name="cc_achievements_addict_name">ZÁVISLÁK</string>
   <string name="cc_achievements_addicts_description">Zahraj si aspoň 10 hier</string>
 
-  <string name="cc_achievements_supporter_name">Podporovateľ</string>
+  <string name="cc_achievements_supporter_name">PODPOROVATEĽ</string>
   <string name="cc_achievements_supporter_description">Ohodnoť Multigame na Google Play</string>
 
-  <string name="cc_achievements_competitive_name">Súťaživý</string>
+  <string name="cc_achievements_competitive_name">SÚŤAŽIVÝ</string>
   <string name="cc_achievements_competitive_description">Zdieľaj svoje skóre na Facebooku</string>
 
-  <string name="cc_achievements_champion_name">Šampión</string>
+  <string name="cc_achievements_champion_name">ŠAMPIÓN</string>
   <string name="cc_achievements_champion_description">Buď v sieni slávy</string>
 
-  <string name="cc_achievements_pro_name">Profesionál</string>
+  <string name="cc_achievements_pro_name">PROFESIONÁL</string>
   <string name="cc_achievements_pro_description">Dosiahni 15. level</string>
 
   <string name="cc_achievements_requirement_ending">, aby si odomkol túto položku.</string>
