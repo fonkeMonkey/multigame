@@ -16,7 +16,7 @@
   <application
       android:label="@string/app_name"
       android:name="sk.palistudios.multigame.MgApplication"
-      android:icon="@drawable/ic_logo_land"
+      android:icon="@drawable/icon"
       android:hardwareAccelerated="true">
 
 
@@ -38,7 +38,6 @@
         android:launchMode="singleTask"
         android:label="MultiGame"
         android:theme="@style/Multigame_style_other"
-
         >
     </activity>
     <activity
