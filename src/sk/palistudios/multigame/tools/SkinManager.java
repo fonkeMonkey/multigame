@@ -2,6 +2,8 @@ package sk.palistudios.multigame.tools;
 
 import android.content.Context;
 import android.content.res.Resources;
+import android.graphics.Bitmap;
+import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.os.Build;
 import android.view.View;
@@ -141,19 +143,20 @@ public class SkinManager {
         return context.getResources().getDrawable(R.drawable.xml_bg_threshold);
       case DIFFUSE:
         return context.getResources().getDrawable(R.drawable.bg_diffuse);
+//        return getDiffuseBmpSmaller(context);
       case CORRUPTED:
         return context.getResources().getDrawable(R.drawable.bg_corrupted);
     }
     throw new RuntimeException("Corrupted skin name!");
   }
 
-//  private Drawable getDiffuseBmp(Context context) {
-//    Bitmap diffuseBitmap = BitmapHelper.decodeSampledBitmapFromResource(context.getResources(),
-//        R.drawable.bg_diffuse, DisplayHelper.getScreenWidth(context), DisplayHelper.getScreenHeight(
-//        context), true);
-//
-//    return new BitmapDrawable(context.getResources(), diffuseBitmap);
-//  }
+  private Drawable getDiffuseBmpSmaller(Context context) {
+    Bitmap diffuseBitmap = BitmapHelper.decodeSampledBitmapFromResource(context.getResources(),
+        R.drawable.bg_diffuse, DisplayHelper.getScreenWidth(context), DisplayHelper.getScreenHeight(
+        context), false);
+
+    return new BitmapDrawable(context.getResources(), diffuseBitmap);
+  }
 
   private void reskinTextsInView(Context context, ViewGroup view) {
     reskinTextsInView(context, view, getCurrentTextColor(context));
