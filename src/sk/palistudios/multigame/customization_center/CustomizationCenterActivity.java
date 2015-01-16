@@ -6,7 +6,6 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentStatePagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.CheckedTextView;
 
 import sk.palistudios.multigame.BaseActivity;
@@ -202,7 +201,6 @@ public class CustomizationCenterActivity extends BaseActivity
       mFragments[1] = new SkinsFragment();
       mFragments[2] = new MusicFragment();
       mFragments[3] = new AchievementsFragment();
-//      mFragments[3] = new MusicFragment();
     }
 
     private CustomizeFragment[] getFragments() {
@@ -229,12 +227,12 @@ public class CustomizationCenterActivity extends BaseActivity
       return NUM_PAGES;
     }
 
-    @Override
-    public void destroyItem(ViewGroup container, int position, Object object) {
-//      super.destroyItem(container,position,object);
-      //TODO M handle more sexy, this is to not populate viewpagers fragments everytime viewpager
-      // is scrolled. Yea and the method of parent is not called, so could destory a fet things,
-      // startup ftw.
-    }
+//    @Override
+//    public void destroyItem(ViewGroup container, int position, Object object) {
+////      super.destroyItem(container,position,object);
+//      //TODO M handle more sexy, this is to not populate viewpagers fragments everytime viewpager
+//      // is scrolled. Yea and the method of parent is not called, so could destory a fet things,
+//      // startup ftw.
+//    }
   }
 }

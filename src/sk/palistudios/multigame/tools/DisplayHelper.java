@@ -2,7 +2,9 @@ package sk.palistudios.multigame.tools;
 
 import android.content.Context;
 import android.content.res.Configuration;
+import android.graphics.Point;
 import android.os.Build;
+import android.view.Display;
 import android.view.Surface;
 import android.view.WindowManager;
 
@@ -35,6 +37,32 @@ public class DisplayHelper {
       } else {
         return Configuration.ORIENTATION_PORTRAIT;
       }
+    }
+  }
+
+  public static int getScreenWidth(Context context) {
+    WindowManager wm = (WindowManager) context.getSystemService(Context.WINDOW_SERVICE);
+    Display display = wm.getDefaultDisplay();
+
+    if (Build.VERSION.SDK_INT >= 13) {
+      Point size = new Point();
+      display.getSize(size);
+      return size.x;
+    } else {
+      return display.getWidth();  // deprecated
+    }
+  }
+
+  public static int getScreenHeight(Context context) {
+    WindowManager wm = (WindowManager) context.getSystemService(Context.WINDOW_SERVICE);
+    Display display = wm.getDefaultDisplay();
+
+    if (Build.VERSION.SDK_INT >= 13) {
+      Point size = new Point();
+      display.getSize(size);
+      return size.y;
+    } else {
+      return display.getHeight();  // deprecated
     }
   }
 }

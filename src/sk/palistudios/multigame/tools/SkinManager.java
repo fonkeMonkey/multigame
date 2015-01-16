@@ -147,6 +147,14 @@ public class SkinManager {
     throw new RuntimeException("Corrupted skin name!");
   }
 
+//  private Drawable getDiffuseBmp(Context context) {
+//    Bitmap diffuseBitmap = BitmapHelper.decodeSampledBitmapFromResource(context.getResources(),
+//        R.drawable.bg_diffuse, DisplayHelper.getScreenWidth(context), DisplayHelper.getScreenHeight(
+//        context), true);
+//
+//    return new BitmapDrawable(context.getResources(), diffuseBitmap);
+//  }
+
   private void reskinTextsInView(Context context, ViewGroup view) {
     reskinTextsInView(context, view, getCurrentTextColor(context));
   }
