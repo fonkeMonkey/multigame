@@ -22,6 +22,7 @@ import android.widget.Toast;
 
 import com.facebook.Session;
 import com.nineoldandroids.animation.Animator;
+import com.nineoldandroids.animation.ArgbEvaluator;
 import com.nineoldandroids.animation.ValueAnimator;
 import sk.palistudios.multigame.BaseActivity;
 import sk.palistudios.multigame.MgTracker;
@@ -140,33 +141,50 @@ public class GameActivity extends BaseActivity implements SensorEventListener {
   };
 
   private void animateLevelChange() {
-    final ValueAnimator highlight = ValueAnimator.ofInt(getResources().getColor(
-            R.color.text_game_level),
-        getResources().getColor(R.color.text_game_level_highlight));
+    final ValueAnimator highlight = ValueAnimator.ofObject(
+        new ArgbEvaluator(), mDifficultyView.getCurrentTextColor(), getResources().getColor(
+            R.color.text_game_level_highlight));
     highlight.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
       @Override
-      public void onAnimationUpdate(ValueAnimator animator) {
-        mDifficultyView.setTextColor((Integer) animator.getAnimatedValue());
+      public void onAnimationUpdate(ValueAnimator animation) {
+        mDifficultyView.setTextColor((Integer) animation.getAnimatedValue());
       }
     });
     highlight.setDuration(LEVEL_HIGHLIGHT_DURATION_MILLIS);
-    highlight.start();
-
-    new Handler(getMainLooper()).postDelayed(new Runnable() {
+    highlight.setRepeatCount(0);
+    highlight.addListener(new Animator.AnimatorListener() {
       @Override
-      public void run() {
-        final ValueAnimator unhighlight = ValueAnimator.ofInt(getResources().getColor(
-            R.color.text_game_level_highlight), getResources().getColor(R.color.text_game_level));
+      public void onAnimationStart(Animator animation) {
+
+      }
+
+      @Override
+      public void onAnimationEnd(Animator animation) {
+        final ValueAnimator unhighlight = ValueAnimator.ofObject(
+            new ArgbEvaluator(), mDifficultyView.getCurrentTextColor(), getResources().getColor(
+                R.color.text_game_level));
         unhighlight.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
           @Override
-          public void onAnimationUpdate(ValueAnimator animator) {
-            mDifficultyView.setTextColor((Integer) animator.getAnimatedValue());
+          public void onAnimationUpdate(ValueAnimator animation) {
+            mDifficultyView.setTextColor((Integer) animation.getAnimatedValue());
           }
         });
         unhighlight.setDuration(LEVEL_UNHIGHLIGHT_DURATION_MILLIS);
+        unhighlight.setRepeatCount(0);
         unhighlight.start();
       }
-    }, LEVEL_HIGHLIGHT_DURATION_MILLIS);
+
+      @Override
+      public void onAnimationCancel(Animator animation) {
+
+      }
+
+      @Override
+      public void onAnimationRepeat(Animator animation) {
+
+      }
+    });
+    highlight.start();
   }
 
   final private int GAME_UPDATES_PER_SECOND = 60;//Cell phones have seldom more fps per seconds,
