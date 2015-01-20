@@ -1,14 +1,14 @@
-package sk.palistudios.multigame.mainMenu;
+package sk.palistudios.multigame;
 
 // @author Pali
 
 import android.content.Context;
 import android.os.AsyncTask;
 
-import sk.palistudios.multigame.MgTracker;
 import sk.palistudios.multigame.game.persistence.GameSharedPref;
 import sk.palistudios.multigame.hall_of_fame.HallOfFameActivity;
 import sk.palistudios.multigame.hall_of_fame.HofDatabaseCenter;
+import sk.palistudios.multigame.mainMenu.DebugSettings;
 import sk.palistudios.multigame.tools.sound.SoundEffectsCenter;
 
 public class ApplicationInitializer {
