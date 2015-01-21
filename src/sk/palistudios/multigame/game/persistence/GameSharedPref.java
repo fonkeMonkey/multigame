@@ -15,9 +15,12 @@ public class GameSharedPref {
   private static SharedPreferences.Editor sEditor;
 
   public static void initSharedPref(Context context) {
-    sSharedPreferences = context.getSharedPreferences("Game", 0);
-    sEditor = sSharedPreferences.edit();
+    if (sSharedPreferences == null) {
+      sSharedPreferences = context.getSharedPreferences("Game", 0);
+      sEditor = sSharedPreferences.edit();
+    }
   }
+
   public static boolean isGameSaved() {
     return sSharedPreferences.getBoolean("gameSaved", false);
   }
@@ -103,10 +106,14 @@ public class GameSharedPref {
 
   public static boolean[] getMinigamesActivityFlags() {
     boolean[] activeMinigames = new boolean[4];
-    activeMinigames[0] = GameSharedPref.sSharedPreferences.getBoolean("savedMinigame1Active", false);
-    activeMinigames[1] = GameSharedPref.sSharedPreferences.getBoolean("savedMinigame2Active", false);
-    activeMinigames[2] = GameSharedPref.sSharedPreferences.getBoolean("savedMinigame3Active", false);
-    activeMinigames[3] = GameSharedPref.sSharedPreferences.getBoolean("savedMinigame4Active", false);
+    activeMinigames[0] = GameSharedPref.sSharedPreferences.getBoolean("savedMinigame1Active",
+        false);
+    activeMinigames[1] = GameSharedPref.sSharedPreferences.getBoolean("savedMinigame2Active",
+        false);
+    activeMinigames[2] = GameSharedPref.sSharedPreferences.getBoolean("savedMinigame3Active",
+        false);
+    activeMinigames[3] = GameSharedPref.sSharedPreferences.getBoolean("savedMinigame4Active",
+        false);
     return activeMinigames;
   }
 
@@ -314,14 +321,14 @@ public class GameSharedPref {
     sEditor.commit();
   }
 
-//  public static boolean isMinigamesInitialized() {
-//    return sSharedPreferences.getBoolean("minigamesInitialized", false);
-//  }
+  //  public static boolean isMinigamesInitialized() {
+  //    return sSharedPreferences.getBoolean("minigamesInitialized", false);
+  //  }
 
-//  public static void setMinigamesInitialized(boolean status) {
-//    sEditor.putBoolean("minigamesInitialized", status);
-//    sEditor.commit();
-//  }
+  //  public static void setMinigamesInitialized(boolean status) {
+  //    sEditor.putBoolean("minigamesInitialized", status);
+  //    sEditor.commit();
+  //  }
 
   public static void SetChosenMinigamesNames(String[] newActiveMinigamesNames) {
     sEditor.putString("MinigameV", newActiveMinigamesNames[0]);
@@ -413,7 +420,8 @@ public class GameSharedPref {
   //        String[] allMusicNames = new String[numberOfMusicFiles];
   //
   //        for (int i = 1; i <= numberOfMusicFiles; i++) {
-  //            allMusicNames[i - 1] = sSharedPreferences.getString("AllMusicLoops" + i + "PCName", null);
+  //            allMusicNames[i - 1] = sSharedPreferences.getString("AllMusicLoops" + i +
+  // "PCName", null);
   //        }
   //
   //        return allMusicNames;
@@ -424,7 +432,8 @@ public class GameSharedPref {
   //        String[] allMusicNames = new String[numberOfMusicFiles];
   //
   //        for (int i = 1; i <= numberOfMusicFiles; i++) {
-  //            allMusicNames[i - 1] = sSharedPreferences.getString("AllMusicLoops" + i + "HumanName",
+  //            allMusicNames[i - 1] = sSharedPreferences.getString("AllMusicLoops" + i +
+  // "HumanName",
   // null);
   //        }
   //
@@ -520,6 +529,5 @@ public class GameSharedPref {
     unlockItem("dst_blam");
     unlockItem("dst_cv_x");
   }
-
 
 }

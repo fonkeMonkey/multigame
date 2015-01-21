@@ -32,6 +32,8 @@ public class SkinManager {
   private static SkinManager sSkinManager;
   private int mTmpTextColor;
   private int TEXT_COLOR_NOT_RESOLVED;
+  public Bitmap mCorruptedBitmap;
+  public Bitmap mDiffuseBitmap;
 
   public static synchronized SkinManager getInstance() {
     if (sSkinManager == null) {
@@ -138,24 +140,64 @@ public class SkinManager {
   private Drawable getCurrentBackground(Context context) {
     switch (getCurrentSkin()) {
       case QUAD:
+        recycleCorrupted();
+        recycleDiffuse();
         return context.getResources().getDrawable(R.drawable.xml_bg_quad);
       case THRESHOLD:
+        recycleCorrupted();
+        recycleDiffuse();
         return context.getResources().getDrawable(R.drawable.xml_bg_threshold);
       case DIFFUSE:
-        return context.getResources().getDrawable(R.drawable.bg_diffuse);
-//        return getDiffuseBmpSmaller(context);
+        recycleCorrupted();
+        return getDiffuseBmp(context);
       case CORRUPTED:
-        return context.getResources().getDrawable(R.drawable.bg_corrupted);
+        recycleDiffuse();
+        return getCorruptedBmp(context);
     }
     throw new RuntimeException("Corrupted skin name!");
   }
 
-  private Drawable getDiffuseBmpSmaller(Context context) {
-    Bitmap diffuseBitmap = BitmapHelper.decodeSampledBitmapFromResource(context.getResources(),
-        R.drawable.bg_diffuse, DisplayHelper.getScreenWidth(context), DisplayHelper.getScreenHeight(
-        context), false);
+  private void recycleDiffuse() {
+    if (mDiffuseBitmap != null) {
+      mDiffuseBitmap.recycle();
+      mDiffuseBitmap = null;
+    }
+  }
 
-    return new BitmapDrawable(context.getResources(), diffuseBitmap);
+  private void recycleCorrupted() {
+    if (mCorruptedBitmap != null) {
+      mCorruptedBitmap.recycle();
+      mCorruptedBitmap = null;
+    }
+  }
+
+  private Drawable getCorruptedBmp(Context context) {
+    if (mCorruptedBitmap == null) {
+      if (MemoryUtil.isLowMemoryDevice(context)) {
+        mCorruptedBitmap = BitmapHelper.decodeSampledBitmapFromResource(context.getResources(),
+            R.drawable.bg_corrupted, DisplayHelper.getScreenWidth(context),
+            DisplayHelper.getScreenHeight(context), false);
+      } else {
+        mCorruptedBitmap = BitmapHelper.decodeSampledBitmapFromResource(context,
+            R.drawable.bg_corrupted, true);
+      }
+    }
+
+    return new BitmapDrawable(context.getResources(), mCorruptedBitmap);
+  }
+
+  private Drawable getDiffuseBmp(Context context) {
+    if (mDiffuseBitmap == null) {
+      if (MemoryUtil.isLowMemoryDevice(context)) {
+        mDiffuseBitmap = BitmapHelper.decodeSampledBitmapFromResource(context.getResources(),
+            R.drawable.bg_diffuse, DisplayHelper.getScreenWidth(context),
+            DisplayHelper.getScreenHeight(context), false);
+      } else {
+        mDiffuseBitmap = BitmapHelper.decodeSampledBitmapFromResource(context,
+            R.drawable.bg_diffuse, true);
+      }
+    }
+    return new BitmapDrawable(context.getResources(), mDiffuseBitmap);
   }
 
   private void reskinTextsInView(Context context, ViewGroup view) {
@@ -197,7 +239,7 @@ public class SkinManager {
               child.getId() == R.id.customize_achievements ||
               child.getId() == R.id.customize_music ||
               child.getId() == R.id.customize_skins) {
-//            //internal
+            //            //internal
             return;
           }
           ((CheckedTextView) child).setTextColor(color);

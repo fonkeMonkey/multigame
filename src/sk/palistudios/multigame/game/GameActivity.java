@@ -762,7 +762,10 @@ public class GameActivity extends BaseActivity implements SensorEventListener {
   }
 
   private void destroyEverythingSafely() {
+    if (sm != null){
     sm.unregisterListener(this);
+
+    }
 
     if(mGameLoopHandler != null && mRunnableGameLoop != null){
       mGameLoopHandler.removeCallbacks(mRunnableGameLoop);

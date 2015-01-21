@@ -35,7 +35,7 @@
 
       <ImageView
           android:id="@+id/bird"
-          android:src="@drawable/icon_minigame_bird"
+          tools:src="@drawable/icon_minigame_bird"
           android:layout_width="0dp"
           android:layout_height="wrap_content"
           android:layout_margin="10dp"
@@ -52,7 +52,7 @@
 
       <ImageView
           android:id="@+id/bouncer"
-          android:src="@drawable/icon_minigame_bouncer"
+          tools:src="@drawable/icon_minigame_bouncer"
           android:layout_width="0dp"
           android:layout_height="wrap_content"
           android:layout_margin="10dp"
@@ -80,10 +80,11 @@
           android:layout_weight="1"
           />
 
+          <!--tools:src="@drawable/icon_minigame_balance"-->
       <ImageView
           android:id="@+id/balance"
-          android:src="@drawable/icon_minigame_balance"
           android:layout_width="0dp"
+          tools:src="@drawable/icon_minigame_balance"
           android:layout_height="wrap_content"
           android:layout_margin="10dp"
           android:layout_weight="9"
@@ -99,7 +100,7 @@
 
       <ImageView
           android:id="@+id/catcher"
-          android:src="@drawable/icon_minigame_catcher"
+          tools:src="@drawable/icon_minigame_catcher"
           android:layout_width="0dp"
           android:layout_height="wrap_content"
           android:layout_margin="10dp"
@@ -128,7 +129,7 @@
 
       <ImageView
           android:id="@+id/gatherer"
-          android:src="@drawable/icon_minigame_gatherer"
+          tools:src="@drawable/icon_minigame_gatherer"
           android:layout_height="wrap_content"
           android:layout_width="0dp"
           android:layout_margin="10dp"
@@ -145,7 +146,7 @@
 
       <ImageView
           android:id="@+id/invader"
-          android:src="@drawable/icon_minigame_invader"
+          tools:src="@drawable/icon_minigame_invader"
           android:layout_height="wrap_content"
           android:layout_width="0dp"
           android:layout_margin="10dp"

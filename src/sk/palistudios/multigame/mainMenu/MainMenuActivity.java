@@ -60,8 +60,6 @@ public class MainMenuActivity extends BaseActivity {
 
     sMainMenuInstance = this;
 
-    GameSharedPref.initSharedPref(this);
-
     mlogoView = (ImageView) findViewById(R.id.logo);
     mTVStart = (TextView) findViewById(R.id.menu_start);
     mViewContainer = (LinearLayout) findViewById(R.id.background);

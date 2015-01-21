@@ -2,6 +2,8 @@ package sk.palistudios.multigame.customization_center.minigames;
 
 import java.util.ArrayList;
 
+import android.graphics.Bitmap;
+import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -15,6 +17,8 @@ import sk.palistudios.multigame.R;
 import sk.palistudios.multigame.customization_center.CustomizeFragment;
 import sk.palistudios.multigame.game.minigames.BaseMiniGame;
 import sk.palistudios.multigame.game.persistence.GameSharedPref;
+import sk.palistudios.multigame.tools.BitmapHelper;
+import sk.palistudios.multigame.tools.MemoryUtil;
 import sk.palistudios.multigame.tools.SkinManager;
 import sk.palistudios.multigame.tools.Toaster;
 
@@ -70,18 +74,51 @@ public class MinigamesFragment extends CustomizeFragment {
       Bundle savedInstanceState) {
     ViewGroup rootView = (ViewGroup) inflater.inflate(R.layout.cust_minigames_layout, container,
         false);
+
+    mBalance = (ImageView) rootView.findViewById(R.id.balance);
+    mCatcher = (ImageView) rootView.findViewById(R.id.catcher);
+    mGatherer = (ImageView) rootView.findViewById(R.id.gatherer);
+    mInvader = (ImageView) rootView.findViewById(R.id.invader);
+    mBird = (ImageView) rootView.findViewById(R.id.bird);
+    mBouncer = (ImageView) rootView.findViewById(R.id.bouncer);
+
+    //TODO M Tieto imageviews zajebú 10Mb RAMky pre high a 5 pre low
+    // tieto dekodóvačky zavolaj z BitmapHelperu s odmeranými veľkosťami pre tie obrázky (teraz
+    // majú veľkosť fullscreen) -> Niekde v onMeasure alebo v nejakej kokocine(aka
+    // ViewTreeObserver odmeraj
+    // tie Imageviews
+    boolean highQuality = !MemoryUtil.isLowMemoryDevice(getActivity());
+    mBalance.setImageBitmap(BitmapHelper.decodeSampledBitmapFromResource(getActivity(),
+        R.drawable.icon_minigame_balance, highQuality));
+    mCatcher.setImageBitmap(BitmapHelper.decodeSampledBitmapFromResource(getActivity(),
+        R.drawable.icon_minigame_catcher, highQuality));
+    mGatherer.setImageBitmap(BitmapHelper.decodeSampledBitmapFromResource(getActivity(),
+        R.drawable.icon_minigame_gatherer, highQuality));
+
+    if (mItems.get(3).isLocked()) {
+      mInvader.setImageBitmap(BitmapHelper.decodeSampledBitmapFromResource(getActivity(),
+          R.drawable.icon_minigame_invader_disabled, highQuality));
+    } else {
+      mInvader.setImageBitmap(BitmapHelper.decodeSampledBitmapFromResource(getActivity(),
+          R.drawable.icon_minigame_invader, highQuality));
+    }
+    mBird.setImageBitmap(BitmapHelper.decodeSampledBitmapFromResource(getActivity(),
+        R.drawable.icon_minigame_bird, highQuality));
+
+    if (mItems.get(5).isLocked()) {
+      mBouncer.setImageBitmap(BitmapHelper.decodeSampledBitmapFromResource(getActivity(),
+          R.drawable.icon_minigame_bouncer_disabled, highQuality));
+    } else {
+      mBouncer.setImageBitmap(BitmapHelper.decodeSampledBitmapFromResource(getActivity(),
+          R.drawable.icon_minigame_bouncer, highQuality));
+    }
+
     return rootView;
   }
 
   @Override
   public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
     super.onViewCreated(view, savedInstanceState);
-    mBalance = (ImageView) getView().findViewById(R.id.balance);
-    mCatcher = (ImageView) getView().findViewById(R.id.catcher);
-    mGatherer = (ImageView) getView().findViewById(R.id.gatherer);
-    mInvader = (ImageView) getView().findViewById(R.id.invader);
-    mBird = (ImageView) getView().findViewById(R.id.bird);
-    mBouncer = (ImageView) getView().findViewById(R.id.bouncer);
     refreshImageBorders(SkinManager.getInstance().getCurrentSkin());
 
     mInvader.setOnClickListener(new View.OnClickListener() {
@@ -194,9 +231,6 @@ public class MinigamesFragment extends CustomizeFragment {
     refreshImageBorders(SkinManager.getInstance().getCurrentSkin());
   }
 
-  //TODO M možno cez bitmapfactory, lebo toto dekóduje bitmapu na mainthreade (pomalé)
-  //TODO a taktiež sa to volá skurvene často hlavne to načítavanie bitmap je useless pri zmene
-  // skinov o.i
   private void refreshImageBorders(SkinManager.Skin currentSkin) {
     Drawable activeDrawable = getActiveDrawableBySkin(currentSkin);
     Drawable inactiveDrawable = getInactiveDrawableBySkin(currentSkin);
@@ -220,11 +254,7 @@ public class MinigamesFragment extends CustomizeFragment {
       mGatherer.setBackgroundDrawable(inactiveDrawable);
     }
 
-        /* Invader */
-    if (mItems.get(3).isLocked()) {
-      mInvader.setImageResource(R.drawable.icon_minigame_invader_disabled);
-      mInvader.setOnClickListener(null);
-    } else {
+    {
       if (mItems.get(3).isActive()) {
         mInvader.setBackgroundDrawable(activeDrawable);
       } else {
@@ -240,15 +270,10 @@ public class MinigamesFragment extends CustomizeFragment {
     }
 
     /* Bouncer */
-    if (mItems.get(5).isLocked()) {
-      mBouncer.setImageResource(R.drawable.icon_minigame_bouncer_disabled);
-      mBouncer.setOnClickListener(null);
+    if (mItems.get(5).isActive()) {
+      mBouncer.setBackgroundDrawable(activeDrawable);
     } else {
-      if (mItems.get(5).isActive()) {
-        mBouncer.setBackgroundDrawable(activeDrawable);
-      } else {
-        mBouncer.setBackgroundDrawable(inactiveDrawable);
-      }
+      mBouncer.setBackgroundDrawable(inactiveDrawable);
     }
 
   }
@@ -279,6 +304,52 @@ public class MinigamesFragment extends CustomizeFragment {
         return getResources().getDrawable(R.drawable.xml_bg_cust_minigames_unchosen_corr);
     }
     throw new RuntimeException("Invalid Skin");
+  }
+
+  public void recycleImages() {
+    Drawable drawable = mBird.getDrawable();
+    if (drawable instanceof BitmapDrawable) {
+      BitmapDrawable bitmapDrawable = (BitmapDrawable) drawable;
+      Bitmap bitmap = bitmapDrawable.getBitmap();
+      bitmap.recycle();
+    }
+    Drawable drawable2 = mGatherer.getDrawable();
+    if (drawable2 instanceof BitmapDrawable) {
+      BitmapDrawable bitmapDrawable = (BitmapDrawable) drawable2;
+      Bitmap bitmap = bitmapDrawable.getBitmap();
+      bitmap.recycle();
+    }
+    Drawable drawable3 = mBalance.getDrawable();
+    if (drawable3 instanceof BitmapDrawable) {
+      BitmapDrawable bitmapDrawable = (BitmapDrawable) drawable3;
+      Bitmap bitmap = bitmapDrawable.getBitmap();
+      bitmap.recycle();
+    }
+    Drawable drawable4 = mCatcher.getDrawable();
+    if (drawable4 instanceof BitmapDrawable) {
+      BitmapDrawable bitmapDrawable = (BitmapDrawable) drawable4;
+      Bitmap bitmap = bitmapDrawable.getBitmap();
+      bitmap.recycle();
+    }
+    Drawable drawable5 = mInvader.getDrawable();
+    if (drawable5 instanceof BitmapDrawable) {
+      BitmapDrawable bitmapDrawable = (BitmapDrawable) drawable5;
+      Bitmap bitmap = bitmapDrawable.getBitmap();
+      bitmap.recycle();
+    }
+    Drawable drawable6 = mBouncer.getDrawable();
+    if (drawable6 instanceof BitmapDrawable) {
+      BitmapDrawable bitmapDrawable = (BitmapDrawable) drawable6;
+      Bitmap bitmap = bitmapDrawable.getBitmap();
+      bitmap.recycle();
+    }
+
+    mBird = null;
+    mBalance = null;
+    mCatcher = null;
+    mGatherer = null;
+    mBouncer = null;
+    mInvader = null;
   }
 
   @Override
