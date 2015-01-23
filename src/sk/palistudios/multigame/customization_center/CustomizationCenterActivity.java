@@ -16,7 +16,6 @@ import sk.palistudios.multigame.customization_center.achievements.AchievementsFr
 import sk.palistudios.multigame.customization_center.minigames.MinigamesFragment;
 import sk.palistudios.multigame.customization_center.music.MusicFragment;
 import sk.palistudios.multigame.customization_center.skins.SkinsFragment;
-import sk.palistudios.multigame.game.persistence.GameSharedPref;
 import sk.palistudios.multigame.tools.SkinManager;
 import sk.palistudios.multigame.tools.sound.SoundEffectsCenter;
 
@@ -44,8 +43,6 @@ public class CustomizationCenterActivity extends BaseActivity
 
   @Override
   public void onCreate(Bundle savedInstanceState) {
-    //TODO debug
-    GameSharedPref.initSharedPref(this);
     MgTracker.init(this);
 
     super.onCreate(savedInstanceState);

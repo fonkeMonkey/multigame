@@ -15,8 +15,6 @@ public class ApplicationInitializer {
   public static void initApplication(Context context) {
     MgTracker.init(context);
 
-    GameSharedPref.initSharedPref(context);
-
         /* Init db in async task asap. */
     if (GameSharedPref.getDbInitialized() != true) {
       initDatabase(context);

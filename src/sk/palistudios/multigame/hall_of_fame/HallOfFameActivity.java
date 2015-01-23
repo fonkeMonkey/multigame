@@ -5,9 +5,16 @@ import java.util.List;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.*;
+import android.widget.Button;
+import android.widget.CompoundButton;
+import android.widget.LinearLayout;
+import android.widget.ListView;
+import android.widget.TextView;
+import android.widget.Toast;
+import android.widget.ToggleButton;
 
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.SignInButton;
@@ -28,10 +35,12 @@ import sk.palistudios.multigame.tools.SkinManager;
 /**
  * @author Pali
  */
-public class HallOfFameActivity extends BaseActivity implements GoogleApiClient
-    .ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener, GetLeaderboardCallback {
+public class HallOfFameActivity extends BaseActivity
+    implements GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener,
+    GetLeaderboardCallback {
 
   private static final int REQUEST_SIGN_IN = 9001;
+  public static final String SCROLL_TO_POSITION = "extra_scroll_to_position";
 
   // Client used to interact with Google APIs
   private GoogleApiClient mGoogleApiClient;
@@ -80,18 +89,17 @@ public class HallOfFameActivity extends BaseActivity implements GoogleApiClient
     initGoogleApiCLient();
     initViews();
     fillData();
+
+    scrollIfNeeded();
   }
 
   private void initGoogleApiCLient() {
     mFirstConnect = true;
 
     // Create the Google API Client with access to Plus and Games
-    mGoogleApiClient = new GoogleApiClient.Builder(this)
-        .addConnectionCallbacks(this)
-        .addOnConnectionFailedListener(this)
-        .addApi(Plus.API).addScope(Plus.SCOPE_PLUS_LOGIN)
-        .addApi(Games.API).addScope(Games.SCOPE_GAMES)
-        .build();
+    mGoogleApiClient = new GoogleApiClient.Builder(this).addConnectionCallbacks(this)
+        .addOnConnectionFailedListener(this).addApi(Plus.API).addScope(Plus.SCOPE_PLUS_LOGIN)
+        .addApi(Games.API).addScope(Games.SCOPE_GAMES).build();
   }
 
   private void initViews() {
@@ -148,7 +156,7 @@ public class HallOfFameActivity extends BaseActivity implements GoogleApiClient
       @Override
       public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
         buttonView.setClickable(!isChecked);
-        if(isChecked) {
+        if (isChecked) {
           mListView.setAdapter(mLocalLeaderboardAdapter);
         }
         refreshSignInLayout(!isChecked);
@@ -159,11 +167,11 @@ public class HallOfFameActivity extends BaseActivity implements GoogleApiClient
       @Override
       public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
         buttonView.setClickable(!isChecked);
-        if(isChecked) {
+        if (isChecked) {
           mListView.setAdapter(mOnlineLeaderboardAdapter);
         }
 
-        if(mFirstConnect && !isConnected()) {
+        if (mFirstConnect && !isConnected()) {
           mGoogleApiClient.connect();
           mFirstConnect = false;
         }
@@ -172,6 +180,19 @@ public class HallOfFameActivity extends BaseActivity implements GoogleApiClient
 
     mSwitchLocal.setClickable(!mSwitchLocal.isChecked());
     mSwitchOnline.setClickable(!mSwitchOnline.isChecked());
+  }
+
+  private void scrollIfNeeded() {
+    if (getIntent() != null && getIntent().getExtras() != null && getIntent().getExtras().getInt(
+        SCROLL_TO_POSITION) != -1 && getIntent().getExtras().getInt(SCROLL_TO_POSITION) != 0) {
+
+      new Handler().postDelayed(new Runnable() {
+        @Override
+        public void run() {
+          mListView.smoothScrollToPosition(getIntent().getExtras().getInt(SCROLL_TO_POSITION));
+        }
+      }, 1300);
+    }
   }
 
   private void fillData() {
@@ -202,7 +223,8 @@ public class HallOfFameActivity extends BaseActivity implements GoogleApiClient
       if (resultCode == RESULT_OK) {
         mGoogleApiClient.connect();
       } else {
-        BaseGameUtils.showActivityResultError(this, requestCode, resultCode, R.string.signin_other_error);
+        BaseGameUtils.showActivityResultError(this, requestCode, resultCode,
+            R.string.signin_other_error);
       }
     }
   }
@@ -211,7 +233,7 @@ public class HallOfFameActivity extends BaseActivity implements GoogleApiClient
   protected void onDestroy() {
     super.onDestroy();
 
-    if(mGetLeaderboardAsyncTask != null) {
+    if (mGetLeaderboardAsyncTask != null) {
       mGetLeaderboardAsyncTask.cancel(true);
     }
 
@@ -233,16 +255,15 @@ public class HallOfFameActivity extends BaseActivity implements GoogleApiClient
       mPlayerIdentifier = player.getPlayerId();
     }
 
-    final boolean shouldSubmit = ((GameSharedPref.getHighestScore() > 0) && !GameSharedPref
-        .getHighestScoreSubmitted());
+    final boolean shouldSubmit =
+        ((GameSharedPref.getHighestScore() > 0) && !GameSharedPref.getHighestScoreSubmitted());
     if (shouldSubmit) {
-      Games.Leaderboards.submitScore(mGoogleApiClient, getString(R.string.google_play_leaderboard_id),
-          GameSharedPref.getHighestScore());
+      Games.Leaderboards.submitScore(mGoogleApiClient, getString(
+          R.string.google_play_leaderboard_id), GameSharedPref.getHighestScore());
       GameSharedPref.setHighestScoreSubmitted(true);
     }
 
-    mGetLeaderboardAsyncTask = new GetLeaderboardAsyncTask(this,
-        mGoogleApiClient, this);
+    mGetLeaderboardAsyncTask = new GetLeaderboardAsyncTask(this, mGoogleApiClient, this);
     mGetLeaderboardAsyncTask.execute();
   }
 
@@ -277,7 +298,7 @@ public class HallOfFameActivity extends BaseActivity implements GoogleApiClient
   }
 
   public void refreshSignInLayout(boolean onlineChecked) {
-    if(onlineChecked) {
+    if (onlineChecked) {
       if (isConnected()) {
         mSignInBar.setVisibility(View.GONE);
         mSignOutBar.setVisibility(View.VISIBLE);
@@ -297,14 +318,14 @@ public class HallOfFameActivity extends BaseActivity implements GoogleApiClient
       final int size = scoresList.size();
       final HofItem[] items = new HofItem[size];
       LeaderboardScore score;
-      for(int i = 0; i < size; i++) {
+      for (int i = 0; i < size; i++) {
         score = scoresList.get(i);
         long rawScore = score.getRawScore();
-        if(rawScore > Integer.MAX_VALUE) {
+        if (rawScore > Integer.MAX_VALUE) {
           rawScore = Integer.MAX_VALUE;
         }
         items[i] = new HofItem(score.getScoreHolderDisplayName(), (int) rawScore);
-        items[i].setPosition((int)score.getRank());
+        items[i].setPosition((int) score.getRank());
         items[i].setGooglePlayerIdentifier(score.getScoreHolder().getPlayerId());
       }
       mOnlineLeaderboardAdapter = new HofArrayAdapter(this, items, true, mPlayerIdentifier);
@@ -330,10 +351,11 @@ public class HallOfFameActivity extends BaseActivity implements GoogleApiClient
             R.drawable.xml_bg_hof_switch_quad));
         mSwitchOnline.setTextColor(getResources().getColorStateList(
             R.color.xml_text_hof_switch_quad));
-        if(mSignInMessage != null) {
+        if (mSignInMessage != null) {
           mSignInBar.setBackgroundColor(getResources().getColor(android.R.color.white));
           mSignOutBar.setBackgroundColor(getResources().getColor(android.R.color.white));
-//          mSignOutButton.setBackgroundResource(R.drawable.xml_bg_hof_sign_out_button_quad);
+          //          mSignOutButton.setBackgroundResource(R.drawable
+          // .xml_bg_hof_sign_out_button_quad);
           mSignOutButton.setTextColor(getResources().getColor(android.R.color.white));
           mSignInMessage.setTextColor(getResources().getColor(android.R.color.black));
           mSignOutMessage.setTextColor(getResources().getColor(android.R.color.black));
@@ -350,10 +372,11 @@ public class HallOfFameActivity extends BaseActivity implements GoogleApiClient
             R.drawable.xml_bg_hof_switch_thres));
         mSwitchOnline.setTextColor(getResources().getColorStateList(
             R.color.xml_text_hof_switch_thres));
-        if(mSignInMessage != null) {
+        if (mSignInMessage != null) {
           mSignInBar.setBackgroundColor(getResources().getColor(android.R.color.white));
           mSignOutBar.setBackgroundColor(getResources().getColor(android.R.color.white));
-//          mSignOutButton.setBackgroundResource(R.drawable.xml_bg_hof_sign_out_button_thres);
+          //          mSignOutButton.setBackgroundResource(R.drawable
+          // .xml_bg_hof_sign_out_button_thres);
           mSignOutButton.setTextColor(getResources().getColor(android.R.color.white));
           mSignInMessage.setTextColor(getResources().getColor(android.R.color.black));
           mSignOutMessage.setTextColor(getResources().getColor(android.R.color.black));
@@ -370,10 +393,11 @@ public class HallOfFameActivity extends BaseActivity implements GoogleApiClient
             R.drawable.xml_bg_hof_switch_diffuse));
         mSwitchOnline.setTextColor(getResources().getColorStateList(
             R.color.xml_text_hof_switch_diffuse));
-        if(mSignInMessage != null) {
+        if (mSignInMessage != null) {
           mSignInBar.setBackgroundColor(getResources().getColor(android.R.color.white));
           mSignOutBar.setBackgroundColor(getResources().getColor(android.R.color.white));
-//          mSignOutButton.setBackgroundResource(R.drawable.xml_bg_hof_sign_out_button_diffuse);
+          //          mSignOutButton.setBackgroundResource(R.drawable
+          // .xml_bg_hof_sign_out_button_diffuse);
           mSignOutButton.setTextColor(getResources().getColor(android.R.color.white));
           mSignInMessage.setTextColor(getResources().getColor(android.R.color.black));
           mSignOutMessage.setTextColor(getResources().getColor(android.R.color.black));
@@ -390,10 +414,11 @@ public class HallOfFameActivity extends BaseActivity implements GoogleApiClient
             R.drawable.xml_bg_hof_switch_corrupt));
         mSwitchOnline.setTextColor(getResources().getColorStateList(
             R.color.xml_text_hof_switch_corrupt));
-        if(mSignInMessage != null) {
+        if (mSignInMessage != null) {
           mSignInBar.setBackgroundColor(getResources().getColor(android.R.color.white));
           mSignOutBar.setBackgroundColor(getResources().getColor(android.R.color.white));
-//          mSignOutButton.setBackgroundResource(R.drawable.xml_bg_hof_sign_out_button_corrupt);
+          //          mSignOutButton.setBackgroundResource(R.drawable
+          // .xml_bg_hof_sign_out_button_corrupt);
           mSignOutButton.setTextColor(getResources().getColor(android.R.color.white));
           mSignInMessage.setTextColor(getResources().getColor(android.R.color.black));
           mSignOutMessage.setTextColor(getResources().getColor(android.R.color.black));

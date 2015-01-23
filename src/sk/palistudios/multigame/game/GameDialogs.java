@@ -8,6 +8,8 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Build;
 import android.text.Html;
+import android.view.View;
+import android.view.WindowManager;
 import android.widget.EditText;
 
 import com.google.android.gms.analytics.HitBuilders;
@@ -94,14 +96,12 @@ public class GameDialogs {
 
       switch (GameActivity.sTutorialLastLevel) {
         case 0:
-          symbol =
-              "<font color=#D98179><b>(" + MinigamesFragment.SYMBOL_MINIGAME_VERTICAL +
-                  ")</b></font>";
+          symbol = "<font color=#D98179><b>(" + MinigamesFragment.SYMBOL_MINIGAME_VERTICAL +
+              ")</b></font>";
           break;
         case 1:
-          symbol =
-              "<font color=#D98179><b>(" + MinigamesFragment.SYMBOL_MINIGAME_HORIZONTAL +
-                  ")</b></font>";
+          symbol = "<font color=#D98179><b>(" + MinigamesFragment.SYMBOL_MINIGAME_HORIZONTAL +
+              ")</b></font>";
           break;
         case 2:
         case 3:
@@ -115,8 +115,7 @@ public class GameDialogs {
           MinigamesManager.getMinigames()[GameActivity.sTutorialLastLevel].getName();
 
       String message =
-          MinigamesManager.getMinigames()[GameActivity.sTutorialLastLevel].getDescription(
-              game);
+          MinigamesManager.getMinigames()[GameActivity.sTutorialLastLevel].getDescription(game);
       builder.setTitle(Html.fromHtml(title));
       builder.setMessage(Html.fromHtml(message)).setPositiveButton(Html.fromHtml(
           "<b>" + game.getString(R.string.tutorial_try) + "</b>"), dialogClickListener).show()
@@ -184,7 +183,7 @@ public class GameDialogs {
       return;
     }
     final int score = game.getScore();
-    if (GameSharedPref.getHighestScore() < game.getScore()){
+    if (GameSharedPref.getHighestScore() < game.getScore()) {
       GameSharedPref.setHighestScore(game.getScore());
       GameSharedPref.setHighestScoreSubmitted(false);
     }
@@ -244,20 +243,22 @@ public class GameDialogs {
         Intent intent;
         switch (which) {
           case DialogInterface.BUTTON_POSITIVE:
+            /* Showing so that animation does not look that bad when moving to other activity */
+            showStatusBar(game);
+
             MgTracker.trackGameWinnerOkButtonPushed();
             String playerName = userNameEditText.getText().toString();
             GameSharedPref.setLastHofName(playerName);
 
             HofDatabaseCenter db = HofDatabaseCenter.getsHofDb();
-            db.writeIntoHallOfFame(new HofItem(playerName, game.getScore()));
-            if (GameSharedPref.getHighestScore() < game.getScore()){
+            int playerPosition = db.writeIntoHallOfFame(new HofItem(playerName, game.getScore()));
+            if (GameSharedPref.getHighestScore() < game.getScore()) {
               GameSharedPref.setHighestScore(game.getScore());
               GameSharedPref.setHighestScoreSubmitted(false);
             }
             intent = new Intent(act, HallOfFameActivity.class);
+            intent.putExtra(HallOfFameActivity.SCROLL_TO_POSITION, playerPosition);
             game.startActivity(intent);
-            game.finish();
-
             break;
           case DialogInterface.BUTTON_NEGATIVE:
             MgTracker.trackGameWinnerRetryButtonPushed();
@@ -363,6 +364,7 @@ public class GameDialogs {
     act.startActivity(intent);
   }
 
+  //TODO L Toto nejak na oldschoola genymotione s malou pamatou padalo (recreovanie activity)
   @SuppressLint("NewApi")
   private static void restartGame(GameActivity game) {
     int apiVersion = Build.VERSION.SDK_INT;
@@ -373,6 +375,14 @@ public class GameDialogs {
       game.finish();
       game.startActivity(intent);
     }
+  }
 
+  private static void showStatusBar(GameActivity game) {
+    try {
+      ((View) game.findViewById(android.R.id.title).getParent()).setVisibility(View.VISIBLE);
+    } catch (Exception e) {
+    }
+    game.getWindow().addFlags(WindowManager.LayoutParams.FLAG_FORCE_NOT_FULLSCREEN);
+    game.getWindow().clearFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN);
   }
 }

@@ -143,7 +143,8 @@ public class HofDatabaseCenter extends SQLiteOpenHelper {
     close();
   }
 
-  public void writeIntoHallOfFame(HofItem userInfo) {
+  public int writeIntoHallOfFame(HofItem winnerInfo) {
+    int position = -1;
     open();
 
     ArrayList<HofItem> scoreList = fetchAllRows();
@@ -151,7 +152,7 @@ public class HofDatabaseCenter extends SQLiteOpenHelper {
 
     //if empty list
     if (scoreList.isEmpty()) {
-      scoreList.add(userInfo);
+      scoreList.add(winnerInfo);
     } else {
       //if list not full
       if (scoreList.size() < 10 && !scoreList.isEmpty()) {
@@ -159,8 +160,8 @@ public class HofDatabaseCenter extends SQLiteOpenHelper {
         boolean smallest = true;
 
         for (int i = 0; i < listSize; i++) {
-          if (userInfo.getScore() >= (scoreList.get(i).getScore())) {
-            scoreList = putIntoPosition(scoreList, i, userInfo);
+          if (winnerInfo.getScore() >= (scoreList.get(i).getScore())) {
+            scoreList = putIntoPosition(scoreList, i, winnerInfo);
             smallest = false;
             break;
           }
@@ -168,14 +169,15 @@ public class HofDatabaseCenter extends SQLiteOpenHelper {
 
         //if it is the smallest put to the end
         if (smallest) {
-          scoreList.add(userInfo);
+          scoreList.add(winnerInfo);
         }
       } else {
 
         //if list is allready full
         for (int i = 0; i < listSize; i++) {
-          if (userInfo.getScore() >= (scoreList.get(i).getScore())) {
-            scoreList = putIntoPosition(scoreList, i, userInfo);
+          if (winnerInfo.getScore() >= (scoreList.get(i).getScore())) {
+            scoreList = putIntoPosition(scoreList, i, winnerInfo);
+            position = i;
             break;
           }
         }
@@ -187,6 +189,8 @@ public class HofDatabaseCenter extends SQLiteOpenHelper {
     writeScoreList(scoreList);
 
     close();
+
+    return position;
   }
 
   private void writeScoreList(ArrayList<HofItem> rows) {

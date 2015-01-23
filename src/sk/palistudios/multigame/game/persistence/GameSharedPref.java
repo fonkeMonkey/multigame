@@ -7,6 +7,8 @@ import android.content.SharedPreferences;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 
+import sk.palistudios.multigame.MgApplication;
+
 public class GameSharedPref {
 
   private static final String KUBA_SKIN_SET_ALREADY = "kuba_skin_set_already";
@@ -14,11 +16,9 @@ public class GameSharedPref {
   private static SharedPreferences sSharedPreferences;
   private static SharedPreferences.Editor sEditor;
 
-  public static void initSharedPref(Context context) {
-    if (sSharedPreferences == null) {
-      sSharedPreferences = context.getSharedPreferences("Game", 0);
-      sEditor = sSharedPreferences.edit();
-    }
+  static {
+    sSharedPreferences = MgApplication.getContext().getSharedPreferences("Game", 0);
+    sEditor = sSharedPreferences.edit();
   }
 
   public static boolean isGameSaved() {
@@ -421,6 +421,7 @@ public class GameSharedPref {
   //
   //        for (int i = 1; i <= numberOfMusicFiles; i++) {
   //            allMusicNames[i - 1] = sSharedPreferences.getString("AllMusicLoops" + i +
+  // "PCName", null);
   // "PCName", null);
   //        }
   //
