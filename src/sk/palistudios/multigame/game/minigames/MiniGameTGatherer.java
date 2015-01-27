@@ -7,6 +7,7 @@ import android.content.Context;
 import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
+import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.RectF;
 
@@ -247,28 +248,28 @@ public class MiniGameTGatherer extends BaseMiniGame implements
     switch (currentSkin) {
       case QUAD:
         mBackgroundColor = resources.getColor(R.color.game_bg_quad_tgatherer);
-        mPrimaryColor = resources.getColor(R.color.game_primary_quad);
-        mSecondaryColor = resources.getColor(R.color.game_secondary_quad);
+        mPrimaryColor = resources.getColor(R.color.quad_primary);
+        mSecondaryColor = resources.getColor(R.color.quad_secondary);
         break;
       case THRESHOLD:
-        mBackgroundColor = resources.getColor(R.color.game_bg_threshold_tgatherer);
-        mPrimaryColor = resources.getColor(R.color.game_primary_threshold);
-        mSecondaryColor = resources.getColor(R.color.game_secondary_threshold);
+        mBackgroundColor = Color.TRANSPARENT;
+        mPrimaryColor = resources.getColor(R.color.threshold_primary);
+        mSecondaryColor = resources.getColor(R.color.threshold_tgatherer_secondary);
         break;
       case DIFFUSE:
-        mBackgroundColor = resources.getColor(R.color.game_bg_diffuse_tgatherer);
-        mPrimaryColor = resources.getColor(R.color.game_primary_diffuse);
-        mSecondaryColor = resources.getColor(R.color.game_secondary_diffuse);
+        mBackgroundColor = Color.TRANSPARENT;
+        mPrimaryColor = resources.getColor(R.color.diffuse_primary);
+        mSecondaryColor = resources.getColor(R.color.diffuse_secondary);
         break;
       case CORRUPTED:
-        mBackgroundColor = resources.getColor(R.color.game_bg_corrupted_tgatherer);
-        mPrimaryColor = resources.getColor(R.color.game_primary_corrupted);
-        mSecondaryColor = resources.getColor(R.color.game_secondary_corrupted);
+        mBackgroundColor = Color.TRANSPARENT;
+        mPrimaryColor = resources.getColor(R.color.corrupted_primary);
+        mSecondaryColor = resources.getColor(R.color.corrupted_secondary);
         break;
       default:
         mBackgroundColor = resources.getColor(R.color.game_bg_quad_tgatherer);
-        mPrimaryColor = resources.getColor(R.color.game_primary_quad);
-        mSecondaryColor = resources.getColor(R.color.game_secondary_quad);
+        mPrimaryColor = resources.getColor(R.color.quad_primary);
+        mSecondaryColor = resources.getColor(R.color.quad_secondary);
         break;
     }
   }

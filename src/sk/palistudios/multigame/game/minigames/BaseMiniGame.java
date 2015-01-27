@@ -15,17 +15,15 @@ import sk.palistudios.multigame.game.time.ISecondsObserver;
 import sk.palistudios.multigame.tools.SkinManager;
 
 abstract public class BaseMiniGame implements Serializable, ISecondsObserver {
-  protected final int colorAlt2;
   public Type type;
   public Integer mPosition;
   public transient GameActivity mGame;
   protected int mHeight;
   protected int mWidth;
-  protected int colorMain;
-  protected int colorAlt;
   protected int mBackgroundColor = 0;
   protected int mPrimaryColor = 0;
   protected int mSecondaryColor = 0;
+  protected int mAlternateColor = 0;
   String mFileName;
   boolean isMinigameInitialized;
   private boolean active = false;
@@ -44,9 +42,6 @@ abstract public class BaseMiniGame implements Serializable, ISecondsObserver {
     mFileName = fileName;
     mPosition = position;
     mGame = game;
-    this.colorMain = mGame.getResources().getColor(R.color.gameMain);
-    this.colorAlt = mGame.getResources().getColor(R.color.gameAlt);
-    this.colorAlt2 = mGame.getResources().getColor(R.color.gameAlt2);
 
     reskinLocally(SkinManager.getInstance().getCurrentSkin());
   }

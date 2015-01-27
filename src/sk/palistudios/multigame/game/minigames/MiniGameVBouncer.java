@@ -88,7 +88,8 @@ public class MiniGameVBouncer extends BaseMiniGame
 
     mPaintBall = new PaintSerializable(mPrimaryColor, Paint.Style.FILL);
     mPaintBallCenter = new PaintSerializable(mSecondaryColor, Paint.Style.FILL);
-    mPaintBar = new PaintSerializable(mPrimaryColor, Paint.Style.FILL);
+    final int barColor = (mAlternateColor != 0) ? mAlternateColor : mPrimaryColor;
+    mPaintBar = new PaintSerializable(barColor, Paint.Style.FILL);
     isMinigameInitialized = true;
   }
 
@@ -232,28 +233,29 @@ public class MiniGameVBouncer extends BaseMiniGame
     switch (currentSkin) {
       case QUAD:
         mBackgroundColor = resources.getColor(R.color.game_bg_quad_vbouncer);
-        mPrimaryColor = resources.getColor(R.color.game_primary_quad);
-        mSecondaryColor = resources.getColor(R.color.game_secondary_quad);
+        mPrimaryColor = resources.getColor(R.color.quad_primary);
+        mSecondaryColor = resources.getColor(R.color.quad_secondary);
         break;
       case THRESHOLD:
-        mBackgroundColor = resources.getColor(R.color.game_bg_threshold_vbouncer);
-        mPrimaryColor = resources.getColor(R.color.game_primary_threshold);
-        mSecondaryColor = resources.getColor(R.color.game_secondary_threshold);
+        mBackgroundColor = Color.TRANSPARENT;
+        mPrimaryColor = resources.getColor(R.color.threshold_primary);
+        mSecondaryColor = resources.getColor(R.color.threshold_vbouncer_secondary);
         break;
       case DIFFUSE:
-        mBackgroundColor = resources.getColor(R.color.game_bg_diffuse_vbouncer);
-        mPrimaryColor = resources.getColor(R.color.game_primary_diffuse);
-        mSecondaryColor = resources.getColor(R.color.game_secondary_diffuse);
+        mBackgroundColor = Color.TRANSPARENT;
+        mPrimaryColor = resources.getColor(R.color.diffuse_primary);
+        mSecondaryColor = resources.getColor(R.color.diffuse_secondary);
         break;
       case CORRUPTED:
-        mBackgroundColor = resources.getColor(R.color.game_bg_corrupted_vbouncer);
-        mPrimaryColor = resources.getColor(R.color.game_primary_corrupted);
-        mSecondaryColor = resources.getColor(R.color.game_secondary_corrupted);
+        mBackgroundColor = Color.TRANSPARENT;
+        mPrimaryColor = resources.getColor(R.color.corrupted_primary);
+        mSecondaryColor = resources.getColor(R.color.corrupted_secondary);
+        mAlternateColor = resources.getColor(R.color.corrupted_alt);
         break;
       default:
         mBackgroundColor = resources.getColor(R.color.game_bg_quad_vbouncer);
-        mPrimaryColor = resources.getColor(R.color.game_primary_quad);
-        mSecondaryColor = resources.getColor(R.color.game_secondary_quad);
+        mPrimaryColor = resources.getColor(R.color.quad_primary);
+        mSecondaryColor = resources.getColor(R.color.quad_secondary);
         break;
     }
   }

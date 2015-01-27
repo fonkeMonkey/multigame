@@ -38,6 +38,7 @@ public class MiniGameTInvader extends BaseMiniGame implements
   private PaintSerializable mPaintLaser = null;
   private PaintSerializable mPaintLaserFill = null;
   private PaintSerializable mPaintEnemy = null;
+  private PaintSerializable mPaintResizeArrows = null;
   private final PaintSerializable mPaintDkGray = new PaintSerializable(Color.DKGRAY);
   private final PaintSerializable mPaintGray = new PaintSerializable(Color.GRAY);
   private PointSerializable mPointMiddleOfScreen = null;
@@ -73,6 +74,8 @@ public class MiniGameTInvader extends BaseMiniGame implements
     mPaintLaserFill = new PaintSerializable(mPrimaryColor, Paint.Style.FILL);
     mPaintLaserFill.mPaint.setAlpha(64); // 25%
     mPaintEnemy = new PaintSerializable(mSecondaryColor, Paint.Style.FILL);
+    final int resizeArrowsColor = (mAlternateColor != 0) ? mAlternateColor : mPrimaryColor;
+    mPaintResizeArrows = new PaintSerializable(resizeArrowsColor, Paint.Style.STROKE);
 
     setRectangleCoordinates(mPointMiddleOfScreen, mPointSmallerCircle);
 
@@ -83,6 +86,7 @@ public class MiniGameTInvader extends BaseMiniGame implements
     mEnemyCircleSize3 = (int) (mEnemyCircleSize / 4.5);
 
     mPaintLaser.setStrokeWidth((int) (mCenterCircleSize / 5.0));
+    mPaintResizeArrows.setStrokeWidth((int) (mCenterCircleSize / 5.0));
 
     isMinigameInitialized = true;
   }
@@ -191,26 +195,26 @@ public class MiniGameTInvader extends BaseMiniGame implements
     float bottom = centerY + arrowBasementLength;
     float left = centerX - arrowBasementLength;
     float right = centerX + arrowBasementLength;
-    canvas.drawLine(centerX, top, centerX, bottom, mPaintLaser.mPaint);
-    canvas.drawLine(left, centerY, right, centerY, mPaintLaser.mPaint);
+    canvas.drawLine(centerX, top, centerX, bottom, mPaintResizeArrows.mPaint);
+    canvas.drawLine(left, centerY, right, centerY, mPaintResizeArrows.mPaint);
 
     // left arrow
-    canvas.drawLine(left, centerY, left + arrowLength, centerY - arrowLength, mPaintLaser.mPaint);
-    canvas.drawLine(left, centerY, left + arrowLength, centerY + arrowLength, mPaintLaser.mPaint);
+    canvas.drawLine(left, centerY, left + arrowLength, centerY - arrowLength, mPaintResizeArrows.mPaint);
+    canvas.drawLine(left, centerY, left + arrowLength, centerY + arrowLength, mPaintResizeArrows.mPaint);
 
     // top arrow
-    canvas.drawLine(centerX, top, centerX - arrowLength, top + arrowLength, mPaintLaser.mPaint);
-    canvas.drawLine(centerX, top, centerX + arrowLength, top + arrowLength, mPaintLaser.mPaint);
+    canvas.drawLine(centerX, top, centerX - arrowLength, top + arrowLength, mPaintResizeArrows.mPaint);
+    canvas.drawLine(centerX, top, centerX + arrowLength, top + arrowLength, mPaintResizeArrows.mPaint);
 
     // right arrow
-    canvas.drawLine(right, centerY, right - arrowLength, centerY - arrowLength, mPaintLaser.mPaint);
-    canvas.drawLine(right, centerY, right - arrowLength, centerY + arrowLength, mPaintLaser.mPaint);
+    canvas.drawLine(right, centerY, right - arrowLength, centerY - arrowLength, mPaintResizeArrows.mPaint);
+    canvas.drawLine(right, centerY, right - arrowLength, centerY + arrowLength, mPaintResizeArrows.mPaint);
 
     // bottom arrow
     canvas.drawLine(centerX, bottom, centerX - arrowLength, bottom - arrowLength,
-        mPaintLaser.mPaint);
+        mPaintResizeArrows.mPaint);
     canvas.drawLine(centerX, bottom, centerX + arrowLength, bottom - arrowLength,
-        mPaintLaser.mPaint);
+        mPaintResizeArrows.mPaint);
 
   }
 
@@ -276,28 +280,29 @@ public class MiniGameTInvader extends BaseMiniGame implements
     switch (currentSkin) {
       case QUAD:
         mBackgroundColor = resources.getColor(R.color.game_bg_quad_tinvader);
-        mPrimaryColor = resources.getColor(R.color.game_primary_quad);
-        mSecondaryColor = resources.getColor(R.color.game_secondary_quad);
+        mPrimaryColor = resources.getColor(R.color.quad_primary);
+        mSecondaryColor = resources.getColor(R.color.quad_secondary);
         break;
       case THRESHOLD:
-        mBackgroundColor = resources.getColor(R.color.game_bg_threshold_tinvader);
-        mPrimaryColor = resources.getColor(R.color.game_primary_threshold);
-        mSecondaryColor = resources.getColor(R.color.game_secondary_threshold);
+        mBackgroundColor = Color.TRANSPARENT;
+        mPrimaryColor = resources.getColor(R.color.threshold_primary);
+        mSecondaryColor = resources.getColor(R.color.threshold_tinvader_secondary);
         break;
       case DIFFUSE:
-        mBackgroundColor = resources.getColor(R.color.game_bg_diffuse_tinvader);
-        mPrimaryColor = resources.getColor(R.color.game_primary_diffuse);
-        mSecondaryColor = resources.getColor(R.color.game_secondary_diffuse);
+        mBackgroundColor = Color.TRANSPARENT;
+        mPrimaryColor = resources.getColor(R.color.diffuse_primary);
+        mSecondaryColor = resources.getColor(R.color.diffuse_secondary);
         break;
       case CORRUPTED:
-        mBackgroundColor = resources.getColor(R.color.game_bg_corrupted_tinvader);
-        mPrimaryColor = resources.getColor(R.color.game_primary_corrupted);
-        mSecondaryColor = resources.getColor(R.color.game_secondary_corrupted);
+        mBackgroundColor = Color.TRANSPARENT;
+        mPrimaryColor = resources.getColor(R.color.corrupted_primary);
+        mSecondaryColor = resources.getColor(R.color.corrupted_secondary);
+        mAlternateColor = resources.getColor(R.color.corrupted_alt);
         break;
       default:
         mBackgroundColor = resources.getColor(R.color.game_bg_quad_tinvader);
-        mPrimaryColor = resources.getColor(R.color.game_primary_quad);
-        mSecondaryColor = resources.getColor(R.color.game_secondary_quad);
+        mPrimaryColor = resources.getColor(R.color.quad_primary);
+        mSecondaryColor = resources.getColor(R.color.quad_secondary);
         break;
     }
   }

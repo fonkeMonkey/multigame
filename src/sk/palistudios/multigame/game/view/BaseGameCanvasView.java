@@ -16,7 +16,7 @@ import sk.palistudios.multigame.game.minigames.BaseMiniGame;
 abstract public class BaseGameCanvasView extends View {
   protected BaseMiniGame mMiniGame;
   private Bitmap mBitmap;
-  private int mBackgroundColor;
+//  private int mBackgroundColor;
 
   private int mHeight;
   private int mWidth;
@@ -39,14 +39,6 @@ abstract public class BaseGameCanvasView extends View {
   public void attachMinigame(BaseMiniGame minigame, int position){
     mMiniGame = minigame;
 //    int mPosition = position;
-
-    switch (position){
-      case 0 : mBackgroundColor = getResources().getColor(R.color.game_background_1); break;
-      case 1 : mBackgroundColor = getResources().getColor(R.color.game_background_2); break;
-      case 2 : mBackgroundColor = getResources().getColor(R.color.game_background_3); break;
-      case 3 : mBackgroundColor = getResources().getColor(R.color.game_background_4); break;
-    }
-    setBackgroundColor(mBackgroundColor);
   }
 
   @Override
@@ -81,11 +73,11 @@ abstract public class BaseGameCanvasView extends View {
   public abstract void detachMinigame();
 
   public void setBackgroundGray() {
-    setBackgroundColor(Color.GRAY);
+//    setBackgroundColor(Color.GRAY);
   }
 
   public void setBackgroundColored(){
-    setBackgroundColor(mBackgroundColor);
+//    setBackgroundColor(mBackgroundColor);
   }
 
   public void setGameSaved(boolean status) {

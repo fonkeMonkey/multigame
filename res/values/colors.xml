@@ -195,48 +195,37 @@
   <color name="text_game_level">@color/transparent_white_15</color>
   <color name="text_game_level_highlight">@color/transparent_white_75</color>
 
-  <!-- Game backgrounds -->
+
+
+
   <color name="game_bg_quad_vbird">#f95658</color>
-  <color name="game_bg_threshold_vbird">#f95658</color>
-  <color name="game_bg_diffuse_vbird">#f95658</color>
-  <color name="game_bg_corrupted_vbird">#f95658</color>
-
   <color name="game_bg_quad_tcatcher">#8d2ca8</color>
-  <color name="game_bg_threshold_tcatcher">#8d2ca8</color>
-  <color name="game_bg_diffuse_tcatcher">#8d2ca8</color>
-  <color name="game_bg_corrupted_tcatcher">#8d2ca8</color>
-
   <color name="game_bg_quad_tgatherer">#1179a0</color>
-  <color name="game_bg_threshold_tgatherer">#1179a0</color>
-  <color name="game_bg_diffuse_tgatherer">#1179a0</color>
-  <color name="game_bg_corrupted_tgatherer">#1179a0</color>
-
   <color name="game_bg_quad_hbalance">#be205d</color>
-  <color name="game_bg_threshold_hbalance">#be205d</color>
-  <color name="game_bg_diffuse_hbalance">#be205d</color>
-  <color name="game_bg_corrupted_hbalance">#be205d</color>
-
   <color name="game_bg_quad_vbouncer">#3f9243</color>
-  <color name="game_bg_threshold_vbouncer">#3f9243</color>
-  <color name="game_bg_diffuse_vbouncer">#3f9243</color>
-  <color name="game_bg_corrupted_vbouncer">#3f9243</color>
-
   <color name="game_bg_quad_tinvader">#fa9013</color>
-  <color name="game_bg_threshold_tinvader">#fa9013</color>
-  <color name="game_bg_diffuse_tinvader">#fa9013</color>
-  <color name="game_bg_corrupted_tinvader">#fa9013</color>
 
-  <!-- Primary/Secondary game colors -->
-  <color name="game_primary_quad">@android:color/white</color>
-  <color name="game_primary_threshold">@android:color/white</color>
-  <color name="game_primary_diffuse">@android:color/white</color>
-  <color name="game_primary_corrupted">@android:color/white</color>
+  <color name="quad_primary">@android:color/white</color>
+  <color name="quad_secondary">#0A6592</color>
 
-  <color name="game_secondary_quad">@android:color/black</color>
-  <color name="game_secondary_threshold">@android:color/black</color>
-  <color name="game_secondary_diffuse">@android:color/black</color>
-  <color name="game_secondary_corrupted">@android:color/black</color>
-  <!-- End: Primary/Secondary game colors -->
+  <color name="diffuse_primary">@android:color/white</color>
+  <color name="diffuse_secondary">#0A6592</color>
+
+  <color name="threshold_primary">#202020</color>
+  <color name="threshold_vbird_secondary">#FF174C</color>
+  <color name="threshold_hbalance_secondary">#FF3B01</color>
+  <color name="threshold_tcatcher_secondary">#C504E8</color>
+  <color name="threshold_tgatherer_secondary">#5FDD17</color>
+  <color name="threshold_tinvader_secondary">#0089D1</color>
+  <color name="threshold_vbouncer_secondary">#F82143</color>
+
+  <color name="corrupted_primary">#C6FF00</color>
+  <color name="corrupted_secondary">#F94007</color>
+  <color name="corrupted_alt">#DB1866</color>
+
+  <color name="default_game_separator">@android:color/white</color>
+  <color name="threshold_game_separator">#232323</color>
+  <color name="corrupted_game_separator">#767676</color>
 
 </resources>
 

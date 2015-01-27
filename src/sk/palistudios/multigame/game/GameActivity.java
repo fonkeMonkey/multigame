@@ -12,6 +12,7 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.util.Log;
 import android.view.MotionEvent;
+import android.view.View;
 import android.view.WindowManager;
 import android.view.animation.AlphaAnimation;
 import android.view.animation.Animation;
@@ -216,6 +217,10 @@ public class GameActivity extends BaseActivity implements SensorEventListener {
   private long mTimeGameStarted;
   private boolean mLoseTracked = false;
 
+  private View mVerticalSeparator1;
+  private View mVerticalSeparator2;
+  private View mHorizontalSeparator;
+
   @Override
   public void onCreate(Bundle icicle) {
     super.onCreate(icicle);
@@ -242,6 +247,10 @@ public class GameActivity extends BaseActivity implements SensorEventListener {
   private void initGraphics() {
     mScoreView = (TextView) findViewById(R.id.game_score);
     mDifficultyView = (TextView) findViewById(R.id.game_level);
+
+    mVerticalSeparator1 = findViewById(R.id.game_vertical_separator1);
+    mVerticalSeparator2 = findViewById(R.id.game_vertical_separator2);
+    mHorizontalSeparator = findViewById(R.id.game_horizontal_separator);
 
     mCanvases = new BaseGameCanvasView[4];
     mCanvases[0] = (BaseGameCanvasView) findViewById(R.id.canvas1);
@@ -290,7 +299,21 @@ public class GameActivity extends BaseActivity implements SensorEventListener {
 
   @Override
   public void reskinLocally(SkinManager.Skin currentSkin) {
-    return;
+    final int separatorColor;
+    switch (currentSkin) {
+      case THRESHOLD:
+        separatorColor = getResources().getColor(R.color.threshold_game_separator);
+        break;
+      case CORRUPTED:
+        separatorColor = getResources().getColor(R.color.corrupted_game_separator);
+        break;
+      default:
+        separatorColor = getResources().getColor(R.color.default_game_separator);
+        break;
+    }
+    mVerticalSeparator1.setBackgroundColor(separatorColor);
+    mVerticalSeparator2.setBackgroundColor(separatorColor);
+    mHorizontalSeparator.setBackgroundColor(separatorColor);
   }
 
   @Override

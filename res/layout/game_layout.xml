@@ -10,15 +10,13 @@
   <TableLayout
       android:id="@+id/tableLayout1"
       android:layout_width="match_parent"
-      android:layout_height="match_parent"
-      android:background="@android:color/white">
+      android:layout_height="match_parent">
 
     <TableRow
         android:id="@+id/tableRow1"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_weight="1"
-        android:layout_marginBottom="2dp">
+        android:layout_weight="1">
 
       <sk.palistudios.multigame.game.view.GameCanvasView
           android:id="@+id/canvas1"
@@ -27,6 +25,12 @@
           android:layout_weight="1"
           android:layout_marginRight="2dp"
           android:layout_marginEnd="2dp" />
+
+      <View
+          android:id="@+id/game_vertical_separator1"
+          android:layout_width="5dp"
+          android:layout_height="match_parent"
+          android:background="@android:color/white" />
 
       <sk.palistudios.multigame.game.view.GameCanvasView
           android:id="@+id/canvas2"
@@ -37,12 +41,17 @@
           android:layout_marginStart="2dp" />
     </TableRow>
 
+    <View
+        android:id="@+id/game_horizontal_separator"
+        android:layout_width="match_parent"
+        android:layout_height="5dp"
+        android:background="@android:color/white" />
+
     <TableRow
         android:id="@+id/tableRow2"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_weight="1"
-        android:layout_marginTop="2dp">
+        android:layout_weight="1">
 
       <sk.palistudios.multigame.game.view.GameCanvasViewTouch
           android:id="@+id/canvas3"
@@ -51,6 +60,12 @@
           android:layout_weight="1"
           android:layout_marginRight="2dp"
           android:layout_marginEnd="2dp" />
+
+      <View
+          android:id="@+id/game_vertical_separator2"
+          android:layout_width="5dp"
+          android:layout_height="match_parent"
+          android:background="@android:color/white" />
 
       <sk.palistudios.multigame.game.view.GameCanvasViewTouch
           android:id="@+id/canvas4"
