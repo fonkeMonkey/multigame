@@ -74,13 +74,11 @@ public class MinigamesManager {
   public static void activateMinigame(GameActivity game, int number) {
     mMinigamesActivityFlags[number] = true;
     mMinigames[number].onMinigameActivated();
-    game.getCanvases()[number].setBackgroundColored();
   }
 
   public static void deactivateMinigame(GameActivity game, int number) {
     mMinigamesActivityFlags[number] = false;
     mMinigames[number].onMinigameDeactivated();
-    game.getCanvases()[number].setBackgroundGray();
   }
 
   public static void detachGameRefFromMinigames(){

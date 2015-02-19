@@ -22,9 +22,6 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.facebook.Session;
-import com.nineoldandroids.animation.Animator;
-import com.nineoldandroids.animation.ArgbEvaluator;
-import com.nineoldandroids.animation.ValueAnimator;
 import sk.palistudios.multigame.BaseActivity;
 import sk.palistudios.multigame.MgTracker;
 import sk.palistudios.multigame.R;
@@ -61,8 +58,8 @@ public class GameActivity extends BaseActivity implements SensorEventListener {
   public static boolean sTutorialRestart = false;
   public static boolean dialogIsWinner = false;
 
-  private static final long LEVEL_HIGHLIGHT_DURATION_MILLIS = 300;
-  private static final long LEVEL_UNHIGHLIGHT_DURATION_MILLIS = 1000;
+  private static final long LEVEL_HIGHLIGHT_DURATION_MILLIS = 500;
+  private static final long LEVEL_UNHIGHLIGHT_DURATION_MILLIS = 2000;
 
   private static boolean sIncreaseVolumeShown = false;
   private static boolean sRaisedVolumeForTutorialAlready = false;
@@ -142,50 +139,33 @@ public class GameActivity extends BaseActivity implements SensorEventListener {
   };
 
   private void animateLevelChange() {
-    final ValueAnimator highlight = ValueAnimator.ofObject(
-        new ArgbEvaluator(), mDifficultyView.getCurrentTextColor(), getResources().getColor(
-            R.color.text_game_level_highlight));
-    highlight.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
+    // pred animaciou musim nastavit na 100% opacity, lebo potom sa budu pocitat percenta z 0.05f
+    mDifficultyView.setAlpha(1.0f);
+    final AlphaAnimation enterAnimation = new AlphaAnimation(0.05f, 1);
+    enterAnimation.setDuration(LEVEL_HIGHLIGHT_DURATION_MILLIS);
+    enterAnimation.setRepeatCount(0);
+    enterAnimation.setFillAfter(true);
+    enterAnimation.setAnimationListener(new Animation.AnimationListener() {
       @Override
-      public void onAnimationUpdate(ValueAnimator animation) {
-        mDifficultyView.setTextColor((Integer) animation.getAnimatedValue());
-      }
-    });
-    highlight.setDuration(LEVEL_HIGHLIGHT_DURATION_MILLIS);
-    highlight.setRepeatCount(0);
-    highlight.addListener(new Animator.AnimatorListener() {
-      @Override
-      public void onAnimationStart(Animator animation) {
+      public void onAnimationStart(Animation animation) {
 
       }
 
       @Override
-      public void onAnimationEnd(Animator animation) {
-        final ValueAnimator unhighlight = ValueAnimator.ofObject(
-            new ArgbEvaluator(), mDifficultyView.getCurrentTextColor(), getResources().getColor(
-                R.color.text_game_level));
-        unhighlight.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
-          @Override
-          public void onAnimationUpdate(ValueAnimator animation) {
-            mDifficultyView.setTextColor((Integer) animation.getAnimatedValue());
-          }
-        });
-        unhighlight.setDuration(LEVEL_UNHIGHLIGHT_DURATION_MILLIS);
-        unhighlight.setRepeatCount(0);
-        unhighlight.start();
+      public void onAnimationEnd(Animation animation) {
+        final AlphaAnimation exitAnimation = new AlphaAnimation(1f, 0.05f);
+        exitAnimation.setDuration(LEVEL_UNHIGHLIGHT_DURATION_MILLIS);
+        exitAnimation.setRepeatCount(0);
+        exitAnimation.setFillAfter(true);
+        mDifficultyView.startAnimation(exitAnimation);
       }
 
       @Override
-      public void onAnimationCancel(Animator animation) {
-
-      }
-
-      @Override
-      public void onAnimationRepeat(Animator animation) {
+      public void onAnimationRepeat(Animation animation) {
 
       }
     });
-    highlight.start();
+    mDifficultyView.startAnimation(enterAnimation);
   }
 
   final private int GAME_UPDATES_PER_SECOND = 60;//Cell phones have seldom more fps per seconds,
@@ -643,19 +623,10 @@ public class GameActivity extends BaseActivity implements SensorEventListener {
   }
 
   private void colorFragmentGray(int loser) {
-    switch (loser) {
-      case 0:
-        mCanvases[0].setBackgroundGray();
-        break;
-      case 1:
-        mCanvases[1].setBackgroundGray();
-        break;
-      case 2:
-        mCanvases[2].setBackgroundGray();
-        break;
-      case 3:
-        mCanvases[3].setBackgroundGray();
-        break;
+    for (int i = 0; i < mCanvases.length; i++) {
+      if (loser != i) {
+        mCanvases[i].onGameLost();
+      }
     }
   }
 

@@ -22,9 +22,7 @@
           android:id="@+id/canvas1"
           android:layout_width="0dp"
           android:layout_height="match_parent"
-          android:layout_weight="1"
-          android:layout_marginRight="2dp"
-          android:layout_marginEnd="2dp" />
+          android:layout_weight="1" />
 
       <View
           android:id="@+id/game_vertical_separator1"
@@ -36,9 +34,7 @@
           android:id="@+id/canvas2"
           android:layout_width="0dp"
           android:layout_height="match_parent"
-          android:layout_weight="1"
-          android:layout_marginLeft="2dp"
-          android:layout_marginStart="2dp" />
+          android:layout_weight="1" />
     </TableRow>
 
     <View
@@ -57,9 +53,7 @@
           android:id="@+id/canvas3"
           android:layout_width="0dp"
           android:layout_height="match_parent"
-          android:layout_weight="1"
-          android:layout_marginRight="2dp"
-          android:layout_marginEnd="2dp" />
+          android:layout_weight="1" />
 
       <View
           android:id="@+id/game_vertical_separator2"
@@ -71,9 +65,7 @@
           android:id="@+id/canvas4"
           android:layout_width="0dp"
           android:layout_height="match_parent"
-          android:layout_weight="1"
-          android:layout_marginLeft="2dp"
-          android:layout_marginStart="2dp" />
+          android:layout_weight="1" />
     </TableRow>
 
   </TableLayout>
@@ -96,10 +88,13 @@
       android:id="@+id/game_level"
       android:layout_width="match_parent"
       android:layout_height="match_parent"
+      android:alpha="0.05"
       android:gravity="center"
-      android:textSize="100sp"
+      android:textSize="200sp"
       android:textStyle="bold"
-      android:textColor="@color/text_game_level"
+      android:ellipsize="end"
+      android:singleLine="true"
+      android:textColor="@android:color/white"
       tools:text="2" />
 
 </RelativeLayout>

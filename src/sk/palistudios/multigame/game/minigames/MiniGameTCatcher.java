@@ -100,7 +100,7 @@ public class MiniGameTCatcher extends BaseMiniGame
   private void moveObjects() {
     for (FallingBall ball : mFallingBalls) {
       ball.fall();
-      if (ball.isCatched()) {
+      if (ball.wasCatched && ball.yAxis > mHeight) {
         mFallingBalls.remove(ball);
         return;
       }
@@ -229,6 +229,7 @@ public class MiniGameTCatcher extends BaseMiniGame
     final int xAxis;
     float yAxis;
     final int mColumn;
+    boolean wasCatched;
 
     public FallingBall(int xAxis, float yAxis, int column) {
       this.xAxis = xAxis;
@@ -238,11 +239,12 @@ public class MiniGameTCatcher extends BaseMiniGame
 
     private void fall() {
       yAxis += fallingStep;
+      isCatched();
     }
 
     private boolean isCatched() {
 
-      if (yAxis + mBallSize + 1 > mHeight) {
+      if ((mColumn != activeBall) && (yAxis + mBallSize + 1 > catchingBallsHeight) && !wasCatched) {
         if(mGame != null){
           mGame.onGameLost(mPosition);
         }
@@ -251,10 +253,12 @@ public class MiniGameTCatcher extends BaseMiniGame
         if (mColumn == activeBall) {
           if (yAxis + mBallSize <= catchingBallsHeight + mBallSize &&
               yAxis + mBallSize >= catchingBallsHeight - mBallSize) {
+            wasCatched = true;
             return true;
           }
           if (yAxis - mBallSize <= catchingBallsHeight + mBallSize &&
               yAxis - mBallSize >= catchingBallsHeight - mBallSize) {
+            wasCatched = true;
             return true;
           }
         }

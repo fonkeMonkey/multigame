@@ -196,7 +196,7 @@
   <color name="text_game_level_highlight">@color/transparent_white_75</color>
 
 
-
+  <color name="lost_game_overlay">#a0000000</color> <!-- 50% black -->
 
   <color name="game_bg_quad_vbird">#f95658</color>
   <color name="game_bg_quad_tcatcher">#8d2ca8</color>

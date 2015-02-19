@@ -16,13 +16,14 @@ import sk.palistudios.multigame.game.minigames.BaseMiniGame;
 abstract public class BaseGameCanvasView extends View {
   protected BaseMiniGame mMiniGame;
   private Bitmap mBitmap;
-//  private int mBackgroundColor;
 
   private int mHeight;
   private int mWidth;
 
   private boolean mIsMinigameInitialized = false;
   private boolean wasGameSaved = false;
+
+  private boolean mGameLost;
 
   public BaseGameCanvasView(Context context) {
     this(context, null, 0);
@@ -57,8 +58,12 @@ abstract public class BaseGameCanvasView extends View {
     if (!mIsMinigameInitialized) {
       mIsMinigameInitialized = true;
       init(canvas);
+      mGameLost = false;
     }
     mMiniGame.drawMinigame(canvas);
+    if (mGameLost) {
+      canvas.drawColor(getResources().getColor(R.color.lost_game_overlay));
+    }
   }
 
   public void init(Canvas canvas) {
@@ -72,12 +77,9 @@ abstract public class BaseGameCanvasView extends View {
 
   public abstract void detachMinigame();
 
-  public void setBackgroundGray() {
-//    setBackgroundColor(Color.GRAY);
-  }
-
-  public void setBackgroundColored(){
-//    setBackgroundColor(mBackgroundColor);
+  public void onGameLost() {
+    mGameLost = true;
+    invalidate();
   }
 
   public void setGameSaved(boolean status) {

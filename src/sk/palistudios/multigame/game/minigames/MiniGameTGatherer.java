@@ -126,12 +126,27 @@ public class MiniGameTGatherer extends BaseMiniGame implements
     if(mBackgroundColor != 0) {
       mCanvas.drawColor(mBackgroundColor);
     }
+
+    int tmp;
     for (CircleToTouch obj : mCircles) {
       obj.timeToLive -= timeDifference;
 
-      drawCircleQuarters(mCanvas, obj);
-
-      mCanvas.drawCircle(obj.x, obj.y, mCircleCenterSize, mPaintCircleCenterColor.mPaint);
+      // ked ostava posledna stvrtina casu, gulicka zacne blikat
+      // 10 cyklov drawMinigame sa nevykresli a 10 cyklov ano
+      if (obj.timeToLive <= TIME_PERIOD_QUARTER) {
+        tmp = obj.mCycle / 10;
+        if (tmp > 0) {
+          obj.mCycle = tmp;
+        }
+        if (obj.mCycle % 2 == 1) {
+          drawCircleQuarters(mCanvas, obj);
+          mCanvas.drawCircle(obj.x, obj.y, mCircleCenterSize, mPaintCircleCenterColor.mPaint);
+        }
+        obj.mCycle++;
+      } else {
+        drawCircleQuarters(mCanvas, obj);
+        mCanvas.drawCircle(obj.x, obj.y, mCircleCenterSize, mPaintCircleCenterColor.mPaint);
+      }
     }
   }
 
@@ -293,6 +308,7 @@ public class MiniGameTGatherer extends BaseMiniGame implements
     private int duration;
     private long nextUpdate = -1;
     private long timeToLive;
+    private int mCycle;
 
     public CircleToTouch(int x, int y) {
       this.x = x;
@@ -306,7 +322,7 @@ public class MiniGameTGatherer extends BaseMiniGame implements
       // predošlé in a row
       if (!mGame.isTutorial() || System.currentTimeMillis() > nextUpdate) {
         duration--;
-        nextUpdate = System.currentTimeMillis() + 800;
+        nextUpdate = System.currentTimeMillis() + 900;
       }
     }
   }
