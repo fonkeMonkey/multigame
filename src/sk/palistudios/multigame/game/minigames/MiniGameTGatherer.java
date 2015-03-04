@@ -27,8 +27,19 @@ import sk.palistudios.multigame.tools.SkinManager;
 public class MiniGameTGatherer extends BaseMiniGame implements
     GameCanvasViewTouch.userInteractedTouchListener, ISecondsObserver {
 
+  /**
+   * The time to live of each circle.
+   */
   private static final long INITIAL_TIME_TO_LIVE_MILLIS = 10 * 1000;
+
+  /**
+   * The half of the  {@link #INITIAL_TIME_TO_LIVE_MILLIS}.
+   */
   private static final long TIME_PERIOD_HALF = INITIAL_TIME_TO_LIVE_MILLIS / 2;
+
+  /**
+   * The quarter of the {@link #INITIAL_TIME_TO_LIVE_MILLIS}.
+   */
   private static final long TIME_PERIOD_QUARTER = INITIAL_TIME_TO_LIVE_MILLIS / 4;
 
   //DIFFICULTY
@@ -150,10 +161,17 @@ public class MiniGameTGatherer extends BaseMiniGame implements
     }
   }
 
+  /**
+   * Draws the quarters of the circle on provided canvas. Each time the game is redrawn It
+   * calculates the alpha for every quarter for current 'time to live' of provided circle.
+   *
+   * @param canvas The canvas.
+   * @param obj The circle object.
+   */
   private void drawCircleQuarters(Canvas canvas, CircleToTouch obj) {
     int alpha;
 
-    // od 10 do 5 sekund
+    // od 10 do 5 sekund sa nastavuje priehladnost prvej stvrtiny kruhu
     if(obj.timeToLive >= TIME_PERIOD_HALF) {
       alpha = (int) (((obj.timeToLive - TIME_PERIOD_HALF) / (TIME_PERIOD_HALF * 1.0)) * 255);
       if (alpha < 5) {
@@ -167,10 +185,13 @@ public class MiniGameTGatherer extends BaseMiniGame implements
         obj.y + mCircleSize);
     canvas.drawArc(arc, 270, 90, true, mPaintCircleColor.mPaint);
 
-    // od 7,5 do 2,5 sekund
+    // po uplynuti prvej 2,5 sekundy, teda od 7,5 do 2,5 sekund sa nastavuje priehladnost druhej
+    // stvrtiny kruhu
     if(obj.timeToLive > (INITIAL_TIME_TO_LIVE_MILLIS - TIME_PERIOD_QUARTER)) {
+      // ked este nepreslo 2,5 sekundy - plna farba
       alpha = 255;
     } else if(obj.timeToLive < TIME_PERIOD_QUARTER) {
+      // preslo viac ako 7,5 sekundy - minimalna alpha
       alpha = 5; // 2%
     } else {
       alpha = (int) (((obj.timeToLive - TIME_PERIOD_QUARTER) / (TIME_PERIOD_HALF * 1.0)) * 255);
@@ -183,8 +204,9 @@ public class MiniGameTGatherer extends BaseMiniGame implements
         obj.x + mCircleSize, obj.y + mCircleSize);
     canvas.drawArc(arc, 0, 90, true, mPaintCircleColor.mPaint);
 
-    // od 5 do 0 sekund
+    // v polovicke zivota kruhu, teda od 5 do 0 sekund sa zacina menit priehladnost tretej stvrtiny
     if(obj.timeToLive >= TIME_PERIOD_HALF) {
+      // prvu polovicu zivota kruhu je tato stvrtina plnou farbou
       alpha = 255;
     } else {
       alpha = (int) ((obj.timeToLive / (TIME_PERIOD_HALF * 1.0)) * 255);
@@ -197,8 +219,9 @@ public class MiniGameTGatherer extends BaseMiniGame implements
         obj.x + mCircleSize, obj.y + mCircleSize);
     canvas.drawArc(arc, 90, 90, true, mPaintCircleColor.mPaint);
 
-    // od 2,5 do 0 sekund
+    // posledne 2,5 sekundy sa zacina nastavovat priehladnost poslednej stvrtiny kruhu
     if(obj.timeToLive >= TIME_PERIOD_QUARTER) {
+      // tristvrt zivota kruhu je tato stvrtina plna
       alpha = 255;
     } else {
       alpha = (int) ((obj.timeToLive / (TIME_PERIOD_QUARTER * 1.0)) * 255);

@@ -40,6 +40,7 @@ public class MiniGameTCatcher extends BaseMiniGame
   private PaintSerializable mPaintCatchingBallInactive = null;
   private PaintSerializable mPaintCatchingBallActive = null;
   private int activeBall = 4;
+  private int mTmpActiveBall = activeBall;
   private int mBallSize, mBallSize1, mBallSize2, mBallSize3, mBallSize4;
   private int catchingBallsHeight;
   private int columnWidth;
@@ -98,17 +99,29 @@ public class MiniGameTCatcher extends BaseMiniGame
   }
 
   private void moveObjects() {
+    int lastBallCenter;
     for (FallingBall ball : mFallingBalls) {
       ball.fall();
-      if (ball.wasCatched && ball.yAxis > mHeight) {
-        mFallingBalls.remove(ball);
-        return;
+      // posledna gulicka chvosta
+      lastBallCenter = Math.round(
+          ball.yAxis - (2 * mBallSize) - (2 * mBallSize1) - (2 * mBallSize2) -
+              (2 * mBallSize3));
+      if (ball.wasCatched) {
+        mTmpActiveBall = ball.mColumn;
+        if(lastBallCenter > mHeight) {
+          mFallingBalls.remove(ball);
+          mTmpActiveBall = -1;
+          return;
+        }
       }
     }
   }
 
   public void onUserInteractedTouch(float x, float y) {
     activeBall = findColumnClicked(x);
+    if (mTmpActiveBall == -1) {
+      mTmpActiveBall = activeBall;
+    }
   }
 
   public void drawMinigame(Canvas mCanvas) {
@@ -119,10 +132,10 @@ public class MiniGameTCatcher extends BaseMiniGame
       int top = catchingBallsHeight - mBallSize;
       int bottom = catchingBallsHeight + mBallSize;
       RectF rectF = new RectF(left, top, right, bottom);
-      if (i != activeBall) {
-        mCanvas.drawOval(rectF, mPaintCatchingBallInactive.mPaint);
-      } else {
+      if (i == activeBall || i == mTmpActiveBall) {
         mCanvas.drawOval(rectF, mPaintCatchingBallActive.mPaint);
+      } else {
+        mCanvas.drawOval(rectF, mPaintCatchingBallInactive.mPaint);
       }
     }
 
