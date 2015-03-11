@@ -35,6 +35,8 @@ abstract public class BaseGameCanvasView extends View {
 
   public BaseGameCanvasView(Context context, AttributeSet attrs, int defStyle){
     super(context, attrs, defStyle);
+
+    setLayerType(LAYER_TYPE_SOFTWARE, null);
   }
 
   public void attachMinigame(BaseMiniGame minigame, int position){
