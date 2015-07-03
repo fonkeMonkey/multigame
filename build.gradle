@@ -6,12 +6,12 @@ buildscript {
     }
 
     dependencies {
-        classpath 'com.android.tools.build:gradle:0.14.2'
+        classpath 'com.android.tools.build:gradle:1.2.3'
     }
 }
 
 task wrapper(type: Wrapper) {
-    gradleVersion = '1.10'
+    gradleVersion = '2.40'
 }
 
 repositories {
@@ -26,7 +26,7 @@ dependencies {
 }
 
 android {
-    compileSdkVersion 21
+    compileSdkVersion 22
 
     sourceSets {
         main {
@@ -59,7 +59,7 @@ android {
     }
     buildTypes {
         release {
-            runProguard true
+            minifyEnabled true
             proguardFile getDefaultProguardFile('proguard-android.txt')
             proguardFile 'proguard.cfg'
             signingConfig signingConfigs.release
@@ -77,8 +77,8 @@ android {
 }
 
 android {
-    buildToolsVersion "21.0.1"
-    compileSdkVersion 21
+    buildToolsVersion "22.0.1"
+    compileSdkVersion 22
 
     sourceSets {
         main {
