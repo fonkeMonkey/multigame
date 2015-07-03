@@ -8,7 +8,6 @@ import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
 
-import sk.palistudios.multigame.R;
 import sk.palistudios.multigame.game.GameActivity;
 import sk.palistudios.multigame.game.persistence.GameSaverLoader;
 import sk.palistudios.multigame.game.time.ISecondsObserver;
@@ -58,7 +57,7 @@ abstract public class BaseMiniGame implements Serializable, ISecondsObserver {
   public void onMinigameSaved(){}
   public void onMinigameLoaded(){}
   public void saveMinigame() {
-    GameSaverLoader.SaveMinigametoFile(mFileName, this, mGame);
+    GameSaverLoader.SaveMinigametoFile(mFileName, this, mGame.getApplicationContext());
     onMinigameSaved();
   }
 

@@ -215,7 +215,7 @@ public class GameActivity extends BaseActivity implements SensorEventListener {
 
   private void initVariables() {
     mTutorialMode = GameSharedPref.isTutorialModeActivated();
-//    wasGameSaved = GameSharedPref.isGameSaved();
+    wasGameSaved = GameSharedPref.isGameSaved();
 
     int musicID = getResources().getIdentifier(GameSharedPref.getMusicLoopChosen(), "raw",
         getPackageName());

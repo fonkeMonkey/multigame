@@ -138,8 +138,6 @@ public class MiniGameVBird extends BaseMiniGame implements
     mPaintBird.mPaint.setAlpha(255);
     mCanvas.drawRect(birdLeft, mBirdTop, birdRight, mBirdBottom, mPaintBird.mPaint);
 
-    mCanvas.drawRect(birdLeft, mBirdTop, birdRight, mBirdBottom, mPaintBird.mPaint);
-
     // draw rectangle on center of bird
     final int birdCenterSize = (int) (mBirdSize / 3.0);
     final int birdCenterLeft = (int) (birdLeft + (mBirdSize / 2.0) - (birdCenterSize / 2.0));

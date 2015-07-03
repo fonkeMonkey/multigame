@@ -51,7 +51,7 @@ public class GameSaverLoader {
         minigame.mGame = game;
         minigame.onMinigameLoaded();
       }
-    } catch (Exception e) {
+    } catch (GameLoadException e) {
       GameSharedPref.setGameSaved(false);
       int apiVersion = Integer.valueOf(android.os.Build.VERSION.SDK);
       if (apiVersion >= 11) {
@@ -64,38 +64,43 @@ public class GameSaverLoader {
     }
   }
 
-  public static BaseMiniGame loadMinigameFromFile(String mFileName, GameActivity game)
-      throws NotSerializableException {
-    Context mContext = game;
+  public static BaseMiniGame loadMinigameFromFile(String mFileName, Context ctx)
+      throws GameLoadException {
+    Context context = ctx.getApplicationContext();
     FileInputStream fis = null;
     BaseMiniGame minigame = null;
     try {
-      fis = mContext.openFileInput(mFileName);
+      fis = context.openFileInput(mFileName);
       ObjectInputStream is = new ObjectInputStream(fis);
       minigame = (BaseMiniGame) is.readObject();
       is.close();
     } catch (OptionalDataException ex) {
       Logger.getLogger(BaseMiniGame.class.getName()).log(Level.SEVERE,
           "LoadGame OptionalDataException", ex);
+      throw new GameLoadException();
     } catch (ClassNotFoundException ex) {
       Logger.getLogger(BaseMiniGame.class.getName()).log(Level.SEVERE,
           "LoadGame ClassNotFoundException", ex);
+      throw new GameLoadException();
     } catch (NotSerializableException ex) {
       Logger.getLogger(BaseMiniGame.class.getName()).log(Level.SEVERE, "Not serializable", ex);
+      throw new GameLoadException();
     } catch (Exception ex) {
       Logger.getLogger(BaseMiniGame.class.getName()).log(Level.SEVERE, "Loadgame IO exception", ex);
+      throw new GameLoadException();
     } finally {
       try {
         fis.close();
       } catch (IOException ex) {
-        Logger.getLogger(BaseMiniGame.class.getName()).log(Level.SEVERE, "Loadgame IO exception", ex);
+        Logger.getLogger(BaseMiniGame.class.getName()).log(Level.SEVERE, "Loadgame IO exception",
+            ex);
       }
     }
     return minigame;
   }
 
-  public static void SaveMinigametoFile(String mFileName, BaseMiniGame miniGame,
-      GameActivity context) {
+  public static void SaveMinigametoFile(String mFileName, BaseMiniGame miniGame, Context ctx) {
+    Context context = ctx.getApplicationContext();
     FileOutputStream fos = null;
     try {
       fos = context.openFileOutput(mFileName, Context.MODE_PRIVATE);

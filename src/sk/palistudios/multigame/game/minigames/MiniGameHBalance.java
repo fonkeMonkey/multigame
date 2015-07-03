@@ -158,7 +158,8 @@ public class MiniGameHBalance extends BaseMiniGame implements
     }
   }
 
-  int findOnLine(PointSerializable pBarLeftEdge, PointSerializable pBarRightEdge, int xAxisBall) {
+  private int findOnLine(PointSerializable pBarLeftEdge, PointSerializable pBarRightEdge, int
+      xAxisBall) {
     pVector.mPoint.x = pBarRightEdge.mPoint.x - pBarLeftEdge.mPoint.x;
     pVector.mPoint.y = pBarRightEdge.mPoint.y - pBarLeftEdge.mPoint.y;
     normalVector.mPoint.x = pVector.mPoint.y;
