@@ -223,7 +223,9 @@ public class SkinManager {
           return;
         }
         if (child.getClass() == TextView.class) {
-          ((TextView) child).setTextColor(color);
+          if(child.getId() == R.id.game_score || child.getId() == R.id.game_level) {
+            return;
+          }
           if (child.getId() == R.id.header) {
             //            ((TextView) child).setTextColor(((TextView) child).getTextColors()
             // .withAlpha(

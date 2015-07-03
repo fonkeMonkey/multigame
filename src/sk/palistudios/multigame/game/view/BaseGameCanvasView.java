@@ -16,13 +16,14 @@ import sk.palistudios.multigame.game.minigames.BaseMiniGame;
 abstract public class BaseGameCanvasView extends View {
   protected BaseMiniGame mMiniGame;
   private Bitmap mBitmap;
-  private int mBackgroundColor;
 
   private int mHeight;
   private int mWidth;
 
   private boolean mIsMinigameInitialized = false;
   private boolean wasGameSaved = false;
+
+  private boolean mGameLost;
 
   public BaseGameCanvasView(Context context) {
     this(context, null, 0);
@@ -34,19 +35,13 @@ abstract public class BaseGameCanvasView extends View {
 
   public BaseGameCanvasView(Context context, AttributeSet attrs, int defStyle){
     super(context, attrs, defStyle);
+
+    setLayerType(LAYER_TYPE_SOFTWARE, null);
   }
 
   public void attachMinigame(BaseMiniGame minigame, int position){
     mMiniGame = minigame;
 //    int mPosition = position;
-
-    switch (position){
-      case 0 : mBackgroundColor = getResources().getColor(R.color.game_background_1); break;
-      case 1 : mBackgroundColor = getResources().getColor(R.color.game_background_2); break;
-      case 2 : mBackgroundColor = getResources().getColor(R.color.game_background_3); break;
-      case 3 : mBackgroundColor = getResources().getColor(R.color.game_background_4); break;
-    }
-    setBackgroundColor(mBackgroundColor);
   }
 
   @Override
@@ -65,8 +60,12 @@ abstract public class BaseGameCanvasView extends View {
     if (!mIsMinigameInitialized) {
       mIsMinigameInitialized = true;
       init(canvas);
+      mGameLost = false;
     }
     mMiniGame.drawMinigame(canvas);
+    if (mGameLost) {
+      canvas.drawColor(getResources().getColor(R.color.lost_game_overlay));
+    }
   }
 
   public void init(Canvas canvas) {
@@ -80,12 +79,9 @@ abstract public class BaseGameCanvasView extends View {
 
   public abstract void detachMinigame();
 
-  public void setBackgroundGray() {
-    setBackgroundColor(Color.GRAY);
-  }
-
-  public void setBackgroundColored(){
-    setBackgroundColor(mBackgroundColor);
+  public void onGameLost() {
+    mGameLost = true;
+    invalidate();
   }
 
   public void setGameSaved(boolean status) {

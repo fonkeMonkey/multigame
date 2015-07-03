@@ -10,9 +10,6 @@ import android.hardware.SensorManager;
 import android.media.AudioManager;
 import android.os.Bundle;
 import android.os.Handler;
-import android.text.Spannable;
-import android.text.SpannableString;
-import android.text.style.ForegroundColorSpan;
 import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
@@ -20,7 +17,7 @@ import android.view.WindowManager;
 import android.view.animation.AlphaAnimation;
 import android.view.animation.Animation;
 import android.view.animation.LinearInterpolator;
-import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -61,6 +58,9 @@ public class GameActivity extends BaseActivity implements SensorEventListener {
   public static boolean sTutorialRestart = false;
   public static boolean dialogIsWinner = false;
 
+  private static final long LEVEL_HIGHLIGHT_DURATION_MILLIS = 500;
+  private static final long LEVEL_UNHIGHLIGHT_DURATION_MILLIS = 2000;
+
   private static boolean sIncreaseVolumeShown = false;
   private static boolean sRaisedVolumeForTutorialAlready = false;
 
@@ -99,7 +99,9 @@ public class GameActivity extends BaseActivity implements SensorEventListener {
   };
   private final Runnable mRunnableTutorial = new Runnable() {
     public void run() {
-      mMusicPlayer.pauseMusic();
+      if(mMusicPlayer != null) {
+        mMusicPlayer.pauseMusic();
+      }
 
       if (sTutorialLastLevel != 3) {
         GameDialogs.showNextTutorialWindow(GameActivity.this, true);
@@ -128,12 +130,43 @@ public class GameActivity extends BaseActivity implements SensorEventListener {
       //increase level
       if (milisecondsPassed % (DebugSettings.SECONDS_PER_LEVEL * 1000) == 0 && !isTutorial()) {
         mLevel++;
-        GameTimeManager.onLevelIncreased(GameActivity.this);
+        GameTimeManager.onLevelIncreased();
         redrawDifficultyView(String.valueOf(mLevel));
+        animateLevelChange();
       }
 
     }
   };
+
+  private void animateLevelChange() {
+    // pred animaciou musim nastavit na 100% opacity, lebo potom sa budu pocitat percenta z 0.05f
+    mDifficultyView.setAlpha(1.0f);
+    final AlphaAnimation enterAnimation = new AlphaAnimation(0.05f, 1);
+    enterAnimation.setDuration(LEVEL_HIGHLIGHT_DURATION_MILLIS);
+    enterAnimation.setRepeatCount(0);
+    enterAnimation.setFillAfter(true);
+    enterAnimation.setAnimationListener(new Animation.AnimationListener() {
+      @Override
+      public void onAnimationStart(Animation animation) {
+
+      }
+
+      @Override
+      public void onAnimationEnd(Animation animation) {
+        final AlphaAnimation exitAnimation = new AlphaAnimation(1f, 0.05f);
+        exitAnimation.setDuration(LEVEL_UNHIGHLIGHT_DURATION_MILLIS);
+        exitAnimation.setRepeatCount(0);
+        exitAnimation.setFillAfter(true);
+        mDifficultyView.startAnimation(exitAnimation);
+      }
+
+      @Override
+      public void onAnimationRepeat(Animation animation) {
+
+      }
+    });
+    mDifficultyView.startAnimation(enterAnimation);
+  }
 
   final private int GAME_UPDATES_PER_SECOND = 60;//Cell phones have seldom more fps per seconds,
   // although some have 120 now
@@ -163,8 +196,10 @@ public class GameActivity extends BaseActivity implements SensorEventListener {
   private boolean closedByButton = false;
   private long mTimeGameStarted;
   private boolean mLoseTracked = false;
-  private SpannableString mDifficultySpannable;
-  private SpannableString mScoreSpannable;
+
+  private View mVerticalSeparator1;
+  private View mVerticalSeparator2;
+  private View mHorizontalSeparator;
 
   @Override
   public void onCreate(Bundle icicle) {
@@ -190,20 +225,12 @@ public class GameActivity extends BaseActivity implements SensorEventListener {
   }
 
   private void initGraphics() {
-    LinearLayout gameBar = (LinearLayout) findViewById(R.id.game_bar);
-    gameBar.setBackgroundColor(SkinManager.getSkinCompat(getApplicationContext())
-        .getBarBgColor());
     mScoreView = (TextView) findViewById(R.id.game_score);
-    mScoreView.setTextColor(SkinManager.getSkinCompat(getApplicationContext()).getBarLabelColor());
     mDifficultyView = (TextView) findViewById(R.id.game_level);
-    mDifficultyView.setTextColor(SkinManager.getSkinCompat(getApplicationContext()).getBarLabelColor());
 
-    View gameScoreSeparator = findViewById(R.id.game_score_separator);
-    gameScoreSeparator.setBackgroundColor(SkinManager.getSkinCompat(getApplicationContext())
-        .getBarSeparatorColor());
-    View gameScoreSeparatorDown = findViewById(R.id.game_score_separator_down);
-    gameScoreSeparatorDown.setBackgroundColor(SkinManager.getSkinCompat(getApplicationContext())
-        .getBarSeparatorColorDown());
+    mVerticalSeparator1 = findViewById(R.id.game_vertical_separator1);
+    mVerticalSeparator2 = findViewById(R.id.game_vertical_separator2);
+    mHorizontalSeparator = findViewById(R.id.game_horizontal_separator);
 
     mCanvases = new BaseGameCanvasView[4];
     mCanvases[0] = (BaseGameCanvasView) findViewById(R.id.canvas1);
@@ -215,15 +242,6 @@ public class GameActivity extends BaseActivity implements SensorEventListener {
     mCanvases[1].setGameSaved(wasGameSaved);
     mCanvases[2].setGameSaved(wasGameSaved);
     mCanvases[3].setGameSaved(wasGameSaved);
-
-    int barLabelColor = SkinManager.getSkinCompat(getApplicationContext())
-        .getBarLabelColor();
-    int barTextColor = SkinManager.getSkinCompat(getApplicationContext())
-        .getBarTextColor();
-    mScoreSpannable = new SpannableString(getString(R.string.score));
-    mDifficultySpannable = new SpannableString("Level: ");
-    mLeftSpanFgColor = new ForegroundColorSpan(barLabelColor);
-    mRightSpanFgColor = new ForegroundColorSpan(barTextColor);
 
     if (mTutorialMode) {
       redrawScoreView("Tutorial");
@@ -261,7 +279,21 @@ public class GameActivity extends BaseActivity implements SensorEventListener {
 
   @Override
   public void reskinLocally(SkinManager.Skin currentSkin) {
-    return;
+    final int separatorColor;
+    switch (currentSkin) {
+      case THRESHOLD:
+        separatorColor = getResources().getColor(R.color.threshold_game_separator);
+        break;
+      case CORRUPTED:
+        separatorColor = getResources().getColor(R.color.corrupted_game_separator);
+        break;
+      default:
+        separatorColor = getResources().getColor(R.color.default_game_separator);
+        break;
+    }
+    mVerticalSeparator1.setBackgroundColor(separatorColor);
+    mVerticalSeparator2.setBackgroundColor(separatorColor);
+    mHorizontalSeparator.setBackgroundColor(separatorColor);
   }
 
   @Override
@@ -347,7 +379,7 @@ public class GameActivity extends BaseActivity implements SensorEventListener {
     sGamesPerSession++;
 
     if (mRunnableGameLoop != null) {
-      if (GameSharedPref.isMusicOn()) {
+      if (mMusicPlayer != null && GameSharedPref.isMusicOn()) {
         if (!wasActivityPaused) {
           mMusicPlayer.startMusic();
         } else {
@@ -372,10 +404,14 @@ public class GameActivity extends BaseActivity implements SensorEventListener {
 
     if (mMusicPlayer != null && GameSharedPref.isMusicOn()) {
       if (!mStartedMusicForTutorial) {
-        mMusicPlayer.startMusic();
+        if(mMusicPlayer != null) {
+          mMusicPlayer.startMusic();
+        }
         mStartedMusicForTutorial = true;
       } else {
-        mMusicPlayer.resumeMusic();
+        if(mMusicPlayer != null) {
+          mMusicPlayer.resumeMusic();
+        }
       }
     }
 
@@ -424,29 +460,12 @@ public class GameActivity extends BaseActivity implements SensorEventListener {
     }
   }
 
-  private ForegroundColorSpan mLeftSpanFgColor;
-  private ForegroundColorSpan mRightSpanFgColor;
   private void redrawScoreView(String score) {
-    mScoreSpannable.setSpan(mLeftSpanFgColor, 0, mScoreSpannable.length(),
-        Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
-    mScoreView.setText(mScoreSpannable);
-
-    Spannable secondPart = new SpannableString(score);
-    secondPart.setSpan(mRightSpanFgColor, 0, score.length(),
-        Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
-
-    mScoreView.append(secondPart);
+    mScoreView.setText(score);
   }
 
   private void redrawDifficultyView(String difficulty) {
-    mDifficultySpannable.setSpan(mLeftSpanFgColor, 0,
-        mDifficultySpannable.length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
-    mDifficultyView.setText(mDifficultySpannable);
-
-    Spannable secondPart = new SpannableString(difficulty);
-    secondPart.setSpan(mRightSpanFgColor, 0, difficulty.length(),
-        Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
-    mDifficultyView.append(secondPart);
+    mDifficultyView.setText(difficulty);
   }
 
   public void flashScreen() {
@@ -454,7 +473,7 @@ public class GameActivity extends BaseActivity implements SensorEventListener {
     animation.setDuration(500); // duration - half a second
     animation.setInterpolator(new LinearInterpolator());
     animation.setRepeatCount(0);
-    LinearLayout gameLayout = (LinearLayout) findViewById(R.id.game_container);
+    RelativeLayout gameLayout = (RelativeLayout) findViewById(R.id.game_container);
     gameLayout.startAnimation(animation);
   }
 
@@ -604,19 +623,10 @@ public class GameActivity extends BaseActivity implements SensorEventListener {
   }
 
   private void colorFragmentGray(int loser) {
-    switch (loser) {
-      case 0:
-        mCanvases[0].setBackgroundGray();
-        break;
-      case 1:
-        mCanvases[1].setBackgroundGray();
-        break;
-      case 2:
-        mCanvases[2].setBackgroundGray();
-        break;
-      case 3:
-        mCanvases[3].setBackgroundGray();
-        break;
+    for (int i = 0; i < mCanvases.length; i++) {
+      if (loser != i) {
+        mCanvases[i].onGameLost();
+      }
     }
   }
 

@@ -4,10 +4,13 @@ import java.io.Serializable;
 import java.util.ArrayList;
 
 import android.content.Context;
+import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.Color;
+import android.graphics.DashPathEffect;
 import android.graphics.Paint;
+import android.graphics.Path;
 
 import sk.palistudios.multigame.R;
 import sk.palistudios.multigame.game.GameActivity;
@@ -16,6 +19,7 @@ import sk.palistudios.multigame.game.persistence.PointSerializable;
 import sk.palistudios.multigame.game.view.GameCanvasViewTouch;
 import sk.palistudios.multigame.mainMenu.DebugSettings;
 import sk.palistudios.multigame.tools.RandomGenerator;
+import sk.palistudios.multigame.tools.SkinManager;
 
 /**
  * @author Pali
@@ -31,16 +35,17 @@ public class MiniGameTInvader extends BaseMiniGame implements
   //Graphics
   private transient RandomGenerator mRandomGenerator;
   private PaintSerializable mPaintMiddleCircle = null;
-  private PaintSerializable mPaintSmallCircle = null;
   private PaintSerializable mPaintLaser = null;
+  private PaintSerializable mPaintLaserFill = null;
   private PaintSerializable mPaintEnemy = null;
+  private PaintSerializable mPaintResizeArrows = null;
   private final PaintSerializable mPaintDkGray = new PaintSerializable(Color.DKGRAY);
   private final PaintSerializable mPaintGray = new PaintSerializable(Color.GRAY);
   private PointSerializable mPointMiddleOfScreen = null;
   private PointSerializable mPointSmallerCircle = null;
   private final ArrayList<Enemy> enemies = new ArrayList<Enemy>();
   private int mCenterCircleSize;
-  private int mSmallCircleSize;
+  private int mEnemyCircleSize, mEnemyCircleSize1, mEnemyCircleSize2, mEnemyCircleSize3;
   private int rectLeft, rectRight, rectTop, rectDown;
 
   public MiniGameTInvader(String fileName, Integer position, GameActivity game) {
@@ -63,15 +68,25 @@ public class MiniGameTInvader extends BaseMiniGame implements
           mPointMiddleOfScreen.mPoint.y / 2);
     }
 
-    mPaintMiddleCircle = new PaintSerializable(colorAlt, Paint.Style.STROKE);
-    mPaintSmallCircle = new PaintSerializable(colorMain, Paint.Style.FILL);
-    mPaintLaser = new PaintSerializable(colorMain, Paint.Style.STROKE);
-    mPaintEnemy = new PaintSerializable(colorAlt, Paint.Style.FILL);
+    mPaintMiddleCircle = new PaintSerializable(mPrimaryColor, Paint.Style.FILL);
+    mPaintLaser = new PaintSerializable(mPrimaryColor, Paint.Style.STROKE);
+    mPaintLaser.mPaint.setPathEffect(new DashPathEffect(new float[] {30,10}, 0));
+    mPaintLaserFill = new PaintSerializable(mPrimaryColor, Paint.Style.FILL);
+    mPaintLaserFill.mPaint.setAlpha(64); // 25%
+    mPaintEnemy = new PaintSerializable(mSecondaryColor, Paint.Style.FILL);
+    final int resizeArrowsColor = (mAlternateColor != 0) ? mAlternateColor : mPrimaryColor;
+    mPaintResizeArrows = new PaintSerializable(resizeArrowsColor, Paint.Style.STROKE);
 
     setRectangleCoordinates(mPointMiddleOfScreen, mPointSmallerCircle);
 
     mCenterCircleSize = mWidth / 25;
-    mSmallCircleSize = mWidth / 60;
+    mEnemyCircleSize = mWidth / 35;
+    mEnemyCircleSize1 = (int) (mEnemyCircleSize / 1.5);
+    mEnemyCircleSize2 = (int) (mEnemyCircleSize / 3.0);
+    mEnemyCircleSize3 = (int) (mEnemyCircleSize / 4.5);
+
+    mPaintLaser.setStrokeWidth((int) (mCenterCircleSize / 5.0));
+    mPaintResizeArrows.setStrokeWidth((int) (mCenterCircleSize / 5.0));
 
     isMinigameInitialized = true;
   }
@@ -144,15 +159,63 @@ public class MiniGameTInvader extends BaseMiniGame implements
   }
 
   public void drawMinigame(Canvas mCanvas) {
+    if(mBackgroundColor != 0) {
+      mCanvas.drawColor(mBackgroundColor);
+    }
     mCanvas.drawCircle(mPointMiddleOfScreen.mPoint.x, mPointMiddleOfScreen.mPoint.y,
         mCenterCircleSize, mPaintMiddleCircle.mPaint);
-    mCanvas.drawCircle(mPointSmallerCircle.mPoint.x, mPointSmallerCircle.mPoint.y, mSmallCircleSize,
-        mPaintSmallCircle.mPaint);
+
+    drawResizeArrows(mCanvas);
+
+    mCanvas.drawRect(rectLeft, rectTop, rectRight, rectDown, mPaintLaserFill.mPaint);
     mCanvas.drawRect(rectLeft, rectTop, rectRight, rectDown, mPaintLaser.mPaint);
+    mCanvas.drawPath(new Path(), mPaintLaser.mPaint);
 
     for (Enemy enemy : enemies) {
-      mCanvas.drawCircle(enemy.x, enemy.y, mSmallCircleSize, enemy.mPaint.mPaint);
+      enemy.mPaint.mPaint.setAlpha(255);
+      mCanvas.drawCircle(enemy.x, enemy.y, mEnemyCircleSize, enemy.mPaint.mPaint);
+      enemy.mPaint.mPaint.setAlpha(128);
+      mCanvas.drawCircle(enemy.x - (17 * enemy.stepX), enemy.y - (17 * enemy.stepY),
+          mEnemyCircleSize1, enemy.mPaint.mPaint);
+      enemy.mPaint.mPaint.setAlpha(90);
+      mCanvas.drawCircle(enemy.x - (28 * enemy.stepX), enemy.y - (28 * enemy.stepY),
+          mEnemyCircleSize2, enemy.mPaint.mPaint);
+      enemy.mPaint.mPaint.setAlpha(51);
+      mCanvas.drawCircle(enemy.x - (37 * enemy.stepX), enemy.y - (37 * enemy.stepY),
+          mEnemyCircleSize3, enemy.mPaint.mPaint);
     }
+  }
+
+  private void drawResizeArrows(Canvas canvas) {
+    float centerX = mPointSmallerCircle.mPoint.x;
+    float centerY = mPointSmallerCircle.mPoint.y;
+    float arrowBasementLength = mHeight / 12.0f;
+    float arrowLength = arrowBasementLength / 3.0f;
+    float top = centerY - arrowBasementLength;
+    float bottom = centerY + arrowBasementLength;
+    float left = centerX - arrowBasementLength;
+    float right = centerX + arrowBasementLength;
+    canvas.drawLine(centerX, top, centerX, bottom, mPaintResizeArrows.mPaint);
+    canvas.drawLine(left, centerY, right, centerY, mPaintResizeArrows.mPaint);
+
+    // left arrow
+    canvas.drawLine(left, centerY, left + arrowLength, centerY - arrowLength, mPaintResizeArrows.mPaint);
+    canvas.drawLine(left, centerY, left + arrowLength, centerY + arrowLength, mPaintResizeArrows.mPaint);
+
+    // top arrow
+    canvas.drawLine(centerX, top, centerX - arrowLength, top + arrowLength, mPaintResizeArrows.mPaint);
+    canvas.drawLine(centerX, top, centerX + arrowLength, top + arrowLength, mPaintResizeArrows.mPaint);
+
+    // right arrow
+    canvas.drawLine(right, centerY, right - arrowLength, centerY - arrowLength, mPaintResizeArrows.mPaint);
+    canvas.drawLine(right, centerY, right - arrowLength, centerY + arrowLength, mPaintResizeArrows.mPaint);
+
+    // bottom arrow
+    canvas.drawLine(centerX, bottom, centerX - arrowLength, bottom - arrowLength,
+        mPaintResizeArrows.mPaint);
+    canvas.drawLine(centerX, bottom, centerX + arrowLength, bottom - arrowLength,
+        mPaintResizeArrows.mPaint);
+
   }
 
   private void moveObjects() {
@@ -208,6 +271,39 @@ public class MiniGameTInvader extends BaseMiniGame implements
     }
     if (framesToCreateEnemy > maximumDifficulty) {
       framesToCreateEnemy -= difficultyStep;
+    }
+  }
+
+  @Override
+  public void reskinLocally(SkinManager.Skin currentSkin) {
+    final Resources resources = mGame.getResources();
+    switch (currentSkin) {
+      case QUAD:
+        mBackgroundColor = resources.getColor(R.color.game_bg_quad_tinvader);
+        mPrimaryColor = resources.getColor(R.color.quad_primary);
+        mSecondaryColor = resources.getColor(R.color.quad_secondary);
+        break;
+      case THRESHOLD:
+        mBackgroundColor = Color.TRANSPARENT;
+        mPrimaryColor = resources.getColor(R.color.threshold_primary);
+        mSecondaryColor = resources.getColor(R.color.threshold_tinvader_secondary);
+        break;
+      case DIFFUSE:
+        mBackgroundColor = Color.TRANSPARENT;
+        mPrimaryColor = resources.getColor(R.color.diffuse_primary);
+        mSecondaryColor = resources.getColor(R.color.diffuse_secondary);
+        break;
+      case CORRUPTED:
+        mBackgroundColor = Color.TRANSPARENT;
+        mPrimaryColor = resources.getColor(R.color.corrupted_primary);
+        mSecondaryColor = resources.getColor(R.color.corrupted_secondary);
+        mAlternateColor = resources.getColor(R.color.corrupted_alt);
+        break;
+      default:
+        mBackgroundColor = resources.getColor(R.color.game_bg_quad_tinvader);
+        mPrimaryColor = resources.getColor(R.color.quad_primary);
+        mSecondaryColor = resources.getColor(R.color.quad_secondary);
+        break;
     }
   }
 

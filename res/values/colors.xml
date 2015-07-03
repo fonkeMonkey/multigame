@@ -95,7 +95,7 @@
   <color name="game_background_3">#EAEAEA</color>
   <color name="game_background_4">#EFEFEF</color>
 
-  <color name="gameMain">#D7817B</color>
+  <color name="gameMain">#ffffff</color>
   <color name="gameAlt">#263247</color>
   <color name="gameAlt2">#B4BBC8</color>
 
@@ -184,7 +184,48 @@
   <color name="dialog_background">#000000</color>
   <color name="cust_minigame_border_disabled">#76B4C7</color>
 
+  <color name="transparent_white_2">#05ffffff</color>
+  <color name="transparent_white_5">#0dffffff</color>
+  <color name="transparent_white_15">#26ffffff</color>
+  <color name="transparent_white_25">#40ffffff</color>
+  <color name="transparent_white_30">#4cffffff</color>
+  <color name="transparent_white_75">#bfffffff</color>
 
+  <color name="text_game_score">@color/transparent_white_75</color>
+  <color name="text_game_level">@color/transparent_white_15</color>
+  <color name="text_game_level_highlight">@color/transparent_white_75</color>
+
+
+  <color name="lost_game_overlay">#a0000000</color> <!-- 50% black -->
+
+  <color name="game_bg_quad_vbird">#f95658</color>
+  <color name="game_bg_quad_tcatcher">#8d2ca8</color>
+  <color name="game_bg_quad_tgatherer">#1179a0</color>
+  <color name="game_bg_quad_hbalance">#be205d</color>
+  <color name="game_bg_quad_vbouncer">#3f9243</color>
+  <color name="game_bg_quad_tinvader">#fa9013</color>
+
+  <color name="quad_primary">@android:color/white</color>
+  <color name="quad_secondary">#0A6592</color>
+
+  <color name="diffuse_primary">@android:color/white</color>
+  <color name="diffuse_secondary">#0A6592</color>
+
+  <color name="threshold_primary">#202020</color>
+  <color name="threshold_vbird_secondary">#FF174C</color>
+  <color name="threshold_hbalance_secondary">#FF3B01</color>
+  <color name="threshold_tcatcher_secondary">#C504E8</color>
+  <color name="threshold_tgatherer_secondary">#5FDD17</color>
+  <color name="threshold_tinvader_secondary">#0089D1</color>
+  <color name="threshold_vbouncer_secondary">#F82143</color>
+
+  <color name="corrupted_primary">#C6FF00</color>
+  <color name="corrupted_secondary">#F94007</color>
+  <color name="corrupted_alt">#DB1866</color>
+
+  <color name="default_game_separator">@android:color/white</color>
+  <color name="threshold_game_separator">#232323</color>
+  <color name="corrupted_game_separator">#767676</color>
 
 </resources>
 
