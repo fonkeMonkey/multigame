@@ -14,7 +14,6 @@ import android.widget.ListView;
 import android.widget.TextView;
 
 import sk.palistudios.multigame.R;
-import sk.palistudios.multigame.customization_center.skins.SkinItem;
 import sk.palistudios.multigame.game.persistence.MGSettings;
 import sk.palistudios.multigame.preferences.PreferenceOnOffSwitcher;
 
@@ -49,84 +48,6 @@ public class SkinManager {
     getInstance().reskinBackground(context, containerView);
     getInstance().reskinTextsInView(context, containerView);
     return getInstance().getCurrentSkin();
-  }
-
-  public static SkinItem getSkinCompat(Context context) {
-    String currentSkinComputerName = MGSettings.getChosenSkin();
-    String humanName = null;
-
-    int color1 = 0;
-    int color2 = 0;
-    int color3 = 0;
-    int color4 = 0;
-    int color5 = 0;
-    int colorAlt = 0;
-    int colorHeader = 0;
-    int colorChosen = 0;
-    int logoID = 0;
-
-    if (currentSkinComputerName.compareTo("summer") == 0) {
-      color1 = context.getResources().getColor(R.color.summer_top_bar_bg);
-      color2 = context.getResources().getColor(R.color.summer_top_bar_label);
-      color3 = context.getResources().getColor(R.color.summer_top_bar_number);
-      color4 = context.getResources().getColor(R.color.summer_top_bar_separator);
-      color5 = context.getResources().getColor(R.color.summer_top_bar_separator_down);
-      colorHeader = context.getResources().getColor(R.color.summerHeader);
-      colorChosen = context.getResources().getColor(R.color.summerChosen);
-      if (Build.VERSION.SDK_INT == Build.VERSION_CODES.KITKAT) {
-        logoID = R.drawable.logo_summer_kk;
-      } else {
-        logoID = R.drawable.logo_summer;
-      }
-      humanName = "Summer";
-    }
-
-    if (currentSkinComputerName.compareTo("kuba") == 0) {
-      color1 = context.getResources().getColor(R.color.kuba_top_bar_bg);
-      color2 = context.getResources().getColor(R.color.kuba_top_bar_label);
-      color3 = context.getResources().getColor(R.color.kuba_top_bar_number);
-      color4 = context.getResources().getColor(R.color.kuba_top_bar_separator);
-      color5 = context.getResources().getColor(R.color.kuba_top_bar_separator_down);
-      colorHeader = context.getResources().getColor(R.color.kubaHeader);
-      colorChosen = context.getResources().getColor(R.color.kubaChosen);
-      logoID = R.drawable.logo;
-      humanName = "Kuba";
-    }
-
-    if (currentSkinComputerName.compareTo("girl_power") == 0) {
-      color1 = context.getResources().getColor(R.color.pinky_top_bar_bg);
-      color2 = context.getResources().getColor(R.color.pinky_top_bar_label);
-      color3 = context.getResources().getColor(R.color.pinky_top_bar_number);
-      color4 = context.getResources().getColor(R.color.pinky_top_bar_separator);
-      color5 = context.getResources().getColor(R.color.pinky_top_bar_separator_down);
-      colorHeader = context.getResources().getColor(R.color.pinkyHeader);
-      colorChosen = context.getResources().getColor(R.color.pinkyChosen);
-      if (Build.VERSION.SDK_INT == Build.VERSION_CODES.KITKAT) {
-        logoID = R.drawable.logo_pinky_kk;
-      } else {
-        logoID = R.drawable.logo_pinky;
-      }
-      humanName = "Girl Power";
-    }
-
-    if (currentSkinComputerName.compareTo("blue_sky") == 0) {
-      color1 = context.getResources().getColor(R.color.blue_sky_top_bar_bg);
-      color2 = context.getResources().getColor(R.color.blue_sky_top_bar_label);
-      color3 = context.getResources().getColor(R.color.blue_sky_top_bar_number);
-      color4 = context.getResources().getColor(R.color.blue_sky_top_bar_separator);
-      color5 = context.getResources().getColor(R.color.blue_sky_top_bar_separator_down);
-      colorHeader = context.getResources().getColor(R.color.blueSkyHeader);
-      colorChosen = context.getResources().getColor(R.color.blueSkyChosen);
-      if (Build.VERSION.SDK_INT == Build.VERSION_CODES.KITKAT) {
-        logoID = R.drawable.logo_blue_sky_kk;
-      } else {
-        logoID = R.drawable.logo_blue_sky;
-      }
-      humanName = "Blue Sky";
-    }
-
-    return new SkinItem(currentSkinComputerName, humanName, color1, color2, color3, color4, color5,
-        colorHeader, colorChosen, logoID);
   }
 
   private void reskinBackground(Context context, View containerView) {
@@ -223,7 +144,7 @@ public class SkinManager {
           return;
         }
         if (child.getClass() == TextView.class) {
-          if(child.getId() == R.id.game_score || child.getId() == R.id.game_level) {
+          if (child.getId() == R.id.game_score || child.getId() == R.id.game_level) {
             return;
           }
           if (child.getId() == R.id.header) {
@@ -231,6 +152,8 @@ public class SkinManager {
             // .withAlpha(
             //                DisplayHelper.ALPHA_20pc))
             ((TextView) child).setTextColor(getCurrentTextHeaderColor(context.getResources()));
+          } else {
+            ((TextView) child).setTextColor(getCurrentTextColor(context.getResources()));
           }
         }
         if (child.getClass() == Button.class) {

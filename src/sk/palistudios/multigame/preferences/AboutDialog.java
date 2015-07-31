@@ -6,6 +6,7 @@ import java.util.logging.Logger;
 import android.app.Dialog;
 import android.content.Context;
 import android.content.pm.PackageManager.NameNotFoundException;
+import android.support.v7.appcompat.BuildConfig;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -42,7 +43,7 @@ public class AboutDialog extends MultigameDialog {
     aboutTextView.setOnClickListener(new View.OnClickListener() {
       @Override
       public void onClick(View view) {
-        if (mPaliStudiosClicked) {
+        if (mPaliStudiosClicked && BuildConfig.DEBUG) {
           mPaliStudiosClicked = false;
         } else {
           mPaliStudiosClicked = true;

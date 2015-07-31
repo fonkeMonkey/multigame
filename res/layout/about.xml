@@ -1,51 +1,45 @@
 <?xml version="1.0" encoding="utf-8"?>
 
 <TableLayout
-
-
     xmlns:android="http://schemas.android.com/apk/res/android"
-
-
     android:layout_width="wrap_content"
-
-
     android:layout_height="wrap_content"
-
-
     android:stretchColumns="*">
 
-
   <TableRow>
-
-
     <ImageView
         android:id="@+id/about_logo"
         android:layout_width="75dp"
         android:layout_height="75dp"
-
-
         android:layout_gravity="left|center"
-
-
         android:src="@drawable/logo" />
 
     <LinearLayout
         android:orientation="vertical"
         >
       <TextView
-
-
           android:id="@+id/about_text"
-
-
           android:layout_width="fill_parent"
           android:layout_height="fill_parent"
           android:layout_gravity="center"
-
-
           android:gravity="center"
-
           android:text="Multigame v 1.0\n©Pali Studios\n"
+          />
+      <TextView
+          android:layout_width="wrap_content"
+          android:layout_height="wrap_content"
+          android:layout_gravity="center"
+          android:gravity="center"
+          android:text="Developed by Pavol Virdzek and Patrik Mucha"
+          android:textSize="10sp"
+          />
+      <TextView
+          android:layout_width="wrap_content"
+          android:layout_height="wrap_content"
+          android:layout_gravity="center"
+          android:gravity="center"
+          android:text="Graphics by Matus Macej"
+          android:textSize="10sp"
           />
       <TextView
           android:layout_width="wrap_content"
@@ -58,38 +52,16 @@
 
     </LinearLayout>
   </TableRow>
-
-
   <TableRow>
-
-
     <TextView
-
-
         android:id="@+id/legal_text"
-
-
         android:layout_width="fill_parent"
-
-
         android:layout_height="wrap_content"
         android:layout_margin="8dip"
         android:layout_span="2"
-
-
         android:text="All rights reserved."
-
-
         android:textColor="#cccccc"
-
-
         android:textSize="10dip"
-
         android:textStyle="italic" />
-    <!--android:text="@raw/legal"/>-->
-
-
   </TableRow>
-
-
 </TableLayout>
