@@ -8,7 +8,7 @@ import android.view.View;
 import sk.palistudios.multigame.game.GameActivity;
 import sk.palistudios.multigame.game.minigames.BaseMiniGame;
 import sk.palistudios.multigame.game.minigames.MinigamesManager;
-import sk.palistudios.multigame.game.persistence.GameSharedPref;
+import sk.palistudios.multigame.game.persistence.MGSettings;
 
 /**
  * @author Pali
@@ -48,7 +48,7 @@ public class GameCanvasViewTouch extends BaseGameCanvasView {
         }
 
         if (event.getAction() == MotionEvent.ACTION_DOWN && mGame.gameStopped &&
-            !GameSharedPref.isTutorialModeActivated()) {
+            !MGSettings.isTutorialModeActivated()) {
           mGame.startGame();
         }
 

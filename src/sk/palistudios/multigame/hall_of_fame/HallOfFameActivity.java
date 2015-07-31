@@ -26,7 +26,7 @@ import com.google.android.gms.plus.Plus;
 import com.google.example.games.basegameutils.BaseGameUtils;
 import sk.palistudios.multigame.BaseActivity;
 import sk.palistudios.multigame.R;
-import sk.palistudios.multigame.game.persistence.GameSharedPref;
+import sk.palistudios.multigame.game.persistence.MGSettings;
 import sk.palistudios.multigame.hall_of_fame.leaderboard.GetLeaderboardAsyncTask;
 import sk.palistudios.multigame.hall_of_fame.leaderboard.GetLeaderboardCallback;
 import sk.palistudios.multigame.tools.DisplayHelper;
@@ -79,7 +79,7 @@ public class HallOfFameActivity extends BaseActivity
   public void onCreate(Bundle icicle) {
     super.onCreate(icicle);
 
-    if (!GameSharedPref.getDbInitialized()) {
+    if (!MGSettings.getDbInitialized()) {
       mRingProgressDialog = ProgressDialog.show(HallOfFameActivity.this, "Please wait..",
           "Initializing database..", true);
       mRingProgressDialog.setCancelable(true);
@@ -256,11 +256,11 @@ public class HallOfFameActivity extends BaseActivity
     }
 
     final boolean shouldSubmit =
-        ((GameSharedPref.getHighestScore() > 0) && !GameSharedPref.getHighestScoreSubmitted());
+        ((MGSettings.getHighestScore() > 0) && !MGSettings.getHighestScoreSubmitted());
     if (shouldSubmit) {
       Games.Leaderboards.submitScore(mGoogleApiClient, getString(
-          R.string.google_play_leaderboard_id), GameSharedPref.getHighestScore());
-      GameSharedPref.setHighestScoreSubmitted(true);
+          R.string.google_play_leaderboard_id), MGSettings.getHighestScore());
+      MGSettings.setHighestScoreSubmitted(true);
     }
 
     mGetLeaderboardAsyncTask = new GetLeaderboardAsyncTask(this, mGoogleApiClient, this);

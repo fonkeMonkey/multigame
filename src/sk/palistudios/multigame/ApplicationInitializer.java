@@ -5,7 +5,7 @@ package sk.palistudios.multigame;
 import android.content.Context;
 import android.os.AsyncTask;
 
-import sk.palistudios.multigame.game.persistence.GameSharedPref;
+import sk.palistudios.multigame.game.persistence.MGSettings;
 import sk.palistudios.multigame.hall_of_fame.HallOfFameActivity;
 import sk.palistudios.multigame.hall_of_fame.HofDatabaseCenter;
 import sk.palistudios.multigame.mainMenu.DebugSettings;
@@ -16,42 +16,42 @@ public class ApplicationInitializer {
     MgTracker.init(context);
 
         /* Init db in async task asap. */
-    if (GameSharedPref.getDbInitialized() != true) {
+    if (MGSettings.getDbInitialized() != true) {
       initDatabase(context);
     }
 
         /* Fallback for old devices with other theme than Kuba. */
-    if (GameSharedPref.getKubaSkinSetAlready()) {
-      GameSharedPref.unlockItem("kuba");
-      GameSharedPref.lockItem("summer");
-      GameSharedPref.setSkinChosen("kuba");
-      GameSharedPref.setKubaSkinSetAlready();
+    if (MGSettings.getKubaSkinSetAlready()) {
+      MGSettings.unlockItem("kuba");
+      MGSettings.lockItem("summer");
+      MGSettings.setSkinChosen("kuba");
+      MGSettings.setKubaSkinSetAlready();
     }
 
     SoundEffectsCenter.init(context);
-    GameSharedPref.increaseTimesMultigameRun();
+    MGSettings.increaseTimesMultigameRun();
 
-    boolean firstTime = GameSharedPref.isAppRunningForFirstTime();
+    boolean firstTime = MGSettings.isAppRunningForFirstTime();
     if (firstTime) {
       initCustomizationItems();
       initActiveMinigames();
       initAllMinigames();
 
-      GameSharedPref.setAppRunningForFirstTime(false);
+      MGSettings.setAppRunningForFirstTime(false);
     }
 
         /* One time run for update/fresh installs. */
-    boolean shouldRunUpdateCode = GameSharedPref.isUpdateOrFreshInstall(context);
+    boolean shouldRunUpdateCode = MGSettings.isUpdateOrFreshInstall(context);
     if (shouldRunUpdateCode) {
-      GameSharedPref.unlockItem("kuba");
+      MGSettings.unlockItem("kuba");
     }
-    GameSharedPref.setLastSeenVersion(context);
+    MGSettings.setLastSeenVersion(context);
 
     if (DebugSettings.debugFirstRun) {
-      GameSharedPref.clear();
+      MGSettings.clear();
       clearDatabase(context);
 
-      GameSharedPref.setGameSaved(false);
+      MGSettings.setGameSaved(false);
       initActiveMinigames();
       initAllMinigames();
 
@@ -61,16 +61,16 @@ public class ApplicationInitializer {
 
       initDatabase(context);
 
-      GameSharedPref.setAppRunningForFirstTime(false);
+      MGSettings.setAppRunningForFirstTime(false);
 
     }
 
     if (DebugSettings.unlockAllItems) {
-      GameSharedPref.unlockItemsAll();
+      MGSettings.unlockItemsAll();
     }
 
     if (DebugSettings.tutorialCompleted) {
-      GameSharedPref.onTutorialCompleted();
+      MGSettings.onTutorialCompleted();
     }
 
     if (DebugSettings.debugInit) {
@@ -85,7 +85,7 @@ public class ApplicationInitializer {
     tmpChosenMinigames[1] = "HBalance";
     tmpChosenMinigames[2] = "TCatcher";
     tmpChosenMinigames[3] = "TGatherer";
-    GameSharedPref.SetChosenMinigamesNames(tmpChosenMinigames);
+    MGSettings.SetChosenMinigamesNames(tmpChosenMinigames);
   }
 
   private static void initAllMinigames() {
@@ -98,7 +98,7 @@ public class ApplicationInitializer {
     allMinigames[4] = "VBird";
     allMinigames[5] = "VBouncer";
 
-    GameSharedPref.initializeAllMinigamesInfo(allMinigames);
+    MGSettings.initializeAllMinigamesInfo(allMinigames);
   }
 
   private static void initDatabase(final Context context) {
@@ -107,7 +107,7 @@ public class ApplicationInitializer {
       protected Void doInBackground(Void... params) {
         HofDatabaseCenter hofDb = new HofDatabaseCenter(context);
         hofDb.fillDbFirstTime();
-        GameSharedPref.setDbInitialized(true);
+        MGSettings.setDbInitialized(true);
         return null;
       }
 
@@ -124,15 +124,15 @@ public class ApplicationInitializer {
   }
 
   private static void initMusicLoops() {
-    GameSharedPref.setMusicLoopChosen("dst_blam");
+    MGSettings.setMusicLoopChosen("dst_blam");
   }
 
   private static void initSkins() {
-    GameSharedPref.setSkinChosen("kuba");
+    MGSettings.setSkinChosen("kuba");
   }
 
   private static void initCustomizationItems() {
-    GameSharedPref.unlockInitialItems();
+    MGSettings.unlockInitialItems();
   }
 
   private static void clearDatabase(Context context) {

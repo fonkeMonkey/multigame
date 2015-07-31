@@ -15,7 +15,7 @@ import android.widget.TextView;
 
 import sk.palistudios.multigame.R;
 import sk.palistudios.multigame.customization_center.skins.SkinItem;
-import sk.palistudios.multigame.game.persistence.GameSharedPref;
+import sk.palistudios.multigame.game.persistence.MGSettings;
 import sk.palistudios.multigame.preferences.PreferenceOnOffSwitcher;
 
 /**
@@ -52,7 +52,7 @@ public class SkinManager {
   }
 
   public static SkinItem getSkinCompat(Context context) {
-    String currentSkinComputerName = GameSharedPref.getChosenSkin();
+    String currentSkinComputerName = MGSettings.getChosenSkin();
     String humanName = null;
 
     int color1 = 0;
@@ -380,7 +380,7 @@ public class SkinManager {
 
   public Skin getCurrentSkin() {
     //TODO jj, staré názvy
-    String skinName = GameSharedPref.getChosenSkin();
+    String skinName = MGSettings.getChosenSkin();
 
     if (skinName.equals("kuba")) {
       return Skin.QUAD;

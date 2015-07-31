@@ -9,7 +9,7 @@ import android.media.AudioManager;
 import android.media.MediaPlayer;
 
 import sk.palistudios.multigame.R;
-import sk.palistudios.multigame.game.persistence.GameSharedPref;
+import sk.palistudios.multigame.game.persistence.MGSettings;
 
 /**
  * @author virdzek
@@ -50,7 +50,7 @@ public class SoundEffectsCenter {
     if (!sIsInitialized) {
       init(context);
     }
-    if (GameSharedPref.isSoundOn()) {
+    if (MGSettings.isSoundOn()) {
       mp_forward.start();
     }
   }
@@ -60,7 +60,7 @@ public class SoundEffectsCenter {
       init(context);
     }
 
-    if (GameSharedPref.isSoundOn()) {
+    if (MGSettings.isSoundOn()) {
       mp_forward.start();
     }
   }
@@ -70,7 +70,7 @@ public class SoundEffectsCenter {
       init(context);
     }
 
-    if (GameSharedPref.isSoundOn()) {
+    if (MGSettings.isSoundOn()) {
       mp_tab.start();
     }
   }

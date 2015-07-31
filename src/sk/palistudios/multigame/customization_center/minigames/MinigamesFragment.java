@@ -16,7 +16,7 @@ import sk.palistudios.multigame.MgTracker;
 import sk.palistudios.multigame.R;
 import sk.palistudios.multigame.customization_center.CustomizeFragment;
 import sk.palistudios.multigame.game.minigames.BaseMiniGame;
-import sk.palistudios.multigame.game.persistence.GameSharedPref;
+import sk.palistudios.multigame.game.persistence.MGSettings;
 import sk.palistudios.multigame.tools.BitmapHelper;
 import sk.palistudios.multigame.tools.MemoryUtil;
 import sk.palistudios.multigame.tools.SkinManager;
@@ -46,24 +46,24 @@ public class MinigamesFragment extends CustomizeFragment {
     super.onCreate(icicle);
 
     initAdapter();
-    tmpChosenMinigames = GameSharedPref.getChosenMinigamesNames();
+    tmpChosenMinigames = MGSettings.getChosenMinigamesNames();
   }
 
   private void initAdapter() {
     mItems.add(new MgcItem(MinigamesFragment.SYMBOL_MINIGAME_HORIZONTAL, "HBalance", "Balance",
-        GameSharedPref.isMinigameChosen("HBalance")));
+        MGSettings.isMinigameChosen("HBalance")));
     mItems.add(new MgcItem(MinigamesFragment.SYMBOL_MINIGAME_TOUCH, "TCatcher", "Catcher",
-        GameSharedPref.isMinigameChosen("TCatcher")));
+        MGSettings.isMinigameChosen("TCatcher")));
     mItems.add(new MgcItem(MinigamesFragment.SYMBOL_MINIGAME_TOUCH, "TGatherer", "Gatherer",
-        GameSharedPref.isMinigameChosen("TGatherer")));
+        MGSettings.isMinigameChosen("TGatherer")));
     mItems.add(new MgcItem(MinigamesFragment.SYMBOL_MINIGAME_TOUCH, "TInvader", "Invader",
-        GameSharedPref.isMinigameChosen("TInvader"), (String) getResources().getString(
+        MGSettings.isMinigameChosen("TInvader"), (String) getResources().getString(
         R.string.cc_achievements_addicts_description) + (String) getResources().getString(
         R.string.cc_achievements_requirement_ending)));
     mItems.add(new MgcItem(MinigamesFragment.SYMBOL_MINIGAME_VERTICAL, "VBird", "Bird",
-        GameSharedPref.isMinigameChosen("VBird")));
+        MGSettings.isMinigameChosen("VBird")));
     mItems.add(new MgcItem(MinigamesFragment.SYMBOL_MINIGAME_VERTICAL, "VBouncer", "Bouncer",
-        GameSharedPref.isMinigameChosen("VBouncer"), (String) getResources().getString(
+        MGSettings.isMinigameChosen("VBouncer"), (String) getResources().getString(
         R.string.cc_achievements_good_start_description) + (String) getResources().getString(
         R.string.cc_achievements_requirement_ending)));
     mMinigamesAdapter = new MgcArrayAdapter(getActivity(), mItems);
@@ -226,7 +226,7 @@ public class MinigamesFragment extends CustomizeFragment {
         }
         break;
     }
-    GameSharedPref.SetChosenMinigamesNames(tmpChosenMinigames);
+    MGSettings.SetChosenMinigamesNames(tmpChosenMinigames);
     mMinigamesAdapter.notifyDataSetChanged();
     refreshImageBorders(SkinManager.getInstance().getCurrentSkin());
   }

@@ -9,7 +9,7 @@ import android.content.pm.PackageManager;
 
 import sk.palistudios.multigame.MgApplication;
 
-public class GameSharedPref {
+public class MGSettings {
 
   private static final String KUBA_SKIN_SET_ALREADY = "kuba_skin_set_already";
   private static final String LAST_SEEN_VERSION = "last_seen_version";
@@ -30,10 +30,6 @@ public class GameSharedPref {
     sEditor.commit();
   }
 
-  public static boolean isMinigamesResolved() {
-    return sSharedPreferences.getBoolean("minigamesResolved", false);
-  }
-
   public static String[] getChosenMinigamesNames() {
     String[] result = new String[4];
 
@@ -43,15 +39,6 @@ public class GameSharedPref {
     result[3] = sSharedPreferences.getString("MinigameT2", null);
 
     return result;
-  }
-
-  public static void setChosenMinigamesNames(String[] miniGamesNames) {
-    sEditor.putString("MinigameV", miniGamesNames[0]);
-    sEditor.putString("MinigameH", miniGamesNames[1]);
-    sEditor.putString("MinigameT1", miniGamesNames[2]);
-    sEditor.putString("MinigameT2", miniGamesNames[3]);
-    sEditor.putBoolean("minigamesResolved", true);
-    sEditor.commit();
   }
 
   public static int getHighestScore() {
@@ -84,45 +71,41 @@ public class GameSharedPref {
 
   public static void saveGameDetails(final int scoreToSave, final int levelToSave,
       final int framesToSave, final boolean[] activeMinigames) {
-    GameSharedPref.sEditor.putInt("score", scoreToSave);
-    GameSharedPref.sEditor.putInt("level", levelToSave);
-    GameSharedPref.sEditor.putInt("frames", framesToSave);
-    GameSharedPref.sEditor.putBoolean("savedMinigame1Active", activeMinigames[0]);
-    GameSharedPref.sEditor.putBoolean("savedMinigame2Active", activeMinigames[1]);
-    GameSharedPref.sEditor.putBoolean("savedMinigame3Active", activeMinigames[2]);
-    GameSharedPref.sEditor.putBoolean("savedMinigame4Active", activeMinigames[3]);
+    MGSettings.sEditor.putInt("score", scoreToSave);
+    MGSettings.sEditor.putInt("level", levelToSave);
+    MGSettings.sEditor.putInt("frames", framesToSave);
+    MGSettings.sEditor.putBoolean("savedMinigame1Active", activeMinigames[0]);
+    MGSettings.sEditor.putBoolean("savedMinigame2Active", activeMinigames[1]);
+    MGSettings.sEditor.putBoolean("savedMinigame3Active", activeMinigames[2]);
+    MGSettings.sEditor.putBoolean("savedMinigame4Active", activeMinigames[3]);
 
-    GameSharedPref.sEditor.commit();
+    MGSettings.sEditor.commit();
   }
 
   public static int[] loadGameDetails() {
     int[] details = new int[3];
-    details[0] = GameSharedPref.sSharedPreferences.getInt("frames", 0);
-    details[1] = GameSharedPref.sSharedPreferences.getInt("score", 0);
-    details[2] = GameSharedPref.sSharedPreferences.getInt("level", 1);
+    details[0] = MGSettings.sSharedPreferences.getInt("frames", 0);
+    details[1] = MGSettings.sSharedPreferences.getInt("score", 0);
+    details[2] = MGSettings.sSharedPreferences.getInt("level", 1);
 
     return details;
   }
 
   public static boolean[] getMinigamesActivityFlags() {
     boolean[] activeMinigames = new boolean[4];
-    activeMinigames[0] = GameSharedPref.sSharedPreferences.getBoolean("savedMinigame1Active",
+    activeMinigames[0] = MGSettings.sSharedPreferences.getBoolean("savedMinigame1Active",
         false);
-    activeMinigames[1] = GameSharedPref.sSharedPreferences.getBoolean("savedMinigame2Active",
+    activeMinigames[1] = MGSettings.sSharedPreferences.getBoolean("savedMinigame2Active",
         false);
-    activeMinigames[2] = GameSharedPref.sSharedPreferences.getBoolean("savedMinigame3Active",
+    activeMinigames[2] = MGSettings.sSharedPreferences.getBoolean("savedMinigame3Active",
         false);
-    activeMinigames[3] = GameSharedPref.sSharedPreferences.getBoolean("savedMinigame4Active",
+    activeMinigames[3] = MGSettings.sSharedPreferences.getBoolean("savedMinigame4Active",
         false);
     return activeMinigames;
   }
 
   public static boolean isTutorialModeActivated() {
     return (sSharedPreferences.getString("game_mode", "Tutorial").compareTo("Tutorial") == 0);
-  }
-
-  public static boolean isMinigamesNamesInicialized() {
-    return sSharedPreferences.getBoolean("inicialized", false);
   }
 
   public static boolean isMinigameChosen(String minigameName) {
@@ -178,7 +161,6 @@ public class GameSharedPref {
     sEditor.putBoolean("VBird_locked", false);
     sEditor.putBoolean("TGatherer_locked", false);
     sEditor.putBoolean("TCatcher_locked", false);
-    //        sEditor.putBoolean("summer_locked", false);
     sEditor.putBoolean("kuba_locked", false);
     sEditor.putBoolean("dst_blam_locked", false);
 
@@ -206,7 +188,6 @@ public class GameSharedPref {
 
   public static void achievementFulfilled(String achievementName, String correspondingItem) {
     setAchievementFulfilled(achievementName);
-    //        String correspondingItem = resolveCorrespondingItem(achievementName);
     unlockItem(correspondingItem);
   }
 
@@ -251,13 +232,7 @@ public class GameSharedPref {
   public static void onTutorialCompleted() {
     sEditor.putBoolean("tutorialCompleted", true);
     sEditor.commit();
-    GameSharedPref.setGameMode("Classic");
-    //        ActivityUI.runOnUiThread(new Runnable() {
-    //            @Override
-    //            public void run() {
-    ////                Toaster.toastShort("Tutorial mode deactivated.", ActivityUI);
-    //            }
-    //        });
+    MGSettings.setGameMode("Classic");
   }
 
   public static boolean isTutorialCompleted() {
@@ -321,15 +296,6 @@ public class GameSharedPref {
     sEditor.commit();
   }
 
-  //  public static boolean isMinigamesInitialized() {
-  //    return sSharedPreferences.getBoolean("minigamesInitialized", false);
-  //  }
-
-  //  public static void setMinigamesInitialized(boolean status) {
-  //    sEditor.putBoolean("minigamesInitialized", status);
-  //    sEditor.commit();
-  //  }
-
   public static void SetChosenMinigamesNames(String[] newActiveMinigamesNames) {
     sEditor.putString("MinigameV", newActiveMinigamesNames[0]);
     sEditor.putString("MinigameH", newActiveMinigamesNames[1]);
@@ -363,36 +329,6 @@ public class GameSharedPref {
 
     sEditor.commit();
   }
-
-  //    public static void initializeMusicInfo(String[] allMusicLoopsPCNames,
-  // String[] allMusicLoopsHumanNames) {
-  //        sEditor.putInt("AllMusicLoopsCount", allMusicLoopsPCNames.length);
-  //        StringBuilder minigameKey = new StringBuilder();
-  //        int position = 1;
-  //
-  //        for (String musicLoop : allMusicLoopsPCNames) {
-  //            minigameKey.append("AllMusicLoops").append(position).append("PCName");
-  //            sEditor.putString(minigameKey.toString(), musicLoop);
-  //            minigameKey.setLength(0);
-  //
-  //            boolean isSoundChosen = isMusicLoopChosen(musicLoop);
-  //            minigameKey.append("AllMusicLoops").append(position).append("Chosen");
-  //            sEditor.putBoolean(minigameKey.toString(), isSoundChosen);
-  //            minigameKey.setLength(0);
-  //
-  //            position++;
-  //        }
-  //
-  //        position = 1;
-  //        for (String musicLoop : allMusicLoopsHumanNames) {
-  //            minigameKey.append("AllMusicLoops").append(position).append("HumanName");
-  //            sEditor.putString(minigameKey.toString(), musicLoop);
-  //            minigameKey.setLength(0);
-  //            position++;
-  //        }
-  //
-  //        sEditor.commit();
-  //    }
   public static String[] getAllMinigamesNames() {
     int numberOfMinigames = sSharedPreferences.getInt("AllMinigamesCount", -1);
     String[] allMinigamesNames = new String[numberOfMinigames];
@@ -414,32 +350,6 @@ public class GameSharedPref {
 
     return allMinigamesTypes;
   }
-
-  //    public static String[] getAllMusicLoopsPCNames() {
-  //        int numberOfMusicFiles = sSharedPreferences.getInt("AllMusicLoopsCount", -1);
-  //        String[] allMusicNames = new String[numberOfMusicFiles];
-  //
-  //        for (int i = 1; i <= numberOfMusicFiles; i++) {
-  //            allMusicNames[i - 1] = sSharedPreferences.getString("AllMusicLoops" + i +
-  // "PCName", null);
-  // "PCName", null);
-  //        }
-  //
-  //        return allMusicNames;
-  //    }
-  //
-  //    public static String[] getAllMusicLoopsHumanNames() {
-  //        int numberOfMusicFiles = sSharedPreferences.getInt("AllMusicLoopsCount", -1);
-  //        String[] allMusicNames = new String[numberOfMusicFiles];
-  //
-  //        for (int i = 1; i <= numberOfMusicFiles; i++) {
-  //            allMusicNames[i - 1] = sSharedPreferences.getString("AllMusicLoops" + i +
-  // "HumanName",
-  // null);
-  //        }
-  //
-  //        return allMusicNames;
-  //    }
   public static boolean isAppRunningForFirstTime() {
     return sSharedPreferences.getBoolean("firstTime", true);
   }

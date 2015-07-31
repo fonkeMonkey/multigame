@@ -10,7 +10,7 @@ import android.widget.TextView;
 
 import sk.palistudios.multigame.BaseActivity;
 import sk.palistudios.multigame.R;
-import sk.palistudios.multigame.game.persistence.GameSharedPref;
+import sk.palistudios.multigame.game.persistence.MGSettings;
 import sk.palistudios.multigame.mainMenu.DebugSettings;
 import sk.palistudios.multigame.tools.DisplayHelper;
 import sk.palistudios.multigame.tools.SkinManager;
@@ -41,30 +41,30 @@ public class PreferencesActivity extends BaseActivity {
     mHeader = (TextView) findViewById(R.id.pref_header);
 
     mMusicSwitch = (PreferenceOnOffSwitcher) findViewById(R.id.pref_music);
-    mMusicSwitch.setChecked(GameSharedPref.isMusicOn());
+    mMusicSwitch.setChecked(MGSettings.isMusicOn());
     mMusicSwitch.setOnCheckedChangeListener(new PreferenceOnOffSwitcher.OnCheckedChangeListener() {
       @Override
       public void onCheckedChanged(PreferenceOnOffSwitcher buttonView, boolean isChecked) {
-        GameSharedPref.setMusicOn(isChecked);
+        MGSettings.setMusicOn(isChecked);
       }
     });
 
     mSoundSwitch = (PreferenceOnOffSwitcher) findViewById(R.id.pref_sound);
-    mSoundSwitch.setChecked(GameSharedPref.isSoundOn());
+    mSoundSwitch.setChecked(MGSettings.isSoundOn());
     mSoundSwitch.setOnCheckedChangeListener(new PreferenceOnOffSwitcher.OnCheckedChangeListener() {
       @Override
       public void onCheckedChanged(PreferenceOnOffSwitcher buttonView, boolean isChecked) {
-        GameSharedPref.setSoundOn(isChecked);
+        MGSettings.setSoundOn(isChecked);
       }
     });
 
     mAutoCalibrationSwitch = (PreferenceOnOffSwitcher) findViewById(R.id.pref_autocalibration);
-    mAutoCalibrationSwitch.setChecked(GameSharedPref.isAutoCalibrationEnabled());
+    mAutoCalibrationSwitch.setChecked(MGSettings.isAutoCalibrationEnabled());
     mAutoCalibrationSwitch.setOnCheckedChangeListener(
         new PreferenceOnOffSwitcher.OnCheckedChangeListener() {
           @Override
           public void onCheckedChanged(PreferenceOnOffSwitcher buttonView, boolean isChecked) {
-            GameSharedPref.setAutocalibration(isChecked);
+            MGSettings.setAutocalibration(isChecked);
           }
         });
 
@@ -74,7 +74,7 @@ public class PreferencesActivity extends BaseActivity {
     mGameModeTutorial = (CheckedTextView) findViewById(R.id.pref_tutor_gamemode);
 
     boolean isTutorialCompleted =
-        GameSharedPref.isTutorialCompleted() || DebugSettings.tutorialCompleted;
+        MGSettings.isTutorialCompleted() || DebugSettings.tutorialCompleted;
     if (isTutorialCompleted || DebugSettings.tutorialCompleted) {
       mGameModeLabel.setVisibility(View.VISIBLE);
       mGameModeLayout.setVisibility(View.VISIBLE);
@@ -83,18 +83,18 @@ public class PreferencesActivity extends BaseActivity {
       mGameModeLayout.setVisibility(View.GONE);
     }
 
-    refreshGameModeStatus("Tutorial".equals(GameSharedPref.getGameMode()));
+    refreshGameModeStatus("Tutorial".equals(MGSettings.getGameMode()));
     mGameModeTutorial.setOnClickListener(new View.OnClickListener() {
       @Override
       public void onClick(View v) {
-        GameSharedPref.setGameMode("Tutorial");
+        MGSettings.setGameMode("Tutorial");
         refreshGameModeStatus(true);
       }
     });
     mGameModeClassic.setOnClickListener(new View.OnClickListener() {
       @Override
       public void onClick(View v) {
-        GameSharedPref.setGameMode("Classic");
+        MGSettings.setGameMode("Classic");
         refreshGameModeStatus(false);
       }
     });

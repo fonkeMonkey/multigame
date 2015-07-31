@@ -8,7 +8,7 @@ import android.net.Uri;
 
 import sk.palistudios.multigame.MultigameDialog;
 import sk.palistudios.multigame.R;
-import sk.palistudios.multigame.game.persistence.GameSharedPref;
+import sk.palistudios.multigame.game.persistence.MGSettings;
 import sk.palistudios.multigame.tools.Toaster;
 import sk.palistudios.multigame.tools.internet.InternetChecker;
 
@@ -27,7 +27,7 @@ public class RateDialog extends MultigameDialog {
                 Intent intent = new Intent(Intent.ACTION_VIEW);
                 intent.setData(Uri.parse("market://details?id=" + appName));
                 mContext.startActivity(intent);
-                GameSharedPref.achievementFulfilled("supporter", "dst_blam");
+                MGSettings.achievementFulfilled("supporter", "dst_blam");
               } else {
                 Toaster.toastLong(mContext.getString(R.string.internet_no_connection), mContext);
               }

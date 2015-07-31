@@ -4,7 +4,7 @@ package sk.palistudios.multigame.game.minigames;
 
 import sk.palistudios.multigame.game.GameActivity;
 import sk.palistudios.multigame.game.persistence.GameSaverLoader;
-import sk.palistudios.multigame.game.persistence.GameSharedPref;
+import sk.palistudios.multigame.game.persistence.MGSettings;
 
 public class MinigamesManager {
 
@@ -15,12 +15,12 @@ public class MinigamesManager {
   private static boolean[] mMinigamesActivityFlags = new boolean[4];
 
   public static void loadMinigames(GameActivity game) {
-    boolean isGameSaved = GameSharedPref.isGameSaved();
-    boolean isTutorialActive = GameSharedPref.isTutorialModeActivated();
+    boolean isGameSaved = MGSettings.isGameSaved();
+    boolean isTutorialActive = MGSettings.isTutorialModeActivated();
 
     //if it was saved it will be loaded by GameSaverLoader.load()
     if (!isGameSaved || isTutorialActive) {
-      String[] activeMinigameNames = GameSharedPref.getChosenMinigamesNames();
+      String[] activeMinigameNames = MGSettings.getChosenMinigamesNames();
       for (int i = 0; i < activeMinigameNames.length; i++) {
         mMinigames[i] = loadMinigame(game, activeMinigameNames[i], i);
       }

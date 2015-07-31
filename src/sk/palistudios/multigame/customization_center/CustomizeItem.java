@@ -1,6 +1,6 @@
 package sk.palistudios.multigame.customization_center;
 
-import sk.palistudios.multigame.game.persistence.GameSharedPref;
+import sk.palistudios.multigame.game.persistence.MGSettings;
 
 /**
  * @author Pali
@@ -47,11 +47,11 @@ public class CustomizeItem {
   }
 
   void unlock() {
-    GameSharedPref.unlockItem(computerName);
+    MGSettings.unlockItem(computerName);
   }
 
   public boolean isLocked() {
-    return GameSharedPref.isItemLocked(computerName);
+    return MGSettings.isItemLocked(computerName);
   }
 
   public String getLockedDescription() {

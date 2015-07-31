@@ -3,7 +3,7 @@ package sk.palistudios.multigame.customization_center.skins;
 // @author Pali
 
 import sk.palistudios.multigame.customization_center.CustomizeItem;
-import sk.palistudios.multigame.game.persistence.GameSharedPref;
+import sk.palistudios.multigame.game.persistence.MGSettings;
 
 public class SkinItem extends CustomizeItem {
 
@@ -19,7 +19,7 @@ public class SkinItem extends CustomizeItem {
   public SkinItem(String computerName, String humanName, int bar_bg_color, int bar_label_color,
       int bar_text_color, int bar_separator_color, int bar_separator_color_down, int colorHeader,
       int colorChosen, int logoID) {
-    super(computerName, humanName, GameSharedPref.isSkinChosen(computerName));
+    super(computerName, humanName, MGSettings.isSkinChosen(computerName));
     this.color1 = bar_bg_color;
     this.color2 = bar_label_color;
     this.color3 = bar_text_color;
@@ -31,11 +31,11 @@ public class SkinItem extends CustomizeItem {
   }
 
   SkinItem(String computerName, String humanName) {
-    super(computerName, humanName, GameSharedPref.isSkinChosen(computerName));
+    super(computerName, humanName, MGSettings.isSkinChosen(computerName));
   }
 
   SkinItem(String computerName, String humanName, String unlockDescription) {
-    super(computerName, humanName, GameSharedPref.isSkinChosen(computerName), unlockDescription);
+    super(computerName, humanName, MGSettings.isSkinChosen(computerName), unlockDescription);
   }
 
   public int getBarBgColor() {

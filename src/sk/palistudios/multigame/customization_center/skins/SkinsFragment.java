@@ -14,7 +14,7 @@ import sk.palistudios.multigame.MgTracker;
 import sk.palistudios.multigame.R;
 import sk.palistudios.multigame.customization_center.CustomizationCenterActivity;
 import sk.palistudios.multigame.customization_center.CustomizeFragment;
-import sk.palistudios.multigame.game.persistence.GameSharedPref;
+import sk.palistudios.multigame.game.persistence.MGSettings;
 import sk.palistudios.multigame.tools.SkinManager;
 
 /**
@@ -88,20 +88,20 @@ public class SkinsFragment extends CustomizeFragment {
 
         switch (position) {
           case 0:
-            MgTracker.trackSkinChanged(GameSharedPref.getChosenSkin(), "QUAD");
-            GameSharedPref.setSkinChosen("kuba");
+            MgTracker.trackSkinChanged(MGSettings.getChosenSkin(), "QUAD");
+            MGSettings.setSkinChosen("kuba");
             break;
           case 1:
-            MgTracker.trackSkinChanged(GameSharedPref.getChosenSkin(), "THRESHOLD");
-            GameSharedPref.setSkinChosen("summer");
+            MgTracker.trackSkinChanged(MGSettings.getChosenSkin(), "THRESHOLD");
+            MGSettings.setSkinChosen("summer");
             break;
           case 2:
-            MgTracker.trackSkinChanged(GameSharedPref.getChosenSkin(), "DIFFUSE");
-            GameSharedPref.setSkinChosen("girl_power");
+            MgTracker.trackSkinChanged(MGSettings.getChosenSkin(), "DIFFUSE");
+            MGSettings.setSkinChosen("girl_power");
             break;
           case 3:
-            MgTracker.trackSkinChanged(GameSharedPref.getChosenSkin(), "CORRUPTED");
-            GameSharedPref.setSkinChosen("blue_sky");
+            MgTracker.trackSkinChanged(MGSettings.getChosenSkin(), "CORRUPTED");
+            MGSettings.setSkinChosen("blue_sky");
             break;
         }
         mSkinAdapter.activateItem(position);

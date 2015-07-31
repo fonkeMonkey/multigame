@@ -27,7 +27,7 @@ public class GameSaverLoader {
     final int levelToSave = game.getLevel();
     final int framesToSave = game.getFrames();
     final boolean[] activeMinigames = MinigamesManager.getmMinigamesActivityFlags();
-    GameSharedPref.saveGameDetails(scoreToSave, levelToSave, framesToSave, activeMinigames);
+    MGSettings.saveGameDetails(scoreToSave, levelToSave, framesToSave, activeMinigames);
     for (BaseMiniGame minigame : MinigamesManager.getMinigames()) {
       minigame.saveMinigame();
     }
@@ -37,9 +37,9 @@ public class GameSaverLoader {
 
          /* Keď sa dojebe loadovanie spusti novú hru */
     try {
-      int[] gameDetails = GameSharedPref.loadGameDetails();
+      int[] gameDetails = MGSettings.loadGameDetails();
       game.setGameDetails(gameDetails[1], gameDetails[0], gameDetails[2]);
-      boolean[] activityFlags = GameSharedPref.getMinigamesActivityFlags();
+      boolean[] activityFlags = MGSettings.getMinigamesActivityFlags();
       MinigamesManager.setmMinigamesActivityFlags(activityFlags);
 
       MinigamesManager.getMinigames()[0] = loadMinigameFromFile("MG_V", game);
@@ -52,7 +52,7 @@ public class GameSaverLoader {
         minigame.onMinigameLoaded();
       }
     } catch (GameLoadException e) {
-      GameSharedPref.setGameSaved(false);
+      MGSettings.setGameSaved(false);
       int apiVersion = Integer.valueOf(android.os.Build.VERSION.SDK);
       if (apiVersion >= 11) {
         game.recreate();

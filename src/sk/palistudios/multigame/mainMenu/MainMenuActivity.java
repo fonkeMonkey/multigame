@@ -20,7 +20,7 @@ import sk.palistudios.multigame.R;
 import sk.palistudios.multigame.customization_center.CustomizationCenterActivity;
 import sk.palistudios.multigame.game.GameActivity;
 import sk.palistudios.multigame.game.GameDialogs;
-import sk.palistudios.multigame.game.persistence.GameSharedPref;
+import sk.palistudios.multigame.game.persistence.MGSettings;
 import sk.palistudios.multigame.tools.DisplayHelper;
 import sk.palistudios.multigame.tools.SkinManager;
 import sk.palistudios.multigame.tools.Toaster;
@@ -71,7 +71,7 @@ public class MainMenuActivity extends BaseActivity {
         if (mClicksOnLogo == 7) {
           Toaster.toastShort("Tutorial completed, you cheater ;)",
               MainMenuActivity.this.getApplicationContext());
-          GameSharedPref.onTutorialCompleted();
+          MGSettings.onTutorialCompleted();
           setStartGameButtonName();
         }
         return false;
@@ -144,7 +144,7 @@ public class MainMenuActivity extends BaseActivity {
     }
 
     if (sFacebookShared) {
-      GameSharedPref.achievementFulfilled("competitive", "blue_sky");
+      MGSettings.achievementFulfilled("competitive", "blue_sky");
       Toaster.toastLong(getResources().getString(R.string.game_achievement_fulfilled_1) +
           "Competitive" + getResources().getString(R.string.game_achievement_fulfilled_2) + "skin" +
           this.getResources().getString(R.string.game_achievement_fulfilled_3), this);
@@ -188,12 +188,12 @@ public class MainMenuActivity extends BaseActivity {
   }
 
   private void setStartGameButtonName() {
-    if (GameSharedPref.isGameSaved()) {
+    if (MGSettings.isGameSaved()) {
       mTVStart.setText(getString(R.string.button_resume));
       return;
     }
 
-    if (GameSharedPref.isTutorialModeActivated()) {
+    if (MGSettings.isTutorialModeActivated()) {
       if (GameActivity.sTutorialLastLevel == 0) {
         mTVStart.setText(getString(R.string.button_tutorial));
 

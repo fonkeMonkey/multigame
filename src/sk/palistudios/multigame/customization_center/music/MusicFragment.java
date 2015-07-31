@@ -13,7 +13,7 @@ import android.widget.ListView;
 import sk.palistudios.multigame.MgTracker;
 import sk.palistudios.multigame.R;
 import sk.palistudios.multigame.customization_center.CustomizeFragment;
-import sk.palistudios.multigame.game.persistence.GameSharedPref;
+import sk.palistudios.multigame.game.persistence.MGSettings;
 import sk.palistudios.multigame.tools.SkinManager;
 
 /**
@@ -33,14 +33,13 @@ public class MusicFragment extends CustomizeFragment {
   public void initAdapter() {
 
     ArrayList<MusicItem> items = new ArrayList<MusicItem>();
-    items.add(new MusicItem("dst_blam", "Blam", GameSharedPref.isMusicLoopChosen(
-        "dst_blam")));//, "You must reach level 10 in order to unlock this music."));
-    items.add(new MusicItem("dst_cv_x", "CV X", GameSharedPref.isMusicLoopChosen("dst_cv_x"),
+    items.add(new MusicItem("dst_blam", "Blam", MGSettings.isMusicLoopChosen("dst_blam")));//, "You must reach level 10 in order to unlock this music."));
+    items.add(new MusicItem("dst_cv_x", "CV X", MGSettings.isMusicLoopChosen("dst_cv_x"),
         (String) getResources().getString(R.string.cc_achievements_supporter_description) +
             (String) getResources().getString(
                 R.string.cc_achievements_requirement_ending)));//, "You must reach level 10 in
     // order to unlock this music."));
-    items.add(new MusicItem("dst_cyberops", "Cyber Ops", GameSharedPref.isMusicLoopChosen(
+    items.add(new MusicItem("dst_cyberops", "Cyber Ops", MGSettings.isMusicLoopChosen(
         "dst_cyberops"), (String) getResources().getString(
         R.string.cc_achievements_lucky_seven_description) + (String) getResources().getString(
         R.string.cc_achievements_requirement_ending)));//, "You must reach level 10 in order to
@@ -73,18 +72,18 @@ public class MusicFragment extends CustomizeFragment {
         switch (position) {
 
           case 0:
-            MgTracker.trackMusicChanged(GameSharedPref.getMusicLoopChosen(), "dst_blam");
-            GameSharedPref.setMusicLoopChosen("dst_blam");
+            MgTracker.trackMusicChanged(MGSettings.getMusicLoopChosen(), "dst_blam");
+            MGSettings.setMusicLoopChosen("dst_blam");
             break;
 
           case 1:
-            MgTracker.trackMusicChanged(GameSharedPref.getMusicLoopChosen(), "dst_cv_x");
-            GameSharedPref.setMusicLoopChosen("dst_cv_x");
+            MgTracker.trackMusicChanged(MGSettings.getMusicLoopChosen(), "dst_cv_x");
+            MGSettings.setMusicLoopChosen("dst_cv_x");
             break;
 
           case 2:
-            MgTracker.trackMusicChanged(GameSharedPref.getMusicLoopChosen(), "dst_cyberops");
-            GameSharedPref.setMusicLoopChosen("dst_cyberops");
+            MgTracker.trackMusicChanged(MGSettings.getMusicLoopChosen(), "dst_cyberops");
+            MGSettings.setMusicLoopChosen("dst_cyberops");
             break;
 
         }

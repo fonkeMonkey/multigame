@@ -28,7 +28,7 @@ import sk.palistudios.multigame.R;
 import sk.palistudios.multigame.tools.AchievementsHelper;
 import sk.palistudios.multigame.game.minigames.MinigamesManager;
 import sk.palistudios.multigame.game.persistence.GameSaverLoader;
-import sk.palistudios.multigame.game.persistence.GameSharedPref;
+import sk.palistudios.multigame.game.persistence.MGSettings;
 import sk.palistudios.multigame.game.time.GameTimeManager;
 import sk.palistudios.multigame.game.view.BaseGameCanvasView;
 import sk.palistudios.multigame.hall_of_fame.HofDatabaseCenter;
@@ -214,10 +214,10 @@ public class GameActivity extends BaseActivity implements SensorEventListener {
   }
 
   private void initVariables() {
-    mTutorialMode = GameSharedPref.isTutorialModeActivated();
-    wasGameSaved = GameSharedPref.isGameSaved();
+    mTutorialMode = MGSettings.isTutorialModeActivated();
+    wasGameSaved = MGSettings.isGameSaved();
 
-    int musicID = getResources().getIdentifier(GameSharedPref.getMusicLoopChosen(), "raw",
+    int musicID = getResources().getIdentifier(MGSettings.getMusicLoopChosen(), "raw",
         getPackageName());
 
     mMusicPlayer = new MusicPlayer(musicID, getApplicationContext());
@@ -311,7 +311,7 @@ public class GameActivity extends BaseActivity implements SensorEventListener {
     }
     registerAccelerometerListener();
 
-    wasGameSaved = GameSharedPref.isGameSaved();
+    wasGameSaved = MGSettings.isGameSaved();
     //TUTORIAL
     if (mTutorialMode) {
       if (sTutorialLastLevel == 0) {
@@ -342,9 +342,9 @@ public class GameActivity extends BaseActivity implements SensorEventListener {
         wasActivityPaused = false;
         redrawScoreView(String.valueOf(mScore));
         redrawDifficultyView(String.valueOf(mLevel));
-        GameSharedPref.setGameSaved(false);
+        MGSettings.setGameSaved(false);
       } else {
-        boolean playingFirstTime = GameSharedPref.isPlayingGameFirstTime();
+        boolean playingFirstTime = MGSettings.isPlayingGameFirstTime();
         if (playingFirstTime) {
           Toaster.toastLong(getResources().getString(R.string.game_touch_save),
               getApplicationContext());
@@ -353,7 +353,7 @@ public class GameActivity extends BaseActivity implements SensorEventListener {
           if (SoundEffectsCenter.getCurrentVolume(getApplicationContext()) == 0) {
             SoundEffectsCenter.raiseCurrentVolume(getApplicationContext());
           }
-          GameSharedPref.setPlayingGameFirstTimeFalse();
+          MGSettings.setPlayingGameFirstTimeFalse();
         } else {
           mToast = Toaster.toastLong(getResources().getString(R.string.game_touch_start),
               getApplicationContext());
@@ -379,7 +379,7 @@ public class GameActivity extends BaseActivity implements SensorEventListener {
     sGamesPerSession++;
 
     if (mRunnableGameLoop != null) {
-      if (mMusicPlayer != null && GameSharedPref.isMusicOn()) {
+      if (mMusicPlayer != null && MGSettings.isMusicOn()) {
         if (!wasActivityPaused) {
           mMusicPlayer.startMusic();
         } else {
@@ -402,7 +402,7 @@ public class GameActivity extends BaseActivity implements SensorEventListener {
       MinigamesManager.activateMinigame(this, i);
     }
 
-    if (mMusicPlayer != null && GameSharedPref.isMusicOn()) {
+    if (mMusicPlayer != null && MGSettings.isMusicOn()) {
       if (!mStartedMusicForTutorial) {
         if(mMusicPlayer != null) {
           mMusicPlayer.startMusic();
@@ -495,7 +495,7 @@ public class GameActivity extends BaseActivity implements SensorEventListener {
   public void onSensorChanged(SensorEvent event) {
     if (event.sensor.getType() == Sensor.TYPE_ACCELEROMETER) {
       if (!gameStopped) {
-        if (!isDefaultCoordinatesSet && GameSharedPref.isAutoCalibrationEnabled()) {
+        if (!isDefaultCoordinatesSet && MGSettings.isAutoCalibrationEnabled()) {
                     /* Na stojaka je to 10, opacny stojak - 10, rovina nula,
                     ten gece nevie ale na ktoru stranu je otoceny,
                     ide to z oboch stran od 10 do -10. akuratze ked sa tocis okolo 10 on to
@@ -585,7 +585,7 @@ public class GameActivity extends BaseActivity implements SensorEventListener {
 
   public void onGameLost(int loser) {
     wasGameLost = true;
-    GameSharedPref.setGameSaved(false);
+    MGSettings.setGameSaved(false);
     if (!isTutorial() && !mLoseTracked) {
       MgTracker.trackGameFinished((System.currentTimeMillis() - mTimeGameStarted) / 1000, mLevel,
           mScore, MinigamesManager.getMinigames()[loser].getName());
@@ -605,7 +605,7 @@ public class GameActivity extends BaseActivity implements SensorEventListener {
 
       stopCurrentGame();
       colorFragmentGray(loser);
-      GameSharedPref.StatsGamesPlayedIncrease();
+      MGSettings.StatsGamesPlayedIncrease();
 
       AchievementsHelper.checkAchievements(mScore, mLevel, getApplicationContext());
       HofDatabaseCenter.initDB(this);
@@ -660,10 +660,10 @@ public class GameActivity extends BaseActivity implements SensorEventListener {
       GameSaverLoader.saveGame(this);
       Toaster.toastShort(getResources().getString(R.string.game_game_saved), getApplicationContext());
       stopCurrentGame();
-      GameSharedPref.setGameSaved(true);
+      MGSettings.setGameSaved(true);
       finish();
     } else {
-      GameSharedPref.setGameSaved(false);
+      MGSettings.setGameSaved(false);
     }
   }
 

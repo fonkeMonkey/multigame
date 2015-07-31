@@ -12,7 +12,7 @@ import android.widget.TextView;
 
 import sk.palistudios.multigame.MultigameDialog;
 import sk.palistudios.multigame.R;
-import sk.palistudios.multigame.game.persistence.GameSharedPref;
+import sk.palistudios.multigame.game.persistence.MGSettings;
 import sk.palistudios.multigame.tools.Toaster;
 
 public class AboutDialog extends MultigameDialog {
@@ -58,7 +58,7 @@ public class AboutDialog extends MultigameDialog {
           mCheater++;
           if (mCheater == 7) {
             Toaster.toastLong("Stuff is unlocked.", mContext);
-            GameSharedPref.unlockItemsAll();
+            MGSettings.unlockItemsAll();
           }
         } else {
           mPaliStudiosClicked = false;

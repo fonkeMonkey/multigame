@@ -18,7 +18,7 @@ import sk.palistudios.multigame.MgTracker;
 import sk.palistudios.multigame.R;
 import sk.palistudios.multigame.customization_center.minigames.MinigamesFragment;
 import sk.palistudios.multigame.game.minigames.MinigamesManager;
-import sk.palistudios.multigame.game.persistence.GameSharedPref;
+import sk.palistudios.multigame.game.persistence.MGSettings;
 import sk.palistudios.multigame.hall_of_fame.HallOfFameActivity;
 import sk.palistudios.multigame.hall_of_fame.HofDatabaseCenter;
 import sk.palistudios.multigame.hall_of_fame.HofItem;
@@ -135,7 +135,7 @@ public class GameDialogs {
       public void onClick(DialogInterface dialog, int which) {
         switch (which) {
           case DialogInterface.BUTTON_POSITIVE:
-            GameSharedPref.onTutorialCompleted();
+            MGSettings.onTutorialCompleted();
             GameActivity.sTutorialLastLevel = 0;
             sLostGame = true;
             game.finish();
@@ -183,9 +183,9 @@ public class GameDialogs {
       return;
     }
     final int score = game.getScore();
-    if (GameSharedPref.getHighestScore() < game.getScore()) {
-      GameSharedPref.setHighestScore(game.getScore());
-      GameSharedPref.setHighestScoreSubmitted(false);
+    if (MGSettings.getHighestScore() < game.getScore()) {
+      MGSettings.setHighestScore(game.getScore());
+      MGSettings.setHighestScoreSubmitted(false);
     }
 
     DialogInterface.OnClickListener dialogClickListener = new DialogInterface.OnClickListener() {
@@ -230,8 +230,8 @@ public class GameDialogs {
     final EditText userNameEditText = new EditText(game);
     userNameEditText.setSingleLine();
     userNameEditText.setText(game.getString(R.string.button_hall_of_fame_multigame_fan));
-    if (!(("").equals(GameSharedPref.getLastHofName()))) {
-      userNameEditText.setText(GameSharedPref.getLastHofName());
+    if (!(("").equals(MGSettings.getLastHofName()))) {
+      userNameEditText.setText(MGSettings.getLastHofName());
     }
     userNameEditText.setSelection(userNameEditText.getText().length());
 
@@ -248,13 +248,13 @@ public class GameDialogs {
 
             MgTracker.trackGameWinnerOkButtonPushed();
             String playerName = userNameEditText.getText().toString();
-            GameSharedPref.setLastHofName(playerName);
+            MGSettings.setLastHofName(playerName);
 
             HofDatabaseCenter db = HofDatabaseCenter.getsHofDb();
             int playerPosition = db.writeIntoHallOfFame(new HofItem(playerName, game.getScore()));
-            if (GameSharedPref.getHighestScore() < game.getScore()) {
-              GameSharedPref.setHighestScore(game.getScore());
-              GameSharedPref.setHighestScoreSubmitted(false);
+            if (MGSettings.getHighestScore() < game.getScore()) {
+              MGSettings.setHighestScore(game.getScore());
+              MGSettings.setHighestScoreSubmitted(false);
             }
             intent = new Intent(act, HallOfFameActivity.class);
             intent.putExtra(HallOfFameActivity.SCROLL_TO_POSITION, playerPosition);

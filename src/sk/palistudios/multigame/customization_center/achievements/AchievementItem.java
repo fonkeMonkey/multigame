@@ -6,7 +6,7 @@ import android.content.Context;
 
 import sk.palistudios.multigame.R;
 import sk.palistudios.multigame.customization_center.CustomizeItem;
-import sk.palistudios.multigame.game.persistence.GameSharedPref;
+import sk.palistudios.multigame.game.persistence.MGSettings;
 import sk.palistudios.multigame.tools.Toaster;
 
 public class AchievementItem extends CustomizeItem {
@@ -35,14 +35,14 @@ public class AchievementItem extends CustomizeItem {
   }
 
   public void checkAchievementFullfiled(int score, int level, Context context) {
-    if (!GameSharedPref.isAchievementFulfilled(getComputerName())) {
+    if (!MGSettings.isAchievementFulfilled(getComputerName())) {
       if (whatToFulfill.compareTo("SHARE") == 0 || whatToFulfill.compareTo("RATE") == 0) {
         return;
       }
 
       if (whatToFulfill.compareTo("SCORE") == 0) {
         if (score >= minimumToFulfill) {
-          GameSharedPref.achievementFulfilled(getComputerName(), correspondingItem);
+          MGSettings.achievementFulfilled(getComputerName(), correspondingItem);
           Toaster.toastLong(context.getResources().getString(R.string.game_achievement_fulfilled_1) +
               description + context.getResources().getString(R.string.game_achievement_fulfilled_2) +
               correspondingType + context.getResources().getString(
@@ -52,7 +52,7 @@ public class AchievementItem extends CustomizeItem {
 
       if (whatToFulfill.compareTo("LEVEL") == 0) {
         if (level >= minimumToFulfill) {
-          GameSharedPref.achievementFulfilled(getComputerName(), correspondingItem);
+          MGSettings.achievementFulfilled(getComputerName(), correspondingItem);
           if (minimumToFulfill == 15) {
             Toaster.toastLong(context.getResources().getString(
                 R.string.game_achievement_adfree_fulfilled), context);
@@ -66,8 +66,8 @@ public class AchievementItem extends CustomizeItem {
       }
 
       if (whatToFulfill.compareTo("GAMES") == 0) {
-        if (GameSharedPref.getStatsGamesPlayed() >= minimumToFulfill) {
-          GameSharedPref.achievementFulfilled(getComputerName(), correspondingItem);
+        if (MGSettings.getStatsGamesPlayed() >= minimumToFulfill) {
+          MGSettings.achievementFulfilled(getComputerName(), correspondingItem);
           Toaster.toastLong(context.getResources().getString(R.string.game_achievement_fulfilled_1) +
               description + context.getResources().getString(R.string.game_achievement_fulfilled_2) +
               correspondingType + context.getResources().getString(
@@ -90,6 +90,6 @@ public class AchievementItem extends CustomizeItem {
   }
 
   public boolean isActive() {
-    return GameSharedPref.isAchievementFulfilled(getComputerName());
+    return MGSettings.isAchievementFulfilled(getComputerName());
   }
 }
