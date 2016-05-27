@@ -1,0 +1,14 @@
+/**
+ * Adds a task that starts the StartActivity after the installDebug task finishes.
+ *
+ * Convenient for saving time so you dont have to go clicking the icon manually each time.
+ */
+project.android {
+    task launchDebug(type: Exec, dependsOn: 'installDebug') {
+        // mac/linux
+        commandLine 'adb', 'shell', 'am', 'start', '-n', 'sk.palistudios.multigame/sk.palistudios.multigame.StartActivity'
+
+        // windows (no one uses them anyway)
+        // commandLine 'cmd', '/c', 'adb', 'shell', 'am', 'start', '-n', 'com.example/.MyActivity'
+    }
+}

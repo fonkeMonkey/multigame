@@ -1,5 +1,8 @@
 apply plugin: 'android'
 
+apply from: 'copy_apk_task.gradle'
+apply from: 'launch_app_task.gradle'
+
 buildscript {
     repositories {
         mavenCentral()
@@ -42,9 +45,6 @@ android {
         instrumentTest.setRoot('tests')
     }
 
-}
-
-android {
     signingConfigs {
         release {
 //            storeFile file(".//!etc//kluc.zip")
@@ -68,15 +68,9 @@ android {
             signingConfig signingConfigs.debug
         }
     }
-}
-
-android {
     lintOptions {
         abortOnError false
     }
-}
-
-android {
     buildToolsVersion "22.0.1"
     compileSdkVersion 22
 

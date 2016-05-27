@@ -1,0 +1,35 @@
+/**
+ * Adds a task that copies output apks to a directory named "apks" in the root
+ * of the repository.
+ *
+ * The task is executed with each assemble.
+ */
+project.android {
+  final String apksDir = 'apks'
+  applicationVariants.all { variant ->
+    variant.outputs.each { output ->
+      def copyVariantApkTask = task("copyApk${output.name.capitalize()}",
+          type: Copy) {
+        from('build/outputs/apk') {
+          exclude '*unsigned*','*unaligned*'
+        }
+        into apksDir
+      }
+      copyVariantApkTask.doFirst {
+        new File(apksDir).mkdirs()
+      }
+
+      if(variant.buildType.isZipAlignEnabled()) {
+        copyVariantApkTask.dependsOn "zipalign${output.name.capitalize()}"
+      } else {
+        copyVariantApkTask.dependsOn output.packageApplication
+      }
+
+      output.assemble.dependsOn copyVariantApkTask
+    }
+  }
+
+  clean.dependsOn(task('cleanApksDir', type: Delete) {
+    delete apksDir
+  })
+}
