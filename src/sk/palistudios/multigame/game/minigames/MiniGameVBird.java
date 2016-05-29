@@ -6,7 +6,6 @@ import java.util.List;
 
 import android.content.Context;
 import android.content.res.Resources;
-import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
@@ -70,9 +69,8 @@ public class MiniGameVBird extends BaseMiniGame implements
     addBirdCenterToHistory();
   }
 
-  public void initMinigame(Bitmap mBitmap, boolean wasGameSaved) {
-    mHeight = mBitmap.getHeight();
-    mWidth = mBitmap.getWidth();
+  @Override
+  public void initMinigame() {
     mRG = RandomGenerator.getInstance();
 
     movementThreshold = 0.25f;
@@ -100,7 +98,7 @@ public class MiniGameVBird extends BaseMiniGame implements
     mTailLength = mTailPart1Size + mTailPartOffset + mTailPart2Size + mTailPartOffset +
         mTailPart3Size + mTailPartOffset;
 
-    if (!wasGameSaved) {
+    if (!mWasgameSaved) {
       birdLeft = (mWidth / 20) + mTailLength;
       birdRight = birdLeft + mBirdSize;
       mBirdTop = mWidth / 20;

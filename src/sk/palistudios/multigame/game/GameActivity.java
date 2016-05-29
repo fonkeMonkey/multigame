@@ -25,7 +25,6 @@ import com.facebook.Session;
 import sk.palistudios.multigame.BaseActivity;
 import sk.palistudios.multigame.MgTracker;
 import sk.palistudios.multigame.R;
-import sk.palistudios.multigame.tools.AchievementsHelper;
 import sk.palistudios.multigame.game.minigames.MinigamesManager;
 import sk.palistudios.multigame.game.persistence.GameSaverLoader;
 import sk.palistudios.multigame.game.persistence.MGSettings;
@@ -33,6 +32,7 @@ import sk.palistudios.multigame.game.time.GameTimeManager;
 import sk.palistudios.multigame.game.view.BaseGameCanvasView;
 import sk.palistudios.multigame.hall_of_fame.HofDatabaseCenter;
 import sk.palistudios.multigame.mainMenu.DebugSettings;
+import sk.palistudios.multigame.tools.AchievementsHelper;
 import sk.palistudios.multigame.tools.DisplayHelper;
 import sk.palistudios.multigame.tools.SkinManager;
 import sk.palistudios.multigame.tools.Toaster;
@@ -46,10 +46,12 @@ public class GameActivity extends BaseActivity implements SensorEventListener {
   public interface userInteractedVerticalListener {
     public void onUserInteractedVertical(float verticalMovement);
   }
+
   public interface userInteractedHorizontalListener {
     public void onUserInteractedHorizontal(float horizontalMovement);
   }
 
+  //VL send in onActivityResult
   public static int dialogScore = -1;
   public static int dialogType = -1;
   public static int sTutorialLastLevel = 0;
@@ -61,13 +63,21 @@ public class GameActivity extends BaseActivity implements SensorEventListener {
   private static final long LEVEL_HIGHLIGHT_DURATION_MILLIS = 500;
   private static final long LEVEL_UNHIGHLIGHT_DURATION_MILLIS = 2000;
 
+  //VL store in settings
   private static boolean sIncreaseVolumeShown = false;
   private static boolean sRaisedVolumeForTutorialAlready = false;
 
+  //VL extract tutorial to different activity with common ancestor
   private Handler mTutorialHandler = new Handler();
   private Handler mGameLoopHandler = new Handler();
   private Handler mTimeHandler = new Handler();
-  private final Runnable mRunnableGameLoop = new Runnable() {
+
+  private Runnable mRunnableGameLoop = new Runnable() {
+    private final int GAME_UPDATES_PER_SECOND = 30;//Cell phones have seldom more fps per seconds,
+    // although some have 120 now
+    private final int UPDATE_INTERVAL_IN_MILLIS = 1000 / GAME_UPDATES_PER_SECOND;
+    private final int MAX_FRAMESKIP = 4;
+
     int updates_per_refresh = 0;
     long nextUpdateGame = -1;
 
@@ -89,17 +99,38 @@ public class GameActivity extends BaseActivity implements SensorEventListener {
       refreshDisplayGame();
 
       if (mGameLoopHandler != null) {
-      //TODO optimalizuj aby sa toto nevolalo furt dokola (kára batterku a môže spôsobavať na
-      // shit devicoch, že ostatné loopy sa nebudú tak často dostavať k slovu,
-      // so what ostatné stačí za sekund a tutorial ani nehovorím
+        //TODO optimalizuj aby sa toto nevolalo furt dokola (kára batterku a môže spôsobavať na
+        // shit devicoch, že ostatné loopy sa nebudú tak často dostavať k slovu,
+        // so what ostatné stačí za sekund a tutorial ani nehovorím
         //anyway je to useless prekreslovať neupdatované polia, tu by malo byť nejaký presný čas.
         mGameLoopHandler.post(this);
       }
     }
+
+    private void updateGame() {
+      for (int i = 0; i < 4; i++) {
+        if (MinigamesManager.getmMinigamesActivityFlags()[i]) {
+          MinigamesManager.sMinigames[i].updateMinigame();
+        }
+      }
+    }
+
+    private void refreshDisplayGame() {
+      if (!mTutorialMode) {
+        redrawScoreView(String.valueOf(mScore));
+      }
+
+      for (int i = 0; i < 4; i++) {
+        if (MinigamesManager.getmMinigamesActivityFlags()[i]) {
+          mCanvases[i].invalidate();
+        }
+      }
+    }
   };
-  private final Runnable mRunnableTutorial = new Runnable() {
+
+  private Runnable mRunnableTutorial = new Runnable() {
     public void run() {
-      if(mMusicPlayer != null) {
+      if (mMusicPlayer != null) {
         mMusicPlayer.pauseMusic();
       }
 
@@ -111,7 +142,8 @@ public class GameActivity extends BaseActivity implements SensorEventListener {
       }
     }
   };
-  private final Runnable mRunnableTime = new Runnable() {
+
+  private Runnable mRunnableTime = new Runnable() {
     int milisecondsPassed = 0;
     final int updatesPerSeconds = 1;
     final int refreshInterval = 1000 / updatesPerSeconds;
@@ -136,43 +168,41 @@ public class GameActivity extends BaseActivity implements SensorEventListener {
       }
 
     }
+
+    private void animateLevelChange() {
+      // pred animaciou musim nastavit na 100% opacity, lebo potom sa budu pocitat percenta z 0.05f
+      mDifficultyView.setAlpha(1.0f);
+      final AlphaAnimation enterAnimation = new AlphaAnimation(0.05f, 1);
+      enterAnimation.setDuration(LEVEL_HIGHLIGHT_DURATION_MILLIS);
+      enterAnimation.setRepeatCount(0);
+      enterAnimation.setFillAfter(true);
+      enterAnimation.setAnimationListener(new Animation.AnimationListener() {
+        @Override
+        public void onAnimationStart(Animation animation) {
+
+        }
+
+        @Override
+        public void onAnimationEnd(Animation animation) {
+          final AlphaAnimation exitAnimation = new AlphaAnimation(1f, 0.05f);
+          exitAnimation.setDuration(LEVEL_UNHIGHLIGHT_DURATION_MILLIS);
+          exitAnimation.setRepeatCount(0);
+          exitAnimation.setFillAfter(true);
+          mDifficultyView.startAnimation(exitAnimation);
+        }
+
+        @Override
+        public void onAnimationRepeat(Animation animation) {
+
+        }
+      });
+      mDifficultyView.startAnimation(enterAnimation);
+    }
   };
 
-  private void animateLevelChange() {
-    // pred animaciou musim nastavit na 100% opacity, lebo potom sa budu pocitat percenta z 0.05f
-    mDifficultyView.setAlpha(1.0f);
-    final AlphaAnimation enterAnimation = new AlphaAnimation(0.05f, 1);
-    enterAnimation.setDuration(LEVEL_HIGHLIGHT_DURATION_MILLIS);
-    enterAnimation.setRepeatCount(0);
-    enterAnimation.setFillAfter(true);
-    enterAnimation.setAnimationListener(new Animation.AnimationListener() {
-      @Override
-      public void onAnimationStart(Animation animation) {
-
-      }
-
-      @Override
-      public void onAnimationEnd(Animation animation) {
-        final AlphaAnimation exitAnimation = new AlphaAnimation(1f, 0.05f);
-        exitAnimation.setDuration(LEVEL_UNHIGHLIGHT_DURATION_MILLIS);
-        exitAnimation.setRepeatCount(0);
-        exitAnimation.setFillAfter(true);
-        mDifficultyView.startAnimation(exitAnimation);
-      }
-
-      @Override
-      public void onAnimationRepeat(Animation animation) {
-
-      }
-    });
-    mDifficultyView.startAnimation(enterAnimation);
-  }
-
-  final private int GAME_UPDATES_PER_SECOND = 60;//Cell phones have seldom more fps per seconds,
-  // although some have 120 now
-  final private int UPDATE_INTERVAL_IN_MILLIS = 1000 / GAME_UPDATES_PER_SECOND;
-  final private int MAX_FRAMESKIP = 4;
+  //VL wtf someone has reference to activity?
   public boolean gameStopped = true;
+
   private Toast mToast;
   private MusicPlayer mMusicPlayer;
   private SensorManager sm = null;
@@ -203,6 +233,7 @@ public class GameActivity extends BaseActivity implements SensorEventListener {
 
   @Override
   public void onCreate(Bundle icicle) {
+    //    Debug.startMethodTracing("/data/data/sk.palistudios.multigame/fetosko");
     super.onCreate(icicle);
     //TODO možno vytiahnuť do baseactivity
     setContentView(R.layout.game_layout);
@@ -255,13 +286,13 @@ public class GameActivity extends BaseActivity implements SensorEventListener {
   void initMinigames() {
     //I need to have direct pointer because of speed
     MinigamesManager.loadMinigames(this);
-    minigametoSendEvents1 = (userInteractedVerticalListener) MinigamesManager.getMinigames()[0];
-    minigametoSendEvents2 = (userInteractedHorizontalListener) MinigamesManager.getMinigames()[1];
+    minigametoSendEvents1 = (userInteractedVerticalListener) MinigamesManager.sMinigames[0];
+    minigametoSendEvents2 = (userInteractedHorizontalListener) MinigamesManager.sMinigames[1];
 
     for (int i = 0; i < 4; i++) {
       MinigamesManager.activateMinigame(this, i);
-      GameTimeManager.registerLevelChangedObserver(MinigamesManager.getMinigames()[i]);
-      mCanvases[i].attachMinigame(MinigamesManager.getMinigames()[i], i);
+      GameTimeManager.registerLevelChangedObserver(MinigamesManager.sMinigames[i]);
+      mCanvases[i].attachMinigame(MinigamesManager.sMinigames[i], i);
     }
 
     for (int i = 0; i < 4; i++) {
@@ -269,11 +300,8 @@ public class GameActivity extends BaseActivity implements SensorEventListener {
     }
   }
 
-
-
   private void resolveOrientation() {
     mOrientation = DisplayHelper.getOrientationForAccelerometer(this);
-
 
   }
 
@@ -334,7 +362,7 @@ public class GameActivity extends BaseActivity implements SensorEventListener {
           GameDialogs.showNextTutorialWindow(this, false);
         }
       }
-    //REAL DEAL
+      //REAL DEAL
     } else {
       if (wasGameSaved) {
         mToast = Toaster.toastLong(getResources().getString(R.string.game_touch_resume),
@@ -404,12 +432,12 @@ public class GameActivity extends BaseActivity implements SensorEventListener {
 
     if (mMusicPlayer != null && MGSettings.isMusicOn()) {
       if (!mStartedMusicForTutorial) {
-        if(mMusicPlayer != null) {
+        if (mMusicPlayer != null) {
           mMusicPlayer.startMusic();
         }
         mStartedMusicForTutorial = true;
       } else {
-        if(mMusicPlayer != null) {
+        if (mMusicPlayer != null) {
           mMusicPlayer.resumeMusic();
         }
       }
@@ -418,8 +446,8 @@ public class GameActivity extends BaseActivity implements SensorEventListener {
     gameStopped = false;
     startTutorialGameLoop();
 
-    mTutorialHandler.postDelayed(mRunnableTutorial, DebugSettings.SECONDS_PER_LEVEL_TUTORIAL *
-        1000);
+    mTutorialHandler.postDelayed(mRunnableTutorial,
+        DebugSettings.SECONDS_PER_LEVEL_TUTORIAL * 1000);
   }
 
   void startTutorialGameLoop() {
@@ -437,26 +465,6 @@ public class GameActivity extends BaseActivity implements SensorEventListener {
     }
     if (mTimeHandler != null) {
       mTimeHandler.removeCallbacks(null);
-    }
-  }
-
-  private void updateGame() {
-    for (int i = 0; i < 4; i++) {
-      if (MinigamesManager.getmMinigamesActivityFlags()[i]) {
-        MinigamesManager.getMinigames()[i].updateMinigame();
-      }
-    }
-  }
-
-  private void refreshDisplayGame() {
-    if (!mTutorialMode) {
-     redrawScoreView(String.valueOf(mScore));
-    }
-
-    for (int i = 0; i < 4; i++) {
-      if (MinigamesManager.getmMinigamesActivityFlags()[i]) {
-        mCanvases[i].invalidate();
-      }
     }
   }
 
@@ -544,6 +552,7 @@ public class GameActivity extends BaseActivity implements SensorEventListener {
     }
     return value;
   }
+
   @Override
   public void onPause() {
     super.onPause();
@@ -569,7 +578,7 @@ public class GameActivity extends BaseActivity implements SensorEventListener {
 
     closedByButton = false;
     sm.unregisterListener(this);
-    if(mMusicPlayer != null){
+    if (mMusicPlayer != null) {
       mMusicPlayer.pauseMusic();
     }
     wasActivityPaused = true;
@@ -588,8 +597,8 @@ public class GameActivity extends BaseActivity implements SensorEventListener {
     MGSettings.setGameSaved(false);
     if (!isTutorial() && !mLoseTracked) {
       MgTracker.trackGameFinished((System.currentTimeMillis() - mTimeGameStarted) / 1000, mLevel,
-          mScore, MinigamesManager.getMinigames()[loser].getName());
-      Log.d("Minigame lost:", MinigamesManager.getMinigames()[loser].getName());
+          mScore, MinigamesManager.sMinigames[loser].getName());
+      Log.d("Minigame lost:", MinigamesManager.sMinigames[loser].getName());
       mLoseTracked = true;
     }
 
@@ -658,7 +667,8 @@ public class GameActivity extends BaseActivity implements SensorEventListener {
   private void saveGame() throws NotFoundException {
     if (!wasGameLost) {
       GameSaverLoader.saveGame(this);
-      Toaster.toastShort(getResources().getString(R.string.game_game_saved), getApplicationContext());
+      Toaster.toastShort(getResources().getString(R.string.game_game_saved),
+          getApplicationContext());
       stopCurrentGame();
       MGSettings.setGameSaved(true);
       finish();
@@ -668,48 +678,10 @@ public class GameActivity extends BaseActivity implements SensorEventListener {
   }
 
   void stopCurrentGame() {
-//    sm.unregisterListener(this);
-
-//    if (mGameLoopHandler != null && mRunnableGameLoop != null) {
-//      mGameLoopHandler.removeCallbacks(mRunnableGameLoop);
-//      mRunnableGameLoop = null;
-//      mGameLoopHandler = null;
-//    }
-//    if (mTimeHandler != null) {
-//      mTimeHandler.removeCallbacks(mRunnableTime);
-//    }
-//    if (mMusicPlayer != null) {
-//      mMusicPlayer.stopMusic();
-//    }
     destroyEverythingSafely();
   }
 
   public void stopTutorial() {
-
-//    mMusicPlayer.stopMusic();
-
-//    if (mGameLoopHandler != null) {
-//      mGameLoopHandler.removeCallbacks(mRunnableGameLoop);
-//      mGameLoopHandler = null;
-//    }
-//
-//    if (mRunnableGameLoop != null) {
-//      mRunnableGameLoop = null;
-//    }
-//
-//    if (mTimeHandler != null) {
-//      mTimeHandler.removeCallbacks(mRunnableTime);
-//      mTimeHandler = null;
-//    }
-//
-//    if (mTutorialHandler != null) {
-//      mTutorialHandler.removeCallbacks(mRunnableTutorial);
-//      mTutorialHandler = null;
-//    }
-//
-//    if (mRunnableTutorial != null) {
-//      mRunnableTutorial = null;
-//    }
     destroyEverythingSafely();
   }
 
@@ -761,42 +733,42 @@ public class GameActivity extends BaseActivity implements SensorEventListener {
     if (mTutorialMode) {
       GameDialogs.sLostGame = true;
     }
-    mMusicPlayer = null;
-    for(BaseGameCanvasView canvas : mCanvases){
+    for (BaseGameCanvasView canvas : mCanvases) {
       canvas.detachMinigame();
     }
-    mCanvases = null;
     MinigamesManager.detachGameRefFromMinigames();
 
     destroyEverythingSafely();
+    //    Debug.stopMethodTracing();
   }
 
   private void destroyEverythingSafely() {
-    if (sm != null){
-    sm.unregisterListener(this);
-
-    }
-
-    if(mGameLoopHandler != null && mRunnableGameLoop != null){
-      mGameLoopHandler.removeCallbacks(mRunnableGameLoop);
-    }
-
-    if(mTimeHandler != null && mRunnableTime != null){
-      mTimeHandler.removeCallbacks(mRunnableTime);
-    }
-
-    if(mTutorialHandler != null && mRunnableTutorial != null){
-      mTutorialHandler.removeCallbacks(mRunnableTutorial);
-    }
-
-    mTutorialHandler =null;
-    mGameLoopHandler=null;
-    mTimeHandler=null;
-    GameTimeManager.clearTimeObservers();
-
     if (mMusicPlayer != null) {
       mMusicPlayer.stopMusic();
       mMusicPlayer = null;
     }
+    if (sm != null) {
+      sm.unregisterListener(this);
+    }
+
+    if (mGameLoopHandler != null && mRunnableGameLoop != null) {
+      mGameLoopHandler.removeCallbacks(mRunnableGameLoop);
+    }
+
+    if (mTimeHandler != null && mRunnableTime != null) {
+      mTimeHandler.removeCallbacks(mRunnableTime);
+    }
+
+    if (mTutorialHandler != null && mRunnableTutorial != null) {
+      mTutorialHandler.removeCallbacks(mRunnableTutorial);
+    }
+
+    mRunnableGameLoop = null;
+    mRunnableTime = null;
+    mRunnableTutorial = null;
+    mTutorialHandler = null;
+    mGameLoopHandler = null;
+    mTimeHandler = null;
+    GameTimeManager.clearTimeObservers();
   }
 }

@@ -5,7 +5,6 @@ import java.util.List;
 
 import android.content.Context;
 import android.content.res.Resources;
-import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
@@ -62,13 +61,11 @@ public class MiniGameHBalance extends BaseMiniGame implements
     type = Type.Horizontal;
   }
 
-  public void initMinigame(Bitmap mBitmap, boolean wasGameSaved) {
+  @Override
+  public void initMinigame() {
     if (mGame.isTutorial()) {
       mFramesToRandomLeverageMovement /= DebugSettings.GLOBAL_DIFFICULTY_TUTORIAL_COEFFICIENT;
     }
-
-    mHeight = mBitmap.getHeight();
-    mWidth = mBitmap.getWidth();
 
     splitHeight = (mHeight / 2);
     splitWidth = (mWidth / 2);
@@ -78,7 +75,7 @@ public class MiniGameHBalance extends BaseMiniGame implements
     leanRatio = 150;
     movementSensitivity = maxLean / 5;
 
-    if (!wasGameSaved) {
+    if (!mWasgameSaved) {
       int barLength = mWidth / 2;
       int barLeftEdgeX = (mWidth - barLength) / 2;
       int barRightEdgeX = (mWidth - barLength) / 2 + barLength;

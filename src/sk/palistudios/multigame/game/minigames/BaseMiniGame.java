@@ -5,7 +5,6 @@ package sk.palistudios.multigame.game.minigames;
 import java.io.Serializable;
 
 import android.content.Context;
-import android.graphics.Bitmap;
 import android.graphics.Canvas;
 
 import sk.palistudios.multigame.game.GameActivity;
@@ -17,8 +16,11 @@ abstract public class BaseMiniGame implements Serializable, ISecondsObserver {
   public Type type;
   public Integer mPosition;
   public transient GameActivity mGame;
+
   protected int mHeight;
   protected int mWidth;
+  protected boolean mWasgameSaved;
+
   protected int mBackgroundColor = 0;
   protected int mPrimaryColor = 0;
   protected int mSecondaryColor = 0;
@@ -45,7 +47,6 @@ abstract public class BaseMiniGame implements Serializable, ISecondsObserver {
     reskinLocally(SkinManager.getInstance().getCurrentSkin());
   }
 
-  public abstract void initMinigame(Bitmap mBitmap, boolean wasGameSaved);
   public abstract void updateMinigame();
   public abstract void drawMinigame(Canvas canvas);
 
@@ -60,6 +61,14 @@ abstract public class BaseMiniGame implements Serializable, ISecondsObserver {
     GameSaverLoader.SaveMinigametoFile(mFileName, this, mGame.getApplicationContext());
     onMinigameSaved();
   }
+  public void initMinigame(int width, int height, boolean wasGameSaved){
+    mWidth = width;
+    mHeight = height;
+    mWasgameSaved = wasGameSaved;
+    initMinigame();
+  }
+
+  protected abstract void initMinigame();
 
   public void onSecondPassed(){}
 
@@ -79,4 +88,5 @@ abstract public class BaseMiniGame implements Serializable, ISecondsObserver {
   }
 
   public abstract void reskinLocally(SkinManager.Skin currentSkin);
+
 }

@@ -3,9 +3,7 @@ package sk.palistudios.multigame.game.view;
 // @author Pali
 
 import android.content.Context;
-import android.graphics.Bitmap;
 import android.graphics.Canvas;
-import android.graphics.Color;
 import android.graphics.Rect;
 import android.util.AttributeSet;
 import android.view.View;
@@ -15,15 +13,14 @@ import sk.palistudios.multigame.game.minigames.BaseMiniGame;
 
 abstract public class BaseGameCanvasView extends View {
   protected BaseMiniGame mMiniGame;
-  private Bitmap mBitmap;
 
   private int mHeight;
   private int mWidth;
 
   private boolean mIsMinigameInitialized = false;
-  private boolean wasGameSaved = false;
+  private boolean mWasGameSaved = false;
 
-  private boolean mGameLost;
+  private boolean mGameLost = false;
 
   public BaseGameCanvasView(Context context) {
     this(context, null, 0);
@@ -41,7 +38,6 @@ abstract public class BaseGameCanvasView extends View {
 
   public void attachMinigame(BaseMiniGame minigame, int position){
     mMiniGame = minigame;
-//    int mPosition = position;
   }
 
   @Override
@@ -59,8 +55,7 @@ abstract public class BaseGameCanvasView extends View {
     super.onDraw(canvas);
     if (!mIsMinigameInitialized) {
       mIsMinigameInitialized = true;
-      init(canvas);
-      mGameLost = false;
+      initMinigame(canvas);
     }
     mMiniGame.drawMinigame(canvas);
     if (mGameLost) {
@@ -68,13 +63,11 @@ abstract public class BaseGameCanvasView extends View {
     }
   }
 
-  public void init(Canvas canvas) {
+  public void initMinigame(Canvas canvas) {
     Rect rect = canvas.getClipBounds();
     int width = rect.width();
     int height = rect.height();
-    mBitmap = Bitmap.createBitmap(width, height, Bitmap.Config.ARGB_8888);
-    mMiniGame.initMinigame(mBitmap, wasGameSaved);
-//    GameSharedPref.setMinigamesInitialized(true);
+    mMiniGame.initMinigame(width, height, mWasGameSaved);
   }
 
   public abstract void detachMinigame();
@@ -85,6 +78,6 @@ abstract public class BaseGameCanvasView extends View {
   }
 
   public void setGameSaved(boolean status) {
-    wasGameSaved = status;
+    mWasGameSaved = status;
   }
 }

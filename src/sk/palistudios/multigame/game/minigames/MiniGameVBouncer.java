@@ -5,7 +5,6 @@ import java.util.List;
 
 import android.content.Context;
 import android.content.res.Resources;
-import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
@@ -54,10 +53,8 @@ public class MiniGameVBouncer extends BaseMiniGame
     type = Type.Vertical;
   }
 
-  public void initMinigame(Bitmap mBitmap, boolean wasGameSaved) {
-    mHeight = mBitmap.getHeight();
-    mWidth = mBitmap.getWidth();
-
+  @Override
+  public void initMinigame() {
     mBallSize = mHeight / 20;
     mBallSize1 = (int) (mBallSize / 1.6);
     mBallSize2 = (int) (mBallSize / 2.4);
@@ -67,7 +64,7 @@ public class MiniGameVBouncer extends BaseMiniGame
     barHeight = mHeight / 3;
     movementSensitivity = (float) mHeight / 100;
 
-    if (!wasGameSaved) {
+    if (!mWasgameSaved) {
       barTop = mHeight / 2 - barHeight / 2;
       barBottom = mHeight / 2 + barHeight / 2;
 

@@ -11,7 +11,7 @@ public class MinigamesManager {
   //TODO tuto by sa mali centralnejsie robit tie veci a nie volat zvonku activateMinigame po jednom
   //
 
-  private static BaseMiniGame[] mMinigames = new BaseMiniGame[4];
+  public static BaseMiniGame[] sMinigames = new BaseMiniGame[4];
   private static boolean[] mMinigamesActivityFlags = new boolean[4];
 
   public static void loadMinigames(GameActivity game) {
@@ -22,7 +22,7 @@ public class MinigamesManager {
     if (!isGameSaved || isTutorialActive) {
       String[] activeMinigameNames = MGSettings.getChosenMinigamesNames();
       for (int i = 0; i < activeMinigameNames.length; i++) {
-        mMinigames[i] = loadMinigame(game, activeMinigameNames[i], i);
+        sMinigames[i] = loadMinigame(game, activeMinigameNames[i], i);
       }
     } else {
       GameSaverLoader.loadGame(game);
@@ -73,16 +73,16 @@ public class MinigamesManager {
 
   public static void activateMinigame(GameActivity game, int number) {
     mMinigamesActivityFlags[number] = true;
-    mMinigames[number].onMinigameActivated();
+    sMinigames[number].onMinigameActivated();
   }
 
   public static void deactivateMinigame(GameActivity game, int number) {
     mMinigamesActivityFlags[number] = false;
-    mMinigames[number].onMinigameDeactivated();
+    sMinigames[number].onMinigameDeactivated();
   }
 
   public static void detachGameRefFromMinigames(){
-    for(BaseMiniGame mg : mMinigames){
+    for(BaseMiniGame mg : sMinigames){
       mg.mGame = null;
     }
   }
@@ -100,11 +100,11 @@ public class MinigamesManager {
   }
 
   public static BaseMiniGame[] getMinigames() {
-    return mMinigames;
+    return sMinigames;
   }
 
   public static boolean isAllMinigamesInitialized() {
-    for (BaseMiniGame mg : mMinigames) {
+    for (BaseMiniGame mg : sMinigames) {
       if (!mg.isMinigameInitialized()) {
         return false;
       }

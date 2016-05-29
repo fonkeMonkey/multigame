@@ -5,7 +5,6 @@ import java.util.ArrayList;
 
 import android.content.Context;
 import android.content.res.Resources;
-import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.DashPathEffect;
@@ -53,17 +52,16 @@ public class MiniGameTInvader extends BaseMiniGame implements
     type = Type.Touch;
   }
 
-  public void initMinigame(Bitmap mBitmap, boolean wasGameSaved) {
+  @Override
+  public void initMinigame() {
     if (mGame.isTutorial()){
       framesToCreateEnemy /= DebugSettings.GLOBAL_DIFFICULTY_TUTORIAL_COEFFICIENT;
       stepsToInvade /= DebugSettings.GLOBAL_DIFFICULTY_TUTORIAL_COEFFICIENT;
     }
-    mHeight = mBitmap.getHeight();
-    mWidth = mBitmap.getWidth();
     mRandomGenerator = RandomGenerator.getInstance();
 
     mPointMiddleOfScreen = new PointSerializable(mWidth / 2, mHeight / 2);
-    if (!wasGameSaved) {
+    if (!mWasgameSaved) {
       mPointSmallerCircle = new PointSerializable(mPointMiddleOfScreen.mPoint.x / 2,
           mPointMiddleOfScreen.mPoint.y / 2);
     }

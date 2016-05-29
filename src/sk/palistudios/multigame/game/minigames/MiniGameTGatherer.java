@@ -5,7 +5,6 @@ import java.util.ArrayList;
 
 import android.content.Context;
 import android.content.res.Resources;
-import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
@@ -65,13 +64,12 @@ public class MiniGameTGatherer extends BaseMiniGame implements
     type = Type.Touch;
   }
 
-  public void initMinigame(Bitmap mBitmap, boolean wasGameSaved) {
+  @Override
+  public void initMinigame() {
     if (mGame.isTutorial()) {
       framesToGenerateCircle /= DebugSettings.GLOBAL_DIFFICULTY_TUTORIAL_COEFFICIENT;
     }
 
-    mHeight = mBitmap.getHeight();
-    mWidth = mBitmap.getWidth();
     mRg = RandomGenerator.getInstance();
 
     mPaintCircleColor = new PaintSerializable(mPrimaryColor, Paint.Style.FILL);

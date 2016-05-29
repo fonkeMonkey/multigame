@@ -5,7 +5,6 @@ import java.util.ArrayList;
 
 import android.content.Context;
 import android.content.res.Resources;
-import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
@@ -57,10 +56,8 @@ public class MiniGameTCatcher extends BaseMiniGame
     type = Type.Touch;
   }
 
-  public void initMinigame(Bitmap mBitmap, boolean wasGameSaved) {
-    mHeight = mBitmap.getHeight();
-    mWidth = mBitmap.getWidth();
-
+  @Override
+  public void initMinigame() {
     columnWidth = (mWidth) / NUMBER_OF_COLUMNS;
     mBallSize = mWidth / 35;
     mBallSize1 = (int) (mBallSize / 1.6);
