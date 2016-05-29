@@ -26,17 +26,15 @@ abstract public class BaseGameCanvasView extends View {
     this(context, null, 0);
   }
 
-  public BaseGameCanvasView(Context context, AttributeSet attrs){
+  public BaseGameCanvasView(Context context, AttributeSet attrs) {
     this(context, attrs, 0);
   }
 
-  public BaseGameCanvasView(Context context, AttributeSet attrs, int defStyle){
+  public BaseGameCanvasView(Context context, AttributeSet attrs, int defStyle) {
     super(context, attrs, defStyle);
-
-    setLayerType(LAYER_TYPE_SOFTWARE, null);
   }
 
-  public void attachMinigame(BaseMiniGame minigame, int position){
+  public void attachMinigame(BaseMiniGame minigame, int position) {
     mMiniGame = minigame;
   }
 

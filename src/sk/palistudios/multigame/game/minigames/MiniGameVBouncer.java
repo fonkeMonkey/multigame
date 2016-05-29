@@ -225,6 +225,11 @@ public class MiniGameVBouncer extends BaseMiniGame
   }
 
   @Override
+  public void onMinigameLoaded() {
+    
+  }
+
+  @Override
   public void reskinLocally(SkinManager.Skin currentSkin) {
     final Resources resources = mGame.getResources();
     switch (currentSkin) {

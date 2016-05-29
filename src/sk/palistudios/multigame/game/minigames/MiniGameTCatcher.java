@@ -116,7 +116,7 @@ public class MiniGameTCatcher extends BaseMiniGame
               (2 * mBallSize3));
       if (ball.wasCatched) {
         mTmpActiveBall = ball.mColumn;
-        if(lastBallCenter > mHeight) {
+        if (lastBallCenter > mHeight) {
           mFallingBalls.remove(ball);
           mTmpActiveBall = -1;
           return;
@@ -132,20 +132,19 @@ public class MiniGameTCatcher extends BaseMiniGame
   public void drawMinigame(Canvas mCanvas) {
     mCanvas.drawColor(mBackgroundColor);
 
-    if(mMaskPath == null) {
-      initMaskPath();
-    }
+    //    if(mMaskPath == null) {
+    //      initMaskPath();
+    //    }
 
     for (int i = 0; i < NUMBER_OF_COLUMNS; i++) {
       float left = mCatchingBalls[i] - mBallSize * 2;
       float right = left + (mBallSize * 4);
       int top = catchingBallsHeight - mBallSize;
       int bottom = catchingBallsHeight + mBallSize;
-      RectF rectF = new RectF(left, top, right, bottom);
       if (i == activeBall || i == mTmpActiveBall) {
-        mCanvas.drawOval(rectF, mPaintCatchingBallActive.mPaint);
+        mCanvas.drawOval(left, top, right, bottom, mPaintCatchingBallActive.mPaint);
       } else {
-        mCanvas.drawOval(rectF, mPaintCatchingBallInactive.mPaint);
+        mCanvas.drawOval(left, top, right, bottom, mPaintCatchingBallInactive.mPaint);
       }
     }
 
@@ -155,7 +154,7 @@ public class MiniGameTCatcher extends BaseMiniGame
       paint.setAlpha(255); // 100%
       ballCenter = Math.round(ball.yAxis);
       mCanvas.drawCircle(ball.xAxis, ballCenter, mBallSize, mPaintFallingBalls.mPaint);
-      mCanvas.drawCircle(ball.xAxis, ballCenter, (int) (mBallSize/ 2.5),
+      mCanvas.drawCircle(ball.xAxis, ballCenter, (int) (mBallSize / 2.5),
           mPaintFallingBallCenter.mPaint);
       paint.setAlpha(128); // 50%
       ballCenter = Math.round(ball.yAxis - (2 * mBallSize));
@@ -176,7 +175,7 @@ public class MiniGameTCatcher extends BaseMiniGame
   }
 
   private void initMaskPath() {
-    if(mBackgroundColor == Color.TRANSPARENT || mBackgroundColor == 0) {
+    if (mBackgroundColor == Color.TRANSPARENT || mBackgroundColor == 0) {
       mMaskPathPaint.mPaint.setColor(Color.TRANSPARENT);
       mMaskPathPaint.mPaint.setXfermode(new PorterDuffXfermode(PorterDuff.Mode.CLEAR));
     } else {
@@ -229,6 +228,11 @@ public class MiniGameTCatcher extends BaseMiniGame
     if (framesToGenerateNewBall > maxDifficulty) {
       framesToGenerateNewBall -= difficultyStep;
     }
+  }
+
+  @Override
+  public void onMinigameLoaded() {
+
   }
 
   @Override
@@ -294,7 +298,7 @@ public class MiniGameTCatcher extends BaseMiniGame
     private boolean isCatched() {
 
       if ((mColumn != activeBall) && (yAxis + mBallSize + 1 > catchingBallsHeight) && !wasCatched) {
-        if(mGame != null){
+        if (mGame != null) {
           mGame.onGameLost(mPosition);
         }
       } else {

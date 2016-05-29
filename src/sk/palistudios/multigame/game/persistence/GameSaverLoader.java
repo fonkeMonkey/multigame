@@ -21,33 +21,37 @@ import sk.palistudios.multigame.game.minigames.MinigamesManager;
 
 public class GameSaverLoader {
 
+  public static final String GAME_TOUCH1 = "MG_T1";
+  public static final String GAME_TOUCH2 = "MG_T2";
+
   public static void saveGame(GameActivity game) {
 
     final int scoreToSave = game.getScore();
     final int levelToSave = game.getLevel();
     final int framesToSave = game.getFrames();
-    final boolean[] activeMinigames = MinigamesManager.getmMinigamesActivityFlags();
+    final boolean[] activeMinigames = game.getMinigamesManager().getMinigamesActivityFlags();
     MGSettings.saveGameDetails(scoreToSave, levelToSave, framesToSave, activeMinigames);
-    for (BaseMiniGame minigame : MinigamesManager.getMinigames()) {
+    for (BaseMiniGame minigame : game.getMinigamesManager().getMinigames()) {
       minigame.saveMinigame();
     }
   }
 
   public static void loadGame(GameActivity game) {
-
-         /* Keď sa dojebe loadovanie spusti novú hru */
     try {
       int[] gameDetails = MGSettings.loadGameDetails();
       game.setGameDetails(gameDetails[1], gameDetails[0], gameDetails[2]);
       boolean[] activityFlags = MGSettings.getMinigamesActivityFlags();
-      MinigamesManager.setmMinigamesActivityFlags(activityFlags);
+      MinigamesManager minigamesManager = game.getMinigamesManager();
+      minigamesManager.setmMinigamesActivityFlags(activityFlags);
 
-      MinigamesManager.getMinigames()[0] = loadMinigameFromFile("MG_V", game);
-      MinigamesManager.getMinigames()[1] = loadMinigameFromFile("MG_H", game);
-      MinigamesManager.getMinigames()[2] = loadMinigameFromFile("MG_T1", game);
-      MinigamesManager.getMinigames()[3] = loadMinigameFromFile("MG_T2", game);
+      BaseMiniGame[] loadedMinigames = new BaseMiniGame[4];
+      loadedMinigames[0] = loadMinigameFromFile("MG_V", game);
+      loadedMinigames[1] = loadMinigameFromFile("MG_H", game);
+      loadedMinigames[2] = loadMinigameFromFile(GAME_TOUCH1, game);
+      loadedMinigames[3] = loadMinigameFromFile(GAME_TOUCH2, game);
+      minigamesManager.setMinigames(loadedMinigames);
 
-      for (BaseMiniGame minigame : MinigamesManager.getMinigames()) {
+      for (BaseMiniGame minigame : minigamesManager.getMinigames()) {
         minigame.mGame = game;
         minigame.onMinigameLoaded();
       }
@@ -77,17 +81,17 @@ public class GameSaverLoader {
     } catch (OptionalDataException ex) {
       Logger.getLogger(BaseMiniGame.class.getName()).log(Level.SEVERE,
           "LoadGame OptionalDataException", ex);
-      throw new GameLoadException();
+      throw new GameLoadException(ex);
     } catch (ClassNotFoundException ex) {
       Logger.getLogger(BaseMiniGame.class.getName()).log(Level.SEVERE,
           "LoadGame ClassNotFoundException", ex);
-      throw new GameLoadException();
+      throw new GameLoadException(ex);
     } catch (NotSerializableException ex) {
       Logger.getLogger(BaseMiniGame.class.getName()).log(Level.SEVERE, "Not serializable", ex);
-      throw new GameLoadException();
+      throw new GameLoadException(ex);
     } catch (Exception ex) {
       Logger.getLogger(BaseMiniGame.class.getName()).log(Level.SEVERE, "Loadgame IO exception", ex);
-      throw new GameLoadException();
+      throw new GameLoadException(ex);
     } finally {
       try {
         fis.close();

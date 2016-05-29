@@ -25,6 +25,7 @@ import com.facebook.Session;
 import sk.palistudios.multigame.BaseActivity;
 import sk.palistudios.multigame.MgTracker;
 import sk.palistudios.multigame.R;
+import sk.palistudios.multigame.game.minigames.BaseMiniGame;
 import sk.palistudios.multigame.game.minigames.MinigamesManager;
 import sk.palistudios.multigame.game.persistence.GameSaverLoader;
 import sk.palistudios.multigame.game.persistence.MGSettings;
@@ -73,7 +74,7 @@ public class GameActivity extends BaseActivity implements SensorEventListener {
   private Handler mTimeHandler = new Handler();
 
   private Runnable mRunnableGameLoop = new Runnable() {
-    private final int GAME_UPDATES_PER_SECOND = 30;//Cell phones have seldom more fps per seconds,
+    private final int GAME_UPDATES_PER_SECOND = 60;//Cell phones have seldom more fps per seconds,
     // although some have 120 now
     private final int UPDATE_INTERVAL_IN_MILLIS = 1000 / GAME_UPDATES_PER_SECOND;
     private final int MAX_FRAMESKIP = 4;
@@ -82,7 +83,7 @@ public class GameActivity extends BaseActivity implements SensorEventListener {
     long nextUpdateGame = -1;
 
     public void run() {
-      if (!MinigamesManager.isAllMinigamesInitialized()) {
+      if (!mMinigamesManager.isAllMinigamesInitialized()) {
         mGameLoopHandler.postDelayed(this, 25);
         return;
       }
@@ -99,18 +100,14 @@ public class GameActivity extends BaseActivity implements SensorEventListener {
       refreshDisplayGame();
 
       if (mGameLoopHandler != null) {
-        //TODO optimalizuj aby sa toto nevolalo furt dokola (kára batterku a môže spôsobavať na
-        // shit devicoch, že ostatné loopy sa nebudú tak často dostavať k slovu,
-        // so what ostatné stačí za sekund a tutorial ani nehovorím
-        //anyway je to useless prekreslovať neupdatované polia, tu by malo byť nejaký presný čas.
         mGameLoopHandler.post(this);
       }
     }
 
     private void updateGame() {
       for (int i = 0; i < 4; i++) {
-        if (MinigamesManager.getmMinigamesActivityFlags()[i]) {
-          MinigamesManager.sMinigames[i].updateMinigame();
+        if (mMinigamesManager.getMinigamesActivityFlags()[i]) {
+          mMinigamesManager.getMinigames()[i].updateMinigame();
         }
       }
     }
@@ -121,7 +118,7 @@ public class GameActivity extends BaseActivity implements SensorEventListener {
       }
 
       for (int i = 0; i < 4; i++) {
-        if (MinigamesManager.getmMinigamesActivityFlags()[i]) {
+        if (mMinigamesManager.getMinigamesActivityFlags()[i]) {
           mCanvases[i].invalidate();
         }
       }
@@ -200,14 +197,13 @@ public class GameActivity extends BaseActivity implements SensorEventListener {
     }
   };
 
-  //VL wtf someone has reference to activity?
-  public boolean gameStopped = true;
+  private boolean gameStopped = true;
 
   private Toast mToast;
   private MusicPlayer mMusicPlayer;
-  private SensorManager sm = null;
-  private TextView mScoreView = null;
-  private TextView mDifficultyView = null;
+  private SensorManager sm;
+  private TextView mScoreView;
+  private TextView mDifficultyView;
   private BaseGameCanvasView mCanvases[];
   private boolean mTutorialMode;
   private boolean wasGameSaved;
@@ -230,6 +226,7 @@ public class GameActivity extends BaseActivity implements SensorEventListener {
   private View mVerticalSeparator1;
   private View mVerticalSeparator2;
   private View mHorizontalSeparator;
+  private MinigamesManager mMinigamesManager;
 
   @Override
   public void onCreate(Bundle icicle) {
@@ -284,15 +281,16 @@ public class GameActivity extends BaseActivity implements SensorEventListener {
   }
 
   void initMinigames() {
-    //I need to have direct pointer because of speed
-    MinigamesManager.loadMinigames(this);
-    minigametoSendEvents1 = (userInteractedVerticalListener) MinigamesManager.sMinigames[0];
-    minigametoSendEvents2 = (userInteractedHorizontalListener) MinigamesManager.sMinigames[1];
+    mMinigamesManager = new MinigamesManager();
+    mMinigamesManager.initMinigames(this);
+    BaseMiniGame[] minigames = mMinigamesManager.getMinigames();
+    minigametoSendEvents1 = (userInteractedVerticalListener) minigames[0];
+    minigametoSendEvents2 = (userInteractedHorizontalListener) minigames[1];
 
+    mMinigamesManager.activateAllMiniGames();
     for (int i = 0; i < 4; i++) {
-      MinigamesManager.activateMinigame(this, i);
-      GameTimeManager.registerLevelChangedObserver(MinigamesManager.sMinigames[i]);
-      mCanvases[i].attachMinigame(MinigamesManager.sMinigames[i], i);
+      GameTimeManager.registerLevelChangedObserver(minigames[i]);
+      mCanvases[i].attachMinigame(minigames[i], i);
     }
 
     for (int i = 0; i < 4; i++) {
@@ -425,9 +423,9 @@ public class GameActivity extends BaseActivity implements SensorEventListener {
   public void startGameTutorial() {
     stopTutorialGameLoop();
 
-    MinigamesManager.deactivateAllMiniGames(this);
+    mMinigamesManager.deactivateAllMiniGames();
     for (int i = 0; i <= sTutorialLastLevel; i++) {
-      MinigamesManager.activateMinigame(this, i);
+      mMinigamesManager.activateMinigame(i);
     }
 
     if (mMusicPlayer != null && MGSettings.isMusicOn()) {
@@ -517,20 +515,20 @@ public class GameActivity extends BaseActivity implements SensorEventListener {
         }
 
         if (mOrientation == Configuration.ORIENTATION_LANDSCAPE) {
-          if (MinigamesManager.isMiniGameActive(0)) {
+          if (mMinigamesManager.isMiniGameActive(0)) {
             minigametoSendEvents1.onUserInteractedVertical(event.values[1] - DEFAULT_AXIS_X);
           }
 
-          if (MinigamesManager.isMiniGameActive(1)) {
+          if (mMinigamesManager.isMiniGameActive(1)) {
             minigametoSendEvents2.onUserInteractedHorizontal(-event.values[0] - DEFAULT_AXIS_Y);
           }
 
         } else {
-          if (MinigamesManager.isMiniGameActive(0)) {
+          if (mMinigamesManager.isMiniGameActive(0)) {
             minigametoSendEvents1.onUserInteractedVertical(event.values[0] - DEFAULT_AXIS_Y);
           }
 
-          if (MinigamesManager.isMiniGameActive(1)) {
+          if (mMinigamesManager.isMiniGameActive(1)) {
             minigametoSendEvents2.onUserInteractedHorizontal(event.values[1] - DEFAULT_AXIS_X);
           }
         }
@@ -578,18 +576,14 @@ public class GameActivity extends BaseActivity implements SensorEventListener {
 
     closedByButton = false;
     sm.unregisterListener(this);
-    if (mMusicPlayer != null) {
-      mMusicPlayer.pauseMusic();
-    }
+    mMusicPlayer.pauseMusic();
     wasActivityPaused = true;
   }
 
   @Override
   public void onStop() {
     super.onStop();
-    if (mMusicPlayer != null) {
-      mMusicPlayer.stopMusic();
-    }
+    mMusicPlayer.stopMusic();
   }
 
   public void onGameLost(int loser) {
@@ -597,8 +591,8 @@ public class GameActivity extends BaseActivity implements SensorEventListener {
     MGSettings.setGameSaved(false);
     if (!isTutorial() && !mLoseTracked) {
       MgTracker.trackGameFinished((System.currentTimeMillis() - mTimeGameStarted) / 1000, mLevel,
-          mScore, MinigamesManager.sMinigames[loser].getName());
-      Log.d("Minigame lost:", MinigamesManager.sMinigames[loser].getName());
+          mScore, mMinigamesManager.getMinigames()[loser].getName());
+      Log.d("Minigame lost:", mMinigamesManager.getMinigames()[loser].getName());
       mLoseTracked = true;
     }
 
@@ -678,15 +672,13 @@ public class GameActivity extends BaseActivity implements SensorEventListener {
   }
 
   void stopCurrentGame() {
-    destroyEverythingSafely();
+    stopMusic();
+    stopLoops();
   }
 
   public void stopTutorial() {
-    destroyEverythingSafely();
-  }
-
-  public BaseGameCanvasView[] getCanvases() {
-    return mCanvases;
+    stopMusic();
+    stopLoops();
   }
 
   public int getScore() {
@@ -707,6 +699,10 @@ public class GameActivity extends BaseActivity implements SensorEventListener {
     return frames;
   }
 
+  public MinigamesManager getMinigamesManager() {
+    return mMinigamesManager;
+  }
+
   public boolean isGameStopped() {
     return gameStopped;
   }
@@ -716,9 +712,7 @@ public class GameActivity extends BaseActivity implements SensorEventListener {
   }
 
   public void stopMusic() {
-    if (mMusicPlayer != null) {
-      mMusicPlayer.stopMusic();
-    }
+    mMusicPlayer.stopMusic();
   }
 
   @Override
@@ -733,20 +727,15 @@ public class GameActivity extends BaseActivity implements SensorEventListener {
     if (mTutorialMode) {
       GameDialogs.sLostGame = true;
     }
-    for (BaseGameCanvasView canvas : mCanvases) {
-      canvas.detachMinigame();
-    }
-    MinigamesManager.detachGameRefFromMinigames();
 
-    destroyEverythingSafely();
+    stopMusic();
+    stopLoops();
+    clearStuff();
     //    Debug.stopMethodTracing();
   }
 
-  private void destroyEverythingSafely() {
-    if (mMusicPlayer != null) {
-      mMusicPlayer.stopMusic();
-      mMusicPlayer = null;
-    }
+  private void stopLoops() {
+
     if (sm != null) {
       sm.unregisterListener(this);
     }
@@ -770,5 +759,18 @@ public class GameActivity extends BaseActivity implements SensorEventListener {
     mGameLoopHandler = null;
     mTimeHandler = null;
     GameTimeManager.clearTimeObservers();
+  }
+
+  private void clearStuff() {
+    for (BaseGameCanvasView canvas : mCanvases) {
+      canvas.detachMinigame();
+    }
+    mCanvases = null;
+    mMinigamesManager.detachGameRefFromMinigames();
+
+    mMinigamesManager = null;
+    minigametoSendEvents1 = null;
+    minigametoSendEvents2 = null;
+    mToast = null;
   }
 }

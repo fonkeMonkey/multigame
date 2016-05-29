@@ -273,6 +273,11 @@ public class MiniGameTInvader extends BaseMiniGame implements
   }
 
   @Override
+  public void onMinigameLoaded() {
+
+  }
+
+  @Override
   public void reskinLocally(SkinManager.Skin currentSkin) {
     final Resources resources = mGame.getResources();
     switch (currentSkin) {

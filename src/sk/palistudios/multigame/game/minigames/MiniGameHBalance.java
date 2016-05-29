@@ -55,10 +55,13 @@ public class MiniGameHBalance extends BaseMiniGame implements
   private int mBarThickness;
 
   private List<PointSerializable> mBallPathHistory = new ArrayList<PointSerializable>();
+  private transient RandomGenerator mRandomGenerator;
+  private PaintSerializable mPaintHistory;
 
   protected MiniGameHBalance(String fileName, Integer position, GameActivity game) {
     super(fileName, position, game);
     type = Type.Horizontal;
+    mRandomGenerator = RandomGenerator.getInstance();
   }
 
   @Override
@@ -92,6 +95,7 @@ public class MiniGameHBalance extends BaseMiniGame implements
 
     mPaintBallColor = new PaintSerializable(mPrimaryColor, Paint.Style.FILL);
     mPaintBallCenterColor = new PaintSerializable(mSecondaryColor, Paint.Style.FILL);
+    mPaintHistory = new PaintSerializable(mPrimaryColor, Paint.Style.FILL);
     final int barColor = (mAlternateColor != 0) ? mAlternateColor : mPrimaryColor;
     mPaintBarColor = new PaintSerializable(barColor, Paint.Style.STROKE);
 
@@ -110,7 +114,7 @@ public class MiniGameHBalance extends BaseMiniGame implements
   public void updateMinigame() {
     //for random movement of the bar
     if (framesToGo == 0) {
-      onUserInteractedHorizontal(RandomGenerator.getInstance().generateFloat(-0.5f, 0.5f));
+      onUserInteractedHorizontal(mRandomGenerator.generateFloat(-0.5f, 0.5f));
       framesToGo = mFramesToRandomLeverageMovement;
     }
     framesToGo--;
@@ -119,9 +123,9 @@ public class MiniGameHBalance extends BaseMiniGame implements
     pointBarLeftEdge.mPoint.y = Math.round(splitHeight - lean);
     pointBarRightEdge.mPoint.y = Math.round(splitHeight + lean);
 
-    float speedDelta = lean / leanRatio;
 
     //BALL
+    float speedDelta = lean / leanRatio;
     if (momentalBallSpeed + speedDelta >= -maxSpeed && momentalBallSpeed + speedDelta <= maxSpeed) {
       momentalBallSpeed += speedDelta;
     } else {
@@ -187,23 +191,22 @@ public class MiniGameHBalance extends BaseMiniGame implements
 
   private void drawMotionBlur(Canvas canvas) {
     PointSerializable point;
-    final PaintSerializable paint = new PaintSerializable(mPrimaryColor, Paint.Style.FILL);
-    paint.mPaint.setAlpha(51); //20%
+    mPaintHistory.mPaint.setAlpha(51); //20%
     if (mBallPathHistory.size() > 29) {
       point = mBallPathHistory.get(29);
-      canvas.drawCircle(point.mPoint.x, point.mPoint.y, mBallSize, paint.mPaint);
+      canvas.drawCircle(point.mPoint.x, point.mPoint.y, mBallSize, mPaintHistory.mPaint);
     }
 
-    paint.mPaint.setAlpha(90); //35%
+    mPaintHistory.mPaint.setAlpha(90); //35%
     if (mBallPathHistory.size() > 14) {
       point = mBallPathHistory.get(14);
-      canvas.drawCircle(point.mPoint.x, point.mPoint.y, mBallSize, paint.mPaint);
+      canvas.drawCircle(point.mPoint.x, point.mPoint.y, mBallSize, mPaintHistory.mPaint);
     }
 
-    paint.mPaint.setAlpha(128); //50%
+    mPaintHistory.mPaint.setAlpha(128); //50%
     if (mBallPathHistory.size() > 4) {
       point = mBallPathHistory.get(4);
-      canvas.drawCircle(point.mPoint.x, point.mPoint.y, mBallSize, paint.mPaint);
+      canvas.drawCircle(point.mPoint.x, point.mPoint.y, mBallSize, mPaintHistory.mPaint);
     }
   }
 
@@ -242,6 +245,11 @@ public class MiniGameHBalance extends BaseMiniGame implements
     }
 
     maxSpeed *= 1.05f;
+  }
+
+  @Override
+  public void onMinigameLoaded() {
+    mRandomGenerator = new RandomGenerator();
   }
 
   @Override

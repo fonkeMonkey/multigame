@@ -17,7 +17,6 @@ import com.google.android.gms.analytics.Tracker;
 import sk.palistudios.multigame.MgTracker;
 import sk.palistudios.multigame.R;
 import sk.palistudios.multigame.customization_center.minigames.MinigamesFragment;
-import sk.palistudios.multigame.game.minigames.MinigamesManager;
 import sk.palistudios.multigame.game.persistence.MGSettings;
 import sk.palistudios.multigame.hall_of_fame.HallOfFameActivity;
 import sk.palistudios.multigame.hall_of_fame.HofDatabaseCenter;
@@ -46,7 +45,7 @@ public class GameDialogs {
         }
       }
     };
-    MinigamesManager.deactivateAllMiniGames(game);
+    game.getMinigamesManager().deactivateAllMiniGames();
 
     AlertDialog.Builder builder = new AlertDialog.Builder(game);
     builder.setOnCancelListener(new DialogInterface.OnCancelListener() {
@@ -63,7 +62,7 @@ public class GameDialogs {
   }
 
   public static void showNextTutorialWindow(final GameActivity game, boolean showPopup) {
-    MinigamesManager.deactivateAllMiniGames(game);
+    game.getMinigamesManager().deactivateAllMiniGames();
     if (!GameDialogs.sLostGame) {
       GameActivity.sTutorialLastLevel++;
     }
@@ -112,10 +111,10 @@ public class GameDialogs {
       }
       String title = symbol + game.getString(R.string.minigame) +
           (GameActivity.sTutorialLastLevel + 1) + ": " +
-          MinigamesManager.getMinigames()[GameActivity.sTutorialLastLevel].getName();
+          game.getMinigamesManager().getMinigames()[GameActivity.sTutorialLastLevel].getName();
 
       String message =
-          MinigamesManager.getMinigames()[GameActivity.sTutorialLastLevel].getDescription(game);
+          game.getMinigamesManager().getMinigames()[GameActivity.sTutorialLastLevel].getDescription(game);
       builder.setTitle(Html.fromHtml(title));
       builder.setMessage(Html.fromHtml(message)).setPositiveButton(Html.fromHtml(
           "<b>" + game.getString(R.string.tutorial_try) + "</b>"), dialogClickListener).show()
@@ -143,7 +142,7 @@ public class GameDialogs {
         }
       }
     };
-    MinigamesManager.deactivateAllMiniGames(game);
+    game.getMinigamesManager().deactivateAllMiniGames();
     game.stopTutorial();
     AlertDialog.Builder builder = new AlertDialog.Builder(game);
     builder.setCancelable(false).setTitle(game.getString(R.string.tutorial_finished_title))

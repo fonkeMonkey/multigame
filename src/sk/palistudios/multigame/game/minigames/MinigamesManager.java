@@ -6,15 +6,62 @@ import sk.palistudios.multigame.game.GameActivity;
 import sk.palistudios.multigame.game.persistence.GameSaverLoader;
 import sk.palistudios.multigame.game.persistence.MGSettings;
 
+/**
+ * Encapsulates minigames and handles access to them.
+ */
 public class MinigamesManager {
+  private BaseMiniGame[] mMinigames = new BaseMiniGame[4];
+  private boolean[] mMinigamesActivityFlags = new boolean[4];
 
-  //TODO tuto by sa mali centralnejsie robit tie veci a nie volat zvonku activateMinigame po jednom
-  //
+  public BaseMiniGame[] getMinigames() {
+    return mMinigames;
+  }
 
-  public static BaseMiniGame[] sMinigames = new BaseMiniGame[4];
-  private static boolean[] mMinigamesActivityFlags = new boolean[4];
+  public void setMinigames(BaseMiniGame[] minigames) {
+    mMinigames = minigames;
+  }
 
-  public static void loadMinigames(GameActivity game) {
+  public void activateAllMiniGames() {
+    for (int i = 0; i < 4; i++) {
+      activateMinigame(i);
+    }
+  }
+
+  public void deactivateAllMiniGames() {
+    for (int i = 0; i < 4; i++) {
+      deactivateMinigame(i);
+    }
+  }
+
+  public void activateMinigame(int number) {
+    mMinigamesActivityFlags[number] = true;
+    mMinigames[number].onMinigameActivated();
+  }
+
+  public void deactivateMinigame(int number) {
+    mMinigamesActivityFlags[number] = false;
+    mMinigames[number].onMinigameDeactivated();
+  }
+
+  public void detachGameRefFromMinigames() {
+    for (BaseMiniGame mg : mMinigames) {
+      mg.mGame = null;
+    }
+  }
+
+  public boolean isMiniGameActive(int number) {
+    return mMinigamesActivityFlags[number];
+  }
+
+  public boolean[] getMinigamesActivityFlags() {
+    return mMinigamesActivityFlags;
+  }
+
+  public void setmMinigamesActivityFlags(boolean[] flags) {
+    System.arraycopy(flags, 0, mMinigamesActivityFlags, 0, 4);
+  }
+
+  public void initMinigames(GameActivity game) {
     boolean isGameSaved = MGSettings.isGameSaved();
     boolean isTutorialActive = MGSettings.isTutorialModeActivated();
 
@@ -22,15 +69,14 @@ public class MinigamesManager {
     if (!isGameSaved || isTutorialActive) {
       String[] activeMinigameNames = MGSettings.getChosenMinigamesNames();
       for (int i = 0; i < activeMinigameNames.length; i++) {
-        sMinigames[i] = loadMinigame(game, activeMinigameNames[i], i);
+        mMinigames[i] = getMinigameInstance(game, activeMinigameNames[i], i);
       }
     } else {
       GameSaverLoader.loadGame(game);
     }
   }
 
-  private static BaseMiniGame loadMinigame(GameActivity game, String activeMinigameName,
-      int position) {
+  private BaseMiniGame getMinigameInstance(GameActivity game, String activeMinigameName, int position) {
     if (activeMinigameName.equals("VBird")) {
       return new MiniGameVBird("MG_V", position, game);
     } else if (activeMinigameName.equals("VBouncer")) {
@@ -53,58 +99,18 @@ public class MinigamesManager {
     throw new RuntimeException("Bad game name!");
   }
 
-  private static String resolveTouchType(int position) {
-    if(position == 2) return "MG_T1";
-    if(position == 3) return "MG_T2";
+  private String resolveTouchType(int position) {
+    if (position == 2) {
+      return GameSaverLoader.GAME_TOUCH1;
+    }
+    if (position == 3) {
+      return GameSaverLoader.GAME_TOUCH2;
+    }
     throw new RuntimeException("Touch game not on a touch position!");
   }
 
-  protected static void activateAllMiniGames(GameActivity game) {
-    for (int i = 0; i < 4; i++) {
-      activateMinigame(game, i);
-    }
-  }
-
-  public static void deactivateAllMiniGames(GameActivity game) {
-    for (int i = 0; i < 4; i++) {
-      deactivateMinigame(game, i);
-    }
-  }
-
-  public static void activateMinigame(GameActivity game, int number) {
-    mMinigamesActivityFlags[number] = true;
-    sMinigames[number].onMinigameActivated();
-  }
-
-  public static void deactivateMinigame(GameActivity game, int number) {
-    mMinigamesActivityFlags[number] = false;
-    sMinigames[number].onMinigameDeactivated();
-  }
-
-  public static void detachGameRefFromMinigames(){
-    for(BaseMiniGame mg : sMinigames){
-      mg.mGame = null;
-    }
-  }
-
-  public static boolean isMiniGameActive(int number) {
-    return mMinigamesActivityFlags[number];
-  }
-
-  public static boolean[] getmMinigamesActivityFlags() {
-    return mMinigamesActivityFlags;
-  }
-
-  public static void setmMinigamesActivityFlags(boolean[] flags) {
-    System.arraycopy(flags, 0, mMinigamesActivityFlags, 0, 4);
-  }
-
-  public static BaseMiniGame[] getMinigames() {
-    return sMinigames;
-  }
-
-  public static boolean isAllMinigamesInitialized() {
-    for (BaseMiniGame mg : sMinigames) {
+  public boolean isAllMinigamesInitialized() {
+    for (BaseMiniGame mg : mMinigames) {
       if (!mg.isMinigameInitialized()) {
         return false;
       }
