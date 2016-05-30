@@ -7,7 +7,7 @@
 
   <!-- Main Menu -->
   <string name="app_name">multiGame</string>
-  <string name="app_id">225517634276553</string>
+  <string name="app_id" translatable="false">225517634276553</string>
   <string name="edit_message">Enter a message</string>
   <string name="button_send">Send</string>
   <string name="menu_settings">Settings</string>
