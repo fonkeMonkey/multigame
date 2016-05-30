@@ -31,7 +31,7 @@ import sk.palistudios.multigame.game.persistence.GameSaverLoader;
 import sk.palistudios.multigame.game.persistence.MGSettings;
 import sk.palistudios.multigame.game.time.GameTimeManager;
 import sk.palistudios.multigame.game.view.BaseGameCanvasView;
-import sk.palistudios.multigame.hall_of_fame.HofDatabaseCenter;
+import sk.palistudios.multigame.hall_of_fame.HallofFameDatabaseHelper;
 import sk.palistudios.multigame.mainMenu.DebugSettings;
 import sk.palistudios.multigame.tools.AchievementsHelper;
 import sk.palistudios.multigame.tools.DisplayHelper;
@@ -611,11 +611,8 @@ public class GameActivity extends BaseActivity implements SensorEventListener {
       MGSettings.StatsGamesPlayedIncrease();
 
       AchievementsHelper.checkAchievements(mScore, mLevel, getApplicationContext());
-      HofDatabaseCenter.initDB(this);
       //TODO dovnotura open close tej metody
-      HofDatabaseCenter.getsHofDb().open();
-      boolean isInHallOfFame = HofDatabaseCenter.getsHofDb().isInHallOfFame(mScore);
-      HofDatabaseCenter.getsHofDb().close();
+      boolean isInHallOfFame = HallofFameDatabaseHelper.getInstance(this).isInHallOfFame(mScore);
 
       if (isInHallOfFame) {
         GameDialogs.showWinnerDialogWindow(this);

@@ -197,7 +197,7 @@ public class HallOfFameActivity extends BaseActivity
 
   private void fillData() {
     //cucni databazu
-    final HofDatabaseCenter mHofDb = new HofDatabaseCenter(this);
+    final HallofFameDatabaseHelper mHofDb = new HallofFameDatabaseHelper(this);
     mHofDb.open();
     final List<HofItem> dbRows = mHofDb.fetchAllRows();
     mHofDb.close();

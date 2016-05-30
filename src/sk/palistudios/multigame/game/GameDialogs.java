@@ -19,7 +19,7 @@ import sk.palistudios.multigame.R;
 import sk.palistudios.multigame.customization_center.minigames.MinigamesFragment;
 import sk.palistudios.multigame.game.persistence.MGSettings;
 import sk.palistudios.multigame.hall_of_fame.HallOfFameActivity;
-import sk.palistudios.multigame.hall_of_fame.HofDatabaseCenter;
+import sk.palistudios.multigame.hall_of_fame.HallofFameDatabaseHelper;
 import sk.palistudios.multigame.hall_of_fame.HofItem;
 import sk.palistudios.multigame.mainMenu.DebugSettings;
 import sk.palistudios.multigame.mainMenu.MainMenuActivity;
@@ -221,21 +221,21 @@ public class GameDialogs {
         dialogClickListener).show();
   }
 
-  public static void showWinnerDialogWindow(final GameActivity game) {
-    Tracker t = MgTracker.getTracker(game);
+  public static void showWinnerDialogWindow(final GameActivity gameActivity) {
+    Tracker t = MgTracker.getTracker(gameActivity);
     t.setScreenName("Winner");
     t.send(new HitBuilders.AppViewBuilder().build());
 
-    final EditText userNameEditText = new EditText(game);
+    final EditText userNameEditText = new EditText(gameActivity);
     userNameEditText.setSingleLine();
-    userNameEditText.setText(game.getString(R.string.button_hall_of_fame_multigame_fan));
+    userNameEditText.setText(gameActivity.getString(R.string.button_hall_of_fame_multigame_fan));
     if (!(("").equals(MGSettings.getLastHofName()))) {
       userNameEditText.setText(MGSettings.getLastHofName());
     }
     userNameEditText.setSelection(userNameEditText.getText().length());
 
-    final Activity act = game;
-    final int score = game.getScore();
+    final Activity act = gameActivity;
+    final int score = gameActivity.getScore();
     DialogInterface.OnClickListener dialogClickListener = new DialogInterface.OnClickListener() {
       @Override
       public void onClick(DialogInterface dialog, int which) {
@@ -243,51 +243,51 @@ public class GameDialogs {
         switch (which) {
           case DialogInterface.BUTTON_POSITIVE:
             /* Showing so that animation does not look that bad when moving to other activity */
-            showStatusBar(game);
+            showStatusBar(gameActivity);
 
             MgTracker.trackGameWinnerOkButtonPushed();
             String playerName = userNameEditText.getText().toString();
             MGSettings.setLastHofName(playerName);
 
-            HofDatabaseCenter db = HofDatabaseCenter.getsHofDb();
-            int playerPosition = db.writeIntoHallOfFame(new HofItem(playerName, game.getScore()));
-            if (MGSettings.getHighestScore() < game.getScore()) {
-              MGSettings.setHighestScore(game.getScore());
+            HallofFameDatabaseHelper db = HallofFameDatabaseHelper.getInstance(gameActivity);
+            int playerPosition = db.writeIntoHallOfFame(new HofItem(playerName, gameActivity.getScore()));
+            if (MGSettings.getHighestScore() < gameActivity.getScore()) {
+              MGSettings.setHighestScore(gameActivity.getScore());
               MGSettings.setHighestScoreSubmitted(false);
             }
             intent = new Intent(act, HallOfFameActivity.class);
             intent.putExtra(HallOfFameActivity.SCROLL_TO_POSITION, playerPosition);
-            game.startActivity(intent);
+            gameActivity.startActivity(intent);
             break;
           case DialogInterface.BUTTON_NEGATIVE:
             MgTracker.trackGameWinnerRetryButtonPushed();
-            restartGame(game);
+            restartGame(gameActivity);
             break;
           case DialogInterface.BUTTON_NEUTRAL:
             MgTracker.trackGameWinnerShareButtonPushed();
-            if (InternetChecker.isNetworkAvailable(game)) {
-              MainMenuActivity.setOfferHighScore(game.getScore());
+            if (InternetChecker.isNetworkAvailable(gameActivity)) {
+              MainMenuActivity.setOfferHighScore(gameActivity.getScore());
               FacebookSharer.shareScoreToFacebook(score, true);
-              game.finish();
+              gameActivity.finish();
             } else {
-              askUserToConnect(game, true, score);
+              askUserToConnect(gameActivity, true, score);
             }
             break;
         }
       }
     };
-    AlertDialog.Builder builder = new AlertDialog.Builder(game);
-    builder.setCancelable(false).setView(userNameEditText).setTitle(game.getString(
+    AlertDialog.Builder builder = new AlertDialog.Builder(gameActivity);
+    builder.setCancelable(false).setView(userNameEditText).setTitle(gameActivity.getString(
         R.string.game_winner_title)).
-        setMessage(game.getString(R.string.game_winner)).setPositiveButton(Html.fromHtml(
-        "<b>" + "OK" + "</b>"), dialogClickListener).setNegativeButton(game.getString(
+        setMessage(gameActivity.getString(R.string.game_winner)).setPositiveButton(Html.fromHtml(
+        "<b>" + "OK" + "</b>"), dialogClickListener).setNegativeButton(gameActivity.getString(
         R.string.game_retry), dialogClickListener).setNeutralButton("Share", dialogClickListener)
         .show();
   }
 
-  public static void showWinnerDialogAfterShareWindow(final MainMenuActivity act, final int score) {
+  public static void showWinnerDialogAfterShareWindow(final MainMenuActivity mainMenuActivity, final int score) {
 
-    final EditText userNameEditText = new EditText(act);
+    final EditText userNameEditText = new EditText(mainMenuActivity);
     userNameEditText.setSingleLine();
     DialogInterface.OnClickListener dialogClickListener = new DialogInterface.OnClickListener() {
       @Override
@@ -297,23 +297,23 @@ public class GameDialogs {
           case DialogInterface.BUTTON_POSITIVE:
             String playerName = userNameEditText.getText().toString();
             if (playerName.equals("")) {
-              playerName = act.getString(R.string.button_hall_of_fame_multigame_fan);
+              playerName = mainMenuActivity.getString(R.string.button_hall_of_fame_multigame_fan);
             }
 
-            HofDatabaseCenter db = HofDatabaseCenter.getsHofDb();
+            HallofFameDatabaseHelper db = HallofFameDatabaseHelper.getInstance(mainMenuActivity);
             db.writeIntoHallOfFame(new HofItem(playerName, score));
-            intent = new Intent(act, HallOfFameActivity.class);
-            act.startActivity(intent);
+            intent = new Intent(mainMenuActivity, HallOfFameActivity.class);
+            mainMenuActivity.startActivity(intent);
             break;
           case DialogInterface.BUTTON_NEGATIVE:
             break;
         }
       }
     };
-    AlertDialog.Builder builder = new AlertDialog.Builder(act);
-    builder.setCancelable(false).setView(userNameEditText).setMessage(act.getString(
+    AlertDialog.Builder builder = new AlertDialog.Builder(mainMenuActivity);
+    builder.setCancelable(false).setView(userNameEditText).setMessage(mainMenuActivity.getString(
         R.string.game_ask_for_name)).setPositiveButton(Html.fromHtml("<b>" + "OK" + "</b>"),
-        dialogClickListener).setNegativeButton(act.getString(R.string.cancel), dialogClickListener)
+        dialogClickListener).setNegativeButton(mainMenuActivity.getString(R.string.cancel), dialogClickListener)
         .show();
   }
 

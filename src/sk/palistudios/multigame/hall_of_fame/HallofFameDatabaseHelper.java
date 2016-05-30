@@ -13,7 +13,7 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.util.Log;
 
-public class HofDatabaseCenter extends SQLiteOpenHelper {
+public class HallofFameDatabaseHelper extends SQLiteOpenHelper {
 
   private static final int DATABASE_VERSION = 3;
   private static final String TABLE_NAME = "HallOfFame";
@@ -21,20 +21,18 @@ public class HofDatabaseCenter extends SQLiteOpenHelper {
       "CREATE TABLE " + TABLE_NAME + "(ID INTEGER primary key autoincrement, " +
           "NAME TEXT NOT NULL, " + "SCORE INTEGER NOT NULL " + ");";
   private static final String DATABASE_NAME = "HallOfFame";
-  private static HofDatabaseCenter sHofDb = null;
-  private SQLiteDatabase database;
 
-  public HofDatabaseCenter(Context context) {
+  private static HallofFameDatabaseHelper sHofDb = null;
+  private SQLiteDatabase mDatabase;
+
+  public HallofFameDatabaseHelper(Context context) {
     super(context, "HallOfFame", null, DATABASE_VERSION);
   }
 
-  public static void initDB(Context context) {
+  public static HallofFameDatabaseHelper getInstance(Context context) {
     if (sHofDb == null) {
-      sHofDb = new HofDatabaseCenter(context);
+      sHofDb = new HallofFameDatabaseHelper(context);
     }
-  }
-
-  public static HofDatabaseCenter getsHofDb() {
     return sHofDb;
   }
 
@@ -45,8 +43,6 @@ public class HofDatabaseCenter extends SQLiteOpenHelper {
 
   @Override
   public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
-    db.execSQL("DROP TABLE IF EXISTS " + TABLE_NAME);
-    onCreate(db);
   }
 
   public void createRow(String name, int score) {
@@ -56,31 +52,31 @@ public class HofDatabaseCenter extends SQLiteOpenHelper {
     ContentValues initialValues = new ContentValues();
     initialValues.put("name", name);
     initialValues.put("score", score);
-    database.insert(TABLE_NAME, null, initialValues);
+    mDatabase.insert(TABLE_NAME, null, initialValues);
   }
 
   public void open() throws SQLException {
-    database = getWritableDatabase();
+    mDatabase = getWritableDatabase();
   }
 
   @Override
   public void close() {
-    database.close();
+    mDatabase.close();
   }
 
   public void deleteRow(long rowId) {
-    database.delete(TABLE_NAME, "ID=" + rowId, null);
+    mDatabase.delete(TABLE_NAME, "ID=" + rowId, null);
   }
 
   public void deleteAll() {
-    database.delete(TABLE_NAME, null, null);
+    mDatabase.delete(TABLE_NAME, null, null);
   }
 
   public ArrayList<HofItem> fetchAllRows() {
     ArrayList<HofItem> rows = new ArrayList<HofItem>();
     try {
 
-      Cursor c = database.query(TABLE_NAME, new String[]{"ID", "name", "score"}, null, null, null,
+      Cursor c = mDatabase.query(TABLE_NAME, new String[]{"ID", "name", "score"}, null, null, null,
           null, "score");
 
       int numRows = c.getCount();
@@ -103,7 +99,9 @@ public class HofDatabaseCenter extends SQLiteOpenHelper {
   }
 
   public boolean isInHallOfFame(int score) {
+    open();
     ArrayList<HofItem> rows = fetchAllRows();
+    close();
 
     //if its empty
     if (rows.size() < 10) {
@@ -120,7 +118,6 @@ public class HofDatabaseCenter extends SQLiteOpenHelper {
 
   public void fillDbFirstTime() {
     open();
-    //        ArrayList<HofItem> scoreList = new ArrayList<HofItem>();
 
     createRow("Chuck N.", 10000);
     createRow("Steven S.", 9000);
@@ -132,13 +129,6 @@ public class HofDatabaseCenter extends SQLiteOpenHelper {
     createRow("Vin D.", 3000);
     createRow("Denzel W.", 2000);
     createRow("Jason S.", 1000);
-
-    //        ContentValues initialValues = new ContentValues();
-    //        initialValues.put("name", name);
-    //        initialValues.put("score", score);
-    //        database.insert(TABLE_NAME, null, initialValues);
-    //
-    //        writeScoreList(scoreList);
 
     close();
   }
@@ -221,12 +211,5 @@ public class HofDatabaseCenter extends SQLiteOpenHelper {
     }
 
     return newList;
-  }
-
-  class Row extends Object {
-
-    public long ID;
-    public String name;
-    public int score;
   }
 }
