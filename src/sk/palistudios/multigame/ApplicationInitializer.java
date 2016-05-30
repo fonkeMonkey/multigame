@@ -4,10 +4,11 @@ package sk.palistudios.multigame;
 
 import android.content.Context;
 import android.os.AsyncTask;
+import android.os.StrictMode;
 
 import sk.palistudios.multigame.game.persistence.MGSettings;
 import sk.palistudios.multigame.hall_of_fame.HallOfFameActivity;
-import sk.palistudios.multigame.hall_of_fame.HofDatabaseCenter;
+import sk.palistudios.multigame.hall_of_fame.HallofFameDatabaseHelper;
 import sk.palistudios.multigame.mainMenu.DebugSettings;
 import sk.palistudios.multigame.tools.sound.SoundEffectsCenter;
 
@@ -15,9 +16,16 @@ public class ApplicationInitializer {
   public static void initApplication(Context context) {
     MgTracker.init(context);
 
+    if (BuildConfig.DEBUG) {
+      StrictMode.setThreadPolicy(
+          new StrictMode.ThreadPolicy.Builder().detectDiskReads().detectAll().penaltyLog().build());
+      StrictMode.setVmPolicy(new StrictMode.VmPolicy.Builder().
+          detectAll().penaltyLog().penaltyDeath().build());
+    }
+
         /* Init db in async task asap. */
     if (MGSettings.getDbInitialized() != true) {
-      initDatabase(context);
+      initDatabaseAsync(context);
     }
 
         /* Fallback for old devices with other theme than Kuba. */
@@ -31,8 +39,7 @@ public class ApplicationInitializer {
     SoundEffectsCenter.init(context);
     MGSettings.increaseTimesMultigameRun();
 
-    boolean firstTime = MGSettings.isAppRunningForFirstTime();
-    if (firstTime) {
+    if (MGSettings.isAppRunningForFirstTime()) {
       initCustomizationItems();
       initActiveMinigames();
       initAllMinigames();
@@ -47,6 +54,11 @@ public class ApplicationInitializer {
     }
     MGSettings.setLastSeenVersion(context);
 
+    initDebugStuff(context);
+  }
+
+  private static void initDebugStuff(Context context) {
+  /* Debug stuff */
     if (DebugSettings.debugFirstRun) {
       MGSettings.clear();
       clearDatabase(context);
@@ -59,10 +71,9 @@ public class ApplicationInitializer {
       initSkins();
       initCustomizationItems();
 
-      initDatabase(context);
+      initDatabaseAsync(context);
 
       MGSettings.setAppRunningForFirstTime(false);
-
     }
 
     if (DebugSettings.unlockAllItems) {
@@ -101,11 +112,11 @@ public class ApplicationInitializer {
     MGSettings.initializeAllMinigamesInfo(allMinigames);
   }
 
-  private static void initDatabase(final Context context) {
+  private static void initDatabaseAsync(final Context context) {
     new AsyncTask<Void, Void, Void>() {
       @Override
       protected Void doInBackground(Void... params) {
-        HofDatabaseCenter hofDb = new HofDatabaseCenter(context);
+        HallofFameDatabaseHelper hofDb = new HallofFameDatabaseHelper(context);
         hofDb.fillDbFirstTime();
         MGSettings.setDbInitialized(true);
         return null;
@@ -136,7 +147,7 @@ public class ApplicationInitializer {
   }
 
   private static void clearDatabase(Context context) {
-    HofDatabaseCenter hofDb = new HofDatabaseCenter(context);
+    HallofFameDatabaseHelper hofDb = new HallofFameDatabaseHelper(context);
     hofDb.open();
     hofDb.deleteAll();
     hofDb.close();

@@ -5,7 +5,7 @@ import android.content.Context;
 import android.util.Log;
 
 public class MgApplication extends Application {
-  public static Context sContext = null;
+  public static Context sContext;
 
   @Override
   public void onCreate() {
