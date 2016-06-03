@@ -57,7 +57,7 @@
   <string name="cc_music_tab_name">MUSIC</string>
   <string name="cc_minigames_tab_name">MINIGAMES</string>
   <string name="cc_skins_tab_name">SKINS</string>
-  <string name="cc_achievements_tab_name">ACHIEVEMENTS</string>
+  <string name="cc_achievements_tab_name">CHALLENGES</string>
   <string name="cc_more_games_tab_name">More games</string>
 
   <!-- Achievements center -->
