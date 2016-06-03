@@ -26,6 +26,7 @@ import sk.palistudios.multigame.BaseActivity;
 import sk.palistudios.multigame.MgTracker;
 import sk.palistudios.multigame.R;
 import sk.palistudios.multigame.game.minigames.BaseMiniGame;
+import sk.palistudios.multigame.game.minigames.MiniGameTCatcher;
 import sk.palistudios.multigame.game.minigames.MinigamesManager;
 import sk.palistudios.multigame.game.persistence.GameSaverLoader;
 import sk.palistudios.multigame.game.persistence.MGSettings;
@@ -291,6 +292,11 @@ public class GameActivity extends BaseActivity implements SensorEventListener {
     for (int i = 0; i < 4; i++) {
       GameTimeManager.registerLevelChangedObserver(minigames[i]);
       mCanvases[i].attachMinigame(minigames[i], i);
+      //M not nice we turn of hardware acceleration because of lack of hardware rendering for
+      // paths, read here http://stackoverflow.com/questions/15039829/drawing-paths-and-hardware-acceleration
+      if (minigames[i] instanceof MiniGameTCatcher) {
+        mCanvases[i].setLayerType(View.LAYER_TYPE_SOFTWARE, null);
+      }
     }
 
     for (int i = 0; i < 4; i++) {
@@ -300,7 +306,6 @@ public class GameActivity extends BaseActivity implements SensorEventListener {
 
   private void resolveOrientation() {
     mOrientation = DisplayHelper.getOrientationForAccelerometer(this);
-
   }
 
   @Override

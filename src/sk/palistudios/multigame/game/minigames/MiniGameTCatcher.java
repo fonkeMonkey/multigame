@@ -98,6 +98,31 @@ public class MiniGameTCatcher extends BaseMiniGame
     isMinigameInitialized = true;
   }
 
+  private void initMaskPath() {
+    if (mBackgroundColor == Color.TRANSPARENT || mBackgroundColor == 0) {
+      mMaskPathPaint.mPaint.setColor(Color.TRANSPARENT);
+      mMaskPathPaint.mPaint.setXfermode(new PorterDuffXfermode(PorterDuff.Mode.CLEAR));
+    } else {
+      mMaskPathPaint.mPaint.setColor(mBackgroundColor);
+    }
+    mMaskPath = new PathSerializable();
+    mMaskPath.setFillType(Path.FillType.EVEN_ODD);
+    mMaskPath.moveTo(mWidth, mHeight);
+    mMaskPath.lineTo(0, mHeight);
+    mMaskPath.lineTo(0, catchingBallsHeight);
+
+    for (int i = 0; i < NUMBER_OF_COLUMNS; i++) {
+      float left = (mCatchingBalls[i] - mBallSize * 2) - 1;
+      float right = left + (mBallSize * 4) + 1;
+      int top = catchingBallsHeight - mBallSize - 1;
+      int bottom = catchingBallsHeight + mBallSize + 1;
+      RectF rectF = new RectF(left, top, right, bottom);
+      mMaskPath.lineTo(left, catchingBallsHeight);
+      mMaskPath.arcTo(rectF, 0f, 180f);
+    }
+    mMaskPath.lineTo(mWidth, catchingBallsHeight);
+  }
+
   public void updateMinigame() {
     generateFallingBalls();
     moveObjects();
@@ -137,7 +162,6 @@ public class MiniGameTCatcher extends BaseMiniGame
 
   public void drawMinigame(Canvas mCanvas) {
     mCanvas.drawColor(mBackgroundColor);
-
     for (int i = 0; i < NUMBER_OF_COLUMNS; i++) {
       float left = mCatchingBalls[i] - mBallSize * 2;
       float right = left + (mBallSize * 4);
@@ -191,31 +215,6 @@ public class MiniGameTCatcher extends BaseMiniGame
     }
 
     mCanvas.drawPath(mMaskPath, mMaskPathPaint.mPaint);
-  }
-
-  private void initMaskPath() {
-    if (mBackgroundColor == Color.TRANSPARENT || mBackgroundColor == 0) {
-      mMaskPathPaint.mPaint.setColor(Color.TRANSPARENT);
-      mMaskPathPaint.mPaint.setXfermode(new PorterDuffXfermode(PorterDuff.Mode.CLEAR));
-    } else {
-      mMaskPathPaint.mPaint.setColor(mBackgroundColor);
-    }
-    mMaskPath = new PathSerializable();
-    mMaskPath.setFillType(Path.FillType.EVEN_ODD);
-    mMaskPath.moveTo(mWidth, mHeight);
-    mMaskPath.lineTo(0, mHeight);
-    mMaskPath.lineTo(0, catchingBallsHeight);
-
-    for (int i = 0; i < NUMBER_OF_COLUMNS; i++) {
-      float left = (mCatchingBalls[i] - mBallSize * 2) - 1;
-      float right = left + (mBallSize * 4) + 1;
-      int top = catchingBallsHeight - mBallSize - 1;
-      int bottom = catchingBallsHeight + mBallSize + 1;
-      RectF rectF = new RectF(left, top, right, bottom);
-      mMaskPath.lineTo(left, catchingBallsHeight);
-      mMaskPath.arcTo(rectF, 0f, 180f);
-    }
-    mMaskPath.lineTo(mWidth, catchingBallsHeight);
   }
 
   private void countCatchingBallsPosition() {
@@ -292,9 +291,9 @@ public class MiniGameTCatcher extends BaseMiniGame
     return context.getString(R.string.minigames_TCatcher);
   }
 
+  @Override
   public String getName() {
     return "Catcher";
-
   }
 
   private class FallingBall implements Serializable {
