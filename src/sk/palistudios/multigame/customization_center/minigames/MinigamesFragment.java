@@ -57,15 +57,15 @@ public class MinigamesFragment extends CustomizeFragment {
     mItems.add(new MgcItem(MinigamesFragment.SYMBOL_MINIGAME_TOUCH, "TGatherer", "Gatherer",
         MGSettings.isMinigameChosen("TGatherer")));
     mItems.add(new MgcItem(MinigamesFragment.SYMBOL_MINIGAME_TOUCH, "TInvader", "Invader",
-        MGSettings.isMinigameChosen("TInvader"), (String) getResources().getString(
-        R.string.cc_achievements_addicts_description) + (String) getResources().getString(
-        R.string.cc_achievements_requirement_ending)));
+        MGSettings.isMinigameChosen("TInvader"),
+        (String) getResources().getString(R.string.cc_achievements_addicts_description) +
+            (String) getResources().getString(R.string.cc_achievements_requirement_ending)));
     mItems.add(new MgcItem(MinigamesFragment.SYMBOL_MINIGAME_VERTICAL, "VBird", "Bird",
         MGSettings.isMinigameChosen("VBird")));
     mItems.add(new MgcItem(MinigamesFragment.SYMBOL_MINIGAME_VERTICAL, "VBouncer", "Bouncer",
-        MGSettings.isMinigameChosen("VBouncer"), (String) getResources().getString(
-        R.string.cc_achievements_good_start_description) + (String) getResources().getString(
-        R.string.cc_achievements_requirement_ending)));
+        MGSettings.isMinigameChosen("VBouncer"),
+        (String) getResources().getString(R.string.cc_achievements_good_start_description) +
+            (String) getResources().getString(R.string.cc_achievements_requirement_ending)));
     mMinigamesAdapter = new MgcArrayAdapter(getActivity(), mItems);
   }
 
@@ -88,29 +88,37 @@ public class MinigamesFragment extends CustomizeFragment {
     // ViewTreeObserver odmeraj
     // tie Imageviews
     boolean highQuality = !MemoryUtil.isLowMemoryDevice(getActivity());
-    mBalance.setImageBitmap(BitmapHelper.decodeSampledBitmapFromResource(getActivity(),
-        R.drawable.icon_minigame_balance, highQuality));
-    mCatcher.setImageBitmap(BitmapHelper.decodeSampledBitmapFromResource(getActivity(),
-        R.drawable.icon_minigame_catcher, highQuality));
-    mGatherer.setImageBitmap(BitmapHelper.decodeSampledBitmapFromResource(getActivity(),
-        R.drawable.icon_minigame_gatherer, highQuality));
+    mBalance.setImageBitmap(BitmapHelper
+        .decodeSampledBitmapFromResource(getActivity(), R.drawable.icon_minigame_balance,
+            highQuality));
+    mCatcher.setImageBitmap(BitmapHelper
+        .decodeSampledBitmapFromResource(getActivity(), R.drawable.icon_minigame_catcher,
+            highQuality));
+    mGatherer.setImageBitmap(BitmapHelper
+        .decodeSampledBitmapFromResource(getActivity(), R.drawable.icon_minigame_gatherer,
+            highQuality));
 
     if (mItems.get(3).isLocked()) {
-      mInvader.setImageBitmap(BitmapHelper.decodeSampledBitmapFromResource(getActivity(),
-          R.drawable.icon_minigame_invader_disabled, highQuality));
+      mInvader.setImageBitmap(BitmapHelper
+          .decodeSampledBitmapFromResource(getActivity(), R.drawable.icon_minigame_invader_disabled,
+              highQuality));
     } else {
-      mInvader.setImageBitmap(BitmapHelper.decodeSampledBitmapFromResource(getActivity(),
-          R.drawable.icon_minigame_invader, highQuality));
+      mInvader.setImageBitmap(BitmapHelper
+          .decodeSampledBitmapFromResource(getActivity(), R.drawable.icon_minigame_invader,
+              highQuality));
     }
-    mBird.setImageBitmap(BitmapHelper.decodeSampledBitmapFromResource(getActivity(),
-        R.drawable.icon_minigame_bird, highQuality));
+    mBird.setImageBitmap(BitmapHelper
+        .decodeSampledBitmapFromResource(getActivity(), R.drawable.icon_minigame_bird,
+            highQuality));
 
     if (mItems.get(5).isLocked()) {
-      mBouncer.setImageBitmap(BitmapHelper.decodeSampledBitmapFromResource(getActivity(),
-          R.drawable.icon_minigame_bouncer_disabled, highQuality));
+      mBouncer.setImageBitmap(BitmapHelper
+          .decodeSampledBitmapFromResource(getActivity(), R.drawable.icon_minigame_bouncer_disabled,
+              highQuality));
     } else {
-      mBouncer.setImageBitmap(BitmapHelper.decodeSampledBitmapFromResource(getActivity(),
-          R.drawable.icon_minigame_bouncer, highQuality));
+      mBouncer.setImageBitmap(BitmapHelper
+          .decodeSampledBitmapFromResource(getActivity(), R.drawable.icon_minigame_bouncer,
+              highQuality));
     }
 
     return rootView;
@@ -307,41 +315,53 @@ public class MinigamesFragment extends CustomizeFragment {
   }
 
   public void recycleImages() {
-    Drawable drawable = mBird.getDrawable();
-    if (drawable instanceof BitmapDrawable) {
-      BitmapDrawable bitmapDrawable = (BitmapDrawable) drawable;
-      Bitmap bitmap = bitmapDrawable.getBitmap();
-      bitmap.recycle();
+    if (mBird != null) {
+      Drawable drawable = mBird.getDrawable();
+      if (drawable instanceof BitmapDrawable) {
+        BitmapDrawable bitmapDrawable = (BitmapDrawable) drawable;
+        Bitmap bitmap = bitmapDrawable.getBitmap();
+        bitmap.recycle();
+      }
     }
-    Drawable drawable2 = mGatherer.getDrawable();
-    if (drawable2 instanceof BitmapDrawable) {
-      BitmapDrawable bitmapDrawable = (BitmapDrawable) drawable2;
-      Bitmap bitmap = bitmapDrawable.getBitmap();
-      bitmap.recycle();
+    if (mGatherer != null) {
+      Drawable drawable2 = mGatherer.getDrawable();
+      if (drawable2 instanceof BitmapDrawable) {
+        BitmapDrawable bitmapDrawable = (BitmapDrawable) drawable2;
+        Bitmap bitmap = bitmapDrawable.getBitmap();
+        bitmap.recycle();
+      }
     }
-    Drawable drawable3 = mBalance.getDrawable();
-    if (drawable3 instanceof BitmapDrawable) {
-      BitmapDrawable bitmapDrawable = (BitmapDrawable) drawable3;
-      Bitmap bitmap = bitmapDrawable.getBitmap();
-      bitmap.recycle();
+    if (mBalance != null) {
+      Drawable drawable3 = mBalance.getDrawable();
+      if (drawable3 instanceof BitmapDrawable) {
+        BitmapDrawable bitmapDrawable = (BitmapDrawable) drawable3;
+        Bitmap bitmap = bitmapDrawable.getBitmap();
+        bitmap.recycle();
+      }
     }
-    Drawable drawable4 = mCatcher.getDrawable();
-    if (drawable4 instanceof BitmapDrawable) {
-      BitmapDrawable bitmapDrawable = (BitmapDrawable) drawable4;
-      Bitmap bitmap = bitmapDrawable.getBitmap();
-      bitmap.recycle();
+    if (mCatcher != null) {
+      Drawable drawable4 = mCatcher.getDrawable();
+      if (drawable4 instanceof BitmapDrawable) {
+        BitmapDrawable bitmapDrawable = (BitmapDrawable) drawable4;
+        Bitmap bitmap = bitmapDrawable.getBitmap();
+        bitmap.recycle();
+      }
     }
-    Drawable drawable5 = mInvader.getDrawable();
-    if (drawable5 instanceof BitmapDrawable) {
-      BitmapDrawable bitmapDrawable = (BitmapDrawable) drawable5;
-      Bitmap bitmap = bitmapDrawable.getBitmap();
-      bitmap.recycle();
+    if (mInvader != null) {
+      Drawable drawable5 = mInvader.getDrawable();
+      if (drawable5 instanceof BitmapDrawable) {
+        BitmapDrawable bitmapDrawable = (BitmapDrawable) drawable5;
+        Bitmap bitmap = bitmapDrawable.getBitmap();
+        bitmap.recycle();
+      }
     }
-    Drawable drawable6 = mBouncer.getDrawable();
-    if (drawable6 instanceof BitmapDrawable) {
-      BitmapDrawable bitmapDrawable = (BitmapDrawable) drawable6;
-      Bitmap bitmap = bitmapDrawable.getBitmap();
-      bitmap.recycle();
+    if (mBouncer != null) {
+      Drawable drawable6 = mBouncer.getDrawable();
+      if (drawable6 instanceof BitmapDrawable) {
+        BitmapDrawable bitmapDrawable = (BitmapDrawable) drawable6;
+        Bitmap bitmap = bitmapDrawable.getBitmap();
+        bitmap.recycle();
+      }
     }
 
     mBird = null;
