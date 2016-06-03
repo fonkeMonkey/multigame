@@ -10,6 +10,7 @@ import android.support.annotation.Nullable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.ViewTreeObserver;
 import android.widget.ImageView;
 
 import sk.palistudios.multigame.MgTracker;
@@ -18,7 +19,6 @@ import sk.palistudios.multigame.customization_center.CustomizeFragment;
 import sk.palistudios.multigame.game.minigames.BaseMiniGame;
 import sk.palistudios.multigame.game.persistence.MGSettings;
 import sk.palistudios.multigame.tools.BitmapHelper;
-import sk.palistudios.multigame.tools.MemoryUtil;
 import sk.palistudios.multigame.tools.SkinManager;
 import sk.palistudios.multigame.tools.Toaster;
 
@@ -32,12 +32,12 @@ public class MinigamesFragment extends CustomizeFragment {
   public static char SYMBOL_MINIGAME_VERTICAL = '⇅';
 
   private static String[] tmpChosenMinigames = new String[4];
-  private ImageView mInvader;
-  private ImageView mCatcher;
-  private ImageView mBalance;
-  private ImageView mGatherer;
-  private ImageView mBird;
-  private ImageView mBouncer;
+  private ImageView mInvaderView;
+  private ImageView mCatcherView;
+  private ImageView mBalanceView;
+  private ImageView mGathererView;
+  private ImageView mBirdView;
+  private ImageView mBouncerView;
   private MgcArrayAdapter mMinigamesAdapter;
   private ArrayList<MgcItem> mItems = new ArrayList<MgcItem>();
 
@@ -75,53 +75,68 @@ public class MinigamesFragment extends CustomizeFragment {
     ViewGroup rootView = (ViewGroup) inflater.inflate(R.layout.cust_minigames_layout, container,
         false);
 
-    mBalance = (ImageView) rootView.findViewById(R.id.balance);
-    mCatcher = (ImageView) rootView.findViewById(R.id.catcher);
-    mGatherer = (ImageView) rootView.findViewById(R.id.gatherer);
-    mInvader = (ImageView) rootView.findViewById(R.id.invader);
-    mBird = (ImageView) rootView.findViewById(R.id.bird);
-    mBouncer = (ImageView) rootView.findViewById(R.id.bouncer);
+    mBalanceView = (ImageView) rootView.findViewById(R.id.balance);
+    mCatcherView = (ImageView) rootView.findViewById(R.id.catcher);
+    mGathererView = (ImageView) rootView.findViewById(R.id.gatherer);
+    mInvaderView = (ImageView) rootView.findViewById(R.id.invader);
+    mBirdView = (ImageView) rootView.findViewById(R.id.bird);
+    mBouncerView = (ImageView) rootView.findViewById(R.id.bouncer);
 
+    //We need to what size the bitmap should be decoded. Lets say all of them have the same size.
+    ViewTreeObserver viewTreeObserver = mBalanceView.getViewTreeObserver();
+    if (viewTreeObserver.isAlive()) {
+      viewTreeObserver.addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
+        @Override
+        public void onGlobalLayout() {
+          mBalanceView.getViewTreeObserver().removeOnGlobalLayoutListener(this);
+          int width = mBalanceView.getWidth();
+          int height = mBalanceView.getHeight();
+          loadBitmaps(width, height);
+        }
+      });
+    }
+
+    return rootView;
+  }
+
+  private void loadBitmaps(int width, int height) {
     //TODO M Tieto imageviews zajebú 10Mb RAMky pre high a 5 pre low
     // tieto dekodóvačky zavolaj z BitmapHelperu s odmeranými veľkosťami pre tie obrázky (teraz
     // majú veľkosť fullscreen) -> Niekde v onMeasure alebo v nejakej kokocine(aka
     // ViewTreeObserver odmeraj
     // tie Imageviews
-    boolean highQuality = !MemoryUtil.isLowMemoryDevice(getActivity());
-    mBalance.setImageBitmap(BitmapHelper
-        .decodeSampledBitmapFromResource(getActivity(), R.drawable.icon_minigame_balance,
-            highQuality));
-    mCatcher.setImageBitmap(BitmapHelper
-        .decodeSampledBitmapFromResource(getActivity(), R.drawable.icon_minigame_catcher,
-            highQuality));
-    mGatherer.setImageBitmap(BitmapHelper
-        .decodeSampledBitmapFromResource(getActivity(), R.drawable.icon_minigame_gatherer,
-            highQuality));
+    mBalanceView.setImageBitmap(BitmapHelper
+        .decodeSampledBitmapFromResource(getActivity(), R.drawable.icon_minigame_balance, width,
+            height));
+    mCatcherView.setImageBitmap(BitmapHelper
+        .decodeSampledBitmapFromResource(getActivity(), R.drawable.icon_minigame_catcher, width,
+            height));
+    mGathererView.setImageBitmap(BitmapHelper
+        .decodeSampledBitmapFromResource(getActivity(), R.drawable.icon_minigame_gatherer, width,
+            height));
 
     if (mItems.get(3).isLocked()) {
-      mInvader.setImageBitmap(BitmapHelper
+      mInvaderView.setImageBitmap(BitmapHelper
           .decodeSampledBitmapFromResource(getActivity(), R.drawable.icon_minigame_invader_disabled,
-              highQuality));
+              width, height));
     } else {
-      mInvader.setImageBitmap(BitmapHelper
-          .decodeSampledBitmapFromResource(getActivity(), R.drawable.icon_minigame_invader,
-              highQuality));
+      mInvaderView.setImageBitmap(BitmapHelper
+          .decodeSampledBitmapFromResource(getActivity(), R.drawable.icon_minigame_invader, width,
+              height));
     }
-    mBird.setImageBitmap(BitmapHelper
-        .decodeSampledBitmapFromResource(getActivity(), R.drawable.icon_minigame_bird,
-            highQuality));
+    mBirdView.setImageBitmap(BitmapHelper
+        .decodeSampledBitmapFromResource(getActivity(), R.drawable.icon_minigame_bird, width,
+            height));
 
     if (mItems.get(5).isLocked()) {
-      mBouncer.setImageBitmap(BitmapHelper
+      mBouncerView.setImageBitmap(BitmapHelper
           .decodeSampledBitmapFromResource(getActivity(), R.drawable.icon_minigame_bouncer_disabled,
-              highQuality));
+              width, height));
     } else {
-      mBouncer.setImageBitmap(BitmapHelper
-          .decodeSampledBitmapFromResource(getActivity(), R.drawable.icon_minigame_bouncer,
-              highQuality));
+      mBouncerView.setImageBitmap(BitmapHelper
+          .decodeSampledBitmapFromResource(getActivity(), R.drawable.icon_minigame_bouncer, width,
+              height));
     }
-
-    return rootView;
   }
 
   @Override
@@ -129,37 +144,37 @@ public class MinigamesFragment extends CustomizeFragment {
     super.onViewCreated(view, savedInstanceState);
     refreshImageBorders(SkinManager.getInstance().getCurrentSkin());
 
-    mInvader.setOnClickListener(new View.OnClickListener() {
+    mInvaderView.setOnClickListener(new View.OnClickListener() {
       @Override
       public void onClick(View v) {
         setNewActiveMinigameIfPossible(BaseMiniGame.Minigame.INVADER);
       }
     });
-    mCatcher.setOnClickListener(new View.OnClickListener() {
+    mCatcherView.setOnClickListener(new View.OnClickListener() {
       @Override
       public void onClick(View v) {
         setNewActiveMinigameIfPossible(BaseMiniGame.Minigame.CATCHER);
       }
     });
-    mBalance.setOnClickListener(new View.OnClickListener() {
+    mBalanceView.setOnClickListener(new View.OnClickListener() {
       @Override
       public void onClick(View v) {
         setNewActiveMinigameIfPossible(BaseMiniGame.Minigame.BALANCE);
       }
     });
-    mGatherer.setOnClickListener(new View.OnClickListener() {
+    mGathererView.setOnClickListener(new View.OnClickListener() {
       @Override
       public void onClick(View v) {
         setNewActiveMinigameIfPossible(BaseMiniGame.Minigame.GATHERER);
       }
     });
-    mBird.setOnClickListener(new View.OnClickListener() {
+    mBirdView.setOnClickListener(new View.OnClickListener() {
       @Override
       public void onClick(View v) {
         setNewActiveMinigameIfPossible(BaseMiniGame.Minigame.BIRD);
       }
     });
-    mBouncer.setOnClickListener(new View.OnClickListener() {
+    mBouncerView.setOnClickListener(new View.OnClickListener() {
       @Override
       public void onClick(View v) {
         setNewActiveMinigameIfPossible(BaseMiniGame.Minigame.BOUNCER);
@@ -244,44 +259,44 @@ public class MinigamesFragment extends CustomizeFragment {
     Drawable inactiveDrawable = getInactiveDrawableBySkin(currentSkin);
 
     if (mItems.get(0).isActive()) {
-      mBalance.setBackgroundDrawable(activeDrawable);
+      mBalanceView.setBackgroundDrawable(activeDrawable);
     } else {
-      mBalance.setBackgroundDrawable(inactiveDrawable);
+      mBalanceView.setBackgroundDrawable(inactiveDrawable);
     }
 
     if (mItems.get(1).isActive()) {
-      mCatcher.setBackgroundDrawable(activeDrawable);
+      mCatcherView.setBackgroundDrawable(activeDrawable);
     } else {
-      mCatcher.setBackgroundDrawable(inactiveDrawable);
+      mCatcherView.setBackgroundDrawable(inactiveDrawable);
     }
 
         /* Invader */
     if (mItems.get(2).isActive()) {
-      mGatherer.setBackgroundDrawable(activeDrawable);
+      mGathererView.setBackgroundDrawable(activeDrawable);
     } else {
-      mGatherer.setBackgroundDrawable(inactiveDrawable);
+      mGathererView.setBackgroundDrawable(inactiveDrawable);
     }
 
     {
       if (mItems.get(3).isActive()) {
-        mInvader.setBackgroundDrawable(activeDrawable);
+        mInvaderView.setBackgroundDrawable(activeDrawable);
       } else {
-        mInvader.setBackgroundDrawable(inactiveDrawable);
+        mInvaderView.setBackgroundDrawable(inactiveDrawable);
       }
     }
 
     /* Bird */
     if (mItems.get(4).isActive()) {
-      mBird.setBackgroundDrawable(activeDrawable);
+      mBirdView.setBackgroundDrawable(activeDrawable);
     } else {
-      mBird.setBackgroundDrawable(inactiveDrawable);
+      mBirdView.setBackgroundDrawable(inactiveDrawable);
     }
 
     /* Bouncer */
     if (mItems.get(5).isActive()) {
-      mBouncer.setBackgroundDrawable(activeDrawable);
+      mBouncerView.setBackgroundDrawable(activeDrawable);
     } else {
-      mBouncer.setBackgroundDrawable(inactiveDrawable);
+      mBouncerView.setBackgroundDrawable(inactiveDrawable);
     }
 
   }
@@ -314,49 +329,55 @@ public class MinigamesFragment extends CustomizeFragment {
     throw new RuntimeException("Invalid Skin");
   }
 
-  public void recycleImages() {
-    if (mBird != null) {
-      Drawable drawable = mBird.getDrawable();
+  @Override
+  public void onDestroyView() {
+    super.onDestroyView();
+    recycleImages();
+  }
+
+  private void recycleImages() {
+    if (mBirdView != null) {
+      Drawable drawable = mBirdView.getDrawable();
       if (drawable instanceof BitmapDrawable) {
         BitmapDrawable bitmapDrawable = (BitmapDrawable) drawable;
         Bitmap bitmap = bitmapDrawable.getBitmap();
         bitmap.recycle();
       }
     }
-    if (mGatherer != null) {
-      Drawable drawable2 = mGatherer.getDrawable();
+    if (mGathererView != null) {
+      Drawable drawable2 = mGathererView.getDrawable();
       if (drawable2 instanceof BitmapDrawable) {
         BitmapDrawable bitmapDrawable = (BitmapDrawable) drawable2;
         Bitmap bitmap = bitmapDrawable.getBitmap();
         bitmap.recycle();
       }
     }
-    if (mBalance != null) {
-      Drawable drawable3 = mBalance.getDrawable();
+    if (mBalanceView != null) {
+      Drawable drawable3 = mBalanceView.getDrawable();
       if (drawable3 instanceof BitmapDrawable) {
         BitmapDrawable bitmapDrawable = (BitmapDrawable) drawable3;
         Bitmap bitmap = bitmapDrawable.getBitmap();
         bitmap.recycle();
       }
     }
-    if (mCatcher != null) {
-      Drawable drawable4 = mCatcher.getDrawable();
+    if (mCatcherView != null) {
+      Drawable drawable4 = mCatcherView.getDrawable();
       if (drawable4 instanceof BitmapDrawable) {
         BitmapDrawable bitmapDrawable = (BitmapDrawable) drawable4;
         Bitmap bitmap = bitmapDrawable.getBitmap();
         bitmap.recycle();
       }
     }
-    if (mInvader != null) {
-      Drawable drawable5 = mInvader.getDrawable();
+    if (mInvaderView != null) {
+      Drawable drawable5 = mInvaderView.getDrawable();
       if (drawable5 instanceof BitmapDrawable) {
         BitmapDrawable bitmapDrawable = (BitmapDrawable) drawable5;
         Bitmap bitmap = bitmapDrawable.getBitmap();
         bitmap.recycle();
       }
     }
-    if (mBouncer != null) {
-      Drawable drawable6 = mBouncer.getDrawable();
+    if (mBouncerView != null) {
+      Drawable drawable6 = mBouncerView.getDrawable();
       if (drawable6 instanceof BitmapDrawable) {
         BitmapDrawable bitmapDrawable = (BitmapDrawable) drawable6;
         Bitmap bitmap = bitmapDrawable.getBitmap();
@@ -364,12 +385,12 @@ public class MinigamesFragment extends CustomizeFragment {
       }
     }
 
-    mBird = null;
-    mBalance = null;
-    mCatcher = null;
-    mGatherer = null;
-    mBouncer = null;
-    mInvader = null;
+    mBirdView = null;
+    mBalanceView = null;
+    mCatcherView = null;
+    mGathererView = null;
+    mBouncerView = null;
+    mInvaderView = null;
   }
 
   @Override

@@ -113,15 +113,6 @@ public class CustomizationCenterActivity extends BaseActivity
   @Override
   protected void onDestroy() {
     super.onDestroy();
-
-    if (mPagerAdapter.getFragments() != null) {
-      for (CustomizeFragment fragment : mPagerAdapter.getFragments()) {
-        if (fragment instanceof MinigamesFragment) {
-          ((MinigamesFragment) fragment).recycleImages();
-        }
-      }
-    }
-
     mPagerAdapter = null;
     mPager = null;
   }

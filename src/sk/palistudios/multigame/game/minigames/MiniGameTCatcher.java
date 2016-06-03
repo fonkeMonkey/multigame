@@ -12,6 +12,7 @@ import android.graphics.Path;
 import android.graphics.PorterDuff;
 import android.graphics.PorterDuffXfermode;
 import android.graphics.RectF;
+import android.os.Build;
 
 import sk.palistudios.multigame.R;
 import sk.palistudios.multigame.game.GameActivity;
@@ -50,6 +51,7 @@ public class MiniGameTCatcher extends BaseMiniGame
   private int columnWidth;
 
   private PathSerializable mMaskPath;
+  private RectF mRect;
 
   public MiniGameTCatcher(String fileName, Integer position, GameActivity game) {
     super(fileName, position, game);
@@ -67,6 +69,10 @@ public class MiniGameTCatcher extends BaseMiniGame
     catchingBallsHeight = mHeight - (mHeight / 15) - mBallSize;
     fallingStep =
         ((float) (mHeight - fallingHeight) / 180) * DebugSettings.GLOBAL_DIFFICULTY_COEFFICIENT;
+
+    if (Build.VERSION.SDK_INT < 21) {
+      mRect = new RectF();
+    }
 
     if (mGame.isTutorial()) {
       framesToGenerateNewBall /= DebugSettings.GLOBAL_DIFFICULTY_TUTORIAL_COEFFICIENT;
@@ -132,19 +138,32 @@ public class MiniGameTCatcher extends BaseMiniGame
   public void drawMinigame(Canvas mCanvas) {
     mCanvas.drawColor(mBackgroundColor);
 
-    //    if(mMaskPath == null) {
-    //      initMaskPath();
-    //    }
-
     for (int i = 0; i < NUMBER_OF_COLUMNS; i++) {
       float left = mCatchingBalls[i] - mBallSize * 2;
       float right = left + (mBallSize * 4);
       int top = catchingBallsHeight - mBallSize;
       int bottom = catchingBallsHeight + mBallSize;
       if (i == activeBall || i == mTmpActiveBall) {
-        mCanvas.drawOval(left, top, right, bottom, mPaintCatchingBallActive.mPaint);
+
+        if (Build.VERSION.SDK_INT >= 21) {
+          mCanvas.drawOval(left, top, right, bottom, mPaintCatchingBallActive.mPaint);
+        } else {
+          mRect.left = left;
+          mRect.right = right;
+          mRect.top = top;
+          mRect.bottom = bottom;
+          mCanvas.drawOval(mRect, mPaintCatchingBallActive.mPaint);
+        }
       } else {
-        mCanvas.drawOval(left, top, right, bottom, mPaintCatchingBallInactive.mPaint);
+        if (Build.VERSION.SDK_INT >= 21) {
+          mCanvas.drawOval(left, top, right, bottom, mPaintCatchingBallInactive.mPaint);
+        } else {
+          mRect.left = left;
+          mRect.right = right;
+          mRect.top = top;
+          mRect.bottom = bottom;
+          mCanvas.drawOval(mRect, mPaintCatchingBallActive.mPaint);
+        }
       }
     }
 

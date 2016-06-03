@@ -13,18 +13,25 @@ public class BitmapHelper {
     return decodeSampledBitmapFromResource(context, resId, !MemoryUtil.isLowMemoryDevice(context));
   }
 
-  public static Bitmap decodeSampledBitmapFromResource(Context context, int resId,
+  private static Bitmap decodeSampledBitmapFromResource(Context context, int resId,
       boolean highQuality) {
-    return decodeSampledBitmapFromResource(context.getResources(), resId,
-        DisplayHelper.getScreenWidth(context), DisplayHelper.getScreenHeight(context), highQuality);
+    return decodeSampledBitmapFromResource(context, resId, DisplayHelper.getScreenWidth(context),
+        DisplayHelper.getScreenHeight(context), highQuality);
   }
 
-  public static Bitmap decodeSampledBitmapFromResource(Resources res, int resId, int reqWidth,
+  public static Bitmap decodeSampledBitmapFromResource(Context context, int resId, int reqWidth,
+      int reqHeight) {
+    return decodeSampledBitmapFromResource(context, resId, reqWidth, reqHeight,
+        !MemoryUtil.isLowMemoryDevice(context));
+  }
+
+  private static Bitmap decodeSampledBitmapFromResource(Context context, int resId, int reqWidth,
       int reqHeight, boolean highQuality) {
 
     // First decode with inJustDecodeBounds=true to check dimensions
     final BitmapFactory.Options options = new BitmapFactory.Options();
     options.inJustDecodeBounds = true;
+    Resources res = context.getResources();
     BitmapFactory.decodeResource(res, resId, options);
     //    BitmapFactory.decodeFile(,options);
 

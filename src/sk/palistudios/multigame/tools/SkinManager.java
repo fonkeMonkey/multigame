@@ -94,29 +94,17 @@ public class SkinManager {
 
   private Drawable getCorruptedBmp(Context context) {
     if (mCorruptedBitmap == null) {
-      if (MemoryUtil.isLowMemoryDevice(context)) {
-        mCorruptedBitmap = BitmapHelper.decodeSampledBitmapFromResource(context.getResources(),
-            R.drawable.bg_corrupted, DisplayHelper.getScreenWidth(context),
-            DisplayHelper.getScreenHeight(context), false);
-      } else {
-        mCorruptedBitmap = BitmapHelper.decodeSampledBitmapFromResource(context,
-            R.drawable.bg_corrupted, true);
-      }
+      mCorruptedBitmap = BitmapHelper.decodeSampledBitmapFromResource(context,
+          R.drawable.bg_corrupted, DisplayHelper.getScreenWidth(context),
+          DisplayHelper.getScreenHeight(context));
     }
-
     return new BitmapDrawable(context.getResources(), mCorruptedBitmap);
   }
 
   private Drawable getDiffuseBmp(Context context) {
     if (mDiffuseBitmap == null) {
-      if (MemoryUtil.isLowMemoryDevice(context)) {
-        mDiffuseBitmap = BitmapHelper.decodeSampledBitmapFromResource(context.getResources(),
-            R.drawable.bg_diffuse, DisplayHelper.getScreenWidth(context),
-            DisplayHelper.getScreenHeight(context), false);
-      } else {
-        mDiffuseBitmap = BitmapHelper.decodeSampledBitmapFromResource(context,
-            R.drawable.bg_diffuse, true);
-      }
+      mDiffuseBitmap = BitmapHelper.decodeSampledBitmapFromResource(context, R.drawable.bg_diffuse,
+          DisplayHelper.getScreenWidth(context), DisplayHelper.getScreenHeight(context));
     }
     return new BitmapDrawable(context.getResources(), mDiffuseBitmap);
   }
