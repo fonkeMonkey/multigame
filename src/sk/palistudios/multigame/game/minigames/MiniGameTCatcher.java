@@ -162,7 +162,7 @@ public class MiniGameTCatcher extends BaseMiniGame
           mRect.right = right;
           mRect.top = top;
           mRect.bottom = bottom;
-          mCanvas.drawOval(mRect, mPaintCatchingBallActive.mPaint);
+          mCanvas.drawOval(mRect, mPaintCatchingBallInactive.mPaint);
         }
       }
     }
