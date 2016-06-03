@@ -13,10 +13,12 @@ import sk.palistudios.multigame.mainMenu.DebugSettings;
 import sk.palistudios.multigame.tools.sound.SoundEffectsCenter;
 
 public class ApplicationInitializer {
+  private static final boolean STRICT_MODE_ENABLED = false;
+
   public static void initApplication(Context context) {
     MgTracker.init(context);
 
-    if (BuildConfig.DEBUG) {
+    if (STRICT_MODE_ENABLED && BuildConfig.DEBUG) {
       StrictMode.setThreadPolicy(
           new StrictMode.ThreadPolicy.Builder().detectDiskReads().detectAll().penaltyLog().build());
       StrictMode.setVmPolicy(new StrictMode.VmPolicy.Builder().
@@ -24,7 +26,7 @@ public class ApplicationInitializer {
     }
 
         /* Init db in async task asap. */
-    if (MGSettings.getDbInitialized() != true) {
+    if (MGSettings.getIsDbInitialized() != true) {
       initDatabaseAsync(context);
     }
 
@@ -116,7 +118,7 @@ public class ApplicationInitializer {
     new AsyncTask<Void, Void, Void>() {
       @Override
       protected Void doInBackground(Void... params) {
-        HallofFameDatabaseHelper hofDb = new HallofFameDatabaseHelper(context);
+        HallofFameDatabaseHelper hofDb = HallofFameDatabaseHelper.getInstance(context);
         hofDb.fillDbFirstTime();
         MGSettings.setDbInitialized(true);
         return null;
@@ -125,9 +127,9 @@ public class ApplicationInitializer {
       @Override
       protected void onPostExecute(Void result) {
         super.onPostExecute(result);
-        if (HallOfFameActivity.mRingProgressDialog != null) {
-          HallOfFameActivity.mRingProgressDialog.dismiss();
-          HallOfFameActivity.mRingProgressDialog = null;
+        if (HallOfFameActivity.sRingProgressDialog != null) {
+          HallOfFameActivity.sRingProgressDialog.dismiss();
+          HallOfFameActivity.sRingProgressDialog = null;
         }
       }
     }.execute();
@@ -147,9 +149,7 @@ public class ApplicationInitializer {
   }
 
   private static void clearDatabase(Context context) {
-    HallofFameDatabaseHelper hofDb = new HallofFameDatabaseHelper(context);
-    hofDb.open();
+    HallofFameDatabaseHelper hofDb = HallofFameDatabaseHelper.getInstance(context);
     hofDb.deleteAll();
-    hofDb.close();
   }
 }

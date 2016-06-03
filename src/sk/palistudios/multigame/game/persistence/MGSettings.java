@@ -287,7 +287,7 @@ public class MGSettings {
     sEditor.commit();
   }
 
-  public static boolean getDbInitialized() {
+  public static boolean getIsDbInitialized() {
     return sSharedPreferences.getBoolean("db_initialized", false);
   }
 

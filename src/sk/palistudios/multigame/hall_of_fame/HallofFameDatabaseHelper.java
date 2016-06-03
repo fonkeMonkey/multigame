@@ -1,7 +1,5 @@
 package sk.palistudios.multigame.hall_of_fame;
 
-// @author Pali
-
 import java.util.ArrayList;
 import java.util.Collections;
 
@@ -13,6 +11,7 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.util.Log;
 
+// @author Pali
 public class HallofFameDatabaseHelper extends SQLiteOpenHelper {
 
   private static final int DATABASE_VERSION = 3;
@@ -22,7 +21,7 @@ public class HallofFameDatabaseHelper extends SQLiteOpenHelper {
           "NAME TEXT NOT NULL, " + "SCORE INTEGER NOT NULL " + ");";
   private static final String DATABASE_NAME = "HallOfFame";
 
-  private static HallofFameDatabaseHelper sHofDb = null;
+  private static HallofFameDatabaseHelper sHofDbHelper = null;
   private SQLiteDatabase mDatabase;
 
   public HallofFameDatabaseHelper(Context context) {
@@ -30,10 +29,10 @@ public class HallofFameDatabaseHelper extends SQLiteOpenHelper {
   }
 
   public static HallofFameDatabaseHelper getInstance(Context context) {
-    if (sHofDb == null) {
-      sHofDb = new HallofFameDatabaseHelper(context);
+    if (sHofDbHelper == null) {
+      sHofDbHelper = new HallofFameDatabaseHelper(context);
     }
-    return sHofDb;
+    return sHofDbHelper;
   }
 
   @Override
@@ -45,37 +44,27 @@ public class HallofFameDatabaseHelper extends SQLiteOpenHelper {
   public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
   }
 
-  public void createRow(String name, int score) {
-    if (!isInHallOfFame(score)) {
-      return;
+  private void openDb() throws SQLException {
+    if (mDatabase == null || !mDatabase.isOpen()) {
+      mDatabase = getWritableDatabase();
     }
-    ContentValues initialValues = new ContentValues();
-    initialValues.put("name", name);
-    initialValues.put("score", score);
-    mDatabase.insert(TABLE_NAME, null, initialValues);
   }
 
-  public void open() throws SQLException {
-    mDatabase = getWritableDatabase();
-  }
-
-  @Override
-  public void close() {
+  private void closeDb() {
     mDatabase.close();
   }
 
-  public void deleteRow(long rowId) {
-    mDatabase.delete(TABLE_NAME, "ID=" + rowId, null);
-  }
-
-  public void deleteAll() {
+  public synchronized void deleteAll() {
+    openDb();
     mDatabase.delete(TABLE_NAME, null, null);
+    closeDb();
   }
 
-  public ArrayList<HofItem> fetchAllRows() {
+  public synchronized ArrayList<HofItem> fetchAllRows() {
     ArrayList<HofItem> rows = new ArrayList<HofItem>();
     try {
 
+      openDb();
       Cursor c = mDatabase.query(TABLE_NAME, new String[]{"ID", "name", "score"}, null, null, null,
           null, "score");
 
@@ -88,6 +77,7 @@ public class HallofFameDatabaseHelper extends SQLiteOpenHelper {
         c.moveToNext();
       }
       c.close();
+      closeDb();
     } catch (SQLException e) {
       Log.e("Exception on query", e.toString());
     }
@@ -98,10 +88,10 @@ public class HallofFameDatabaseHelper extends SQLiteOpenHelper {
     return rows;
   }
 
-  public boolean isInHallOfFame(int score) {
-    open();
+  public synchronized boolean isInHallOfFame(int score) {
+    openDb();
     ArrayList<HofItem> rows = fetchAllRows();
-    close();
+    closeDb();
 
     //if its empty
     if (rows.size() < 10) {
@@ -116,8 +106,8 @@ public class HallofFameDatabaseHelper extends SQLiteOpenHelper {
     return false;
   }
 
-  public void fillDbFirstTime() {
-    open();
+  public synchronized void fillDbFirstTime() {
+    openDb();
 
     createRow("Chuck N.", 10000);
     createRow("Steven S.", 9000);
@@ -130,12 +120,12 @@ public class HallofFameDatabaseHelper extends SQLiteOpenHelper {
     createRow("Denzel W.", 2000);
     createRow("Jason S.", 1000);
 
-    close();
+    closeDb();
   }
 
-  public int writeIntoHallOfFame(HofItem winnerInfo) {
+  public synchronized int writeIntoHallOfFame(HofItem winnerInfo) {
     int position = -1;
-    open();
+    openDb();
 
     ArrayList<HofItem> scoreList = fetchAllRows();
     int listSize = 10;
@@ -178,19 +168,31 @@ public class HallofFameDatabaseHelper extends SQLiteOpenHelper {
     deleteAll();
     writeScoreList(scoreList);
 
-    close();
+    closeDb();
 
     return position;
   }
 
-  private void writeScoreList(ArrayList<HofItem> rows) {
+  private synchronized void writeScoreList(ArrayList<HofItem> rows) {
     for (HofItem item : rows) {
       createRow(item.getName(), item.getScore());
     }
   }
 
+  private synchronized void createRow(String name, int score) {
+    if (!isInHallOfFame(score)) {
+      return;
+    }
+    ContentValues initialValues = new ContentValues();
+    initialValues.put("name", name);
+    initialValues.put("score", score);
+    openDb();
+    mDatabase.insert(TABLE_NAME, null, initialValues);
+    closeDb();
+  }
+
   //creates new arraylist with new HofItem at specified position
-  private ArrayList<HofItem> putIntoPosition(ArrayList<HofItem> oldList, int position,
+  private synchronized ArrayList<HofItem> putIntoPosition(ArrayList<HofItem> oldList, int position,
       HofItem userInfo) {
     ArrayList<HofItem> newList = new ArrayList<HofItem>();
 
@@ -211,5 +213,10 @@ public class HallofFameDatabaseHelper extends SQLiteOpenHelper {
     }
 
     return newList;
+  }
+
+  @Deprecated
+  private synchronized void deleteRow(long rowId) {
+    mDatabase.delete(TABLE_NAME, "ID=" + rowId, null);
   }
 }

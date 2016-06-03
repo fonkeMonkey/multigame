@@ -70,7 +70,8 @@ public class HallOfFameActivity extends BaseActivity
   private ListView mListView;
   private TextView mHeader;
 
-  public static ProgressDialog mRingProgressDialog = null;
+  //VL ugly
+  public static ProgressDialog sRingProgressDialog = null;
   private ToggleButton mSwitchLocal;
   private ToggleButton mSwitchOnline;
   private LinearLayout mSwitchLayout;
@@ -79,10 +80,10 @@ public class HallOfFameActivity extends BaseActivity
   public void onCreate(Bundle icicle) {
     super.onCreate(icicle);
 
-    if (!MGSettings.getDbInitialized()) {
-      mRingProgressDialog = ProgressDialog.show(HallOfFameActivity.this, "Please wait..",
+    if (!MGSettings.getIsDbInitialized()) {
+      sRingProgressDialog = ProgressDialog.show(this, "Please wait..",
           "Initializing database..", true);
-      mRingProgressDialog.setCancelable(true);
+      sRingProgressDialog.setCancelable(true);
     }
 
     setContentView(R.layout.hof_layout);
@@ -197,10 +198,8 @@ public class HallOfFameActivity extends BaseActivity
 
   private void fillData() {
     //cucni databazu
-    final HallofFameDatabaseHelper mHofDb = new HallofFameDatabaseHelper(this);
-    mHofDb.open();
+    final HallofFameDatabaseHelper mHofDb = HallofFameDatabaseHelper.getInstance(this);
     final List<HofItem> dbRows = mHofDb.fetchAllRows();
-    mHofDb.close();
 
     //urob svoje itemy
     HofItem[] rows = new HofItem[dbRows.size()];
