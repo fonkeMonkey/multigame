@@ -136,10 +136,9 @@ public class SkinManager {
             return;
           }
           if (child.getId() == R.id.header) {
-            //            ((TextView) child).setTextColor(((TextView) child).getTextColors()
-            // .withAlpha(
-            //                DisplayHelper.ALPHA_20pc))
             ((TextView) child).setTextColor(getCurrentTextHeaderColor(context.getResources()));
+            ((TextView) child).setTextColor(
+                ((TextView) child).getTextColors().withAlpha(DisplayHelper.ALPHA_80pc));
           } else {
             ((TextView) child).setTextColor(getCurrentTextColor(context.getResources()));
           }
