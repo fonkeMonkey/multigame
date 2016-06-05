@@ -82,9 +82,8 @@ public class SkinManager {
     //        ) {
     //      mDiffuseBitmap.recycle();
     mDiffuseBitmap = null;
+    //  }
   }
-
-}
 
   private void recycleCorrupted() {
     //    if (mCorruptedBitmap != null
