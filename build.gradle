@@ -36,7 +36,6 @@ android {
         targetSdkVersion 23
     }
 
-
     sourceSets {
         main {
             manifest.srcFile 'AndroidManifest.xml'
@@ -53,10 +52,10 @@ android {
 
     signingConfigs {
         release {
-//            storeFile file(".//!etc//kluc.zip")
-//            storePassword "..."//System.console().readLine("\n\$ Enter keystore password: ")
-//            keyAlias "multigame"
-//            keyPassword "..." //System.console().readLine("\n\$ Enter mg password: ")
+            storeFile file(".//!etc//kluc.zip")
+            storePassword "PLACEHOLDER"
+            keyAlias "multigame"
+            keyPassword "PLACEHOLDER"
         }
         debug {
             storeFile file(".//!etc//debug.keystore")
@@ -65,7 +64,8 @@ android {
     }
     buildTypes {
         release {
-            minifyEnabled true
+            //S enable when time
+            minifyEnabled false
             proguardFile getDefaultProguardFile('proguard-android.txt')
             proguardFile 'proguard.cfg'
             signingConfig signingConfigs.release
@@ -75,7 +75,8 @@ android {
         }
     }
     lintOptions {
-        abortOnError true
+        //XS enable
+        abortOnError false
     }
 
     sourceSets {
