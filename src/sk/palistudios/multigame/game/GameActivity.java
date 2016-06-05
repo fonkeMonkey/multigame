@@ -292,8 +292,9 @@ public class GameActivity extends BaseActivity implements SensorEventListener {
     for (int i = 0; i < 4; i++) {
       GameTimeManager.registerLevelChangedObserver(minigames[i]);
       mCanvases[i].attachMinigame(minigames[i], i);
-      //M not nice we turn of hardware acceleration because of lack of hardware rendering for
-      // paths, read here http://stackoverflow.com/questions/15039829/drawing-paths-and-hardware-acceleration
+      //M not nice we turn off hardware acceleration because of lack of hardware rendering for
+      // paths, read here http://stackoverflow
+      // .com/questions/15039829/drawing-paths-and-hardware-acceleration
       if (minigames[i] instanceof MiniGameTCatcher) {
         mCanvases[i].setLayerType(View.LAYER_TYPE_SOFTWARE, null);
       }
@@ -429,8 +430,12 @@ public class GameActivity extends BaseActivity implements SensorEventListener {
     stopTutorialGameLoop();
 
     mMinigamesManager.deactivateAllMiniGames();
+    colorFAllragmentGray();
     for (int i = 0; i <= sTutorialLastLevel; i++) {
       mMinigamesManager.activateMinigame(i);
+    }
+    if (sTutorialLastLevel < 2) {
+      mMinigamesManager.deactivateMinigame(2);
     }
 
     if (mMusicPlayer != null && MGSettings.isMusicOn()) {
@@ -476,7 +481,9 @@ public class GameActivity extends BaseActivity implements SensorEventListener {
   }
 
   private void redrawDifficultyView(String difficulty) {
-    mDifficultyView.setText(difficulty);
+    if (!isTutorial()) {
+      mDifficultyView.setText(difficulty);
+    }
   }
 
   public void flashScreen() {
@@ -606,13 +613,13 @@ public class GameActivity extends BaseActivity implements SensorEventListener {
 
       if (mTutorialMode) {
         stopTutorial();
-        colorFragmentGray(loser);
+        colorLoserCanvas(loser);
         GameDialogs.showTutorialLoserDialogWindow(this);
         return;
       }
 
       stopCurrentGame();
-      colorFragmentGray(loser);
+      colorLoserCanvas(loser);
       MGSettings.StatsGamesPlayedIncrease();
 
       AchievementsHelper.checkAchievements(mScore, mLevel, getApplicationContext());
@@ -627,11 +634,17 @@ public class GameActivity extends BaseActivity implements SensorEventListener {
     }
   }
 
-  private void colorFragmentGray(int loser) {
+  private void colorLoserCanvas(int loser) {
     for (int i = 0; i < mCanvases.length; i++) {
       if (loser != i) {
         mCanvases[i].onGameLost();
       }
+    }
+  }
+
+  private void colorFAllragmentGray() {
+    for (int i = 0; i < mCanvases.length; i++) {
+      mCanvases[i].setGrayOverlay(true);
     }
   }
 

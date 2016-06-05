@@ -21,6 +21,7 @@ abstract public class BaseGameCanvasView extends View {
   private boolean mWasGameSaved = false;
 
   private boolean mGameLost = false;
+  private boolean mColorGray;
 
   public BaseGameCanvasView(Context context) {
     this(context, null, 0);
@@ -56,7 +57,7 @@ abstract public class BaseGameCanvasView extends View {
       initMinigame(canvas);
     }
     mMiniGame.drawMinigame(canvas);
-    if (mGameLost) {
+    if (mColorGray && !mMiniGame.isActive()) {
       canvas.drawColor(getResources().getColor(R.color.lost_game_overlay));
     }
   }
@@ -70,8 +71,14 @@ abstract public class BaseGameCanvasView extends View {
 
   public abstract void detachMinigame();
 
+  public void setGrayOverlay(boolean status) {
+    mColorGray = status;
+    invalidate();
+  }
+
   public void onGameLost() {
     mGameLost = true;
+    mColorGray = true;
     invalidate();
   }
 
