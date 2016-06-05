@@ -20,14 +20,12 @@ import sk.palistudios.multigame.preferences.PreferenceOnOffSwitcher;
 /**
  * Created by virdzek on 23/11/14.
  */
-
 //TODO M toto celé v témach by bolo stokrát lepšie
 public class SkinManager {
   public enum Skin {
     QUAD, THRESHOLD, DIFFUSE, CORRUPTED
   }
 
-  //TODO njn dependency by bol lepší
   private static SkinManager sSkinManager;
   private int mTmpTextColor;
   private int TEXT_COLOR_NOT_RESOLVED;
@@ -79,17 +77,22 @@ public class SkinManager {
   }
 
   private void recycleDiffuse() {
-    if (mDiffuseBitmap != null) {
-      mDiffuseBitmap.recycle();
-      mDiffuseBitmap = null;
-    }
+    //    if (mDiffuseBitmap != null
+    //        && !mDiffuseBitmap.isRecycled()
+    //        ) {
+    //      mDiffuseBitmap.recycle();
+    mDiffuseBitmap = null;
   }
 
+}
+
   private void recycleCorrupted() {
-    if (mCorruptedBitmap != null) {
-      mCorruptedBitmap.recycle();
-      mCorruptedBitmap = null;
-    }
+    //    if (mCorruptedBitmap != null
+    //        && !mCorruptedBitmap.isRecycled()
+    //        ) {
+    //      mCorruptedBitmap.recycle();
+    mCorruptedBitmap = null;
+    //    }
   }
 
   private Drawable getCorruptedBmp(Context context) {
@@ -151,7 +154,7 @@ public class SkinManager {
               child.getId() == R.id.customize_achievements ||
               child.getId() == R.id.customize_music ||
               child.getId() == R.id.customize_skins) {
-            //            //internal
+            //internally
             return;
           }
           ((CheckedTextView) child).setTextColor(color);

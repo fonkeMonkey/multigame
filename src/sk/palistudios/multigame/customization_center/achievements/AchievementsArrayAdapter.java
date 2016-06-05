@@ -18,7 +18,7 @@ public class AchievementsArrayAdapter extends ArrayAdapter<AchievementItem> {
   TextView rowViewName = null;
   TextView rowViewDescription = null;
   TextView rowViewReward = null;
-  private ArrayList<AchievementItem> myItems = new ArrayList<AchievementItem>();
+  private ArrayList<AchievementItem> myItems = new ArrayList<>();
   private Context context;
 
   public AchievementsArrayAdapter(Context context, ArrayList<AchievementItem> items) {

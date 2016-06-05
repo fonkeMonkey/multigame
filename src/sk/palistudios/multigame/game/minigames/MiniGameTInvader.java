@@ -23,11 +23,12 @@ import sk.palistudios.multigame.tools.SkinManager;
 /**
  * @author Pali
  */
-public class MiniGameTInvader extends BaseMiniGame implements
-    GameCanvasViewTouch.userInteractedTouchListener {
+public class MiniGameTInvader extends BaseMiniGame
+    implements GameCanvasViewTouch.userInteractedTouchListener {
   //Difficulty
   private int framesToCreateEnemy = (int) (120 / DebugSettings.GLOBAL_DIFFICULTY_COEFFICIENT);
-  private int stepsToInvade  = (int) (100 / DebugSettings.GLOBAL_DIFFICULTY_COEFFICIENT);;
+  private int stepsToInvade = (int) (100 / DebugSettings.GLOBAL_DIFFICULTY_COEFFICIENT);
+  ;
   private int maximumDifficulty = 1;
   private int framesToGo = 60;
 
@@ -37,6 +38,7 @@ public class MiniGameTInvader extends BaseMiniGame implements
   private PaintSerializable mPaintLaser = null;
   private PaintSerializable mPaintLaserFill = null;
   private PaintSerializable mPaintEnemy = null;
+  private PaintSerializable mPaintEnemyBorder = null;
   private PaintSerializable mPaintResizeArrows = null;
   private final PaintSerializable mPaintDkGray = new PaintSerializable(Color.DKGRAY);
   private final PaintSerializable mPaintGray = new PaintSerializable(Color.GRAY);
@@ -54,7 +56,7 @@ public class MiniGameTInvader extends BaseMiniGame implements
 
   @Override
   public void initMinigame() {
-    if (mGame.isTutorial()){
+    if (mGame.isTutorial()) {
       framesToCreateEnemy /= DebugSettings.GLOBAL_DIFFICULTY_TUTORIAL_COEFFICIENT;
       stepsToInvade /= DebugSettings.GLOBAL_DIFFICULTY_TUTORIAL_COEFFICIENT;
     }
@@ -68,9 +70,15 @@ public class MiniGameTInvader extends BaseMiniGame implements
 
     mPaintMiddleCircle = new PaintSerializable(mPrimaryColor, Paint.Style.FILL);
     mPaintLaser = new PaintSerializable(mPrimaryColor, Paint.Style.STROKE);
-    mPaintLaser.mPaint.setPathEffect(new DashPathEffect(new float[] {30,10}, 0));
+    mPaintLaser.mPaint.setPathEffect(new DashPathEffect(new float[]{30, 10}, 0));
     mPaintLaserFill = new PaintSerializable(mPrimaryColor, Paint.Style.FILL);
     mPaintLaserFill.mPaint.setAlpha(64); // 25%
+    mPaintEnemy = new PaintSerializable(mSecondaryColor, Paint.Style.FILL);
+
+    //VL could be done better
+    if (SkinManager.getInstance().getCurrentSkin() == SkinManager.Skin.DIFFUSE) {
+      mPaintEnemyBorder = new PaintSerializable(Color.WHITE, Paint.Style.FILL);
+    }
     mPaintEnemy = new PaintSerializable(mSecondaryColor, Paint.Style.FILL);
     final int resizeArrowsColor = (mAlternateColor != 0) ? mAlternateColor : mPrimaryColor;
     mPaintResizeArrows = new PaintSerializable(resizeArrowsColor, Paint.Style.STROKE);
@@ -157,7 +165,7 @@ public class MiniGameTInvader extends BaseMiniGame implements
   }
 
   public void drawMinigame(Canvas mCanvas) {
-    if(mBackgroundColor != 0) {
+    if (mBackgroundColor != 0) {
       mCanvas.drawColor(mBackgroundColor);
     }
     mCanvas.drawCircle(mPointMiddleOfScreen.mPoint.x, mPointMiddleOfScreen.mPoint.y,
@@ -170,6 +178,16 @@ public class MiniGameTInvader extends BaseMiniGame implements
     mCanvas.drawPath(new Path(), mPaintLaser.mPaint);
 
     for (Enemy enemy : enemies) {
+      if (mPaintEnemyBorder != null) {
+        mCanvas.drawCircle(enemy.x, enemy.y, mEnemyCircleSize + 1, mPaintEnemyBorder.mPaint);
+        mCanvas.drawCircle(enemy.x - (17 * enemy.stepX), enemy.y - (17 * enemy.stepY),
+            mEnemyCircleSize1 + 1, mPaintEnemyBorder.mPaint);
+        mCanvas.drawCircle(enemy.x - (28 * enemy.stepX), enemy.y - (28 * enemy.stepY),
+            mEnemyCircleSize2 + 1, mPaintEnemyBorder.mPaint);
+        mCanvas.drawCircle(enemy.x - (37 * enemy.stepX), enemy.y - (37 * enemy.stepY),
+            mEnemyCircleSize3 + 1, mPaintEnemyBorder.mPaint);
+
+      }
       enemy.mPaint.mPaint.setAlpha(255);
       mCanvas.drawCircle(enemy.x, enemy.y, mEnemyCircleSize, enemy.mPaint.mPaint);
       enemy.mPaint.mPaint.setAlpha(128);
@@ -197,16 +215,22 @@ public class MiniGameTInvader extends BaseMiniGame implements
     canvas.drawLine(left, centerY, right, centerY, mPaintResizeArrows.mPaint);
 
     // left arrow
-    canvas.drawLine(left, centerY, left + arrowLength, centerY - arrowLength, mPaintResizeArrows.mPaint);
-    canvas.drawLine(left, centerY, left + arrowLength, centerY + arrowLength, mPaintResizeArrows.mPaint);
+    canvas.drawLine(left, centerY, left + arrowLength, centerY - arrowLength,
+        mPaintResizeArrows.mPaint);
+    canvas.drawLine(left, centerY, left + arrowLength, centerY + arrowLength,
+        mPaintResizeArrows.mPaint);
 
     // top arrow
-    canvas.drawLine(centerX, top, centerX - arrowLength, top + arrowLength, mPaintResizeArrows.mPaint);
-    canvas.drawLine(centerX, top, centerX + arrowLength, top + arrowLength, mPaintResizeArrows.mPaint);
+    canvas.drawLine(centerX, top, centerX - arrowLength, top + arrowLength,
+        mPaintResizeArrows.mPaint);
+    canvas.drawLine(centerX, top, centerX + arrowLength, top + arrowLength,
+        mPaintResizeArrows.mPaint);
 
     // right arrow
-    canvas.drawLine(right, centerY, right - arrowLength, centerY - arrowLength, mPaintResizeArrows.mPaint);
-    canvas.drawLine(right, centerY, right - arrowLength, centerY + arrowLength, mPaintResizeArrows.mPaint);
+    canvas.drawLine(right, centerY, right - arrowLength, centerY - arrowLength,
+        mPaintResizeArrows.mPaint);
+    canvas.drawLine(right, centerY, right - arrowLength, centerY + arrowLength,
+        mPaintResizeArrows.mPaint);
 
     // bottom arrow
     canvas.drawLine(centerX, bottom, centerX - arrowLength, bottom - arrowLength,
@@ -228,7 +252,7 @@ public class MiniGameTInvader extends BaseMiniGame implements
         }
         enemy.move();
       } else {
-        if(mGame != null){
+        if (mGame != null) {
           mGame.onGameLost(mPosition);
         }
         break;

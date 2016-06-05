@@ -26,7 +26,6 @@ public class PaintSerializable implements Serializable {
     mPaint.setColor(color);
     mPaint.setStyle(mStyle);
     mPaint.setFlags(Paint.ANTI_ALIAS_FLAG);
-
   }
 
   public PaintSerializable(int color) {

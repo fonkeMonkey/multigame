@@ -18,8 +18,6 @@ import sk.palistudios.multigame.tools.SkinManager;
  * @author Pali
  */
 public class AchievementsFragment extends CustomizeFragment {
-
-
   private AchievementsArrayAdapter mAchievementsAdapter;
   private ListView mListView;
 
