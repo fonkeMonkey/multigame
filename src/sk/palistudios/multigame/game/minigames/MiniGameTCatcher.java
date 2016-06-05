@@ -51,7 +51,7 @@ public class MiniGameTCatcher extends BaseMiniGame
   private int columnWidth;
 
   private PathSerializable mMaskPath;
-  private RectF mRect;
+  private transient RectF mRect;
 
   public MiniGameTCatcher(String fileName, Integer position, GameActivity game) {
     super(fileName, position, game);
