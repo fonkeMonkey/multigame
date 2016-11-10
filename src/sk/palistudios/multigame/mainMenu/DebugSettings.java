@@ -17,7 +17,6 @@ public class DebugSettings {
   public static final float GLOBAL_DIFFICULTY_TUTORIAL_COEFFICIENT = 0.8f;
   public static final int GLOBAL_DIFFICULTY_INCREASE_COEFFICIENT = 7;
 
-  public static boolean adsActivated = false;
   /* DEBUG */
   public static boolean debugInit = false;
   public static boolean debugFirstRun = false;
@@ -26,6 +25,5 @@ public class DebugSettings {
   public static boolean alwaysWinner = false;
 
   public static void debugInit(Context context) {
-    //        GameSharedPref.setGameMode("Tutorial");
   }
 }

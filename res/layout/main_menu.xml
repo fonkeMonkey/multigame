@@ -42,17 +42,17 @@
         android:fontFamily="sans-serif-medium" />
 
     <TextView
-        android:id="@+id/menu_preferences"
-        style="@style/TextView.Menu"
-        android:onClick="showPreferences"
-        android:text="@string/button_preferences"
-        android:fontFamily="sans-serif-light" />
-
-    <TextView
         android:id="@+id/menu_hall_of_fame"
         style="@style/TextView.Menu"
         android:onClick="showHallOfFame"
         android:text="@string/button_hall_of_fame"
+        android:fontFamily="sans-serif-light" />
+
+    <TextView
+        android:id="@+id/menu_preferences"
+        style="@style/TextView.Menu"
+        android:onClick="showPreferences"
+        android:text="@string/button_preferences"
         android:fontFamily="sans-serif-thin" />
 
   </LinearLayout>

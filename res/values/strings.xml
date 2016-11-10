@@ -12,25 +12,63 @@
   <string name="button_send">Send</string>
   <string name="menu_settings">Settings</string>
   <string name="title_activity_main">multiGame</string>
-  <string name="button_game">Start the game!</string>
+  <!--<string name="button_game">Start the game!</string>-->
+  <string name="button_game">Start!</string>
   <string name="button_resume">Resume the game!</string>
-  <string name="button_tutorial">Start the tutorial!</string>
+  <!--<string name="button_tutorial">Start the tutorial!</string>-->
   <string name="button_resume_tutorial">Resume the tutorial!</string>
-  <string name="button_customization_center">Customize</string>
-  <string name="button_hall_of_fame">Hall of Fame</string>
+  <string name="button_customization_center">Your Path</string>
+  <string name="button_hall_of_fame">Hall of Heroes</string>
   <string name="button_preferences">Preferences</string>
+
+  <!-- Tutorial -->
+  <string name="tutorial_welcome_title">Welcome mortal!</string>
+  <string name="tutorial_welcome">Gods of multitasking have chosen YOU amongst the whole mankind to represent humanity in the multitasking heaven. \n\nFirst however you have to prove you are able to master single games from different gods!</string>
+  <string name="tutorial_positive">Let\'s show them!</string>
+  <!--<string name="tutorial_negative">Nah, maybe another day...</string>-->
+
+   <string name="minigame">\u0020Minigame\u0020</string>
+  <string name="minigames_VBird_title">Behold!</string>
+  <string name="minigames_VBird_description"><![CDATA[I am VERTICA the one and only goddess from the updown universe!<br><br>To earn my respect do not let my all-seying eye hit any obstacle or you will be punished! (<strong><u>tilt</u></strong> your cell phone vertically <strong><u>up</u></strong> or <strong><u>down</strong></u>)]]></string>
+  <string name="minigames_HBalance_title">Well done, mortal!</string>
+  <string name="minigames_HBalance_description"><![CDATA[My name is HORI-ZON and I represent the leftright universe!<br><br>You must not let the the karma fall off the scales! Or you should fall as well!</strong></u> (<strong><u>Tilt</u></strong> your cell phone horizontally to the <strong><u>left and right</strong></u>)]]></string>
+  <string name="minigames_TCatcher_title">Greetings!</string>
+  <string name="minigames_TCatcher_description"><![CDATA[I am TAPO-NASHI the creator of the universe of TAP!<br><br>The falling meteors of apocalypse must not hit the gates to parallel universes or the world will cease to exist. Failure is not an option! (Make gates open by <strong><u>tapping</strong></u> on them)]]></string>
+  <string name="minigames_TGatherer_title">Good luck to you!</string>
+  <string name="minigames_TGatherer_description"><![CDATA[Hi, I am TAPO-SAN, son of the great TAPO-NASHI!<br><br>You must collect all fallen souls before they vanish forever. (Gather souls by <strong><u>tapping</strong></u> on them before the time passes.)]]></string>
+  <string name="tutorial_ok">OK</string>
+
+  <string name="first_multitask_title">Excellent!</string>
+  <string name="first_multitask_description"><![CDATA[We have concluded that you in the end might be worthy of our divine time.<br><br>Let\'s start slowly with 2 multitasking games. As time passes we will add more!]]></string>
+  <string name="first_multitask_ok">I am ready!</string>
+
+  <string name="minigames_TInvader_description"><![CDATA[Move the laser field by tapping on the screen. The enemies must not get to the center.]]></string>
+  <string name="minigames_VBouncer_description"><![CDATA[Move the platform by tilting your phone to the front or to the back. The ball must not touch the left side of the screen.]]></string>
+
+  <!--<string name="exit_tutorial">You have exited the tutorial.</string> -->
+  <string name="tutorial_finished_title">We are impressed!</string>
+  <string name="tutorial_finished">You have finished the first trial (actually the first human to do so).\n\nWe will save your life this time, but there are great battles ahead if you want to become one of us.</string>
+  <string name="tutorial_finished_ok">That was easy!</string>
+
+  <string name="tutorial_failed_title">Ouch!</string>
+  <string name="tutorial_failed">It is okay, no one ever did it first time. Gods are patient or at least let's hope so.</string>
+  <string name="tutorial_try_again">I can do it!</string>
+
   <!-- Game -->
+  <string name="game_welcome_title">Welcome adept!</string>
+  <string name="game_welcome">You have shown some skills however that is not enough. Gods have prepared some challenges for you until you would be able to the final test.\n\nFirst try to get at least 1000 multitasking points. Good luck! (You can check the other challenges in the menu)</string>
+  <string name="game_positive">Great!</string>
 
   <string name="score">Score:\u0020</string>
   <string name="game_achievement_fulfilled_1">Achievement fulfilled:\u0020</string>
   <string name="game_achievement_fulfilled_2">.\u0020New\u0020</string>
   <string name="game_achievement_fulfilled_3">\u0020unlocked!</string>
   <string name="game_achievement_adfree_fulfilled">Achievement fulfilled: Ad-free version</string>
-  <string name="game_winner_title">Congratulations!</string>
-  <string name="game_winner">You have made it to the Hall of fame! Please provide your name and enjoy the fame.</string>
-  <string name="game_ask_for_name">Please provide your name for the Hall of fame.</string>
-  <string name="game_loser_title">Sorry</string>
-  <string name="game_loser">Your score was not good enough to make you famous and enter the Hall of fame. Better luck next time!</string>
+  <string name="game_winner_title">Gods are delighted!</string>
+  <string name="game_winner">You have made it to the Hall of Heroes! Please provide your name and enjoy being a celebrity.</string>
+  <string name="game_ask_for_name">Please provide your name for the Hall of Heroes.</string>
+  <string name="game_loser_title">Gods are not happy!</string>
+  <string name="game_loser">Your score was not good enough to make this try worthwhile and enter the Hall of Heroes. Better luck next time!</string>
   <string name="game_share">Share</string>
   <string name="game_share_no_connection">You wanted to share your score, but there does not appear to be any internet connection available.. Try again?</string>
   <string name="game_retry">Retry</string>
@@ -39,54 +77,45 @@
   <string name="facebook_description1">I just achieved incredible\u0020</string>
   <string name="facebook_description2">\u0020points in Multigame! Can you beat that?</string>
 
-  <!-- Tutorial -->
-  <string name="exit_tutorial">You have exited the tutorial.</string>
-  <string name="tutorial_welcome_title">Welcome to the Multigame tutorial!</string>
-  <string name="tutorial_welcome">New minigames will be added for you to get used to multitasking. Have fun!</string>
-  <string name="tutorial_negative">Exit the tutorial</string>
-  <string name="tutorial_positive">Let\'s start!</string>
-  <string name="tutorial_try">Let\'s give it a try!</string>
-  <string name="tutorial_finished_title">Congratulations!!</string>
-  <string name="tutorial_finished">You have successfully finished the tutorial and you can now try the real deal! If you would like to play the tutorial later(maybe with different minigames), just switch it on again in the preferences menu.</string>
-  <string name="tutorial_failed_title">Nice try</string>
-  <string name="tutorial_failed">However, it needs some little improvement. Give it another
-    shot.</string>
-
   <!-- Customization center -->
   <string name="cc_unlocks">unlocks\u0020</string>
   <string name="cc_music_tab_name">MUSIC</string>
+  <string name="cc_music_tab_text">Choose music created in different universes</string>
   <string name="cc_minigames_tab_name">MINIGAMES</string>
-  <string name="cc_skins_tab_name">SKINS</string>
+  <string name="cc_minigames_tab_text">Choose favorite games from your gods</string>
+  <string name="cc_skins_tab_name">THEMES</string>
+  <string name="cc_skins_tab_text">Gods are so merciful that they will let you achieve your quest using their eyes. Choose one you like</string>
   <string name="cc_achievements_tab_name">CHALLENGES</string>
+  <string name="cc_achievements_tab_text">These challenges were given to you by the allmighty gods in order to prepare you for your final one. They will reward you with various gifts along your path.</string>
   <string name="cc_more_games_tab_name">More games</string>
 
   <!-- Achievements center -->
-
   <string name="cc_achievements_achievements_center_name">Achievements</string>
 
-  <string name="cc_achievements_lucky_seven_name">LUCKY SEVEN</string>
-  <string name="cc_achievements_lucky_seven_description">Reach level 7</string>
-
-  <string name="cc_achievements_magin_ten_name">MAGIC 10</string>
-  <string name="cc_achievements_magin_ten_description">Reach level 10</string>
-
-  <string name="cc_achievements_good_start_name">GOOD START</string>
-  <string name="cc_achievements_good_start_description">Reach score of 5000</string>
-
-  <string name="cc_achievements_addict_name">ADDICT</string>
+  <string name="cc_achievements_addict_name">PERSISTENT</string>
   <string name="cc_achievements_addicts_description">Play at least 10 games</string>
 
-  <string name="cc_achievements_supporter_name">SUPPORTER</string>
+  <string name="cc_achievements_champion_name">HERO</string>
+  <string name="cc_achievements_champion_description">Be in the Hall of Heroes</string>
+
+  <string name="cc_achievements_good_start_name">WORTHY</string>
+  <string name="cc_achievements_good_start_description">Reach score of 5000</string>
+
+  <string name="cc_achievements_lucky_seven_name">SEMI-GOD</string>
+  <string name="cc_achievements_lucky_seven_description">Reach level 7</string>
+
+  <string name="cc_achievements_magin_ten_name">GOD</string>
+  <string name="cc_achievements_magin_ten_description">Reach level 10</string>
+
+  <string name="cc_achievements_supporter_name">IMMORTAL</string>
   <string name="cc_achievements_supporter_description">Rate Multigame on Google Play</string>
 
-  <string name="cc_achievements_competitive_name">COMPETITIVE</string>
+  <string name="cc_achievements_competitive_name">EVANGELIST</string>
   <string name="cc_achievements_competitive_description">Share your score on Facebook</string>
-
-  <string name="cc_achievements_champion_name">CHAMPION</string>
-  <string name="cc_achievements_champion_description">Be in the hall of fame</string>
 
   <string name="cc_achievements_pro_name">PRO</string>
   <string name="cc_achievements_pro_description">Reach level 15</string>
+
   <string name="cc_achievements_requirement_ending">\u0020in order to unlock this item</string>
 
   <!-- Minigames center -->
@@ -98,11 +127,11 @@
 
   <!-- Skins center -->
 
-  <string name="cc_skins_skin_center_name">Skins</string>
-  <string name="cc_skins_skin_name">skin</string>
-  <string name="cc_skins_girl_power_name">Girl Power</string>
-  <string name="cc_skins_summer_name">Summer</string>
-  <string name="cc_skins_blue_sky_name">Blue Sky</string>
+  <string name="cc_skins_skin_center_name">Themes</string>
+  <string name="cc_skins_skin_name">theme</string>
+  <string name="cc_skins_girl_power_name">Threshold</string>
+  <string name="cc_skins_summer_name">Diffuse</string>
+  <string name="cc_skins_blue_sky_name">Corrupted</string>
   <string name="cc_skin_unlock_message_1">"You must reach level 7 order to unlock this skin"</string>
   <string name="cc_skin_unlock_message_2">"You must reach level 7 order to unlock this skin"</string>
 
@@ -115,21 +144,9 @@
   <string name="cc_music_blam_name">Blam</string>
 
   <!-- Hall of fame -->
-  <string name="hof_top_10_players">Top 10 players</string>
+  <string name="hof_top_10_players">Hall of Heroes</string>
   <string name="hof_local">LOCAL</string>
   <string name="hof_online">ONLINE</string>
-
-  <!-- Tutorial -->
-
-
-  <!-- Minigames -->
-  <string name="minigame">\u0020Minigame\u0020</string>
-  <string name="minigames_VBird"><![CDATA[Move the square by <strong><u>tilting</u></strong> your cell phone to the <strong><u>front</u></strong> or to the <strong><u>back</strong></u>. You must not hit any obstacle.]]></string>
-  <string name="minigames_HBalance"><![CDATA[<strong><u>Tilt</u></strong> your cell phone to the <strong><u>left and right</strong></u>. Try not to let the ball fall. Note that now you have to control <strong><u>both minigames at once!</strong></u>]]></string>
-  <string name="minigames_TCatcher"><![CDATA[The falling balls must not hit the ground. Change the catching circle by <strong><u>tapping</strong></u> nearby. Use preferably your <strong><u>left thumb</strong></u> or index finger.]]></string>
-  <string name="minigames_TGatherer"><![CDATA[Gather circles by <strong><u>tapping</strong></u> on them before the time passes. Use preferably your <strong><u>right thumb</strong></u> or index finger.]]></string>
-  <string name="minigames_TInvader"><![CDATA[Move the laser field by tapping on the screen. The enemies must not get to the center.]]></string>
-  <string name="minigames_VBouncer"><![CDATA[Move the platform by tilting your phone to the front or to the back. The ball must not touch the left side of the screen.]]></string>
 
   <!-- Game -->
   <string name="game_touch_start">Touch the screen to start the game!</string>

@@ -1,12 +1,10 @@
 package sk.palistudios.multigame.game;
 
-import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.os.Build;
 import android.text.Html;
 import android.view.View;
 import android.view.WindowManager;
@@ -30,7 +28,7 @@ import sk.palistudios.multigame.tools.internet.InternetChecker;
 public class GameDialogs {
 
   public final static int ASK_USER_TO_CONNECT = 1;
-  public static boolean sLostGame = true;
+  public static boolean sLastGameLost = true;
   public static int sTutorialRestartWindowsShownPerSession = 0;
 
   public static void showWelcomeTutorialWindow(final GameActivity game) {
@@ -56,18 +54,24 @@ public class GameDialogs {
       }
     });
     builder.setTitle(game.getString(R.string.tutorial_welcome_title));
-    builder.setMessage(game.getString(R.string.tutorial_welcome)).setPositiveButton(Html.fromHtml(
-        "<b>" + game.getString(R.string.tutorial_positive) +
+    builder.setMessage(game.getString(R.string.tutorial_welcome)).setPositiveButton(
+        Html.fromHtml("<b>" + game.getString(R.string.tutorial_positive) +
             "</b>"), dialogClickListener).show().setCanceledOnTouchOutside(false);
   }
 
-  public static void showNextTutorialWindow(final GameActivity game, boolean showPopup) {
-    game.getMinigamesManager().deactivateAllMiniGames();
-    if (!GameDialogs.sLostGame) {
-      GameActivity.sTutorialLastLevel++;
+  public static void showNextTutorialWindow(final GameActivity gameActivity, boolean showPopup) {
+    gameActivity.getMinigamesManager().deactivateAllMiniGames();
+
+    //We increment it here for some unknown reason. lazy to refactor.
+    if (!GameDialogs.sLastGameLost) {
+      if (GameActivity.sTutorialLastLevel == 3) {
+        GameActivity.sTutorialLastLevel = 11;
+      } else {
+        GameActivity.sTutorialLastLevel++;
+      }
     }
     MgTracker.trackTutorialWindowShown(GameActivity.sTutorialLastLevel);
-    sLostGame = false;
+    sLastGameLost = false;
 
     if (showPopup) {
       DialogInterface.OnClickListener dialogClickListener = new DialogInterface.OnClickListener() {
@@ -75,52 +79,87 @@ public class GameDialogs {
         public void onClick(DialogInterface dialog, int which) {
           switch (which) {
             case DialogInterface.BUTTON_POSITIVE:
-              game.startGameTutorial();
+              gameActivity.startGameTutorial();
               MgTracker.trackTutorialLevelStarted(GameActivity.sTutorialLastLevel);
               break;
           }
         }
       };
 
-      AlertDialog.Builder builder = new AlertDialog.Builder(game);
+      AlertDialog.Builder builder = new AlertDialog.Builder(gameActivity);
       builder.setOnCancelListener(new DialogInterface.OnCancelListener() {
         @Override
         public void onCancel(DialogInterface dialog) {
-          game.stopTutorial();
-          game.finish();
+          gameActivity.stopTutorial();
+          gameActivity.finish();
         }
       });
 
       String symbol = "";
-
+      String title = "";
+      String message = "";
+      String okButton = "";
       switch (GameActivity.sTutorialLastLevel) {
         case 0:
           symbol = "<font color=#D98179><b>(" + MinigamesFragment.SYMBOL_MINIGAME_VERTICAL +
               ")</b></font>";
+          title = gameActivity.getString(R.string.minigames_VBird_title);
+          message =
+              gameActivity.getMinigamesManager().getMinigames()[GameActivity.sTutorialLastLevel]
+                  .getDescription(gameActivity) + symbol;
+          okButton = gameActivity.getString(R.string.tutorial_ok);
           break;
         case 1:
           symbol = "<font color=#D98179><b>(" + MinigamesFragment.SYMBOL_MINIGAME_HORIZONTAL +
               ")</b></font>";
+          title = gameActivity.getString(R.string.minigames_HBalance_title);
+          message =
+              gameActivity.getMinigamesManager().getMinigames()[GameActivity.sTutorialLastLevel]
+                  .getDescription(gameActivity) + symbol;
+          okButton = gameActivity.getString(R.string.tutorial_ok);
           break;
         case 2:
+          symbol = "<font color=#D98179><b>(" + MinigamesFragment.SYMBOL_MINIGAME_TOUCH +
+              ")</b></font>";
+          title = gameActivity.getString(R.string.minigames_TCatcher_title);
+          message =
+              gameActivity.getMinigamesManager().getMinigames()[GameActivity.sTutorialLastLevel]
+                  .getDescription(gameActivity) + symbol;
+          okButton = gameActivity.getString(R.string.tutorial_ok);
+          break;
         case 3:
           symbol = "<font color=#D98179><b>(" + MinigamesFragment.SYMBOL_MINIGAME_TOUCH +
               ")</b></font>";
+          title = gameActivity.getString(R.string.minigames_TGatherer_title);
+          message =
+              gameActivity.getMinigamesManager().getMinigames()[GameActivity.sTutorialLastLevel]
+                  .getDescription(gameActivity) + symbol;
+          okButton = gameActivity.getString(R.string.tutorial_ok);
           break;
-
+        case 11:
+          title = gameActivity.getString(R.string.first_multitask_title);
+          message = gameActivity.getString(R.string.first_multitask_description);
+          okButton = gameActivity.getString(R.string.first_multitask_ok);
+          break;
+        default:
+          //          title = symbol + gameActivity.getString(R.string.minigame) +
+          //              (GameActivity.sTutorialLastLevel + 1) + ": " +
+          //              gameActivity.getMinigamesManager().getMinigames()[GameActivity
+          // .sTutorialLastLevel]
+          //                  .getName();
+          break;
       }
-      String title = symbol + game.getString(R.string.minigame) +
-          (GameActivity.sTutorialLastLevel + 1) + ": " +
-          game.getMinigamesManager().getMinigames()[GameActivity.sTutorialLastLevel].getName();
 
-      String message =
-          game.getMinigamesManager().getMinigames()[GameActivity.sTutorialLastLevel].getDescription(game);
-      builder.setTitle(Html.fromHtml(title));
-      builder.setMessage(Html.fromHtml(message)).setPositiveButton(Html.fromHtml(
-          "<b>" + game.getString(R.string.tutorial_try) + "</b>"), dialogClickListener).show()
-          .setCanceledOnTouchOutside(false);
+      if (GameActivity.sTutorialLastLevel <= 11) {
+        builder.setTitle(Html.fromHtml(title));
+        builder.setMessage(Html.fromHtml(message)).setPositiveButton(
+            Html.fromHtml("<b>" + okButton + "</b>"), dialogClickListener).show()
+            .setCanceledOnTouchOutside(false);
+      } else {
+        gameActivity.startGameTutorial();
+      }
     } else {
-      game.startGameTutorial();
+      gameActivity.startGameTutorial();
     }
   }
 
@@ -136,8 +175,8 @@ public class GameDialogs {
           case DialogInterface.BUTTON_POSITIVE:
             MGSettings.onTutorialCompleted();
             GameActivity.sTutorialLastLevel = 0;
-            sLostGame = true;
-            game.finish();
+            sLastGameLost = true;
+            game.restartGame();
             break;
         }
       }
@@ -146,8 +185,8 @@ public class GameDialogs {
     game.stopTutorial();
     AlertDialog.Builder builder = new AlertDialog.Builder(game);
     builder.setCancelable(false).setTitle(game.getString(R.string.tutorial_finished_title))
-        .setMessage(game.getString(R.string.tutorial_finished)).setPositiveButton(Html.fromHtml(
-        "<b>OK</b>"), dialogClickListener).show();
+        .setMessage(game.getString(R.string.tutorial_finished)).setPositiveButton(
+        Html.fromHtml(game.getString(R.string.tutorial_finished_ok)), dialogClickListener).show();
   }
 
   public static void showTutorialLoserDialogWindow(final GameActivity game) {
@@ -159,10 +198,10 @@ public class GameDialogs {
         switch (which) {
           case DialogInterface.BUTTON_POSITIVE:
             MgTracker.trackTutorialRestarted(GameActivity.sTutorialLastLevel);
-            sLostGame = true;
+            sLastGameLost = true;
             game.stopTutorial();
             GameActivity.sTutorialRestart = true;
-            restartGame(game);
+            game.restartGame();
             break;
         }
       }
@@ -171,8 +210,8 @@ public class GameDialogs {
 
     AlertDialog.Builder builder = new AlertDialog.Builder(game);
     builder.setCancelable(false).setTitle(game.getString(R.string.tutorial_failed_title))
-        .setMessage(game.getString(R.string.tutorial_failed)).setPositiveButton(Html.fromHtml(
-        "<b>OK</b>"), dialogClickListener).show();
+        .setMessage(game.getString(R.string.tutorial_failed)).setPositiveButton(
+        Html.fromHtml(game.getString(R.string.tutorial_try_again)), dialogClickListener).show();
 
   }
 
@@ -193,7 +232,7 @@ public class GameDialogs {
         switch (which) {
           case DialogInterface.BUTTON_POSITIVE:
             MgTracker.trackGameLoserRetryButtonPushed();
-            restartGame(game);
+            game.restartGame();
             break;
 
           case DialogInterface.BUTTON_NEUTRAL:
@@ -250,7 +289,8 @@ public class GameDialogs {
             MGSettings.setLastHofName(playerName);
 
             HallofFameDatabaseHelper db = HallofFameDatabaseHelper.getInstance(gameActivity);
-            int playerPosition = db.writeIntoHallOfFame(new HofItem(playerName, gameActivity.getScore()));
+            int playerPosition = db.writeIntoHallOfFame(
+                new HofItem(playerName, gameActivity.getScore()));
             if (MGSettings.getHighestScore() < gameActivity.getScore()) {
               MGSettings.setHighestScore(gameActivity.getScore());
               MGSettings.setHighestScoreSubmitted(false);
@@ -261,7 +301,7 @@ public class GameDialogs {
             break;
           case DialogInterface.BUTTON_NEGATIVE:
             MgTracker.trackGameWinnerRetryButtonPushed();
-            restartGame(gameActivity);
+            gameActivity.restartGame();
             break;
           case DialogInterface.BUTTON_NEUTRAL:
             MgTracker.trackGameWinnerShareButtonPushed();
@@ -277,15 +317,16 @@ public class GameDialogs {
       }
     };
     AlertDialog.Builder builder = new AlertDialog.Builder(gameActivity);
-    builder.setCancelable(false).setView(userNameEditText).setTitle(gameActivity.getString(
-        R.string.game_winner_title)).
-        setMessage(gameActivity.getString(R.string.game_winner)).setPositiveButton(Html.fromHtml(
-        "<b>" + "OK" + "</b>"), dialogClickListener).setNegativeButton(gameActivity.getString(
-        R.string.game_retry), dialogClickListener).setNeutralButton("Share", dialogClickListener)
-        .show();
+    builder.setCancelable(false).setView(userNameEditText).setTitle(
+        gameActivity.getString(R.string.game_winner_title)).
+        setMessage(gameActivity.getString(R.string.game_winner)).setPositiveButton(
+        Html.fromHtml("<b>" + "OK" + "</b>"), dialogClickListener).setNegativeButton(
+        gameActivity.getString(R.string.game_retry), dialogClickListener).setNeutralButton("Share",
+        dialogClickListener).show();
   }
 
-  public static void showWinnerDialogAfterShareWindow(final MainMenuActivity mainMenuActivity, final int score) {
+  public static void showWinnerDialogAfterShareWindow(final MainMenuActivity mainMenuActivity,
+      final int score) {
 
     final EditText userNameEditText = new EditText(mainMenuActivity);
     userNameEditText.setSingleLine();
@@ -311,10 +352,10 @@ public class GameDialogs {
       }
     };
     AlertDialog.Builder builder = new AlertDialog.Builder(mainMenuActivity);
-    builder.setCancelable(false).setView(userNameEditText).setMessage(mainMenuActivity.getString(
-        R.string.game_ask_for_name)).setPositiveButton(Html.fromHtml("<b>" + "OK" + "</b>"),
-        dialogClickListener).setNegativeButton(mainMenuActivity.getString(R.string.cancel), dialogClickListener)
-        .show();
+    builder.setCancelable(false).setView(userNameEditText).setMessage(
+        mainMenuActivity.getString(R.string.game_ask_for_name)).setPositiveButton(
+        Html.fromHtml("<b>" + "OK" + "</b>"), dialogClickListener).setNegativeButton(
+        mainMenuActivity.getString(R.string.cancel), dialogClickListener).show();
   }
 
   public static void askUserToConnect(final Activity act, final boolean isWinner, final int score) {
@@ -361,19 +402,6 @@ public class GameDialogs {
     Context context = act.getApplicationContext();
     Intent intent = new Intent(context, MainMenuActivity.class);
     act.startActivity(intent);
-  }
-
-  //TODO L Toto nejak na oldschoola genymotione s malou pamatou padalo (recreovanie activity)
-  @SuppressLint("NewApi")
-  private static void restartGame(GameActivity game) {
-    int apiVersion = Build.VERSION.SDK_INT;
-    if (apiVersion >= 11) {
-      game.recreate();
-    } else {
-      Intent intent = game.getIntent();
-      game.finish();
-      game.startActivity(intent);
-    }
   }
 
   private static void showStatusBar(GameActivity game) {

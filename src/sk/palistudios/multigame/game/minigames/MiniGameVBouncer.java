@@ -264,7 +264,7 @@ public class MiniGameVBouncer extends BaseMiniGame
 
   @Override
   public String getDescription(Context context) {
-    return context.getString(R.string.minigames_VBouncer);
+    return context.getString(R.string.minigames_VBouncer_description);
   }
 
   public String getName() {

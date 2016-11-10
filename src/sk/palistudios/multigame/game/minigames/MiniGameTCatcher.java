@@ -288,7 +288,7 @@ public class MiniGameTCatcher extends BaseMiniGame
 
   @Override
   public String getDescription(Context context) {
-    return context.getString(R.string.minigames_TCatcher);
+    return context.getString(R.string.minigames_TCatcher_description);
   }
 
   @Override

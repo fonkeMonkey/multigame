@@ -28,7 +28,8 @@ import sk.palistudios.multigame.tools.Toaster;
 public class MinigamesFragment extends CustomizeFragment {
 
   public static char SYMBOL_MINIGAME_HORIZONTAL = '⇆';
-  public static char SYMBOL_MINIGAME_TOUCH = '⇩';
+//  public static char SYMBOL_MINIGAME_TOUCH = '⇩';
+  public static char SYMBOL_MINIGAME_TOUCH = '☞';
   public static char SYMBOL_MINIGAME_VERTICAL = '⇅';
 
   private static String[] tmpChosenMinigames = new String[4];

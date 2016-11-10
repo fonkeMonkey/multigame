@@ -60,13 +60,22 @@ public class CustomizationCenterActivity extends BaseActivity
     musicButton = (CheckedTextView) findViewById(R.id.customize_music);
     skinsButton = (CheckedTextView) findViewById(R.id.customize_skins);
     mPager.setCurrentItem(0);
-    checkTextView(minigamesButton);
+    checkTextView(achievementsButton);
+
+    achievementsButton.setOnClickListener(new View.OnClickListener() {
+      @Override
+      public void onClick(View v) {
+        SoundEffectsCenter.playTabSound(CustomizationCenterActivity.this);
+        mPager.setCurrentItem(0);
+        checkTextView(achievementsButton);
+      }
+    });
 
     minigamesButton.setOnClickListener(new View.OnClickListener() {
       @Override
       public void onClick(View v) {
         SoundEffectsCenter.playTabSound(CustomizationCenterActivity.this);
-        mPager.setCurrentItem(0);
+        mPager.setCurrentItem(1);
         checkTextView(minigamesButton);
       }
     });
@@ -74,7 +83,7 @@ public class CustomizationCenterActivity extends BaseActivity
       @Override
       public void onClick(View v) {
         SoundEffectsCenter.playTabSound(CustomizationCenterActivity.this);
-        mPager.setCurrentItem(1);
+        mPager.setCurrentItem(2);
         checkTextView(skinsButton);
       }
     });
@@ -82,16 +91,8 @@ public class CustomizationCenterActivity extends BaseActivity
       @Override
       public void onClick(View v) {
         SoundEffectsCenter.playTabSound(CustomizationCenterActivity.this);
-        mPager.setCurrentItem(2);
-        checkTextView(musicButton);
-      }
-    });
-    achievementsButton.setOnClickListener(new View.OnClickListener() {
-      @Override
-      public void onClick(View v) {
-        SoundEffectsCenter.playTabSound(CustomizationCenterActivity.this);
         mPager.setCurrentItem(3);
-        checkTextView(achievementsButton);
+        checkTextView(musicButton);
       }
     });
   }
@@ -165,16 +166,16 @@ public class CustomizationCenterActivity extends BaseActivity
   public void onPageSelected(int i) {
     switch (i) {
       case 0:
-        checkTextView(minigamesButton);
+        checkTextView(achievementsButton);
         break;
       case 1:
-        checkTextView(skinsButton);
+        checkTextView(minigamesButton);
         break;
       case 2:
-        checkTextView(musicButton);
+        checkTextView(skinsButton);
         break;
       case 3:
-        checkTextView(achievementsButton);
+        checkTextView(musicButton);
         break;
       default:
         throw new RuntimeException("Pager's onPageSelected() out of bounds.");
@@ -194,11 +195,11 @@ public class CustomizationCenterActivity extends BaseActivity
 
     public ScreenSlidePagerAdapter(FragmentManager fm) {
       super(fm);
-      mFragments[0] = new MinigamesFragment();
+      mFragments[0] = new AchievementsFragment();
+      mFragments[1] = new MinigamesFragment();
+      mFragments[2] = new SkinsFragment();
+      mFragments[3] = new MusicFragment();
       //      mFragments[0] = new SkinsFragment();
-      mFragments[1] = new SkinsFragment();
-      mFragments[2] = new MusicFragment();
-      mFragments[3] = new AchievementsFragment();
     }
 
     private CustomizeFragment[] getFragments() {

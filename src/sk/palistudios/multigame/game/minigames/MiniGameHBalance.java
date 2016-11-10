@@ -287,7 +287,7 @@ public class MiniGameHBalance extends BaseMiniGame implements
 
   @Override
   public String getDescription(Context context) {
-    return context.getString(R.string.minigames_HBalance);
+    return context.getString(R.string.minigames_HBalance_description);
   }
 
   public String getName() {

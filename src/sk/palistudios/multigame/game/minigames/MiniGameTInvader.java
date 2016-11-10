@@ -336,7 +336,7 @@ public class MiniGameTInvader extends BaseMiniGame
 
   @Override
   public String getDescription(Context context) {
-    return context.getString(R.string.minigames_TInvader);
+    return context.getString(R.string.minigames_TInvader_description);
   }
 
   public String getName() {

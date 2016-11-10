@@ -297,7 +297,7 @@ public class MiniGameVBird extends BaseMiniGame implements
 
   @Override
   public String getDescription(Context context) {
-    return context.getString(R.string.minigames_VBird);
+    return context.getString(R.string.minigames_VBird_description);
   }
 
   public String getName() {

@@ -13,7 +13,23 @@
       android:id="@+id/header"
       style="@style/TextView.Header"
       android:text="@string/cc_skins_tab_name"
-      android:layout_gravity="center_horizontal" />
+      android:layout_gravity="center_horizontal"
+      android:gravity="center_horizontal"
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"
+      />
+
+  <TextView
+      android:id="@+id/text"
+      android:text="@string/cc_skins_tab_text"
+      tools:text="kokotina kokotina extra kousky ovoceeeeee fegegôwlgôrl"
+      android:gravity="center_horizontal"
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:fontFamily="sans-serif-light"
+      android:textStyle="italic"
+      android:textSize="@dimen/list_item_achievements_row2_textSize"
+      />
 
   <ListView
       android:id="@+id/customize_listview_skins"

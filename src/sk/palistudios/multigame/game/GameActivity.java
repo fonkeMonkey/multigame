@@ -1,5 +1,8 @@
 package sk.palistudios.multigame.game;
 
+import android.annotation.SuppressLint;
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.res.Configuration;
 import android.content.res.Resources.NotFoundException;
@@ -8,8 +11,10 @@ import android.hardware.SensorEvent;
 import android.hardware.SensorEventListener;
 import android.hardware.SensorManager;
 import android.media.AudioManager;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
+import android.text.Html;
 import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
@@ -132,7 +137,7 @@ public class GameActivity extends BaseActivity implements SensorEventListener {
         mMusicPlayer.pauseMusic();
       }
 
-      if (sTutorialLastLevel != 3) {
+      if (sTutorialLastLevel != 13) {
         GameDialogs.showNextTutorialWindow(GameActivity.this, true);
       } else {
         GameDialogs.showTutorialWinnerWindow(GameActivity.this);
@@ -378,14 +383,32 @@ public class GameActivity extends BaseActivity implements SensorEventListener {
       } else {
         boolean playingFirstTime = MGSettings.isPlayingGameFirstTime();
         if (playingFirstTime) {
-          Toaster.toastLong(getResources().getString(R.string.game_touch_save),
-              getApplicationContext());
-          mToast = Toaster.toastLong(getResources().getString(R.string.game_touch_start),
-              getApplicationContext());
+          AlertDialog.Builder builder = new AlertDialog.Builder(this);
+          builder.setTitle(getString(R.string.game_welcome_title));
+          builder.setMessage(getString(R.string.game_welcome)).setPositiveButton(
+              Html.fromHtml("<b>" + getString(R.string.game_positive) +
+                  "</b>"), new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                  Toaster.toastLong(getResources().getString(R.string.game_touch_save),
+                      getApplicationContext());
+                  mToast = Toaster.toastLong(getResources().getString(R.string.game_touch_start),
+                      getApplicationContext());
+                  MGSettings.setPlayingGameFirstTimeFalse();
+                }
+              }).show().setCanceledOnTouchOutside(false);
+          if (MGSettings.isPlayingGameFirstTime()) {
+            Toaster.toastLong(getResources().getString(R.string.game_touch_save),
+                getApplicationContext());
+            mToast = Toaster.toastLong(getResources().getString(R.string.game_touch_start),
+                getApplicationContext());
+            MGSettings.setPlayingGameFirstTimeFalse();
+          }
+
           if (SoundEffectsCenter.getCurrentVolume(getApplicationContext()) == 0) {
             SoundEffectsCenter.raiseCurrentVolume(getApplicationContext());
           }
-          MGSettings.setPlayingGameFirstTimeFalse();
+
         } else {
           mToast = Toaster.toastLong(getResources().getString(R.string.game_touch_start),
               getApplicationContext());
@@ -431,11 +454,12 @@ public class GameActivity extends BaseActivity implements SensorEventListener {
 
     mMinigamesManager.deactivateAllMiniGames();
     colorFAllragmentGray();
-    for (int i = 0; i <= sTutorialLastLevel; i++) {
-      mMinigamesManager.activateMinigame(i);
-    }
-    if (sTutorialLastLevel < 2) {
-      mMinigamesManager.deactivateMinigame(2);
+    if (sTutorialLastLevel > 10) {
+      for (int i = 0; i <= sTutorialLastLevel - 10; i++) {
+        mMinigamesManager.activateMinigame(i);
+      }
+    } else {
+      mMinigamesManager.activateMinigame(sTutorialLastLevel);
     }
 
     if (mMusicPlayer != null && MGSettings.isMusicOn()) {
@@ -464,6 +488,19 @@ public class GameActivity extends BaseActivity implements SensorEventListener {
     }
     if (mRunnableTime != null) {
       mRunnableTime.run();
+    }
+  }
+
+  //TODO L Toto nejak na oldschoola genymotione s malou pamatou padalo (recreovanie activity)
+  @SuppressLint("NewApi")
+  public void restartGame() {
+    int apiVersion = Build.VERSION.SDK_INT;
+    if (apiVersion >= 11) {
+      recreate();
+    } else {
+      Intent intent = getIntent();
+      finish();
+      startActivity(intent);
     }
   }
 
@@ -569,7 +606,7 @@ public class GameActivity extends BaseActivity implements SensorEventListener {
     getWindow().clearFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
 
     if (mTutorialMode) {
-      GameDialogs.sLostGame = true;
+      GameDialogs.sLastGameLost = true;
       stopTutorial();
     } else {
       if (mGameLoopHandler != null && mRunnableGameLoop != null) {
@@ -653,7 +690,7 @@ public class GameActivity extends BaseActivity implements SensorEventListener {
     super.onBackPressed();
 
     if (mTutorialMode) {
-      GameDialogs.sLostGame = true;
+      GameDialogs.sLastGameLost = true;
       stopTutorial();
     } else {
       saveGame();
@@ -740,7 +777,7 @@ public class GameActivity extends BaseActivity implements SensorEventListener {
   public void onDestroy() {
     super.onDestroy();
     if (mTutorialMode) {
-      GameDialogs.sLostGame = true;
+      GameDialogs.sLastGameLost = true;
     }
 
     stopMusic();

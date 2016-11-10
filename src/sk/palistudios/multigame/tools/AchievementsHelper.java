@@ -21,12 +21,26 @@ public class AchievementsHelper {
 
   private static void initAchievementsIfNeeded(Context context) {
     if (sAchievements.isEmpty()) {
+      sAchievements.add(new AchievementItem("addict", (String) context.getResources().getString(
+          R.string.cc_achievements_addict_name), (String) context.getResources().getString(
+          R.string.cc_achievements_addicts_description), "GAMES", 10, "TInvader",
+          (String) context.getResources().getString(R.string.cc_minigames_invader_name),
+          MGSettings.isAchievementFulfilled("addict"),
+          (String) context.getResources().getString(R.string.cc_minigames_minigame_name)));
+
       sAchievements.add(new AchievementItem("good_start", (String) context.getResources().getString(
           R.string.cc_achievements_good_start_name), (String) context.getResources().getString(
           R.string.cc_achievements_good_start_description), "SCORE", 5000, "VBouncer",
           (String) context.getResources().getString(R.string.cc_minigames_bouncer_name),
           MGSettings.isAchievementFulfilled("good_start"),
           (String) context.getResources().getString(R.string.cc_minigames_minigame_name)));
+
+      sAchievements.add(new AchievementItem("champion", (String) context.getResources().getString(
+          R.string.cc_achievements_champion_name), (String) context.getResources().getString(
+          R.string.cc_achievements_champion_description), "SCORE", 1001, "summer",
+          (String) context.getResources().getString(R.string.cc_skins_summer_name),
+          MGSettings.isAchievementFulfilled("champion"),
+          (String) context.getResources().getString(R.string.cc_skins_skin_name)));
 
       sAchievements.add(new AchievementItem("lucky_seven",
           (String) context.getResources().getString(R.string.cc_achievements_lucky_seven_name),
@@ -43,13 +57,6 @@ public class AchievementsHelper {
           MGSettings.isAchievementFulfilled("magic_ten"),
           (String) context.getResources().getString(R.string.cc_skins_skin_name)));
 
-      sAchievements.add(new AchievementItem("addict", (String) context.getResources().getString(
-          R.string.cc_achievements_addict_name), (String) context.getResources().getString(
-          R.string.cc_achievements_addicts_description), "GAMES", 10, "TInvader",
-          (String) context.getResources().getString(R.string.cc_minigames_invader_name),
-          MGSettings.isAchievementFulfilled("addict"),
-          (String) context.getResources().getString(R.string.cc_minigames_minigame_name)));
-
       sAchievements.add(new AchievementItem("supporter", (String) context.getResources().getString(
           R.string.cc_achievements_supporter_name), (String) context.getResources().getString(
           R.string.cc_achievements_supporter_description), "RATE", -1, "dst_cv_x",
@@ -63,13 +70,6 @@ public class AchievementsHelper {
               R.string.cc_achievements_competitive_description), "SHARE", -1, "blue_sky",
           (String) context.getResources().getString(R.string.cc_skins_blue_sky_name),
           MGSettings.isAchievementFulfilled("competitive"),
-          (String) context.getResources().getString(R.string.cc_skins_skin_name)));
-
-      sAchievements.add(new AchievementItem("champion", (String) context.getResources().getString(
-          R.string.cc_achievements_champion_name), (String) context.getResources().getString(
-          R.string.cc_achievements_champion_description), "SCORE", 1001, "summer",
-          (String) context.getResources().getString(R.string.cc_skins_summer_name),
-          MGSettings.isAchievementFulfilled("champion"),
           (String) context.getResources().getString(R.string.cc_skins_skin_name)));
     }
   }

@@ -264,7 +264,7 @@ public class MiniGameTGatherer extends BaseMiniGame implements
 
   @Override
   public String getDescription(Context context) {
-    return context.getString(R.string.minigames_TGatherer);
+    return context.getString(R.string.minigames_TGatherer_description);
   }
 
   public String getName() {

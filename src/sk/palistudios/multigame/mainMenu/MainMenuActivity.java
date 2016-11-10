@@ -163,8 +163,7 @@ public class MainMenuActivity extends BaseActivity {
 
   public void showMGC(View view) {
     SoundEffectsCenter.playForwardSound(MainMenuActivity.this);
-    Intent intent = new Intent(this,
-        CustomizationCenterActivity.class);
+    Intent intent = new Intent(this, CustomizationCenterActivity.class);
     startActivity(intent);
   }
 
@@ -190,21 +189,9 @@ public class MainMenuActivity extends BaseActivity {
   private void setStartGameButtonName() {
     if (MGSettings.isGameSaved()) {
       mTVStart.setText(getString(R.string.button_resume));
-      return;
+    } else {
+      mTVStart.setText(getString(R.string.button_game));
     }
-
-    if (MGSettings.isTutorialModeActivated()) {
-      if (GameActivity.sTutorialLastLevel == 0) {
-        mTVStart.setText(getString(R.string.button_tutorial));
-
-      } else {
-        mTVStart.setText(getString(R.string.button_resume_tutorial));
-      }
-      return;
-    }
-
-    mTVStart.setText(getString(R.string.button_game));
-
   }
 
   @Override

@@ -17,6 +17,12 @@
             android:layout_height="wrap_content"
             android:paddingBottom="10dp"
             android:orientation="horizontal">
+
+            <CheckedTextView
+                android:id="@+id/customize_achievements"
+                style="@style/TextView.Customize.MenuItem"
+                android:text="@string/cc_achievements_tab_name" />
+
             <CheckedTextView
                 android:id="@+id/customize_minigames"
                 style="@style/TextView.Customize.MenuItem"
@@ -33,11 +39,6 @@
                 android:id="@+id/customize_music"
                 style="@style/TextView.Customize.MenuItem"
                 android:text="@string/cc_music_tab_name" />
-
-            <CheckedTextView
-                android:id="@+id/customize_achievements"
-                style="@style/TextView.Customize.MenuItem"
-                android:text="@string/cc_achievements_tab_name" />
 
         </LinearLayout>
     </HorizontalScrollView>
