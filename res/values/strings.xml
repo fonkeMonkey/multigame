@@ -29,17 +29,17 @@
 
    <string name="minigame">\u0020Minigame\u0020</string>
   <string name="minigames_VBird_title">Behold!</string>
-  <string name="minigames_VBird_description"><![CDATA[I am VERTICA the one and only goddess from the updown universe!<br><br>To earn my respect do not let my all-seying eye hit any obstacle or you will be punished! (<strong><u>tilt</u></strong> your cell phone vertically <strong><u>up</u></strong> or <strong><u>down</strong></u>)]]></string>
+  <string name="minigames_VBird_description"><![CDATA[I am VERTICA the one and only goddess from the updown universe!<br><br>To earn my respect do not let my all-seying eye hit any obstacle or you will be punished! (<strong><u>tilt</u></strong> your cell phone vertically <strong><u>up</u></strong> and <strong><u>down</strong></u>)]]></string>
   <string name="minigames_HBalance_title">Well done, mortal!</string>
-  <string name="minigames_HBalance_description"><![CDATA[My name is HORI-ZON and I represent the leftright universe!<br><br>You must not let the the karma fall off the scales! Or you should fall as well!</strong></u> (<strong><u>Tilt</u></strong> your cell phone horizontally to the <strong><u>left and right</strong></u>)]]></string>
+  <string name="minigames_HBalance_description"><![CDATA[My name is HORI-ZON and I represent the leftright universe!<br><br>You must not let the the justice of the world fall off the scales! Or you should fall as well!</strong></u> (<strong><u>Tilt</u></strong> your cell phone horizontally to the <strong><u>left and right</strong></u>)]]></string>
   <string name="minigames_TCatcher_title">Greetings!</string>
-  <string name="minigames_TCatcher_description"><![CDATA[I am TAPO-NASHI the creator of the universe of TAP!<br><br>The falling meteors of apocalypse must not hit the gates to parallel universes or the world will cease to exist. Failure is not an option! (Make gates open by <strong><u>tapping</strong></u> on them)]]></string>
-  <string name="minigames_TGatherer_title">Good luck to you!</string>
-  <string name="minigames_TGatherer_description"><![CDATA[Hi, I am TAPO-SAN, son of the great TAPO-NASHI!<br><br>You must collect all fallen souls before they vanish forever. (Gather souls by <strong><u>tapping</strong></u> on them before the time passes.)]]></string>
+  <string name="minigames_TCatcher_description"><![CDATA[I am TAPO-NASHI the creator of the universe of TAP!<br><br>The falling meteors of apocalypse must not hit the gateways to parallel void universes or the world will cease to exist. Failure is not an option! (Make gateways open by <strong><u>tapping</strong></u> on them)]]></string>
+  <string name="minigames_TGatherer_title">Good job so far!</string>
+  <string name="minigames_TGatherer_description"><![CDATA[Hi, I am TAPO-SAN, son of the great TAPO-NASHI!<br><br>You must collect all of the fallen souls of heroes before they vanish forever. (Gather souls by <strong><u>tapping</strong></u> on them before the time passes.)]]></string>
   <string name="tutorial_ok">OK</string>
 
   <string name="first_multitask_title">Excellent!</string>
-  <string name="first_multitask_description"><![CDATA[We have concluded that you in the end might be worthy of our divine time.<br><br>Let\'s start slowly with 2 multitasking games. As time passes we will add more!]]></string>
+  <string name="first_multitask_description"><![CDATA[We have concluded that YOU in the end might be worthy of our divine time.<br><br>Let\'s start slowly with your multitasking abilities. As the time passes we will add more and more games!]]></string>
   <string name="first_multitask_ok">I am ready!</string>
 
   <string name="minigames_TInvader_description"><![CDATA[Move the laser field by tapping on the screen. The enemies must not get to the center.]]></string>
@@ -47,16 +47,16 @@
 
   <!--<string name="exit_tutorial">You have exited the tutorial.</string> -->
   <string name="tutorial_finished_title">We are impressed!</string>
-  <string name="tutorial_finished">You have finished the first trial (actually the first human to do so).\n\nWe will save your life this time, but there are great battles ahead if you want to become one of us.</string>
+  <string name="tutorial_finished">You have finished the first trial (actually the first human to do so).\n\nWe will spare your world this time, but there are great battles ahead if you want to become one of us.</string>
   <string name="tutorial_finished_ok">That was easy!</string>
 
-  <string name="tutorial_failed_title">Ouch!</string>
-  <string name="tutorial_failed">It is okay, no one ever did it first time. Gods are patient or at least let's hope so.</string>
+  <string name="tutorial_failed_title">Whoops!</string>
+  <string name="tutorial_failed">It\'s okay, no one ever did it the first time. Gods are patient or at least let\'s hope so…</string>
   <string name="tutorial_try_again">I can do it!</string>
 
   <!-- Game -->
   <string name="game_welcome_title">Welcome adept!</string>
-  <string name="game_welcome">You have shown some skills however that is not enough. Gods have prepared some challenges for you until you would be able to the final test.\n\nFirst try to get at least 1000 multitasking points. Good luck! (You can check the other challenges in the menu)</string>
+  <string name="game_welcome">You have shown some skills however that is not enough. Gods have prepared some challenges for you until you would be able to face the final test.\n\nFirst try to get at least 1000 multitasking points. Good luck! (You can check the other challenges in the menu)</string>
   <string name="game_positive">Great!</string>
 
   <string name="score">Score:\u0020</string>

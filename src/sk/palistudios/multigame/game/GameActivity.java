@@ -278,8 +278,8 @@ public class GameActivity extends BaseActivity implements SensorEventListener {
     mCanvases[3].setGameSaved(wasGameSaved);
 
     if (mTutorialMode) {
-      redrawScoreView("Tutorial");
-      redrawDifficultyView("Tutorial");
+//      redrawScoreView("Tutorial");
+//      redrawDifficultyView("Tutorial");
     } else {
       redrawScoreView(String.valueOf(0));
       redrawDifficultyView(String.valueOf(1));
@@ -390,28 +390,30 @@ public class GameActivity extends BaseActivity implements SensorEventListener {
                   "</b>"), new DialogInterface.OnClickListener() {
                 @Override
                 public void onClick(DialogInterface dialog, int which) {
-                  Toaster.toastLong(getResources().getString(R.string.game_touch_save),
-                      getApplicationContext());
-                  mToast = Toaster.toastLong(getResources().getString(R.string.game_touch_start),
-                      getApplicationContext());
+//                  Toaster.toastLong(getResources().getString(R.string.game_touch_save),
+//                      getApplicationContext());
+//                  mToast = Toaster.toastLong(getResources().getString(R.string.game_touch_start),
+//                      getApplicationContext());
+                  startGame();
                   MGSettings.setPlayingGameFirstTimeFalse();
                 }
               }).show().setCanceledOnTouchOutside(false);
-          if (MGSettings.isPlayingGameFirstTime()) {
-            Toaster.toastLong(getResources().getString(R.string.game_touch_save),
-                getApplicationContext());
-            mToast = Toaster.toastLong(getResources().getString(R.string.game_touch_start),
-                getApplicationContext());
-            MGSettings.setPlayingGameFirstTimeFalse();
-          }
+//          if (MGSettings.isPlayingGameFirstTime()) {
+//            Toaster.toastLong(getResources().getString(R.string.game_touch_save),
+//                getApplicationContext());
+//            mToast = Toaster.toastLong(getResources().getString(R.string.game_touch_start),
+//                getApplicationContext());
+//            MGSettings.setPlayingGameFirstTimeFalse();
+//          }
 
           if (SoundEffectsCenter.getCurrentVolume(getApplicationContext()) == 0) {
             SoundEffectsCenter.raiseCurrentVolume(getApplicationContext());
           }
 
         } else {
-          mToast = Toaster.toastLong(getResources().getString(R.string.game_touch_start),
-              getApplicationContext());
+          startGame();
+//          mToast = Toaster.toastLong(getResources().getString(R.string.game_touch_start),
+//              getApplicationContext());
           if (SoundEffectsCenter.getCurrentVolume(getApplicationContext()) == 0 &&
               !sIncreaseVolumeShown) {
             Toaster.toastLong(getString(R.string.increase_music_volume), getApplicationContext());
@@ -537,13 +539,13 @@ public class GameActivity extends BaseActivity implements SensorEventListener {
     if (!gameStopped) {
       return true;
     }
-    if (evt.getAction() == MotionEvent.ACTION_DOWN) {
-      if (mToast != null) {
-        mToast.cancel();
-        mToast = null;
-      }
-      startGame();
-    }
+//    if (evt.getAction() == MotionEvent.ACTION_DOWN) {
+//      if (mToast != null) {
+//        mToast.cancel();
+//        mToast = null;
+//      }
+//      startGame();
+//    }
     return true;
   }
 

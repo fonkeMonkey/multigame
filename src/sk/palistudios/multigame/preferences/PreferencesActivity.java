@@ -24,7 +24,7 @@ public class PreferencesActivity extends BaseActivity {
   private static SharedPreferences prefs;
   private PreferenceOnOffSwitcher mMusicSwitch;
   private PreferenceOnOffSwitcher mSoundSwitch;
-  private PreferenceOnOffSwitcher mAutoCalibrationSwitch;
+//  private PreferenceOnOffSwitcher mAutoCalibrationSwitch;
   private LinearLayout mGameModeLayout;
   private TextView mGameModeLabel;
   private CheckedTextView mGameModeClassic;
@@ -58,15 +58,15 @@ public class PreferencesActivity extends BaseActivity {
       }
     });
 
-    mAutoCalibrationSwitch = (PreferenceOnOffSwitcher) findViewById(R.id.pref_autocalibration);
-    mAutoCalibrationSwitch.setChecked(MGSettings.isAutoCalibrationEnabled());
-    mAutoCalibrationSwitch.setOnCheckedChangeListener(
-        new PreferenceOnOffSwitcher.OnCheckedChangeListener() {
-          @Override
-          public void onCheckedChanged(PreferenceOnOffSwitcher buttonView, boolean isChecked) {
-            MGSettings.setAutocalibration(isChecked);
-          }
-        });
+//    mAutoCalibrationSwitch = (PreferenceOnOffSwitcher) findViewById(R.id.pref_autocalibration);
+//    mAutoCalibrationSwitch.setChecked(MGSettings.isAutoCalibrationEnabled());
+//    mAutoCalibrationSwitch.setOnCheckedChangeListener(
+//        new PreferenceOnOffSwitcher.OnCheckedChangeListener() {
+//          @Override
+//          public void onCheckedChanged(PreferenceOnOffSwitcher buttonView, boolean isChecked) {
+//            MGSettings.setAutocalibration(isChecked);
+//          }
+//        });
 
     mGameModeLayout = (LinearLayout) findViewById(R.id.pref_gamemode_layout);
     mGameModeLabel = (TextView) findViewById(R.id.pref_gamemode_label);
@@ -120,7 +120,7 @@ public class PreferencesActivity extends BaseActivity {
   public void reskinLocally(SkinManager.Skin currentSkin) {
     mMusicSwitch.reskinDynamically();
     mSoundSwitch.reskinDynamically();
-    mAutoCalibrationSwitch.reskinDynamically();
+//    mAutoCalibrationSwitch.reskinDynamically();
     mHeader.setTextColor(mHeader.getTextColors().withAlpha(DisplayHelper.ALPHA_80pc));
   }
 
