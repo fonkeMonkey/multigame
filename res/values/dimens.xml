@@ -16,6 +16,7 @@
   <dimen name="list_item_skins_music_row1_textSize">16sp</dimen>
 
   <dimen name="list_item_achievements_paddingHorizontal">20dp</dimen>
+  <dimen name="list_item_achievements_paddingHorizontal_small">10dp</dimen>
   <dimen name="list_item_achievements_paddingVertical">10dp</dimen>
   <dimen name="list_item_achievements_title_textSize">30sp</dimen>
   <dimen name="list_item_achievements_row1_textSize">20sp</dimen>

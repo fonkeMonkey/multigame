@@ -2,6 +2,7 @@ package sk.palistudios.multigame.preferences;
 
 import android.content.SharedPreferences;
 import android.graphics.Typeface;
+import android.os.Build;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.CheckedTextView;
@@ -11,7 +12,6 @@ import android.widget.TextView;
 import sk.palistudios.multigame.BaseActivity;
 import sk.palistudios.multigame.R;
 import sk.palistudios.multigame.game.persistence.MGSettings;
-import sk.palistudios.multigame.mainMenu.DebugSettings;
 import sk.palistudios.multigame.tools.DisplayHelper;
 import sk.palistudios.multigame.tools.SkinManager;
 
@@ -24,7 +24,6 @@ public class PreferencesActivity extends BaseActivity {
   private static SharedPreferences prefs;
   private PreferenceOnOffSwitcher mMusicSwitch;
   private PreferenceOnOffSwitcher mSoundSwitch;
-//  private PreferenceOnOffSwitcher mAutoCalibrationSwitch;
   private LinearLayout mGameModeLayout;
   private TextView mGameModeLabel;
   private CheckedTextView mGameModeClassic;
@@ -58,30 +57,10 @@ public class PreferencesActivity extends BaseActivity {
       }
     });
 
-//    mAutoCalibrationSwitch = (PreferenceOnOffSwitcher) findViewById(R.id.pref_autocalibration);
-//    mAutoCalibrationSwitch.setChecked(MGSettings.isAutoCalibrationEnabled());
-//    mAutoCalibrationSwitch.setOnCheckedChangeListener(
-//        new PreferenceOnOffSwitcher.OnCheckedChangeListener() {
-//          @Override
-//          public void onCheckedChanged(PreferenceOnOffSwitcher buttonView, boolean isChecked) {
-//            MGSettings.setAutocalibration(isChecked);
-//          }
-//        });
-
     mGameModeLayout = (LinearLayout) findViewById(R.id.pref_gamemode_layout);
     mGameModeLabel = (TextView) findViewById(R.id.pref_gamemode_label);
     mGameModeClassic = (CheckedTextView) findViewById(R.id.pref_classic_gamemode);
     mGameModeTutorial = (CheckedTextView) findViewById(R.id.pref_tutor_gamemode);
-
-    boolean isTutorialCompleted =
-        MGSettings.isTutorialCompleted() || DebugSettings.tutorialCompleted;
-    if (isTutorialCompleted || DebugSettings.tutorialCompleted) {
-      mGameModeLabel.setVisibility(View.VISIBLE);
-      mGameModeLayout.setVisibility(View.VISIBLE);
-    } else {
-      mGameModeLabel.setVisibility(View.GONE);
-      mGameModeLayout.setVisibility(View.GONE);
-    }
 
     refreshGameModeStatus("Tutorial".equals(MGSettings.getGameMode()));
     mGameModeTutorial.setOnClickListener(new View.OnClickListener() {
@@ -120,42 +99,41 @@ public class PreferencesActivity extends BaseActivity {
   public void reskinLocally(SkinManager.Skin currentSkin) {
     mMusicSwitch.reskinDynamically();
     mSoundSwitch.reskinDynamically();
-//    mAutoCalibrationSwitch.reskinDynamically();
+    //    mAutoCalibrationSwitch.reskinDynamically();
     mHeader.setTextColor(mHeader.getTextColors().withAlpha(DisplayHelper.ALPHA_80pc));
   }
 
   //TODO light a medium integruj (takisto dla obrázka aj podtitulok je light a čosi BLACK
   private void refreshGameModeStatus(boolean isTutorial) {
-//    int version = Build.VERSION.SDK_INT;
+    int sdkVersion = Build.VERSION.SDK_INT;
     if (isTutorial) {
       mGameModeTutorial.setChecked(true);
-      //      if (version >= Build.VERSION_CODES.LOLLIPOP) {
-      //        mGameModeTutorial.setTypeface(Typeface.create("sans-serif-medium", Typeface
-      // .NORMAL));
-      //      } else {
-      mGameModeTutorial.setTypeface(mGameModeTutorial.getTypeface(), Typeface.BOLD);
-      //      }
+      if (sdkVersion >= Build.VERSION_CODES.LOLLIPOP) {
+        mGameModeTutorial.setTypeface(Typeface.create("sans-serif-medium", Typeface.NORMAL));
+      } else {
+        mGameModeTutorial.setTypeface(mGameModeTutorial.getTypeface(), Typeface.BOLD);
+      }
 
       mGameModeClassic.setChecked(false);
-      //      if (version >= Build.VERSION_CODES.JELLY_BEAN) {
-      //        mGameModeClassic.setTypeface(Typeface.create("sans-serif-light", Typeface.NORMAL));
-      //      } else {
-      mGameModeClassic.setTypeface(mGameModeClassic.getTypeface(), Typeface.NORMAL);
-      //      }
+      if (sdkVersion >= Build.VERSION_CODES.JELLY_BEAN) {
+        mGameModeClassic.setTypeface(Typeface.create("sans-serif-light", Typeface.NORMAL));
+      } else {
+        mGameModeClassic.setTypeface(mGameModeClassic.getTypeface(), Typeface.NORMAL);
+      }
     } else {
       mGameModeTutorial.setChecked(false);
-      //      if (version >= Build.VERSION_CODES.JELLY_BEAN) {
-      //        mGameModeTutorial.setTypeface(Typeface.create("sans-serif-light", Typeface.NORMAL));
-      //      } else {
-      mGameModeTutorial.setTypeface(mGameModeTutorial.getTypeface(), Typeface.NORMAL);
-      //      }
+      if (sdkVersion >= Build.VERSION_CODES.JELLY_BEAN) {
+        mGameModeTutorial.setTypeface(Typeface.create("sans-serif-light", Typeface.NORMAL));
+      } else {
+        mGameModeTutorial.setTypeface(mGameModeTutorial.getTypeface(), Typeface.NORMAL);
+      }
 
       mGameModeClassic.setChecked(true);
-      //      if (version >= Build.VERSION_CODES.LOLLIPOP) {
-      //        mGameModeClassic.setTypeface(Typeface.create("sans-serif-medium", Typeface.NORMAL));
-      //      } else {
-      mGameModeClassic.setTypeface(mGameModeClassic.getTypeface(), Typeface.BOLD);
-      //      }
+      if (sdkVersion >= Build.VERSION_CODES.LOLLIPOP) {
+        mGameModeClassic.setTypeface(Typeface.create("sans-serif-medium", Typeface.NORMAL));
+      } else {
+        mGameModeClassic.setTypeface(mGameModeClassic.getTypeface(), Typeface.BOLD);
+      }
     }
     mGameModeClassic.invalidate();
     mGameModeTutorial.invalidate();

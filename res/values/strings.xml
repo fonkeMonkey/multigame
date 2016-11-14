@@ -31,10 +31,10 @@
   <string name="minigames_VBird_title">Behold!</string>
   <string name="minigames_VBird_description"><![CDATA[I am VERTICA the one and only goddess from the updown universe!<br><br>To earn my respect do not let my all-seying eye hit any obstacle or you will be punished! (<strong><u>tilt</u></strong> your cell phone vertically <strong><u>up</u></strong> and <strong><u>down</strong></u>)]]></string>
   <string name="minigames_HBalance_title">Well done, mortal!</string>
-  <string name="minigames_HBalance_description"><![CDATA[My name is HORI-ZON and I represent the leftright universe!<br><br>You must not let the the justice of the world fall off the scales! Or you should fall as well!</strong></u> (<strong><u>Tilt</u></strong> your cell phone horizontally to the <strong><u>left and right</strong></u>)]]></string>
+  <string name="minigames_HBalance_description"><![CDATA[My name is HORI-ZON and I represent the leftright universe!<br><br>You must not let the the universal justice fall off the scales! Or you should fall as well!</strong></u> (<strong><u>Tilt</u></strong> your cell phone horizontally to the <strong><u>left and right</strong></u>)]]></string>
   <string name="minigames_TCatcher_title">Greetings!</string>
-  <string name="minigames_TCatcher_description"><![CDATA[I am TAPO-NASHI the creator of the universe of TAP!<br><br>The falling meteors of apocalypse must not hit the gateways to parallel void universes or the world will cease to exist. Failure is not an option! (Make gateways open by <strong><u>tapping</strong></u> on them)]]></string>
-  <string name="minigames_TGatherer_title">Good job so far!</string>
+  <string name="minigames_TCatcher_description"><![CDATA[I am TAPO-NASHI the creator of the universe of TAP!<br><br>My tears of apocalypse must pass through the gateways to parallel universes of void or the world will cease to exist. Failure is not an option! (Make gateways open by <strong><u>tapping</strong></u> on them)]]></string>
+  <string name="minigames_TGatherer_title">Good job!</string>
   <string name="minigames_TGatherer_description"><![CDATA[Hi, I am TAPO-SAN, son of the great TAPO-NASHI!<br><br>You must collect all of the fallen souls of heroes before they vanish forever. (Gather souls by <strong><u>tapping</strong></u> on them before the time passes.)]]></string>
   <string name="tutorial_ok">OK</string>
 

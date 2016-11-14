@@ -71,6 +71,11 @@ public class AchievementsHelper {
           (String) context.getResources().getString(R.string.cc_skins_blue_sky_name),
           MGSettings.isAchievementFulfilled("competitive"),
           (String) context.getResources().getString(R.string.cc_skins_skin_name)));
+
+      sAchievements.add(new AchievementItem("GOD OF GODS", "GOD OF GODS", "Fulfill all Gods' challenges", "LEVEL", 999, "???",
+          "???",
+          false,
+          ""));
     }
   }
 
